@@ -1,0 +1,35 @@
+{
+  "id": "2e2cdef8-d480-4ff1-9c02-9e1482e6d200",
+  "name": "Acumens Customer Rebates And Claims",
+  "publisher": "SBC Dynamics ERP",
+  "version": "25.1023.0.0",
+  "brief": "Acumens Customer Rebates and Claims is an intuitive application designed to streamline Customer Rebate and Claim Management Process.",
+  "description": "Acumens Customer Rebates and Claims is an intuitive Rebate and Claim Management application designed to streamline the Customer Rebate and Claim Process for businesses.",
+  "privacyStatement": "https://www.sbcdynamicserp.com/privacy-policy/",
+  "EULA": "https://www.sbcdynamicserp.com/end-user-license-agreement/",
+  "help": "https://www.sbcdynamicserp.com/support/?claminsrebtapp=yes",
+  "url": "https://www.sbcdynamicserp.com/acumens-claims-rebates/",
+  "logo": "./src/media/logo.png",
+  "contextSensitiveHelpUrl":"https://www.sbcdynamicserp.com/support/?claminsrebtapp=yes",
+  "applicationInsightsConnectionString": "InstrumentationKey=ba4686d0-d97a-4532-b53c-7ece85786a03;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=5a99d773-71c1-4ae0-86de-4989e2a06e51",  
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "25.0.0.0",
+  "idRanges": [
+    {
+      "from": 14301910,
+      "to": 14302509
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "14.0",
+  "features": [
+    "NoImplicitWith",
+    "TranslationFile"
+  ]
+}
