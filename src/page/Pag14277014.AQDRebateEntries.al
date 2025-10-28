@@ -1,13 +1,13 @@
-page 14277014 "AQD Rebate Entries"
+page 14277014 "AQD Customer Rebate Entries"
 {
-    Caption = 'Rebate Entries';
+    Caption = 'Customer Rebate Entries';
     ApplicationArea = All;
     UsageCategory = Lists;
     DeleteAllowed = false;
     Editable = false;
     InsertAllowed = false;
     PageType = List;
-    SourceTable = "AQD Rebate Entry";
+    SourceTable = "AQD Customer Rebate Entry";
     layout
     {
         area(content)

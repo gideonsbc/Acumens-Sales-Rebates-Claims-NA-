@@ -9,7 +9,7 @@ page 14277013 "AQD Rebate Document Entry"
     ModifyAllowed = false;
     PageType = List;
     RefreshOnActivate = true;
-    SourceTable = "AQD Rebate Document Entry";
+    SourceTable = "AQD Cust Rebate Document Entry";
     SourceTableView = SORTING("Rebate Code", "Document Type", "Document No.");
     layout
     {

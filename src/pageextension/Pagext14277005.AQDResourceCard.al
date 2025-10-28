@@ -25,25 +25,6 @@ pageextension 14277005 "AQD Resource Card" extends "Resource Card"
                         ApplicationArea = All;
                         Caption = 'Rebatable';
                     }
-                    // field("AQD Vendor Rebate Type"; Rec."AQD Vendor Rebate Type")
-                    // {
-                    //     ApplicationArea = All;
-                    //     Caption = 'Rebate Type';
-                    // }
-                    // field("AQD Vendor Rebate %"; Rec."AQD Vendor Rebate %")
-                    // {
-                    //     ApplicationArea = All;
-                    //     Editable = Rec."AQD Vendor Rebate Type" = Rec."AQD Vendor Rebate Type"::Percentage;
-                    //     Enabled = Rec."AQD Vendor Rebate Type" = Rec."AQD Vendor Rebate Type"::Percentage;
-                    //     Caption = 'Rebate %';
-                    // }
-                    // field("AQD Ven Rebate Amount Per Qty"; Rec."AQD Ven Rebate Amount Per Qty")
-                    // {
-                    //     ApplicationArea = All;
-                    //     Editable = Rec."AQD Vendor Rebate Type" = Rec."AQD Vendor Rebate Type"::Percentage;
-                    //     Enabled = Rec."AQD Vendor Rebate Type" = Rec."AQD Vendor Rebate Type"::Percentage;
-                    //     Caption = 'Rebate per Quantity';
-                    // }
                     field("AQD Rebate Category Code"; Rec."AQD Rebate Category Code")
                     {
                         ApplicationArea = All;

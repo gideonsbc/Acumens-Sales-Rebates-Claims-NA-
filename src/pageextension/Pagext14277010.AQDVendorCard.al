@@ -32,22 +32,6 @@ pageextension 14277010 "AQD Vendor Card" extends "Vendor Card"
                     {
                         ApplicationArea = All;
                     }
-                    // field("AQD Rebate Type"; Rec."AQD Rebate Type")
-                    // {
-                    //     ApplicationArea = All;
-                    // }
-                    // field("AQD AQD Rebate %"; Rec."AQD Rebate %")
-                    // {
-                    //     ApplicationArea = All;
-                    //     Editable = Rec."AQD Rebate Type" = Rec."AQD Rebate Type"::Percentage;
-                    //     Enabled = Rec."AQD Rebate Type" = Rec."AQD Rebate Type"::Percentage;
-                    // }
-                    // field("AQD Rebate Amount"; Rec."AQD Rebate Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     Editable = Rec."AQD Rebate Type" = Rec."AQD Rebate Type"::"Per Quantity";
-                    //     Enabled = Rec."AQD Rebate Type" = Rec."AQD Rebate Type"::"Per Quantity";
-                    // }
                     field("AQD Rebate Vendor No"; Rec."AQD Rebate Vendor No")
                     {
                         ApplicationArea = All;
@@ -69,25 +53,4 @@ pageextension 14277010 "AQD Vendor Card" extends "Vendor Card"
             }
         }
     }
-    actions
-    {
-        addafter("Line Discounts")
-        {
-            action("AQD Set Purchase Rebates")
-            {
-                ApplicationArea = All;
-                Caption = 'Rebates';
-                Image = Setup;
-                RunObject = Page "AQD Vendor Rebate Rates";
-                RunPageLink = "Vendor No." = field("No.");
-                RunPageView = sorting("Vendor No.");
-            }
-        }
-        addlast("Category_Prices & Discounts")
-        {
-            actionref("AQD SetPurchaseRebates"; "AQD Set Purchase Rebates") { }
-        }
-    }
-
 }
-

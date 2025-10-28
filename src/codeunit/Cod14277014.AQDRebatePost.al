@@ -713,7 +713,7 @@ codeunit 14277014 "AQD Rebate Post"
         RebateRegisterIsPaid: Label 'Payment Information is updated for Rebate Register.';
         UserConfirmMsg: Label 'Do you want to update Payment Information on Rebate Register ?';
         ConfirmManagement: Codeunit "Confirm Management";
-        RebateChangeToPaid: Page "AQD Rebate Change To Paid";
+        CustRebateChangeToPaid: Page "AQD Cust Rebate Change To Paid";
         RebateLdgrEntryNextEntryNo: Integer;
         ActualPaidDate: Date;
         "Count": Integer;
@@ -747,9 +747,9 @@ codeunit 14277014 "AQD Rebate Post"
             until RebateRegisterIn.Next = 0;
         end;
 
-        Clear(RebateChangeToPaid);
-        if RebateChangeToPaid.RunModal = ACTION::Yes then
-            RebateChangeToPaid.GetCheckInformation(PaymentDate, PaymentCheckNo)
+        Clear(CustRebateChangeToPaid);
+        if CustRebateChangeToPaid.RunModal = ACTION::Yes then
+            CustRebateChangeToPaid.GetCheckInformation(PaymentDate, PaymentCheckNo)
         else
             exit;
 

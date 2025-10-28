@@ -1,8 +1,8 @@
-page 14277015 "AQD Rebate Journal"
+page 14277015 "AQD Customer Rebate Journal"
 {
     ApplicationArea = All;
     AutoSplitKey = true;
-    Caption = 'Rebate Journal';
+    Caption = 'Customer Rebate Journal';
     DelayedInsert = true;
     InsertAllowed = false;
     ModifyAllowed = false;
