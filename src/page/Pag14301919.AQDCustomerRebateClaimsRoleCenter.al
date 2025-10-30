@@ -73,6 +73,40 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Image = Customer;
                 RunObject = Page "Customer List";
             }
+            action("Customer Rebate Program Codes")
+            {
+                ApplicationArea = All;
+                Caption = 'Customer Rebate Program Codes';
+                RunObject = page "AQD Cust Rebate Program Codes";
+            }
+            action("AQD Customer Rebate Item Categories")
+            {
+                Caption = 'Customer Rebate Item Categories';
+                ApplicationArea = All;
+                Image = Vendor;
+                RunObject = Page "AQD Cust RebateItem Categories";
+            }
+            action("AQD Rebate Customer Types")
+            {
+                Caption = 'Rebate Customer Types';
+                ApplicationArea = All;
+                Image = CampaignEntries;
+                RunObject = Page "AQD Rebate Customer Types";
+            }
+            // action("AQD Rebate Cust Type Eligib")
+            // {
+            //     Caption = 'Rebate Customer Type Eligibility';
+            //     ApplicationArea = All;
+            //     Image = CampaignEntries;
+            //     RunObject = Page "AQD Rebate Cust Type Eligib";
+            // }
+            action("AQD CustItem Rebate Matrix")
+            {
+                Caption = 'Customer Item Rebate Matrix';
+                ApplicationArea = All;
+                Image = PurchaseCreditMemo;
+                RunObject = Page "AQD Rebate Customer Types";
+            }
             action("Sales Orders")
             {
                 Caption = 'Sales Orders';
@@ -100,41 +134,6 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 ApplicationArea = All;
                 Image = SalesCreditMemo;
                 RunObject = Page "Sales Credit Memos";
-            }
-
-            action("AQD Rebate Customer Types")
-            {
-                Caption = 'Rebate Customer Types';
-                ApplicationArea = All;
-                Image = CampaignEntries;
-                RunObject = Page "AQD Rebate Customer Types";
-            }
-            // action("AQD Rebate Cust Type Eligib")
-            // {
-            //     Caption = 'Rebate Customer Type Eligibility';
-            //     ApplicationArea = All;
-            //     Image = CampaignEntries;
-            //     RunObject = Page "AQD Rebate Cust Type Eligib";
-            // }
-            action("AQD CustItem Rebate Matrix")
-            {
-                Caption = 'Customer Item Rebate Matrix';
-                ApplicationArea = All;
-                Image = PurchaseCreditMemo;
-                RunObject = Page "AQD Rebate Customer Types";
-            }
-            action("AQD Customer Rebate Item Categories")
-            {
-                Caption = 'Customer Rebate Item Categories';
-                ApplicationArea = All;
-                Image = Vendor;
-                RunObject = Page "AQD Cust RebateItem Categories";
-            }
-            action("Customer Rebate Program Codes")
-            {
-                ApplicationArea = All;
-                Caption = 'Customer Rebate Program Codes';
-                RunObject = page "AQD Cust Rebate Program Codes";
             }
             action("Customer Rebate Batches")
             {

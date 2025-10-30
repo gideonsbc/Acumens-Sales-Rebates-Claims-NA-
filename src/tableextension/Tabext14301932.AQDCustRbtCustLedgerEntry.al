@@ -61,6 +61,7 @@ tableextension 14301932 "AQD CustRbt CustLdgrEntry Ext" extends "Cust. Ledger En
             AutoFormatType = 1;
             BlankZero = TRUE;
             Caption = 'Customer Rebate Amount';
+            DataClassification = CustomerContent;
             Editable = false;
         }
     }

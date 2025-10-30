@@ -10,11 +10,13 @@ tableextension 14301911 "AQD CustRbt G/L Account Ext" extends "G/L Account"
         field(14301920; "AQD Cust Rebate Category Code"; Code[20])
         {
             Caption = 'Rebate Category Code';
+            DataClassification = CustomerContent;
             TableRelation = "AQD Cust Rebate Item Category";
         }
         field(14301930; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
             Caption = 'Use Rebate Setup From';
+            DataClassification = CustomerContent;
 
             trigger OnValidate()
             var
@@ -22,7 +24,7 @@ tableextension 14301911 "AQD CustRbt G/L Account Ext" extends "G/L Account"
             begin
                 IF NOT (Rec."AQD Use Cust Rebate Setup From" IN
                         [Rec."AQD Use Cust Rebate Setup From"::" ",
-                         Rec."AQD Use Cust Rebate Setup From"::"Rebate Code",
+                         Rec."AQD Use Cust Rebate Setup From"::"Rebate Program Code",
                          Rec."AQD Use Cust Rebate Setup From"::"G/L Account"])
                 then
                     Error(AllowedValueValidationLable);

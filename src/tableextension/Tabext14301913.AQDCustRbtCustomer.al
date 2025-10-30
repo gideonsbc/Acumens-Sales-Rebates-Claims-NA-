@@ -31,6 +31,7 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
         field(14301950; "AQD Rebate Customer Type"; Code[20])
         {
             Caption = 'Rebate Customer Type';
+            DataClassification = CustomerContent;
             TableRelation = "AQD Rebate Customer Type";
         }
     }

@@ -27,6 +27,7 @@ tableextension 14301914 "AQD CustRbt Vendor Ext" extends Vendor
         field(1430150; "AQD Cust Rbt Calculation Date"; Enum "AQD CustRebateCalculation Type")
         {
             Caption = 'Rebate Calculation Date';
+            DataClassification = CustomerContent;
         }
     }
 }

@@ -36,7 +36,7 @@ report 14301911 "AQD Generate Customer Rebates"
 
     requestpage
     {
-        Caption = 'Calculate Rebate';
+        Caption = 'Calculate Customer Rebate';
 
         layout
         {
@@ -53,7 +53,7 @@ report 14301911 "AQD Generate Customer Rebates"
 
     var
         RebateCalculationMgt: Codeunit "AQD Cust Rebate Calc Mgt";
-        Text50001: Label 'Customer No. #1########';
+        Text50001: Label 'Calculating Rebate for Customer No. #1########';
         Window: Dialog;
 }
 

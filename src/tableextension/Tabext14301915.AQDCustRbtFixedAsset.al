@@ -10,18 +10,20 @@ tableextension 14301915 "AQD CustRbt Fixed Asset Ext" extends "Fixed Asset"
         field(14301920; "AQD Cust Rebate Category Code"; Code[20])
         {
             Caption = 'Rebate Category Code';
+            DataClassification = CustomerContent;
             TableRelation = "AQD Cust Rebate Item Category";
         }
         field(14301930; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
             Caption = 'Use Rebate Setup From';
+            DataClassification = CustomerContent;
             trigger OnValidate()
             var
                 AllowedValueValidationLable: Label 'Fixed Asset can have Use Cust Rebate Setup From either Fixed Asset or Rebate Code.';
             begin
                 IF NOT (Rec."AQD Use Cust Rebate Setup From" IN
                         [Rec."AQD Use Cust Rebate Setup From"::" ",
-                         Rec."AQD Use Cust Rebate Setup From"::"Rebate Code",
+                         Rec."AQD Use Cust Rebate Setup From"::"Rebate Program Code",
                          Rec."AQD Use Cust Rebate Setup From"::"Fixed Asset"])
                 then
                     Error(AllowedValueValidationLable);

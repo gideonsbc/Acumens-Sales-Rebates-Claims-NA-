@@ -26,8 +26,8 @@ enum 14301927 "AQD Use Cust Rebate Setup From"
     {
         Caption = 'Charge (Item)';
     }
-    value(6; "Rebate Code")
+    value(6; "Rebate Program Code")
     {
-        Caption = 'Rebate Code';
+        Caption = 'Rebate Program Code';
     }
 }
