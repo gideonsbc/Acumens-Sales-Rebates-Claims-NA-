@@ -1,26 +1,24 @@
 namespace AcumenseRebatesBC.AcumenseRebatesBC;
-
-page 14301936 "AQD Posted Cust Rebate Batch"
+page 14301942 "AQD Customer Rebate Batches"
 {
     ApplicationArea = All;
-    Caption = 'Posted Customer Rebate Batch';
+    Caption = 'Customer Rebate Batches';
+    CardPageId = "AQD Customer Rebate Batch";
     Editable = false;
-    DeleteAllowed = false;
     InsertAllowed = false;
-    ModifyAllowed = false;
-    PageType = Document;
-    SourceTable = "AQD Posted Cust Rebate Batch";
+    PageType = List;
+    SourceTable = "AQD Customer Rebate Batch";
+    UsageCategory = Lists;
 
     layout
     {
         area(Content)
         {
-            group(General)
+            repeater(General)
             {
-                Caption = 'General';
-
                 field(BatchID; Rec.BatchID)
                 {
+                    NotBlank = true;
                     ToolTip = 'Specifies the value of the BatchId field.', Comment = '%';
                 }
                 field("AQD Rebate Batch Frequency"; Rec."AQD Rebate Batch Frequency")
@@ -43,37 +41,24 @@ page 14301936 "AQD Posted Cust Rebate Batch"
                 {
                     ToolTip = 'Specifies the value of the Sales Amount field.', Comment = '%';
                 }
-                field("Customer Rebate Amount"; Rec."Customer Rebate Amount")
+                field("Sales Amount Including VAT"; Rec."Sales Amount Including VAT")
                 {
-                    ToolTip = 'Specifies the value of the Customer Rebate Amount field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Sales Amount Including VAT field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Calculated Rebate Amount"; Rec."Calculated Rebate Amount")
                 {
                     ToolTip = 'Specifies the value of the Calculated Rebate Amount field.', Comment = '%';
                 }
-                field(Approved; Rec.Approved)
+                field("Customer Rebate Amount"; Rec."Customer Rebate Amount")
                 {
-                    ApplicationArea = All;
-                    Editable = false;
+                    ToolTip = 'Specifies the value of the Customer Rebate Amount field.', Comment = '%';
                 }
-                field("Approved By"; Rec."Approved By")
+                field("Created By"; Rec."Created By")
                 {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field("Approved Date Time"; Rec."Approved Date Time")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
+                    ToolTip = 'Specifies the value of the Created By field.', Comment = '%';
                 }
             }
-            // part("AQD PostedCustomerRebate Subpage"; "AQD PostedCustomerRebate Subpage")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Posted Customer Rebate Documents';
-            //     SubPageLink = "Batch Entry No." = field("Entry No.");
-            //     UpdatePropagation = Both;
-            // }
         }
     }
 }

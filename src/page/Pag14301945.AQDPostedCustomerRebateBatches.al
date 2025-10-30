@@ -1,5 +1,5 @@
 namespace AcumenseRebatesBC.AcumenseRebatesBC;
-page 14301935 "AQD Posted Cust Rebate Batches"
+page 14301945 "AQD Posted Cust Rebate Batches"
 {
     ApplicationArea = All;
     Caption = 'Posted Customer Rebate Batches';
@@ -45,6 +45,7 @@ page 14301935 "AQD Posted Cust Rebate Batches"
                 field("Sales Amount Including VAT"; Rec."Sales Amount Including VAT")
                 {
                     ToolTip = 'Specifies the value of the Sales Amount Including VAT field.', Comment = '%';
+                    Visible = FALSE;
                 }
                 field("Calculated Rebate Amount"; Rec."Calculated Rebate Amount")
                 {

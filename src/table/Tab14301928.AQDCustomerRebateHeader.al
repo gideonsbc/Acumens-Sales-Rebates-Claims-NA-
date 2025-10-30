@@ -3,8 +3,8 @@ table 14301928 "AQD Customer Rebate Header"
     Caption = 'Customer Rebate Header';
     DataCaptionFields = "No.", "Buy-from Vendor Name";
     DataClassification = CustomerContent;
-    //DrillDownPageId = "AQD Customer Rebates";
-    //LookupPageId = "AQD Customer Rebates";
+    DrillDownPageId = "AQD Customer Rebates Documents";
+    LookupPageId = "AQD Customer Rebates Documents";
     fields
     {
         field(1; "No."; Code[20])
@@ -134,11 +134,6 @@ table 14301928 "AQD Customer Rebate Header"
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1),
                                                           Blocked = CONST(false));
             Editable = false;
-
-            trigger OnValidate()
-            begin
-                PurchaseHeader.ValidateShortcutDimCode(1, "Shortcut Dimension 1 Code");
-            end;
         }
         field(340; "Shortcut Dimension 2 Code"; Code[20])
         {
@@ -147,11 +142,6 @@ table 14301928 "AQD Customer Rebate Header"
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2),
                                                           Blocked = CONST(false));
             Editable = false;
-
-            trigger OnValidate()
-            begin
-                PurchaseHeader.ValidateShortcutDimCode(2, "Shortcut Dimension 2 Code");
-            end;
         }
         field(400; "External Document No."; Code[35])
         {
@@ -169,16 +159,16 @@ table 14301928 "AQD Customer Rebate Header"
         {
             Caption = 'Document Date';
         }
-        field(500; "Purchase Amount"; Decimal)
+        field(500; "Sales Amount"; Decimal)
         {
-            Caption = 'Purchase Amount';
+            Caption = 'Sales Amount';
             FieldClass = FlowField;
             CalcFormula = sum("AQD Customer Rebate Line".Amount where("Rebate No." = field("No.")));
             Editable = false;
         }
-        field(510; "Purchase Amount Including VAT"; Decimal)
+        field(510; "Sales Amount Including VAT"; Decimal)
         {
-            Caption = 'Purchase Amount Including VAT';
+            Caption = 'Sales Amount Including VAT';
             FieldClass = FlowField;
             CalcFormula = sum("AQD Customer Rebate Line"."Amount Including VAT" where("Rebate No." = field("No.")));
             Editable = false;

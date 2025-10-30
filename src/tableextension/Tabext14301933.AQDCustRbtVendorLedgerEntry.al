@@ -1,4 +1,4 @@
-tableextension 14301923 "AQD CustRbt VendLdgrEntry Ext" extends "Vendor Ledger Entry"
+tableextension 14301933 "AQD CustRbt VendLdgrEntry Ext" extends "Vendor Ledger Entry"
 {
     fields
     {

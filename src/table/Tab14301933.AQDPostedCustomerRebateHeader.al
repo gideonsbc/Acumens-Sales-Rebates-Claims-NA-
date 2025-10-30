@@ -1,6 +1,6 @@
-table 14301933 "AQD Posted Vend Rebate Header"
+table 14301933 "AQD Posted Cust Rebate Header"
 {
-    Caption = 'Posted Vendor Rebate Header';
+    Caption = 'Posted Customer Rebate Header';
     DataClassification = CustomerContent;
     //DrillDownPageId = "AQD Posted Vendor Rebates";
     //LookupPageId = "AQD Posted Vendor Rebates";
@@ -172,7 +172,7 @@ table 14301933 "AQD Posted Vend Rebate Header"
         }
         field(510; "Sales Amount Including VAT"; Decimal)
         {
-            Caption = 'Purchase Amount Including VAT';
+            Caption = 'Sales Amount Including VAT';
             FieldClass = FlowField;
             CalcFormula = sum("AQD Posted Cust Rebate Line"."Amount Including VAT" where("Rebate No." = field("No.")));
             Editable = false;
@@ -186,7 +186,7 @@ table 14301933 "AQD Posted Vend Rebate Header"
         }
         field(530; "Customer Rebate Amount"; Decimal)
         {
-            Caption = 'Vendor Rebate Amount';
+            Caption = 'Customer Rebate Amount';
             CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("No.")));
             FieldClass = FlowField;
             Editable = false;

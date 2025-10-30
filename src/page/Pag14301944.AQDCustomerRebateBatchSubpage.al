@@ -1,6 +1,6 @@
 namespace AcumenseRebatesBC.AcumenseRebatesBC;
 
-page 14301934 "AQD Customer Rebate Subpg"
+page 14301944 "AQD Customer Rebate Subpg"
 {
     ApplicationArea = All;
     Caption = 'Customer Rebates';
@@ -45,7 +45,7 @@ page 14301934 "AQD Customer Rebate Subpg"
                 {
                     ToolTip = 'Specifies the value of the Name field.', Comment = '%';
                 }
-                field("Purchase Amount"; Rec."Purchase Amount")
+                field("Sales Amount"; Rec."Sales Amount")
                 {
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                 }

@@ -202,66 +202,6 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     ToolTip = 'Open the list of posted sales credit memos.';
                 }
             }
-            group("Customer Rebate")
-            {
-                Caption = 'Customer Rebate';
-                action(GenerateRebateLines)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Generate Customer Rebates';
-                    Image = CalculateSalesTax;
-                    RunObject = Report "AQD Generate Customer Rebates";
-                }
-                action(RebateDocumentEntries)
-                {
-                    Caption = 'Customer Rebate Document Entries';
-                    ApplicationArea = All;
-                    Image = CampaignEntries;
-                    RunObject = Page "AQD Cust Rebate Doc Entries";
-                }
-                action(RebateEntries)
-                {
-                    Caption = 'Customer Rebate Entries';
-                    ApplicationArea = All;
-                    Image = SelectEntries;
-                    RunObject = Page "AQD Customer Rebate Entries";
-                }
-                action(RebateJournal)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Customer Rebate Journal';
-                    Image = ConsumptionJournal;
-                    RunObject = Page "AQD Customer Rebate Journal";
-                }
-                action(RebatePurchaseJournal)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Rebate Purchase Journal';
-                    Image = Purchase;
-                    RunObject = Page "AQD Rebate Purch. Journal";
-                }
-                action(RebatePaymentJournal)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Rebate Payment Journal';
-                    Image = PaymentJournal;
-                    RunObject = Page "AQD Rebate Payment Journal";
-                }
-                action(RebateSalesJournal)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Rebate Sales Journal';
-                    Image = Sales;
-                    RunObject = Page "AQD Rebate Sales Journal";
-                }
-                action(CustomerRebateRegister)
-                {
-                    Caption = 'Customer Rebate Register';
-                    ApplicationArea = All;
-                    Image = Register;
-                    RunObject = Page "AQD Customer Rebate Register";
-                }
-            }
         }
         area(Creation)
         {

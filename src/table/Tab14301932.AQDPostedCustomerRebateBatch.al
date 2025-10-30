@@ -21,14 +21,14 @@ table 14301932 "AQD Posted Cust Rebate Batch"
         }
         field(60; "Sales Amount"; Decimal)
         {
-            Caption = 'Purchase Amount';
+            Caption = 'Sales Amount';
             FieldClass = FlowField;
             CalcFormula = sum("AQD Posted Cust Rebate Line".Amount where("Batch Entry No." = field("Entry No.")));
             Editable = false;
         }
         field(70; "Sales Amount Including VAT"; Decimal)
         {
-            Caption = 'Purchase Amount Including VAT';
+            Caption = 'Sales Amount Including VAT';
             FieldClass = FlowField;
             CalcFormula = sum("AQD Posted Cust Rebate Line"."Amount Including VAT" where("Batch Entry No." = field("Entry No.")));
             Editable = false;

@@ -1,6 +1,6 @@
 namespace AcumenseRebatesBC.AcumenseRebatesBC;
 
-page 14301933 "AQD Customer Rebate Batch"
+page 14301943 "AQD Customer Rebate Batch"
 {
     ApplicationArea = All;
     Caption = 'Customer Rebate Batch';
