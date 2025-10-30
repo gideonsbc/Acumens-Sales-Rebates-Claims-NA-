@@ -2,12 +2,12 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
 {
     fields
     {
-        field(14301910; "AQD Enroll for Rebate"; Boolean)
+        field(14301910; "AQD Enroll for Cust Rebate"; Boolean)
         {
             Caption = 'Enroll for Rebate';
             DataClassification = CustomerContent;
         }
-        field(14301920; "AQD Rebate Vendor No"; Code[20])
+        field(14301920; "AQD Cust Rebate Vendor No"; Code[20])
         {
             Caption = 'Rebate Vendor No.';
             TableRelation = Vendor WHERE("AQD Cust Rbt Vendor Type" = CONST("Rebate Vendor"));

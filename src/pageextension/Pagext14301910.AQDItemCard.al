@@ -4,24 +4,31 @@ pageextension 14301910 "AQD Item Card" extends "Item Card"
     {
         addafter(Replenishment)
         {
-            group("AQD Rebate")
+            group("Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Claims & Rebates';
-                group("Customer Rebate")
+                Caption = 'Acumens Customer Rebates & Claims';
+                field("AQD Customer Rebate Enabled"; Rec."AQD Customer Rebate Enabled")
                 {
-                    Caption = 'Customer Rebate';
-
-                    field("AQD Customer Rebate Enabled"; Rec."AQD Customer Rebate Enabled")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Rebate Enabled';
-                    }
-                    field("AQD Rebate Cost Posting Type"; Rec."AQD Cust Rebate Posting Type")
-                    {
-                        ApplicationArea = All;
-                        Editable = Rec."AQD Customer Rebate Enabled" AND (Rec."AQD Use Cust Rebate Setup From" = Rec."AQD Use Cust Rebate Setup From"::Item);
-                        Enabled = Rec."AQD Customer Rebate Enabled" AND (Rec."AQD Use Cust Rebate Setup From" = Rec."AQD Use Cust Rebate Setup From"::Item);
-                    }
+                    ApplicationArea = All;
+                    Caption = 'Rebate Enabled';
+                }
+                field("AQD Cust Rebate Category Code"; Rec."AQD Cust Rebate Category Code")
+                {
+                    ApplicationArea = All;
+                    Editable = Rec."AQD Customer Rebate Enabled";
+                    Enabled = Rec."AQD Customer Rebate Enabled";
+                }
+                field("AQD Use Cust Rebate Setup From"; Rec."AQD Use Cust Rebate Setup From")
+                {
+                    ApplicationArea = All;
+                    Editable = Rec."AQD Customer Rebate Enabled";
+                    Enabled = Rec."AQD Customer Rebate Enabled";
+                }
+                field("AQD Rebate Cost Posting Type"; Rec."AQD Cust Rebate Posting Type")
+                {
+                    ApplicationArea = All;
+                    Editable = Rec."AQD Customer Rebate Enabled";
+                    Enabled = Rec."AQD Customer Rebate Enabled";
                 }
             }
         }

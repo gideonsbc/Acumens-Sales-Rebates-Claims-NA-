@@ -1,4 +1,4 @@
-tableextension 14301917 "AQD CustRbt Item Charge Ext" extends "Item Charge"
+tableextension 14301916 "AQD CustRbt Item Charge Ext" extends "Item Charge"
 {
     fields
     {

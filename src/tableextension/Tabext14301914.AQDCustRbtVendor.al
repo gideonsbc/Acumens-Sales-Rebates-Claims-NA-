@@ -24,9 +24,9 @@ tableextension 14301914 "AQD CustRbt Vendor Ext" extends Vendor
             OptionMembers = " ",Check,"Credit Memo";
             DataClassification = CustomerContent;
         }
-        field(14301950; "AQD Cust Rbt Calculation Date"; Enum "AQD CustRebateCalculation Type")
+        field(1430150; "AQD Cust Rbt Calculation Date"; Enum "AQD CustRebateCalculation Type")
         {
-            Caption = 'Customer Rebate Calculation Date';
+            Caption = 'Rebate Calculation Date';
         }
     }
 }

@@ -4,26 +4,21 @@ pageextension 14301916 "AQD CustRbt Vendor Card" extends "Vendor Card"
     {
         addafter(Invoicing)
         {
-            group("AQD Rebate")
+            group("Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Claims & Rebates';
+                Caption = 'Acumens Customer Rebates & Claims';
                 field("AQD Cust Rbt Vendor Type"; Rec."AQD Cust Rbt Vendor Type")
                 {
                     ApplicationArea = All;
                 }
-                group(CustomerRebate)
+                field("AQD AER Payee Type"; Rec."AQD Payee Type")
                 {
-                    Caption = 'Customer Rebate';
-
-                    field("AQD AER Payee Type"; Rec."AQD Payee Type")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("AQD AQD Rebate Payment Method"; Rec."AQD Rebate Payment Method")
-                    {
-                        ApplicationArea = All;
-                        Visible = false;
-                    }
+                    ApplicationArea = All;
+                }
+                field("AQD AQD Rebate Payment Method"; Rec."AQD Rebate Payment Method")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
                 }
             }
         }

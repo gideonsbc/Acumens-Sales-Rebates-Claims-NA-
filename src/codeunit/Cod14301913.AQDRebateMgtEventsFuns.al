@@ -186,7 +186,7 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
                 begin
                     IF Resource.GET(SalesShipmentLine."No.") then begin
                         LineRebatable := Resource."AQD Customer Rebate Enabled";
-                        RebateCategoryCode := Resource."AQD Rebate Category Code";
+                        RebateCategoryCode := Resource."AQD Cust Rebate Category Code";
                     end;
                 end;
             SalesShipmentLine.Type::"Fixed Asset":
@@ -320,9 +320,9 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
                 SalesShipmentLine.Type::Resource:
                     begin
                         IF Resource.GET(SalesShipmentLine."No.") then begin
-                            IF Resource."AQD Rebate Category Code" <> '' THEN BEGIN
-                                SalesRebateSetup."No." := Resource."AQD Rebate Category Code";
-                                IF RebateItemCategory.GET(Resource."AQD Rebate Category Code") then
+                            IF Resource."AQD Cust Rebate Category Code" <> '' THEN BEGIN
+                                SalesRebateSetup."No." := Resource."AQD Cust Rebate Category Code";
+                                IF RebateItemCategory.GET(Resource."AQD Cust Rebate Category Code") then
                                     SalesRebateSetup.Description := RebateItemCategory.Description;
                                 InsertSetupRec := TRUE;
                             END;
@@ -390,7 +390,7 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
     local procedure UpdateSalespersonRebateInfo(var SalesHeader: Record "Sales Header"; Customer: Record Customer)
     begin
         //SalesHeader."AQD Rebate %" := Customer."AQD Rebate %";
-        SalesHeader."AQD Rebate Vendor No" := Customer."AQD Rebate Vendor No";
+        SalesHeader."AQD Rebate Vendor No" := Customer."AQD Cust Rebate Vendor No";
     end;
 
     procedure ShowDocument(RebateJnlLine: Record "AQD Cust Rebate Journal Line")

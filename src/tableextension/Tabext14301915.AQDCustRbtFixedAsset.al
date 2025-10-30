@@ -1,20 +1,20 @@
-tableextension 14301916 "AQD CustRbt Fixed Asset Ext" extends "Fixed Asset"
+tableextension 14301915 "AQD CustRbt Fixed Asset Ext" extends "Fixed Asset"
 {
     fields
     {
         field(14301910; "AQD Customer Rebate Enabled"; Boolean)
         {
-            Caption = 'Customer Rebate Enabled';
+            Caption = 'Rebate Enabled';
             DataClassification = CustomerContent;
         }
         field(14301920; "AQD Cust Rebate Category Code"; Code[20])
         {
-            Caption = 'Cust Rebate Category Code';
+            Caption = 'Rebate Category Code';
             TableRelation = "AQD Cust Rebate Item Category";
         }
         field(14301930; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
-            Caption = 'Use Cust Rebate Setup From';
+            Caption = 'Use Rebate Setup From';
             trigger OnValidate()
             var
                 AllowedValueValidationLable: Label 'Fixed Asset can have Use Cust Rebate Setup From either Fixed Asset or Rebate Code.';

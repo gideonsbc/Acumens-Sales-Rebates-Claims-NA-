@@ -15,25 +15,34 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             group("Customer Rebate")
             {
                 Caption = 'General';
-                field("Item Rebate Enabled"; Rec."Item Rebate Enabled")
+                group(RebateEnabled)
                 {
-                    ApplicationArea = All;
-                }
-                field("Resource Rebate Enabled"; Rec."Resource Rebate Enabled")
-                {
-                    ApplicationArea = All;
-                }
-                field("G/L Account Rebate Enabled"; Rec."G/L Account Rebate Enabled")
-                {
-                    ApplicationArea = All;
-                }
-                field("Item Charge Rebate Enabled"; Rec."Item Charge Rebate Enabled")
-                {
-                    ApplicationArea = All;
-                }
-                field("Fixed Asset Rebate Enabled"; Rec."Fixed Asset Rebate Enabled")
-                {
-                    ApplicationArea = All;
+                    Caption = 'Rebate Enabled';
+                    field("Item Rebate Enabled"; Rec."Item Rebate Enabled")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Item';
+                    }
+                    field("Resource Rebate Enabled"; Rec."Resource Rebate Enabled")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Resource';
+                    }
+                    field("G/L Account Rebate Enabled"; Rec."G/L Account Rebate Enabled")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'G/L Account';
+                    }
+                    field("Item Charge Rebate Enabled"; Rec."Item Charge Rebate Enabled")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Item Charge';
+                    }
+                    field("Fixed Asset Rebate Enabled"; Rec."Fixed Asset Rebate Enabled")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Fixed Asset';
+                    }
                 }
                 field("Customer Rebate Source Code"; Rec."Customer Rebate Source Code")
                 {
@@ -68,9 +77,44 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                group(CustomerDefaultSetup)
+                field("Calculate Cust Rebate using"; Rec."Calculate Cust Rebate using")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Rebate Batch Frequency"; Rec."AQD Rebate Batch Frequency")
+                {
+                    ApplicationArea = All;
+                }
+                field("Use Cust Rebate Criteria"; Rec."Use Cust Rebate Criteria")
+                {
+                    ApplicationArea = All;
+                }
+                field("Rebate Cr. Memo Posting"; Rec."Rebate Cr. Memo Posting")
+                {
+                    ApplicationArea = All;
+                }
+                field("Min GP% for Customer Rebate"; Rec."Min GP% for Customer Rebate")
+                {
+                    ApplicationArea = All;
+                }
+                group(DefaultSetup)
                 {
                     Caption = 'Default Setup';
+                    field("Default Setup Rebate Type"; Rec."Default Setup Rebate Type")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Setup Rebate Type';
+                    }
+                    field("Default Rebate Code"; Rec."Default Rebate Program Code")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Rebate Program Code';
+                    }
+                    field("Default Item Charge No."; Rec."Default Item Charge No.")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Item Charge No.';
+                    }
                     field("Default Rebate Payment Method"; Rec."Def. Rebate Payment Method")
                     {
                         ApplicationArea = All;
@@ -145,49 +189,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     {
                         ApplicationArea = All;
                         Caption = 'Journal Batch Name';
-                    }
-                }
-                field("Calculate Cust Rebate using"; Rec."Calculate Cust Rebate using")
-                {
-                    ApplicationArea = All;
-                }
-                field("AQD Rebate Batch Frequency"; Rec."AQD Rebate Batch Frequency")
-                {
-                    ApplicationArea = All;
-                }
-                field("Use Cust Rebate Criteria"; Rec."Use Cust Rebate Criteria")
-                {
-                    ApplicationArea = All;
-                }
-                field("Prevent Negative Customer Rebate"; Rec."Prevent Negative Cust Rebate")
-                {
-                    ApplicationArea = All;
-                }
-                field("Rebate Cr. Memo Posting"; Rec."Rebate Cr. Memo Posting")
-                {
-                    ApplicationArea = All;
-                }
-                field("Min GP% for Customer Rebate"; Rec."Min GP% for Customer Rebate")
-                {
-                    ApplicationArea = All;
-                }
-                group(DefaultSetup)
-                {
-                    Caption = 'Default Setup';
-                    field("Default Setup Rebate Type"; Rec."Default Setup Rebate Type")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Setup Rebate Type';
-                    }
-                    field("Default Rebate Code"; Rec."Default Rebate Program Code")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Rebate Program Code';
-                    }
-                    field("Default Item Charge No."; Rec."Default Item Charge No.")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Item Charge No.';
                     }
                 }
             }
@@ -327,7 +328,16 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
                 GenJournalBatch.SetRange("AQD Customer Rebate", true);
                 if GenJournalBatch.FindFirst() then
+                    Rec."Purch Journal Batch Name" := GenJournalBatch.Name
+                ELSE begin
+                    GenJournalBatch.Init();
+                    GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
+                    GenJournalBatch.Name := 'CUSTREBATE';
+                    GenJournalBatch.Description := 'Purchase Rebate Batch';
+                    GenJournalBatch."AQD Customer Rebate" := TRUE;
+                    GenJournalBatch.Insert();
                     Rec."Purch Journal Batch Name" := GenJournalBatch.Name;
+                end;
             end;
             //Payment
             GenJournalTemplate.Reset();
@@ -338,7 +348,16 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
                 GenJournalBatch.SetRange("AQD Customer Rebate", true);
                 if GenJournalBatch.FindFirst() then
+                    Rec."Payment Journal Batch Name" := GenJournalBatch.Name
+                ELSE begin
+                    GenJournalBatch.Init();
+                    GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
+                    GenJournalBatch.Name := 'CUSTREBATE';
+                    GenJournalBatch.Description := 'Payments Rebate Batch';
+                    GenJournalBatch."AQD Customer Rebate" := TRUE;
+                    GenJournalBatch.Insert();
                     Rec."Payment Journal Batch Name" := GenJournalBatch.Name;
+                end;
             end;
             //Sales
             GenJournalTemplate.Reset();
@@ -349,7 +368,16 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
                 GenJournalBatch.SetRange("AQD Customer Rebate", true);
                 if GenJournalBatch.FindFirst() then
+                    Rec."Sales Journal Batch Name" := GenJournalBatch.Name
+                ELSE begin
+                    GenJournalBatch.Init();
+                    GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
+                    GenJournalBatch.Name := 'CUSTREBATE';
+                    GenJournalBatch.Description := 'Sales Rebate Batch';
+                    GenJournalBatch."AQD Customer Rebate" := TRUE;
+                    GenJournalBatch.Insert();
                     Rec."Sales Journal Batch Name" := GenJournalBatch.Name;
+                end;
             end;
             //General
             GenJournalTemplate.Reset();
@@ -360,7 +388,16 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
                 GenJournalBatch.SetRange("AQD Customer Rebate", true);
                 if GenJournalBatch.FindFirst() then
+                    Rec."General Journal Batch Name" := GenJournalBatch.Name
+                ELSE begin
+                    GenJournalBatch.Init();
+                    GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
+                    GenJournalBatch.Name := 'CUSTREBATE';
+                    GenJournalBatch.Description := 'General Rebate Batch';
+                    GenJournalBatch."AQD Customer Rebate" := TRUE;
+                    GenJournalBatch.Insert();
                     Rec."General Journal Batch Name" := GenJournalBatch.Name;
+                end;
             end;
             Rec."Customer Rebate Nos" := 'CRB';
             Rec.Modify(true);

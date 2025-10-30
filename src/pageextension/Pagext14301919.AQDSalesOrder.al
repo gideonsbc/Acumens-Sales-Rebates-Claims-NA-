@@ -4,9 +4,9 @@ pageextension 14301919 "AQD Sales Order" extends "Sales Order"
     {
         addafter("Invoice Details")
         {
-            group("AQD Rebate")
+            group("Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Claims & Rebates';
+                Caption = 'Acumens Customer Rebates & Claims';
                 field("AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Rebate")
                 {
                     ApplicationArea = All;

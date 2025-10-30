@@ -4,17 +4,17 @@ tableextension 14301912 "AQD CustRbt Resource Ext" extends Resource
     {
         field(14301910; "AQD Customer Rebate Enabled"; Boolean)
         {
-            Caption = 'Customer Rebate Enabled';
+            Caption = 'Rebate Enabled';
             DataClassification = CustomerContent;
         }
-        field(14301920; "AQD Rebate Category Code"; Code[20])
+        field(14301920; "AQD Cust Rebate Category Code"; Code[20])
         {
             Caption = 'Rebate Category Code';
             TableRelation = "AQD Cust Rebate Item Category";
         }
         field(14301930; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
-            Caption = 'Use Cust Rebate Cost Setup From';
+            Caption = 'Use Rebate Cost Setup From';
 
             trigger OnValidate()
             var

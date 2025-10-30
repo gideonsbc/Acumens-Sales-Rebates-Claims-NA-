@@ -484,7 +484,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
             if RebateDocEntry.FindFirst then begin
                 repeat
                     Customer.Get(RebateDocEntry."Rebate Code");
-                    Customer.TestField("AQD Enroll for Rebate", true);
+                    Customer.TestField("AQD Enroll for Cust Rebate", true);
 
                     GenJnlLine.Reset;
                     GenJnlLine.SetRange("Journal Template Name", JnlTemplateName);

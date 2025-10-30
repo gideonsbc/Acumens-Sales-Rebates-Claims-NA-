@@ -309,11 +309,11 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         if RebateEntry.FindLast then
             LastRebateLdgrEntryNo := RebateEntry."Entry No.";
 
-        if not CustomerIn."AQD Enroll for Rebate" then
+        if not CustomerIn."AQD Enroll for Cust Rebate" then
             exit;
 
         if CustomerIn."AQD Rebate Payment Method" = CustomerIn."AQD Rebate Payment Method"::Check then
-            if CustomerIn."AQD Rebate Vendor No" = '' then
+            if CustomerIn."AQD Cust Rebate Vendor No" = '' then
                 exit;
 
         // IF RebateSetup."Auto Update Rebate Cust Type" THEN BEGIN
@@ -1037,14 +1037,14 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         RebateJnlLine: Record "AQD Cust Rebate Journal Line";
         NextLineNo: Integer;
     begin
-        if not CustomerIn."AQD Enroll for Rebate" then
+        if not CustomerIn."AQD Enroll for Cust Rebate" then
             exit;
 
         if CustomerIn."AQD Rebate Payment Method" = CustomerIn."AQD Rebate Payment Method"::Check then begin
-            if CustomerIn."AQD Rebate Vendor No" = '' then
+            if CustomerIn."AQD Cust Rebate Vendor No" = '' then
                 exit;
 
-            Vendor.Get(CustomerIn."AQD Rebate Vendor No");
+            Vendor.Get(CustomerIn."AQD Cust Rebate Vendor No");
             if Vendor."AQD Cust Rbt Vendor Type" = Vendor."AQD Cust Rbt Vendor Type"::" " then
                 exit;
         end;

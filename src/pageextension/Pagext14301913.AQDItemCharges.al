@@ -8,7 +8,7 @@ pageextension 14301913 "AQD Item Charges" extends "Item Charges"
             {
                 ApplicationArea = All;
             }
-            field("AQD Rebate Option"; Rec."AQD Customer Rebate")
+            field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
             {
                 ApplicationArea = All;
             }

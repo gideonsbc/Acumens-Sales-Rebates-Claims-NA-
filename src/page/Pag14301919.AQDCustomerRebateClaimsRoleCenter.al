@@ -125,17 +125,10 @@ page 14301919 "AQD Cust Rebate & Claims RC"
             }
             action("Rebate Document Entries")
             {
-                Caption = 'Rebate Document Entries';
+                Caption = 'Customer Rebate Document Entries';
                 ApplicationArea = All;
                 Image = CampaignEntries;
                 RunObject = Page "AQD Cust Rebate Doc Entries";
-            }
-            action("Rebate Entries")
-            {
-                Caption = 'Rebate Entries';
-                ApplicationArea = All;
-                Image = SelectEntries;
-                RunObject = Page "AQD Customer Rebate Entries";
             }
             action("Customer Rebate Register")
             {
@@ -144,17 +137,17 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Image = Register;
                 RunObject = Page "AQD Customer Rebate Register";
             }
-            action("AQD Item Customer Rebate Categories")
+            action("AQD Customer Rebate Item Categories")
             {
-                Caption = 'Item Customer Rebate Categories';
+                Caption = 'Customer Item Rebate Categories';
                 ApplicationArea = All;
                 Image = Vendor;
                 RunObject = Page "AQD Cust RebateItem Categories";
             }
-            action("Rebate Program Codes")
+            action("Customer Rebate Program Codes")
             {
                 ApplicationArea = All;
-                Caption = 'Rebate Program Codes';
+                Caption = 'Customer Rebate Program Codes';
                 RunObject = page "AQD Cust Rebate Program Codes";
             }
 
@@ -169,18 +162,6 @@ page 14301919 "AQD Cust Rebate & Claims RC"
             //     ApplicationArea = All;
             //     Caption = 'Customer Rebates';
             //     RunObject = page "AQD Customer Rebates";
-            // }
-            action("Posted Customer Rebate Batches")
-            {
-                ApplicationArea = All;
-                Caption = 'Posted Customer Rebate Batches';
-                RunObject = page "AQD Posted Cust Rebate Batches";
-            }
-            // action("Posted Customer Rebates")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Posted Customer Rebates';
-            //     RunObject = page "AQD Posted Cust Rebates";
             // }
         }
         area(sections)
@@ -386,6 +367,18 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Image = Register;
                     RunObject = Page "AQD Customer Rebate Register";
                 }
+                action("Posted Customer Rebate Batches")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Posted Customer Rebate Batches';
+                    RunObject = page "AQD Posted Cust Rebate Batches";
+                }
+                // action("Posted Customer Rebates")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Posted Customer Rebates';
+                //     RunObject = page "AQD Posted Cust Rebates";
+                // }
 
             }
         }

@@ -8,7 +8,7 @@ report 14301912 "AQD Calculate Cust Rebate Jnl"
     {
         dataitem(Customer; Customer)
         {
-            DataItemTableView = SORTING("No.") ORDER(Ascending) WHERE("AQD Enroll for Rebate" = CONST(true));
+            DataItemTableView = SORTING("No.") ORDER(Ascending) WHERE("AQD Enroll for Cust Rebate" = CONST(true));
 
             trigger OnAfterGetRecord()
             begin

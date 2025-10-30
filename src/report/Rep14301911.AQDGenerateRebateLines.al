@@ -8,7 +8,7 @@ report 14301911 "AQD Generate Customer Rebates"
     {
         dataitem(Customer; Customer)
         {
-            DataItemTableView = SORTING("No.") ORDER(Ascending) WHERE("AQD Enroll for Rebate" = CONST(true));
+            DataItemTableView = SORTING("No.") ORDER(Ascending) WHERE("AQD Enroll for Cust Rebate" = CONST(true));
             RequestFilterFields = "No.";
 
             trigger OnAfterGetRecord()

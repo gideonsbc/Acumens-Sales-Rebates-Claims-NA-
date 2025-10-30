@@ -1,4 +1,4 @@
-tableextension 14301910 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice Header"
+tableextension 14301917 "AQD CustRbt Sales Header Ext" extends "Sales Header"
 {
     fields
     {
@@ -8,26 +8,28 @@ tableextension 14301910 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
             Editable = false;
             DataClassification = CustomerContent;
         }
-        field(14301920; "AQD Rebate Vendor No"; Code[20])
+        field(14301920; "AQD Rebate %"; Decimal)
+        {
+            BlankZero = true;
+            Caption = 'Rebate %';
+            MaxValue = 100;
+            MinValue = 0;
+            DataClassification = CustomerContent;
+        }
+        field(14301930; "AQD Rebate Vendor No"; Code[20])
         {
             Caption = 'Rebate Vendor No.';
             TableRelation = Vendor WHERE("AQD Cust Rbt Vendor Type" = CONST("Rebate Vendor"));
             DataClassification = CustomerContent;
         }
-        field(14301930; "AQD Cust Rebate Entry Created"; Boolean)
-        {
-            Caption = 'Cust Rebate Entry Created';
-            Editable = false;
-            DataClassification = CustomerContent;
-        }
-        field(14301940; "AQD Cust Rebate LastChangedBy"; Code[50])
+        field(14301940; "AQD Rebate Last Changed By"; Code[50])
         {
             Caption = 'Last Changed By';
             Editable = false;
             TableRelation = "User Setup"."User ID";
             DataClassification = CustomerContent;
         }
-        field(14301950; "AQD CustRbt LastChangdDateTime"; DateTime)
+        field(14301950; "AQD Rebate LastChangd DateTime"; DateTime)
         {
             Caption = 'Last Changed Date Time';
             Editable = false;
@@ -36,3 +38,4 @@ tableextension 14301910 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
         }
     }
 }
+
