@@ -43,7 +43,7 @@ table 14301924 "AQD Customer Rebate Register"
         {
             Caption = 'State';
         }
-        field(80; "AQD Document Type"; Enum "AQD Rebate Document Type")
+        field(80; "AQD Document Type"; Enum "AQD Cust Rebate Document Type")
         {
             Caption = 'Document Type';
             Editable = false;

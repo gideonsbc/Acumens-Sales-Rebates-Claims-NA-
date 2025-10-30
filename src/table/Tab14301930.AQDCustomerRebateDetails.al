@@ -24,7 +24,7 @@ table 14301930 "AQD Customer Rebate Details"
             Caption = 'Line No.';
             Editable = false;
         }
-        field(20; "Document Type"; Enum "AQD Rebate Document Type")
+        field(20; "Document Type"; Enum "AQD Cust Rebate Document Type")
         {
             Caption = 'Document Type';
             Editable = false;
@@ -250,9 +250,9 @@ table 14301930 "AQD Customer Rebate Details"
         {
             Caption = 'BatchId';
         }
-        field(7050; "AQD Use Rebate Setup From"; enum "AQD Use Rebate Setup From")
+        field(7050; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
-            Caption = 'Rebate Cost Posting By';
+            Caption = 'Cust Rebate Cost Posting By';
         }
         field(7060; "AQD Rebate Posting Type"; enum "AQD Cust Rebate Posting Type")
         {

@@ -18,7 +18,7 @@ table 14301929 "AQD Customer Rebate Line"
             Caption = 'Line No.';
             Editable = false;
         }
-        field(20; "Document Type"; Enum "AQD Rebate Document Type")
+        field(20; "Document Type"; Enum "AQD Cust Rebate Document Type")
         {
             Caption = 'Document Type';
             Editable = false;

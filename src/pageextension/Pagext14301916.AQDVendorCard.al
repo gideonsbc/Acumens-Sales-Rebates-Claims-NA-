@@ -7,7 +7,7 @@ pageextension 14301916 "AQD CustRbt Vendor Card" extends "Vendor Card"
             group("AQD Rebate")
             {
                 Caption = 'Acumens Claims & Rebates';
-                field("AQD AER Vendor Type"; Rec."AQD Vendor Type")
+                field("AQD Cust Rbt Vendor Type"; Rec."AQD Cust Rbt Vendor Type")
                 {
                     ApplicationArea = All;
                 }
@@ -23,11 +23,6 @@ pageextension 14301916 "AQD CustRbt Vendor Card" extends "Vendor Card"
                     {
                         ApplicationArea = All;
                         Visible = false;
-                    }
-                    field("AQD Rebate Vendor No"; Rec."AQD Rebate Vendor No")
-                    {
-                        ApplicationArea = All;
-
                     }
                 }
             }

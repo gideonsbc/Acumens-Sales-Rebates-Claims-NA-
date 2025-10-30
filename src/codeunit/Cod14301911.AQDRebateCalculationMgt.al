@@ -365,7 +365,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         SalesInvoiceHeader.SetCurrentKey("Sell-to Customer No.", "AQD Rebate Vendor No", "Posting Date");
         SalesInvoiceHeader.SetRange("Sell-to Customer No.", CustomerIn."No.");
         SalesInvoiceHeader.SetRange("AQD Do Not Pay Rebate", false);
-        SalesInvoiceHeader.SetRange("AQD Rebate Entry Created", false);
+        SalesInvoiceHeader.SetRange("AQD Cust Rebate Entry Created", false);
         SalesInvoiceHeader.SetFilter("Source Code", '<>%1', SourceCodeSetup."Deleted Document");
         if RebateSetup."Start Date" <> 0D then
             SalesInvoiceHeader.SetFilter("Posting Date", '>=%1', RebateSetup."Start Date");
@@ -424,8 +424,8 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         if CustomerIn."AQD Rebate Payment Method" = CustomerIn."AQD Rebate Payment Method"::Check then begin
             Clear(Vendor);
             Vendor.Get(SalesInvoiceHeader."AQD Rebate Vendor No");
-            if Vendor."AQD Vendor Type" <> Vendor."AQD Vendor Type"::"Rebate Vendor" then
-                Error(VendorTypeError, Vendor."AQD Vendor Type");
+            if Vendor."AQD Cust Rbt Vendor Type" <> Vendor."AQD Cust Rbt Vendor Type"::"Rebate Vendor" then
+                Error(VendorTypeError, Vendor."AQD Cust Rbt Vendor Type");
         end;
 
         IsHandled := false;
@@ -533,7 +533,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         if CustomerIn."AQD Rebate Payment Method" = CustomerIn."AQD Rebate Payment Method"::Check then begin
             Clear(Vendor);
             Vendor.Get(SalesCrMHeaderIn."AQD Rebate Vendor No");
-            Vendor.TestField("AQD Vendor Type", Vendor."AQD Vendor Type"::"Rebate Vendor");
+            Vendor.TestField("AQD Cust Rbt Vendor Type", Vendor."AQD Cust Rbt Vendor Type"::"Rebate Vendor");
         end;
 
         IsHandled := false;
@@ -1045,7 +1045,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                 exit;
 
             Vendor.Get(CustomerIn."AQD Rebate Vendor No");
-            if Vendor."AQD Vendor Type" = Vendor."AQD Vendor Type"::" " then
+            if Vendor."AQD Cust Rbt Vendor Type" = Vendor."AQD Cust Rbt Vendor Type"::" " then
                 exit;
         end;
 
@@ -1245,12 +1245,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         CheckCrMemoRebateValidation(Rec, xRec, CurrFieldNo);
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Sales Cr.Memo Header", 'OnAfterValidateEvent', 'AQD Rebate %', true, false)]
-    local procedure Table114_SalesCrMemoHeader_RebatePercentage_OnValidate(var Rec: Record "Sales Cr.Memo Header"; var xRec: Record "Sales Cr.Memo Header"; CurrFieldNo: Integer)
-    begin
-        CheckCrMemoRebateValidation(Rec, xRec, CurrFieldNo);
-    end;
-
     [EventSubscriber(ObjectType::Table, Database::"Sales Cr.Memo Header", 'OnAfterValidateEvent', 'AQD Rebate Vendor No', true, false)]
     local procedure Table114_SalesCrMemoHeader_RebateVendorNo_OnValidate(var Rec: Record "Sales Cr.Memo Header"; var xRec: Record "Sales Cr.Memo Header"; CurrFieldNo: Integer)
     begin
@@ -1289,8 +1283,8 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
             if RebateDocumentEntry."Payment Status" <> RebateDocumentEntry."Payment Status"::" " then
                 Error(RebateIsAlreadyPaymentStatusError, Format(RebateDocumentEntry."Payment Status"), RebateDocumentEntry."Document No.");
         end;
-        Rec."AQD Rebate Last Changed By" := UserId;
-        Rec."AQD Rebate LastChangd DateTime" := CurrentDateTime;
+        Rec."AQD Cust Rebate LastChangedBy" := UserId;
+        Rec."AQD CustRbt LastChangdDateTime" := CurrentDateTime;
     end;
 
     local procedure CheckCrMemoRebateValidation(var Rec: Record "Sales Cr.Memo Header"; var xRec: Record "Sales Cr.Memo Header"; CurrFieldNo: Integer)

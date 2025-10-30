@@ -1,4 +1,4 @@
-report 14301911 "AQD Generate Rebate Lines"
+report 14301911 "AQD Generate Customer Rebates"
 {
     Caption = 'Generate Customer Rebates';
     ApplicationArea = All;

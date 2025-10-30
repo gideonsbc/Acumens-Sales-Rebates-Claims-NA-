@@ -12,18 +12,18 @@ tableextension 14301912 "AQD CustRbt Resource Ext" extends Resource
             Caption = 'Rebate Category Code';
             TableRelation = "AQD Cust Rebate Item Category";
         }
-        field(14301930; "AQD Use Rebate Setup From"; enum "AQD Use Rebate Setup From")
+        field(14301930; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
-            Caption = 'Use Rebate Cost Setup From';
+            Caption = 'Use Cust Rebate Cost Setup From';
 
             trigger OnValidate()
             var
                 AllowedValueValidationLable: Label 'Resource can have Use Rebate Setup From either Resource or Rebate Code.';
             begin
-                IF NOT (Rec."AQD Use Rebate Setup From" IN
-                        [Rec."AQD Use Rebate Setup From"::" ",
-                         Rec."AQD Use Rebate Setup From"::"Rebate Code",
-                         Rec."AQD Use Rebate Setup From"::Resource])
+                IF NOT (Rec."AQD Use Cust Rebate Setup From" IN
+                        [Rec."AQD Use Cust Rebate Setup From"::" ",
+                         Rec."AQD Use Cust Rebate Setup From"::"Rebate Code",
+                         Rec."AQD Use Cust Rebate Setup From"::Resource])
                 then
                     Error(AllowedValueValidationLable);
             end;

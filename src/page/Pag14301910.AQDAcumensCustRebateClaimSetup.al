@@ -325,7 +325,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 Rec."Purch Journal Template Name" := GenJournalTemplate.Name;
                 GenJournalBatch.Reset();
                 GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
-                GenJournalBatch.SetRange("AQD Rebate", true);
+                GenJournalBatch.SetRange("AQD Customer Rebate", true);
                 if GenJournalBatch.FindFirst() then
                     Rec."Purch Journal Batch Name" := GenJournalBatch.Name;
             end;
@@ -336,7 +336,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 Rec."Payment Journal Template" := GenJournalTemplate.Name;
                 GenJournalBatch.Reset();
                 GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
-                GenJournalBatch.SetRange("AQD Rebate", true);
+                GenJournalBatch.SetRange("AQD Customer Rebate", true);
                 if GenJournalBatch.FindFirst() then
                     Rec."Payment Journal Batch Name" := GenJournalBatch.Name;
             end;
@@ -347,7 +347,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 Rec."Sales Journal Template Name" := GenJournalTemplate.Name;
                 GenJournalBatch.Reset();
                 GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
-                GenJournalBatch.SetRange("AQD Rebate", true);
+                GenJournalBatch.SetRange("AQD Customer Rebate", true);
                 if GenJournalBatch.FindFirst() then
                     Rec."Sales Journal Batch Name" := GenJournalBatch.Name;
             end;
@@ -358,7 +358,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 Rec."General Journal Template Name" := GenJournalTemplate.Name;
                 GenJournalBatch.Reset();
                 GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
-                GenJournalBatch.SetRange("AQD Rebate", true);
+                GenJournalBatch.SetRange("AQD Customer Rebate", true);
                 if GenJournalBatch.FindFirst() then
                     Rec."General Journal Batch Name" := GenJournalBatch.Name;
             end;

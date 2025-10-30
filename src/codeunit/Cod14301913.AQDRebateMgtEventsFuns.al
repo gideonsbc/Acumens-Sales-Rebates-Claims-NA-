@@ -127,7 +127,7 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
         // To Show Rebate Batch From Rebate Purchase / Payment Journal
         RebateSingleInstance.GetCalledFromRebate(CalledFromRebate);
         GenJnlBatch.FilterGroup(2);
-        GenJnlBatch.SetRange(GenJnlBatch."AQD Rebate", CalledFromRebate);
+        GenJnlBatch.SetRange(GenJnlBatch."AQD Customer Rebate", CalledFromRebate);
         GenJnlBatch.FilterGroup(0);
     end;
 
@@ -172,14 +172,14 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
                 begin
                     IF Item.GET(SalesShipmentLine."No.") THEN begin
                         LineRebatable := Item."AQD Customer Rebate Enabled";
-                        RebateCategoryCode := Item."AQD Rebate Category Code";
+                        RebateCategoryCode := Item."AQD Cust Rebate Category Code";
                     end;
                 end;
             SalesShipmentLine.Type::"G/L Account":
                 begin
                     IF GLAccount.get(SalesShipmentLine."No.") then begin
                         LineRebatable := GLAccount."AQD Customer Rebate Enabled";
-                        RebateCategoryCode := GLAccount."AQD Rebate Category Code";
+                        RebateCategoryCode := GLAccount."AQD Cust Rebate Category Code";
                     end;
                 end;
             SalesShipmentLine.Type::Resource:
@@ -193,14 +193,14 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
                 begin
                     IF FixedAsset.GET(SalesShipmentLine."No.") then begin
                         LineRebatable := FixedAsset."AQD Customer Rebate Enabled";
-                        RebateCategoryCode := FixedAsset."AQD Rebate Category Code";
+                        RebateCategoryCode := FixedAsset."AQD Cust Rebate Category Code";
                     end;
                 end;
             SalesShipmentLine.Type::"Charge (Item)":
                 begin
                     IF ItemCharge.GET(SalesShipmentLine."No.") then begin
                         LineRebatable := ItemCharge."AQD Customer Rebate Enabled";
-                        RebateCategoryCode := ItemCharge."AQD Rebate Category Code";
+                        RebateCategoryCode := ItemCharge."AQD Cust Rebate Category Code";
                     end;
                 end;
         End;
@@ -298,9 +298,9 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
                 SalesShipmentLine.TYPE::Item:
                     begin
                         IF Item.GET(SalesShipmentLine."No.") THEN begin
-                            IF Item."AQD Rebate Category Code" <> '' then BEGIN
-                                SalesRebateSetup."No." := Item."AQD Rebate Category Code";
-                                IF RebateItemCategory.GET(Item."AQD Rebate Category Code") then
+                            IF Item."AQD Cust Rebate Category Code" <> '' then BEGIN
+                                SalesRebateSetup."No." := Item."AQD Cust Rebate Category Code";
+                                IF RebateItemCategory.GET(Item."AQD Cust Rebate Category Code") then
                                     SalesRebateSetup.Description := RebateItemCategory.Description;
                                 InsertSetupRec := TRUE;
                             END;
@@ -309,9 +309,9 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
                 SalesShipmentLine.Type::"G/L Account":
                     begin
                         IF GLAccount.get(SalesShipmentLine."No.") then begin
-                            IF GLAccount."AQD Rebate Category Code" <> '' then BEGIN
-                                SalesRebateSetup."No." := GLAccount."AQD Rebate Category Code";
-                                IF RebateItemCategory.GET(GLAccount."AQD Rebate Category Code") then
+                            IF GLAccount."AQD Cust Rebate Category Code" <> '' then BEGIN
+                                SalesRebateSetup."No." := GLAccount."AQD Cust Rebate Category Code";
+                                IF RebateItemCategory.GET(GLAccount."AQD Cust Rebate Category Code") then
                                     SalesRebateSetup.Description := RebateItemCategory.Description;
                                 InsertSetupRec := TRUE;
                             END;
@@ -331,9 +331,9 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
                 SalesShipmentLine.Type::"Fixed Asset":
                     begin
                         IF FixedAsset.GET(SalesShipmentLine."No.") then begin
-                            IF FixedAsset."AQD Rebate Category Code" <> '' then BEGIN
-                                SalesRebateSetup."No." := FixedAsset."AQD Rebate Category Code";
-                                IF RebateItemCategory.GET(FixedAsset."AQD Rebate Category Code") then
+                            IF FixedAsset."AQD Cust Rebate Category Code" <> '' then BEGIN
+                                SalesRebateSetup."No." := FixedAsset."AQD Cust Rebate Category Code";
+                                IF RebateItemCategory.GET(FixedAsset."AQD Cust Rebate Category Code") then
                                     SalesRebateSetup.Description := RebateItemCategory.Description;
                                 InsertSetupRec := TRUE;
                             END;
@@ -342,9 +342,9 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
                 SalesShipmentLine.Type::"Charge (Item)":
                     begin
                         IF ItemCharge.GET(SalesShipmentLine."No.") then begin
-                            IF ItemCharge."AQD Rebate Category Code" <> '' THEN BEGIN
-                                SalesRebateSetup."No." := ItemCharge."AQD Rebate Category Code";
-                                IF RebateItemCategory.GET(ItemCharge."AQD Rebate Category Code") then
+                            IF ItemCharge."AQD Cust Rebate Category Code" <> '' THEN BEGIN
+                                SalesRebateSetup."No." := ItemCharge."AQD Cust Rebate Category Code";
+                                IF RebateItemCategory.GET(ItemCharge."AQD Cust Rebate Category Code") then
                                     SalesRebateSetup.Description := RebateItemCategory.Description;
                                 InsertSetupRec := TRUE;
                             END;
@@ -430,7 +430,7 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
         TotalRebateAmount := TmpRebateJnlLine."AQD Rebate Amount";
     end;
 
-    procedure ShowPostedDocument(DocumentType: Enum "AQD Rebate Document Type"; DocumentNo: COde[20])
+    procedure ShowPostedDocument(DocumentType: Enum "AQD Cust Rebate Document Type"; DocumentNo: COde[20])
     var
         PostedPurchInvoice: Record "Purch. Inv. Header";
         PostedPurchCrMemo: Record "Purch. Cr. Memo Hdr.";

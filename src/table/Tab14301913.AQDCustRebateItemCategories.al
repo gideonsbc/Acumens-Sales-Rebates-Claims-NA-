@@ -30,7 +30,7 @@ table 14301913 "AQD Cust Rebate Item Category"
                 THEN begin
                     IF CONFIRM(UserConfirmMsg) then begin
                         LocalItem.RESET;
-                        LocalItem.SetRange("AQD Rebate Category Code", Rec.Code);
+                        LocalItem.SetRange("AQD Cust Rebate Category Code", Rec.Code);
                         LocalItem.ModifyAll("AQD Customer Rebate Enabled", Rec."Rebate Enabled");
                     end;
                 end;

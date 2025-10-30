@@ -82,7 +82,7 @@ table 14301911 "AQD Customer Rebate User Setup"
         {
             Caption = 'Rebate Purchase Jnl Batch Name';
             TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Purch Journal Template Name"),
-                                                             "AQD Rebate" = CONST(true));
+                                                             "AQD Customer Rebate" = CONST(true));
         }
         field(14277014; "Payment Journal Template Name"; Code[10])
         {
@@ -93,7 +93,7 @@ table 14301911 "AQD Customer Rebate User Setup"
         {
             Caption = 'Rebate Payment Journal Batch Name';
             TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Payment Journal Template Name"),
-                                                             "AQD Rebate" = CONST(true));
+                                                             "AQD Customer Rebate" = CONST(true));
         }
         field(14277016; "Sales Journal Template Name"; Code[10])
         {
@@ -104,7 +104,7 @@ table 14301911 "AQD Customer Rebate User Setup"
         {
             Caption = 'Rebate Sales Jnl Batch Name';
             TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Sales Journal Template Name"),
-                                                             "AQD Rebate" = CONST(true));
+                                                             "AQD Customer Rebate" = CONST(true));
         }
     }
 

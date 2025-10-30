@@ -70,15 +70,15 @@ page 14301921 "AQD Edit Invoice Cust Rebate"
                     Editable = true;
                     ApplicationArea = All;
                 }
-                field("AQD Rebate Entry Created"; Rec."AQD Rebate Entry Created")
+                field("AQD Rebate Entry Created"; Rec."AQD Cust Rebate Entry Created")
                 {
                     ApplicationArea = All;
                 }
-                field("AQD Rebate Last Changed By"; Rec."AQD Rebate Last Changed By")
+                field("AQD Rebate Last Changed By"; Rec."AQD Cust Rebate LastChangedBy")
                 {
                     ApplicationArea = All;
                 }
-                field("AQD Rebate LastChangd DateTime"; Rec."AQD Rebate LastChangd DateTime")
+                field("AQD Rebate LastChangd DateTime"; Rec."AQD CustRbt LastChangdDateTime")
                 {
                     ApplicationArea = All;
                 }

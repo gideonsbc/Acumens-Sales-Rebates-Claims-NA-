@@ -63,7 +63,7 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Rebate Purchase Jnl Batch Name';
             TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Purch Journal Template Name"),
-                                                             "AQD Rebate" = CONST(true));
+                                                             "AQD Customer Rebate" = CONST(true));
         }
         field(150; "Rebate Expense Account"; Code[20])
         {
@@ -81,7 +81,7 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Payment Journal Batch Name';
             TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Payment Journal Template"),
-                                                             "AQD Rebate" = CONST(true));
+                                                             "AQD Customer Rebate" = CONST(true));
         }
         field(180; "Sales Journal Template Name"; Code[10])
         {
@@ -92,7 +92,7 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Rebate Sales Jnl Batch Name';
             TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Sales Journal Template Name"),
-                                                             "AQD Rebate" = CONST(true));
+                                                             "AQD Customer Rebate" = CONST(true));
         }
         field(200; "Old Documents Updated"; Boolean)
         {
@@ -164,7 +164,7 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         field(350; "Default Item Charge No."; Code[20])
         {
             Caption = 'Default Item Charge No.';
-            TableRelation = "Item Charge";
+            TableRelation = "Item Charge" where("AQD Customer Rebate" = const(TRUE));
         }
         field(360; "Default Setup Rebate Type"; Enum "AQD Vendor Rebate Line Type")
         {

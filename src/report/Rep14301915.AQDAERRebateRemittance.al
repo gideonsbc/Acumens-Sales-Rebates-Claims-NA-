@@ -35,11 +35,11 @@ report 14301915 "AQD Cust Rebate Remittance"
                     CurrReport.Skip;
 
                 repeat
-                    RebateRegister.Get(InvoiceVendorLedgerEntry."AQD Rebate Register No.");
+                    RebateRegister.Get(InvoiceVendorLedgerEntry."AQD Cust Rebate Register No.");
 
                     RebateDocSummary.Reset;
                     RebateDocSummary.SetCurrentKey("Rebate Register No.", "Vendor Ledger Entry No.");
-                    RebateDocSummary.SetRange("Rebate Register No.", InvoiceVendorLedgerEntry."AQD Rebate Register No.");
+                    RebateDocSummary.SetRange("Rebate Register No.", InvoiceVendorLedgerEntry."AQD Cust Rebate Register No.");
                     RebateDocSummary.SetRange("Vendor Ledger Entry No.", InvoiceVendorLedgerEntry."Entry No.");
                     if RebateDocSummary.FindFirst then begin
                         repeat
@@ -63,7 +63,7 @@ report 14301915 "AQD Cust Rebate Remittance"
                 if ReportRunFrom <> ReportRunFrom::"Payment Journal" then
                     CurrReport.Break;
 
-                SetRange("AQD Rebate Journal", true);
+                SetRange("AQD Cust Rebate Journal", true);
                 SetRange("Document Type", "Document Type"::Payment);
             end;
         }

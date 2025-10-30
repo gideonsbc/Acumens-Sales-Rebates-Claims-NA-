@@ -305,7 +305,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
                 LineCount := LineCount + 1;
 
             GenJnlLine.Reset;
-            GenJnlLine.SetRange("AQD Rebate Register No.", RebateRegister."AQD Entry No.");
+            GenJnlLine.SetRange("AQD Cust Rebate Register No.", RebateRegister."AQD Entry No.");
             GenJnlLine.DeleteAll;
 
             RebateDocEntry.Reset;
@@ -324,7 +324,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
                     GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
                     GenJnlLine.SetRange("Account Type", GenJnlLine."Account Type"::Vendor);
                     GenJnlLine.SetRange("Account No.", Vendor."No.");
-                    GenJnlLine.SetRange("AQD Rebate Register No.", RebateRegister."AQD Entry No.");
+                    GenJnlLine.SetRange("AQD Cust Rebate Register No.", RebateRegister."AQD Entry No.");
                     if not GenJnlLine.FindFirst then begin
                         Clear(GenJnlLine);
                         GenJnlLine.Init;
@@ -332,7 +332,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
                         GenJnlLine."Journal Batch Name" := JnlBatchName;
                         SetUpNewLine();
                         GenJnlLine."Line No." := NextLineNo;
-                        GenJnlLine."AQD Rebate Journal" := true;
+                        GenJnlLine."AQD Cust Rebate Journal" := true;
                         GenJnlLine.Insert(true);
                         NextLineNo += 10000;
 
@@ -346,28 +346,28 @@ codeunit 14301914 "AQD Customer Rebate Post"
                           Format(RebateRegister."AQD Start Date") + '..' +
                           Format(RebateRegister."AQD End Date"),
                           1, MaxStrLen(GenJnlLine.Description));
-                        GenJnlLine."AQD Rebate Type" := RebateRegister."AQD Rebate Type";
-                        GenJnlLine."AQD Rebate Code" := RebateRegister."AQD Rebate Code";
+                        GenJnlLine."AQD Cust Rebate Type" := RebateRegister."AQD Rebate Type";
+                        GenJnlLine."AQD Cust Rebate Code" := RebateRegister."AQD Rebate Code";
                         if RebateRegister."AQD Shortcut Dimension 1 Code" <> '' then
                             GenJnlLine.Validate("Shortcut Dimension 1 Code", RebateRegister."AQD Shortcut Dimension 1 Code");
                         if RebateRegister."AQD Shortcut Dimension 2 Code" <> '' then
                             GenJnlLine.Validate("Shortcut Dimension 2 Code", RebateRegister."AQD Shortcut Dimension 2 Code");
-                        GenJnlLine."AQD Location Code" := RebateRegister."AQD Location Code";
-                        GenJnlLine."AQD State" := RebateRegister."AQD State";
-                        GenJnlLine."AQD Rebate Document Type" := RebateRegister."AQD Document Type";
-                        GenJnlLine."AQD Rebate Document No." := RebateRegister."AQDDocument No.";
+                        GenJnlLine."AQD CustRbt Location Code" := RebateRegister."AQD Location Code";
+                        GenJnlLine."AQD CustRbt State" := RebateRegister."AQD State";
+                        GenJnlLine."AQD Cust Rebate Document Type" := RebateRegister."AQD Document Type";
+                        GenJnlLine."AQD Cust Rebate Document No." := RebateRegister."AQDDocument No.";
 
                         GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Bal. Account Type"::"G/L Account");
                         GenJnlLine.Validate("Bal. Account No.", RebateSetup."Rebate Expense Account");
-                        GenJnlLine."AQD Journal Document No." := GenJnlLine."Document No.";
-                        GenJnlLine."AQD Rebate Register No." := RebateRegister."AQD Entry No.";
+                        GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
+                        GenJnlLine."AQD Cust Rebate Register No." := RebateRegister."AQD Entry No.";
                         LastGenJnlLine := GenJnlLine;
                     end;
 
                     RebateDocEntry.CalcFields("Rebate Amount", "Base Amount", "Profit Amount");
                     GenJnlLine.Validate(Amount, (Abs(GenJnlLine.Amount) + RebateDocEntry."Rebate Amount") * -1);
-                    GenJnlLine.Validate("AQD Base Amount", GenJnlLine."AQD Base Amount" + RebateDocEntry."Base Amount");
-                    GenJnlLine.Validate("AQD Profit Amount", GenJnlLine."AQD Profit Amount" + RebateDocEntry."Profit Amount");
+                    GenJnlLine.Validate("AQD CustRbt Base Amount", GenJnlLine."AQD CustRbt Base Amount" + RebateDocEntry."Base Amount");
+                    GenJnlLine.Validate("AQD CustRbt Profit Amount", GenJnlLine."AQD CustRbt Profit Amount" + RebateDocEntry."Profit Amount");
                     GenJnlLine.Modify(true);
 
                     RebateDocEntry."Journal Template Name" := GenJnlLine."Journal Template Name";
@@ -471,7 +471,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
                 LineCount := LineCount + 1;
 
             GenJnlLine.Reset;
-            GenJnlLine.SetRange("AQD Rebate Register No.", RebateRegister."AQD Entry No.");
+            GenJnlLine.SetRange("AQD Cust Rebate Register No.", RebateRegister."AQD Entry No.");
             GenJnlLine.DeleteAll;
 
             RebateDocEntry.Reset;
@@ -491,7 +491,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
                     GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
                     GenJnlLine.SetRange("Account Type", GenJnlLine."Account Type"::Customer);
                     GenJnlLine.SetRange("Account No.", Customer."No.");
-                    GenJnlLine.SetRange("AQD Rebate Register No.", RebateRegister."AQD Entry No.");
+                    GenJnlLine.SetRange("AQD Cust Rebate Register No.", RebateRegister."AQD Entry No.");
                     if not GenJnlLine.FindFirst then begin
                         Clear(GenJnlLine);
                         GenJnlLine.Init;
@@ -499,7 +499,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
                         GenJnlLine."Journal Batch Name" := JnlBatchName;
                         SetUpNewLine();
                         GenJnlLine."Line No." := NextLineNo;
-                        GenJnlLine."AQD Rebate Journal" := true;
+                        GenJnlLine."AQD Cust Rebate Journal" := true;
                         GenJnlLine.Insert(true);
                         NextLineNo += 10000;
 
@@ -513,28 +513,28 @@ codeunit 14301914 "AQD Customer Rebate Post"
                           Format(RebateRegister."AQD Start Date") + '..' +
                           Format(RebateRegister."AQD End Date"),
                           1, MaxStrLen(GenJnlLine.Description));
-                        GenJnlLine."AQD Rebate Type" := RebateRegister."AQD Rebate Type";
-                        GenJnlLine."AQD Rebate Code" := RebateRegister."AQD Rebate Code";
+                        GenJnlLine."AQD Cust Rebate Type" := RebateRegister."AQD Rebate Type";
+                        GenJnlLine."AQD Cust Rebate Code" := RebateRegister."AQD Rebate Code";
                         if RebateRegister."AQD Shortcut Dimension 1 Code" <> '' then
                             GenJnlLine.Validate("Shortcut Dimension 1 Code", RebateRegister."AQD Shortcut Dimension 1 Code");
                         if RebateRegister."AQD Shortcut Dimension 2 Code" <> '' then
                             GenJnlLine.Validate("Shortcut Dimension 2 Code", RebateRegister."AQD Shortcut Dimension 2 Code");
-                        GenJnlLine."AQD Location Code" := RebateRegister."AQD Location Code";
-                        GenJnlLine."AQD State" := RebateRegister."AQD State";
-                        GenJnlLine."AQD Rebate Document Type" := RebateRegister."AQD Document Type";
-                        GenJnlLine."AQD Rebate Document No." := RebateRegister."AQDDocument No.";
+                        GenJnlLine."AQD CustRbt Location Code" := RebateRegister."AQD Location Code";
+                        GenJnlLine."AQD CustRbt State" := RebateRegister."AQD State";
+                        GenJnlLine."AQD Cust Rebate Document Type" := RebateRegister."AQD Document Type";
+                        GenJnlLine."AQD Cust Rebate Document No." := RebateRegister."AQDDocument No.";
 
                         GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Bal. Account Type"::"G/L Account");
                         GenJnlLine.Validate("Bal. Account No.", RebateSetup."Rebate Expense Account");
-                        GenJnlLine."AQD Journal Document No." := GenJnlLine."Document No.";
-                        GenJnlLine."AQD Rebate Register No." := RebateRegister."AQD Entry No.";
+                        GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
+                        GenJnlLine."AQD Cust Rebate Register No." := RebateRegister."AQD Entry No.";
                         LastGenJnlLine := GenJnlLine;
                     end;
 
                     RebateDocEntry.CalcFields("Rebate Amount", "Base Amount", "Profit Amount");
                     GenJnlLine.Validate(Amount, (Abs(GenJnlLine.Amount) + RebateDocEntry."Rebate Amount") * -1);
-                    GenJnlLine.Validate("AQD Base Amount", GenJnlLine."AQD Base Amount" + RebateDocEntry."Base Amount");
-                    GenJnlLine.Validate("AQD Profit Amount", GenJnlLine."AQD Profit Amount" + RebateDocEntry."Profit Amount");
+                    GenJnlLine.Validate("AQD CustRbt Base Amount", GenJnlLine."AQD CustRbt Base Amount" + RebateDocEntry."Base Amount");
+                    GenJnlLine.Validate("AQD CustRbt Profit Amount", GenJnlLine."AQD CustRbt Profit Amount" + RebateDocEntry."Profit Amount");
                     GenJnlLine.Modify(true);
 
                     RebateDocEntry."Journal Template Name" := GenJnlLine."Journal Template Name";
@@ -653,7 +653,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
               (RebateRegister."AQD Payee Type" = RebateRegister."AQD Payee Type"::"1099 Vendor")
             then begin
                 GenJnlLine.Reset;
-                GenJnlLine.SetRange("AQD Rebate Register No.", RebateRegister."AQD Entry No.");
+                GenJnlLine.SetRange("AQD Cust Rebate Register No.", RebateRegister."AQD Entry No.");
                 GenJnlLine.DeleteAll;
             end;
 
@@ -841,19 +841,19 @@ codeunit 14301914 "AQD Customer Rebate Post"
         RebateDocumentEntry: Record "AQD Cust Rebate Document Entry";
         RebateEntry: Record "AQD Customer Rebate Entry";
     begin
-        if not GenJournalLine."AQD Rebate Journal" then
+        if not GenJournalLine."AQD Cust Rebate Journal" then
             exit;
 
         if VendorLedgerEntry."Document Type" = VendorLedgerEntry."Document Type"::Invoice then begin
-            GenJournalLine.TestField("AQD Rebate Register No.");
+            GenJournalLine.TestField("AQD Cust Rebate Register No.");
 
             RebateDocEntry.Reset;
             RebateDocEntry.SetCurrentKey("Journal Template Name", "Journal Batch Name", "Journal Line No.");
-            RebateDocEntry.SetRange("Rebate Register No.", GenJournalLine."AQD Rebate Register No.");
+            RebateDocEntry.SetRange("Rebate Register No.", GenJournalLine."AQD Cust Rebate Register No.");
             RebateDocEntry.SetRange("Journal Template Name", GenJournalLine."Journal Template Name");
             RebateDocEntry.SetRange("Journal Batch Name", GenJournalLine."Journal Batch Name");
             RebateDocEntry.SetRange("Journal Line No.", GenJournalLine."Line No.");
-            RebateDocEntry.SetRange("Journal Document No.", GenJournalLine."AQD Journal Document No.");
+            RebateDocEntry.SetRange("Journal Document No.", GenJournalLine."AQD Cust Journal Document No.");
             //RebateDocEntry.SETRANGE("Rebate Type",GenJournalLine."AEC Rebate Type");
             //RebateDocEntry.SETRANGE("Rebate Code",GenJournalLine."AEC Rebate Code");
             if RebateDocEntry.FindFirst then begin
@@ -898,7 +898,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
         InvoiceVendorLedgerEntry: Record "Vendor Ledger Entry";
         RebateRegisterFound: Boolean;
     begin
-        if not GenJournalLine."AQD Rebate Journal" then
+        if not GenJournalLine."AQD Cust Rebate Journal" then
             exit;
 
         if VendorLedgerEntry."Document Type" = VendorLedgerEntry."Document Type"::Payment then begin
@@ -924,7 +924,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
 
             repeat
                 RebateRegisterFound := false;
-                if RebateRegister.Get(InvoiceVendorLedgerEntry."AQD Rebate Register No.") then begin
+                if RebateRegister.Get(InvoiceVendorLedgerEntry."AQD Cust Rebate Register No.") then begin
                     RebateRegister."AQD Payment Ref. No." := GenJournalLine."Document No.";
                     RebateRegister."AQD Payment Date" := GenJournalLine."Posting Date";
                     RebateRegister.Modify;
@@ -934,7 +934,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
                 RebateDocEntry.Reset;
                 if RebateRegisterFound then begin
                     RebateDocEntry.SetCurrentKey("Rebate Register No.");
-                    RebateDocEntry.SetRange("Rebate Register No.", InvoiceVendorLedgerEntry."AQD Rebate Register No.");
+                    RebateDocEntry.SetRange("Rebate Register No.", InvoiceVendorLedgerEntry."AQD Cust Rebate Register No.");
                     RebateDocEntry.SetRange("Vendor Ledger Entry No.", InvoiceVendorLedgerEntry."Entry No.");
                 end else begin
                     RebateDocEntry.SetCurrentKey("Vendor Ledger Entry No.");
@@ -976,11 +976,11 @@ codeunit 14301914 "AQD Customer Rebate Post"
         RebateDocumentEntry: Record "AQD Cust Rebate Document Entry";
         RebateEntry: Record "AQD Customer Rebate Entry";
     begin
-        if not GenJournalLine."AQD Rebate Journal" then
+        if not GenJournalLine."AQD Cust Rebate Journal" then
             exit;
 
         if CustLedgerEntry."Document Type" = CustLedgerEntry."Document Type"::"Credit Memo" then begin
-            GenJournalLine.TestField("AQD Rebate Register No.");
+            GenJournalLine.TestField("AQD Cust Rebate Register No.");
 
             if RebateRegister.Get(CustLedgerEntry."AQD Rebate Register No.") then begin
                 RebateRegister."AQD Payment Ref. No." := GenJournalLine."Document No.";
@@ -990,11 +990,11 @@ codeunit 14301914 "AQD Customer Rebate Post"
 
             RebateDocEntry.Reset;
             RebateDocEntry.SetCurrentKey("Journal Template Name", "Journal Batch Name", "Journal Line No.");
-            RebateDocEntry.SetRange("Rebate Register No.", GenJournalLine."AQD Rebate Register No.");
+            RebateDocEntry.SetRange("Rebate Register No.", GenJournalLine."AQD Cust Rebate Register No.");
             RebateDocEntry.SetRange("Journal Template Name", GenJournalLine."Journal Template Name");
             RebateDocEntry.SetRange("Journal Batch Name", GenJournalLine."Journal Batch Name");
             RebateDocEntry.SetRange("Journal Line No.", GenJournalLine."Line No.");
-            RebateDocEntry.SetRange("Journal Document No.", GenJournalLine."AQD Journal Document No.");
+            RebateDocEntry.SetRange("Journal Document No.", GenJournalLine."AQD Cust Journal Document No.");
             if RebateDocEntry.FindFirst then begin
                 repeat
                     if RebateDocEntry."Do Not Pay Rebate" then
@@ -1031,28 +1031,28 @@ codeunit 14301914 "AQD Customer Rebate Post"
     [EventSubscriber(ObjectType::Table, Database::"Cust. Ledger Entry", 'OnAfterCopyCustLedgerEntryFromGenJnlLine', '', false, false)]
     local procedure Tab21_CustLedgerEntry_OnAfterCopyCustLedgerEntryFromGenJnlLine(var CustLedgerEntry: Record "Cust. Ledger Entry"; GenJournalLine: Record "Gen. Journal Line")
     begin
-        CustLedgerEntry."AQD Rebate Journal" := GenJournalLine."AQD Rebate Journal";
-        CustLedgerEntry."AQD Rebate Type" := GenJournalLine."AQD Rebate Type";
-        CustLedgerEntry."AQD Rebate Code" := GenJournalLine."AQD Rebate Code";
-        CustLedgerEntry."AQD Location Code" := GenJournalLine."AQD Location Code";
-        CustLedgerEntry."AQD State" := GenJournalLine."AQD State";
-        CustLedgerEntry."AQD Rebate Document Type" := GenJournalLine."AQD Rebate Document Type";
-        CustLedgerEntry."AQD Rebate Document No." := GenJournalLine."AQD Rebate Document No.";
-        CustLedgerEntry."AQD Journal Document No." := GenJournalLine."AQD Journal Document No.";
-        CustLedgerEntry."AQD Rebate Register No." := GenJournalLine."AQD Rebate Register No.";
+        CustLedgerEntry."AQD Rebate Journal" := GenJournalLine."AQD Cust Rebate Journal";
+        CustLedgerEntry."AQD Rebate Type" := GenJournalLine."AQD Cust Rebate Type";
+        CustLedgerEntry."AQD Rebate Code" := GenJournalLine."AQD Cust Rebate Code";
+        CustLedgerEntry."AQD Location Code" := GenJournalLine."AQD CustRbt Location Code";
+        CustLedgerEntry."AQD State" := GenJournalLine."AQD CustRbt State";
+        CustLedgerEntry."AQD Rebate Document Type" := GenJournalLine."AQD Cust Rebate Document Type";
+        CustLedgerEntry."AQD Rebate Document No." := GenJournalLine."AQD Cust Rebate Document No.";
+        CustLedgerEntry."AQD Journal Document No." := GenJournalLine."AQD Cust Journal Document No.";
+        CustLedgerEntry."AQD Rebate Register No." := GenJournalLine."AQD Cust Rebate Register No.";
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Vendor Ledger Entry", 'OnAfterCopyVendLedgerEntryFromGenJnlLine', '', false, false)]
     local procedure Tab25_VendorLedgerEntry_OnAfterCopyVendLedgerEntryFromGenJnlLine(var VendorLedgerEntry: Record "Vendor Ledger Entry"; GenJournalLine: Record "Gen. Journal Line")
     begin
-        VendorLedgerEntry."AQD Rebate Journal" := GenJournalLine."AQD Rebate Journal";
-        VendorLedgerEntry."AQD Rebate Type" := GenJournalLine."AQD Rebate Type";
-        VendorLedgerEntry."AQD Location Code" := GenJournalLine."AQD Location Code";
-        VendorLedgerEntry."AQD State" := GenJournalLine."AQD State";
-        VendorLedgerEntry."AQD Rebate Document Type" := GenJournalLine."AQD Rebate Document Type";
-        VendorLedgerEntry."AQD Rebate Document No." := GenJournalLine."AQD Rebate Document No.";
-        VendorLedgerEntry."AQD Journal Document No." := GenJournalLine."AQD Journal Document No.";
-        VendorLedgerEntry."AQD Rebate Register No." := GenJournalLine."AQD Rebate Register No.";
+        VendorLedgerEntry."AQD Cust Rebate Journal" := GenJournalLine."AQD Cust Rebate Journal";
+        VendorLedgerEntry."AQD Customer Rebate Type" := GenJournalLine."AQD Cust Rebate Type";
+        VendorLedgerEntry."AQD CustRbt Location Code" := GenJournalLine."AQD CustRbt Location Code";
+        VendorLedgerEntry."AQD CustRbt State" := GenJournalLine."AQD CustRbt State";
+        VendorLedgerEntry."AQD Cust Rebate Document Type" := GenJournalLine."AQD Cust Rebate Document Type";
+        VendorLedgerEntry."AQD Cust Rebate Document No." := GenJournalLine."AQD Cust Rebate Document No.";
+        VendorLedgerEntry."AQD Cust Journal Document No." := GenJournalLine."AQD Cust Journal Document No.";
+        VendorLedgerEntry."AQD Cust Rebate Register No." := GenJournalLine."AQD Cust Rebate Register No.";
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterDeleteEvent', '', false, false)]
@@ -1064,7 +1064,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
         if not RunTrigger then
             exit;
 
-        if not Rec."AQD Rebate Journal" then
+        if not Rec."AQD Cust Rebate Journal" then
             exit;
 
         if (Rec."Document Type" <> Rec."Document Type"::Invoice) and
@@ -1074,11 +1074,11 @@ codeunit 14301914 "AQD Customer Rebate Post"
 
         RebateDocEntry.Reset;
         RebateDocEntry.SetCurrentKey("Rebate Register No.");
-        RebateDocEntry.SetRange("Rebate Register No.", Rec."AQD Rebate Register No.");
+        RebateDocEntry.SetRange("Rebate Register No.", Rec."AQD Cust Rebate Register No.");
         RebateDocEntry.SetRange("Journal Template Name", Rec."Journal Template Name");
         RebateDocEntry.SetRange("Journal Batch Name", Rec."Journal Batch Name");
         RebateDocEntry.SetRange("Journal Line No.", Rec."Line No.");
-        RebateDocEntry.SetRange("Journal Document No.", Rec."AQD Journal Document No.");
+        RebateDocEntry.SetRange("Journal Document No.", Rec."AQD Cust Journal Document No.");
         if RebateDocEntry.FindFirst then begin
             repeat
                 RebateDocEntry.TestField(Open, true);
@@ -1098,7 +1098,7 @@ codeunit 14301914 "AQD Customer Rebate Post"
 
                 RebateEntry.Reset;
                 RebateEntry.SetCurrentKey("Rebate Register No.", "Rebate Type", "Rebate Code", "Document Type", "Document No.");
-                RebateEntry.SetRange("Rebate Register No.", Rec."AQD Rebate Register No.");
+                RebateEntry.SetRange("Rebate Register No.", Rec."AQD Cust Rebate Register No.");
                 RebateEntry.SetRange("Rebate Type", RebateDocEntry."Rebate Type");
                 RebateEntry.SetRange("Rebate Code", RebateDocEntry."Rebate Code");
                 RebateEntry.SetRange("Document Type", RebateDocEntry."Document Type");

@@ -14,13 +14,13 @@ pageextension 14301912 "AQD Fixed Asset Card" extends "Fixed Asset Card"
                     {
                         ApplicationArea = All;
                     }
-                    field("AQD Rebate Category Code"; Rec."AQD Rebate Category Code")
+                    field("AQD Cust Rebate Category Code"; Rec."AQD Cust Rebate Category Code")
                     {
                         ApplicationArea = All;
                         Editable = Rec."AQD Customer Rebate Enabled";
                         Enabled = Rec."AQD Customer Rebate Enabled";
                     }
-                    field("AQD Use Rebate Setup From"; Rec."AQD Use Rebate Setup From")
+                    field("AQD Use Cust Rebate Setup From"; Rec."AQD Use Cust Rebate Setup From")
                     {
                         ApplicationArea = All;
                         Editable = Rec."AQD Customer Rebate Enabled";

@@ -1,4 +1,4 @@
-enum 14301914 "AQD Rebate Document Type"
+enum 14301914 "AQD Cust Rebate Document Type"
 {
     Extensible = true;
 
@@ -14,16 +14,12 @@ enum 14301914 "AQD Rebate Document Type"
     {
         Caption = 'Credit Memo';
     }
-    value(3; Adjustment)
-    {
-        Caption = 'Adjustment';
-    }
     value(4; Receipt)
     {
-        Caption = 'Receipt';
+        Caption = 'Shipment';
     }
     value(5; "Return Shipment")
     {
-        Caption = 'Return Shipment';
+        Caption = 'Return Receipt';
     }
 }

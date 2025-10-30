@@ -305,7 +305,7 @@ report 14301910 "AQD Inventory - Customer Sales"
                 if ValueEntry.FindFirst() then
                     repeat
                         if ItemCharge.Get(ValueEntry."Item Charge No.") then
-                            if ItemCharge."AQD Rebate Option" = ItemCharge."AQD Rebate Option"::Purchase then begin
+                            if ItemCharge."AQD Customer Rebate" then begin
                                 if ValueEntry."Valued Quantity" <> 0 then
                                     CalculatedPurchaseRebate += (ValueEntry."Cost Amount (Actual)" / ValueEntry."Valued Quantity") * ItemLedger_lv.Quantity;
 

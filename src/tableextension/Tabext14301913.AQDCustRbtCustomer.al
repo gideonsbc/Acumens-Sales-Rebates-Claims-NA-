@@ -10,7 +10,7 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
         field(14301920; "AQD Rebate Vendor No"; Code[20])
         {
             Caption = 'Rebate Vendor No.';
-            TableRelation = Vendor WHERE("AQD Vendor Type" = CONST("Rebate Vendor"));
+            TableRelation = Vendor WHERE("AQD Cust Rbt Vendor Type" = CONST("Rebate Vendor"));
             DataClassification = CustomerContent;
         }
         field(14301930; "AQD Rebate Payment Method"; Option)

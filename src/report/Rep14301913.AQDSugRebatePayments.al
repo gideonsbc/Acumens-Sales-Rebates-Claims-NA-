@@ -8,7 +8,7 @@ report 14301913 "AQD Sug Cust Rebate Payments"
     {
         dataitem(Vendor; Vendor)
         {
-            DataItemTableView = SORTING(Blocked) WHERE(Blocked = FILTER(= " "), "AQD Vendor Type" = FILTER("Rebate Vendor"), "AQD Payee Type" = FILTER("1099 Vendor"));
+            DataItemTableView = SORTING(Blocked) WHERE(Blocked = FILTER(= " "), "AQD Cust Rbt Vendor Type" = FILTER("Rebate Vendor"), "AQD Payee Type" = FILTER("1099 Vendor"));
             RequestFilterFields = "No.", "Payment Method Code";
 
             trigger OnAfterGetRecord()
@@ -107,7 +107,7 @@ report 14301913 "AQD Sug Cust Rebate Payments"
                 ConfirmManagement: Codeunit "Confirm Management";
             begin
                 FilterGroup(2);
-                SetFilter("AQD Vendor Type", '<>%1', "AQD Vendor Type"::" ");
+                SetFilter("AQD Cust Rbt Vendor Type", '<>%1', "AQD Cust Rbt Vendor Type"::" ");
                 SetRange("AQD Payee Type", "AQD Payee Type"::"1099 Vendor");
                 FilterGroup(0);
 
@@ -858,7 +858,7 @@ report 14301913 "AQD Sug Cust Rebate Payments"
         GenJnlLine."Applies-to Doc. Type" := TempPaymentBuffer."Vendor Ledg. Entry Doc. Type";
         GenJnlLine."Applies-to Doc. No." := TempPaymentBuffer."Vendor Ledg. Entry Doc. No.";
         GenJnlLine."Payment Method Code" := TempPaymentBuffer."Payment Method Code";
-        GenJnlLine."AQD Rebate Journal" := true;
+        GenJnlLine."AQD Cust Rebate Journal" := true;
         TempPaymentBuffer.CopyFieldsToGenJournalLine(GenJnlLine);
 
         OnBeforeUpdateGnlJnlLineDimensionsFromTempBuffer(GenJnlLine, TempPaymentBuffer);

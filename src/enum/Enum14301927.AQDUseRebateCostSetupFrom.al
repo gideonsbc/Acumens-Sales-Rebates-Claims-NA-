@@ -1,4 +1,4 @@
-enum 14301927 "AQD Use Rebate Setup From"
+enum 14301927 "AQD Use Cust Rebate Setup From"
 {
     Extensible = true;
 

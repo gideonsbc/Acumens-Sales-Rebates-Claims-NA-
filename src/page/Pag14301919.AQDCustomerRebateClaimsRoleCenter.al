@@ -14,11 +14,6 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Caption = 'Rebate Activities';
                 ApplicationArea = All;
             }
-            part("AQD Customer Claims Cues"; "AQD Customer Rebate Cues")
-            {
-                Caption = 'Customer Claims Activities';
-                ApplicationArea = All;
-            }
         }
     }
 
@@ -234,7 +229,7 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     ApplicationArea = All;
                     Caption = 'Generate Customer Rebates';
                     Image = CalculateSalesTax;
-                    RunObject = Report "AQD Generate Rebate Lines";
+                    RunObject = Report "AQD Generate Customer Rebates";
                 }
                 action(RebateDocumentEntries)
                 {
@@ -286,29 +281,6 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     RunObject = Page "AQD Customer Rebate Register";
                 }
             }
-            group("Vendor Rebate")
-            {
-                Caption = 'Vendor Rebate';
-                action("AQD Item Rebate Categories2")
-                {
-                    Caption = 'Item Customer Rebate Categories';
-                    ApplicationArea = All;
-                    Image = Vendor;
-                    RunObject = Page "AQD Cust RebateItem Categories";
-                }
-                action("Item Rebate Program Codes2")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Customer Rebate Program Codes';
-                    RunObject = page "AQD Cust Rebate Program Codes";
-                }
-                // action("AQD Rebate Item Ledger Entries")
-                // {
-                //     ApplicationArea = All;
-                //     Caption = 'Rebate Item Ledger Entries';
-                //     RunObject = page "AQD Rebate Item Ledger Entries";
-                // }
-            }
         }
         area(Creation)
         {
@@ -317,7 +289,7 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 ApplicationArea = All;
                 Caption = 'Generate Customer Rebates';
                 Image = CalculateSalesTax;
-                RunObject = Report "AQD Generate Rebate Lines";
+                RunObject = Report "AQD Generate Customer Rebates";
             }
             group(Journals)
             {

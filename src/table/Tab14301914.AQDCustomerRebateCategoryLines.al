@@ -24,7 +24,7 @@ table 14301914 "AQD Cust Rebate Category Lines"
         {
             Caption = 'Description';
         }
-        field(7050; "AQD Use Rebate Setup From"; enum "AQD Use Rebate Setup From")
+        field(7050; "AQD Use Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
             Caption = 'Use Rebate Setup From'; // As Temporary Used
         }
