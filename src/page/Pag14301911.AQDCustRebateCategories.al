@@ -31,10 +31,10 @@ page 14301911 "AQD Cust RebateItem Categories"
                 }
                 field("Category Type"; Rec."Category Type")
                 {
-                    Editable = Rec.Rebatable;
+                    Editable = Rec."Rebate Enabled";
                     ToolTip = 'Specifies the value of the Category Type field.', Comment = '%';
                 }
-                field(Rebatable; Rec.Rebatable)
+                field("Rebate Enabled"; Rec."Rebate Enabled")
                 {
                     ToolTip = 'Specifies the value of the Rebatable field.', Comment = '%';
                 }

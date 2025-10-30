@@ -16,22 +16,22 @@ table 14301913 "AQD Cust Rebate Item Category"
         {
             Caption = 'Description';
         }
-        field(30; Rebatable; Boolean)
+        field(30; "Rebate Enabled"; Boolean)
         {
-            Caption = 'Rebatable';
+            Caption = 'Rebate Enabled';
 
             trigger OnValidate()
             var
                 LocalItem: Record Item;
                 UserConfirmMsg: Label 'Do you want to update all existing Item?';
             begin
-                IF (Rec.Rebatable <> xRec.Rebatable) AND
+                IF (Rec."Rebate Enabled" <> xRec."Rebate Enabled") AND
                   (NOT Rec.IsTemporary)
                 THEN begin
                     IF CONFIRM(UserConfirmMsg) then begin
                         LocalItem.RESET;
                         LocalItem.SetRange("AQD Rebate Category Code", Rec.Code);
-                        LocalItem.ModifyAll("AQD Vendor Rebatable", Rec.Rebatable);
+                        LocalItem.ModifyAll("AQD Customer Rebate Enabled", Rec."Rebate Enabled");
                     end;
                 end;
             end;

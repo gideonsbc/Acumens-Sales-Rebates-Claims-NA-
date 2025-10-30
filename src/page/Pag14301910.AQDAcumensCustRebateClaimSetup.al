@@ -14,24 +14,24 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             group("Customer Rebate")
             {
-                Caption = 'Customer Rebate';
-                field("Item Rebatable"; Rec."Item Rebatable")
+                Caption = 'General';
+                field("Item Rebate Enabled"; Rec."Item Rebate Enabled")
                 {
                     ApplicationArea = All;
                 }
-                field("Resource Rebatable"; Rec."Resource Rebatable")
+                field("Resource Rebate Enabled"; Rec."Resource Rebate Enabled")
                 {
                     ApplicationArea = All;
                 }
-                field("G/L Account Rebatable"; Rec."G/L Account Rebatable")
+                field("G/L Account Rebate Enabled"; Rec."G/L Account Rebate Enabled")
                 {
                     ApplicationArea = All;
                 }
-                field("Item Charge Rebatable"; Rec."Item Charge Rebatable")
+                field("Item Charge Rebate Enabled"; Rec."Item Charge Rebate Enabled")
                 {
                     ApplicationArea = All;
                 }
-                field("Fixed Asset Rebatable"; Rec."Fixed Asset Rebatable")
+                field("Fixed Asset Rebate Enabled"; Rec."Fixed Asset Rebate Enabled")
                 {
                     ApplicationArea = All;
                 }
@@ -39,7 +39,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field(AutoCreateSaleRebateRateonRcpt; Rec.AutoCreateSaleRebateRateonRcpt)
+                field(AutoCreateSaleRebateRateonShpt; Rec.AutoCreateSaleRebateRateonShpt)
                 {
                     ApplicationArea = All;
                 }
@@ -48,19 +48,15 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     ApplicationArea = All;
                     Enabled = Rec.BlockAutoCreatedSaleRebateRate;
                 }
-                field("Auto Update Rebate Cust Type"; Rec."Auto Update Rebate Cust Type")
-                {
-                    ApplicationArea = All;
-                }
-                field("Min GP% for Rebate"; Rec."Min GP% for Rebate")
-                {
-                    ApplicationArea = All;
-                }
+                // field("Auto Update Rebate Cust Type"; Rec."Auto Update Rebate Cust Type")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("Start Date"; Rec."Start Date")
                 {
                     ApplicationArea = All;
                 }
-                field("Prevent Negative Rebate"; Rec."Prevent Negative Rebate")
+                field("Prevent Negative Cust Rebate"; Rec."Prevent Negative Cust Rebate")
                 {
                     ApplicationArea = All;
                 }
@@ -75,26 +71,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 group(CustomerDefaultSetup)
                 {
                     Caption = 'Default Setup';
-                    field("Default Rebate Type"; Rec."Default Rebate Type")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Rebate Type';
-                    }
-                    field("Default Rebate %"; Rec."Default Rebate %")
-                    {
-                        ApplicationArea = All;
-                        BlankZero = true;
-                        Caption = 'Rebate %';
-                        Editable = Rec."Default Rebate Type" = Rec."Default Rebate Type"::Percentage;
-                        Enabled = Rec."Default Rebate Type" = Rec."Default Rebate Type"::Percentage;
-                    }
-                    field("Default Rebate Per Quantity"; Rec."Default Rebate Per Quantity")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Rebate Per Quantity';
-                        Editable = Rec."Default Rebate Type" = Rec."Default Rebate Type"::"Per Quantity";
-                        Enabled = Rec."Default Rebate Type" = Rec."Default Rebate Type"::"Per Quantity";
-                    }
                     field("Default Rebate Payment Method"; Rec."Def. Rebate Payment Method")
                     {
                         ApplicationArea = All;
@@ -171,48 +147,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         Caption = 'Journal Batch Name';
                     }
                 }
-            }
-            group("Vendor Rebate")
-            {
-                Caption = 'Vendor Rebate';
-                field("Vendor Item Rebatable"; Rec."Vendor Item Rebatable")
-                {
-                    ApplicationArea = All;
-                }
-                field("Vendor Resource Rebatable"; Rec."Vendor Resource Rebatable")
-                {
-                    ApplicationArea = All;
-                }
-                field("Vendor G/L Account Rebatable"; Rec."Vendor G/L Account Rebatable")
-                {
-                    ApplicationArea = All;
-                }
-                field("Vendor Item Charge Rebatable"; Rec."Vendor Item Charge Rebatable")
-                {
-                    ApplicationArea = All;
-                }
-                field("Vendor Fixed Asset Rebatable"; Rec."Vendor Fixed Asset Rebatable")
-                {
-                    ApplicationArea = All;
-                }
-                field("Calculate Vendor Rebate using"; Rec."Calculate Vendor Rebate using")
-                {
-                    ApplicationArea = All;
-                }
-                field("Vendor Rebate Source Code"; Rec."Vendor Rebate Source Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(AutoCreatePurRebateSetuponRcpt; Rec.AutoCreatePurRebateRateonRcpt)
-                {
-                    ApplicationArea = All;
-                }
-                field(BlockAutoCreatedPurRebateSetup; Rec.BlockAutoCreatedPurRebateRate)
-                {
-                    ApplicationArea = All;
-                    Enabled = Rec.AutoCreatePurRebateRateonRcpt;
-                }
-                field("Auto Update Rebate Vendor Type"; Rec."Auto Update Rebate Vendor Type")
+                field("Calculate Cust Rebate using"; Rec."Calculate Cust Rebate using")
                 {
                     ApplicationArea = All;
                 }
@@ -220,27 +155,19 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field("Vendor Rebate Start Date"; Rec."Vendor Rebate Start Date")
+                field("Use Cust Rebate Criteria"; Rec."Use Cust Rebate Criteria")
                 {
                     ApplicationArea = All;
                 }
-                field("Use Vendor Rebate Criteria"; Rec."Use Vendor Rebate Criteria")
-                {
-                    ApplicationArea = All;
-                }
-                field("Prevent Negative Vendor Rebate"; Rec."Prevent Negative Vendor Rebate")
-                {
-                    ApplicationArea = All;
-                }
-                field("Vendor Rebate Expense G/L"; Rec."Vendor Rebate Expense G/L")
-                {
-                    ApplicationArea = All;
-                }
-                field("Pay Vendor Rebate On"; Rec."Pay Vendor Rebate On")
+                field("Prevent Negative Customer Rebate"; Rec."Prevent Negative Cust Rebate")
                 {
                     ApplicationArea = All;
                 }
                 field("Rebate Cr. Memo Posting"; Rec."Rebate Cr. Memo Posting")
+                {
+                    ApplicationArea = All;
+                }
+                field("Min GP% for Customer Rebate"; Rec."Min GP% for Customer Rebate")
                 {
                     ApplicationArea = All;
                 }
@@ -263,22 +190,13 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         Caption = 'Item Charge No.';
                     }
                 }
-                field("Min GP% for Vendor Rebate"; Rec."Min GP% for Vendor Rebate")
-                {
-                    ApplicationArea = All;
-                    Visible = false; // Not In Use
-                }
             }
             group("Number Series")
             {
                 Caption = 'Number Series';
-                group(VendorRebate)
+                field("Customer Rebate Nos"; Rec."Customer Rebate Nos")
                 {
-                    Caption = 'Vendor Rebate';
-                    field("Vendor Rebate Nos"; Rec."Vendor Rebate Nos")
-                    {
-                        ApplicationArea = All;
-                    }
+                    ApplicationArea = All;
                 }
             }
         }
@@ -339,7 +257,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 Image = OrderList;
                 trigger OnAction()
                 var
-                    RebateCalculationMgt: Codeunit "AQD Rebate Calculation Mgt";
+                    RebateCalculationMgt: Codeunit "AQD Cust Rebate Calc Mgt";
                 begin
                     Clear(RebateCalculationMgt);
                     RebateCalculationMgt.UpdateOldDocumentsNonRebateEnable();
@@ -351,7 +269,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 ApplicationArea = All;
                 Caption = 'User Setup';
                 Image = UserSetup;
-                RunObject = Page "AQD Rebate User Setup";
+                RunObject = Page "AQD Customer Rebate User Setup";
             }
         }
         area(Promoted)
@@ -371,13 +289,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
     var
         SourceCodeRec: Record "Source Code";
     begin
-        IF NOT SourceCodeRec.GET('VREBTGNLJL') THEN BEGIN
-            SourceCodeRec.Init();
-            SourceCodeRec.Code := 'VREBTGNLJL';
-            SourceCodeRec.Description := 'Vendor Rebate';
-            SourceCodeRec.Insert();
-        END;
-
         IF NOT SourceCodeRec.GET('CREBTGNLJL') THEN BEGIN
             SourceCodeRec.Init();
             SourceCodeRec.Code := 'CREBTGNLJL';
@@ -388,7 +299,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
         Rec.Reset;
         if not Rec.Get then begin
             Rec.Init();
-            Rec."Vendor Rebate Source Code" := 'VREBTGNLJL';
             Rec."Customer Rebate Source Code" := 'CREBTGNLJL';
             Rec.Insert();
             InitializeDefaultSetups();
@@ -399,13 +309,13 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
     var
         GLAccount: Record "G/L Account";
     begin
-        if Confirm('Do you want to Initialize default setups?') then begin
+        if Confirm('Do you want to initialize default setups?') then begin
             ResetNoSeries();
-            Rec.Validate("Item Rebatable", true);
-            Rec.Validate("Resource Rebatable", true);
-            Rec.Validate("G/L Account Rebatable", true);
-            Rec.Validate("Item Charge Rebatable", true);
-            Rec.Validate("Fixed Asset Rebatable", true);
+            Rec.Validate("Item Rebate Enabled", true);
+            Rec.Validate("Resource Rebate Enabled", true);
+            Rec.Validate("G/L Account Rebate Enabled", true);
+            Rec.Validate("Item Charge Rebate Enabled", true);
+            Rec.Validate("Fixed Asset Rebate Enabled", true);
             Rec."Pay Customer Rebate On" := Rec."Pay Customer Rebate On"::"All Invoices";
             Rec."Def. Rebate Payment Method" := Rec."Def. Rebate Payment Method"::Check;
             //Purchase
@@ -452,7 +362,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 if GenJournalBatch.FindFirst() then
                     Rec."General Journal Batch Name" := GenJournalBatch.Name;
             end;
-            Rec."Vendor Rebate Nos" := 'VRB';
+            Rec."Customer Rebate Nos" := 'CRB';
             Rec.Modify(true);
         end;
     end;
@@ -463,31 +373,29 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
         NoSeriesLine: Record "No. Series Line";
     begin
         NoSeries.Reset();
-        if not NoSeries.Get('VRB') then begin
+        if not NoSeries.Get('CRB') then begin
             NoSeries.Init();
-            NoSeries.Code := 'VRB';
-            NoSeries.Description := 'Vendor Rebate Nos';
+            NoSeries.Code := 'CRB';
+            NoSeries.Description := 'Customer Rebate Nos';
             NoSeries."Default Nos." := true;
             NoSeries."Manual Nos." := true;
             NoSeries.Insert();
             NoSeriesLine.Reset();
             NoSeriesLine.Init();
-            NoSeriesLine."Series Code" := 'VRB';
+            NoSeriesLine."Series Code" := 'CRB';
             NoSeriesLine."Line No." := 10000;
-            NoSeriesLine."Starting No." := 'VRB00001';
+            NoSeriesLine."Starting No." := 'CRB00001';
             if NoSeriesLine.Insert() then;
         end;
     end;
 
     local procedure DeleteDefaultSetups()
     begin
-        if Confirm('Please note that this action will delete all default settings. Proceed?') then begin
+        if Confirm('Please note that this action will delete all default settings. Do you want to continue?') then
             Rec.DeleteAll();
-        end;
     end;
 
     var
         GenJournalTemplate: Record "Gen. Journal Template";
         GenJournalBatch: Record "Gen. Journal Batch";
 }
-

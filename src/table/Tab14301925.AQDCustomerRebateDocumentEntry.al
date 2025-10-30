@@ -1,12 +1,26 @@
 table 14301925 "AQD Cust Rebate Document Entry"
 {
     Caption = 'Customer Rebate Document Entry';
-    DrillDownPageID = "AQD Rebate Document Entry";
-    LookupPageID = "AQD Rebate Document Entry";
+    DrillDownPageID = "AQD Cust Rebate Doc Entries";
+    LookupPageID = "AQD Cust Rebate Doc Entries";
     DataClassification = CustomerContent;
 
     fields
     {
+        field(1; "Document Type"; Option)
+        {
+            Caption = 'Document Type';
+            Editable = false;
+            OptionCaption = ' ,Invoice,Credit Memo';
+            OptionMembers = " ",Invoice,"Credit Memo";
+        }
+        field(2; "Document No."; Code[20])
+        {
+            Caption = 'Document No.';
+            TableRelation = IF ("Document Type" = CONST(Invoice)) "Sales Invoice Header"."No."
+            ELSE
+            IF ("Document Type" = CONST("Credit Memo")) "Sales Cr.Memo Header"."No.";
+        }
         field(14277004; "Rebate Code"; Code[20])
         {
             Caption = 'Rebate Code';
@@ -18,20 +32,7 @@ table 14301925 "AQD Cust Rebate Document Entry"
             OptionCaption = ' ,Vendor,Customer';
             OptionMembers = " ",Vendor,Customer;
         }
-        field(14277006; "Document Type"; Option)
-        {
-            Caption = 'Document Type';
-            Editable = false;
-            OptionCaption = ' ,Invoice,Credit Memo';
-            OptionMembers = " ",Invoice,"Credit Memo";
-        }
-        field(14277007; "Document No."; Code[20])
-        {
-            Caption = 'Document No.';
-            TableRelation = IF ("Document Type" = CONST(Invoice)) "Sales Invoice Header"."No."
-            ELSE
-            IF ("Document Type" = CONST("Credit Memo")) "Sales Cr.Memo Header"."No.";
-        }
+
         field(14277008; "Document Posting Date"; Date)
         {
             Caption = 'Document Posting Date';
@@ -100,7 +101,7 @@ table 14301925 "AQD Cust Rebate Document Entry"
         {
             CalcFormula = Sum("AQD Customer Rebate Entry"."Base Amount" WHERE("Document Type" = FIELD("Document Type"),
                                                                               "Document No." = FIELD("Document No."),
-                                                                              "Rebate Program Code" = FIELD("Rebate Code"),
+                                                                              "Rebate Code" = FIELD("Rebate Code"),
                                                                               "Rebate Type" = FIELD("Rebate Type"),
                                                                               "Do Not Pay Rebate" = FILTER(false)));
             Caption = 'Base Amount';
@@ -112,7 +113,7 @@ table 14301925 "AQD Cust Rebate Document Entry"
             AutoFormatType = 1;
             CalcFormula = Sum("AQD Customer Rebate Entry"."Rebate Amount" WHERE("Document Type" = FIELD("Document Type"),
                                                                         "Document No." = FIELD("Document No."),
-                                                                        "Rebate Program Code" = FIELD("Rebate Code"),
+                                                                        "Rebate Code" = FIELD("Rebate Code"),
                                                                         "Rebate Type" = FIELD("Rebate Type"),
                                                                         "Do Not Pay Rebate" = FILTER(false)));
             Caption = 'Rebate Amount';
@@ -124,7 +125,7 @@ table 14301925 "AQD Cust Rebate Document Entry"
             AutoFormatType = 1;
             CalcFormula = Sum("AQD Customer Rebate Entry"."Remaining Rebate Amount" WHERE("Document Type" = FIELD("Document Type"),
                                                                                   "Document No." = FIELD("Document No."),
-                                                                                  "Rebate Program Code" = FIELD("Rebate Code"),
+                                                                                  "Rebate Code" = FIELD("Rebate Code"),
                                                                                   "Rebate Type" = FIELD("Rebate Type"),
                                                                                   "Do Not Pay Rebate" = FILTER(false)));
             Caption = 'Remaining Rebate Amount';
@@ -136,7 +137,7 @@ table 14301925 "AQD Cust Rebate Document Entry"
             BlankZero = true;
             CalcFormula = Sum("AQD Customer Rebate Entry"."Profit Amount" WHERE("Document Type" = FIELD("Document Type"),
                                                                         "Document No." = FIELD("Document No."),
-                                                                        "Rebate Program Code" = FIELD("Rebate Code"),
+                                                                        "Rebate Code" = FIELD("Rebate Code"),
                                                                         "Rebate Type" = FIELD("Rebate Type"),
                                                                         "Do Not Pay Rebate" = FILTER(false)));
             Caption = 'Profit Amount';
@@ -171,7 +172,7 @@ table 14301925 "AQD Cust Rebate Document Entry"
             AutoFormatType = 1;
             CalcFormula = Sum("AQD Customer Rebate Entry"."Remaining Rebate Amount" WHERE("Document Type" = FIELD("Document Type"),
                                                                                   "Document No." = FIELD("Document No."),
-                                                                                  "Rebate Program Code" = FIELD("Rebate Code"),
+                                                                                  "Rebate Code" = FIELD("Rebate Code"),
                                                                                   "Rebate Type" = FIELD("Rebate Type"),
                                                                                   "Do Not Pay Rebate" = FILTER(false)));
             Caption = 'Amount Due';
@@ -183,7 +184,7 @@ table 14301925 "AQD Cust Rebate Document Entry"
             BlankZero = true;
             CalcFormula = Sum("AQD Customer Rebate Entry"."Quantity" WHERE("Document Type" = FIELD("Document Type"),
                                                                  "Document No." = FIELD("Document No."),
-                                                                 "Rebate Program Code" = FIELD("Rebate Code"),
+                                                                 "Rebate Code" = FIELD("Rebate Code"),
                                                                  "Do Not Pay Rebate" = CONST(false)));
             Caption = 'Total Quantity';
             Editable = false;
@@ -360,19 +361,19 @@ table 14301925 "AQD Cust Rebate Document Entry"
 
     trigger OnDelete()
     var
-        RebateEntry: Record "AQD Customer Rebate Entry";
+        CustomerRebateEntry: Record "AQD Customer Rebate Entry";
     begin
         TestField("Vendor Ledger Entry No.", 0);
 
         if "Rebate Register No." <> 0 then
             Error(Text0001, TableCaption);
 
-        Clear(RebateEntry);
-        RebateEntry.SetCurrentKey("Document Type", "Document No.", "Rebate Program Code");
-        RebateEntry.SetRange("Document Type", "Document Type");
-        RebateEntry.SetRange("Document No.", "Document No.");
-        RebateEntry.SetRange("Rebate Program Code", "Rebate Code");
-        RebateEntry.DeleteAll(true);
+        Clear(CustomerRebateEntry);
+        CustomerRebateEntry.SetCurrentKey("Document Type", "Document No.", "Rebate Code");
+        CustomerRebateEntry.SetRange("Document Type", "Document Type");
+        CustomerRebateEntry.SetRange("Document No.", "Document No.");
+        CustomerRebateEntry.SetRange("Rebate Code", "Rebate Code");
+        CustomerRebateEntry.DeleteAll(true);
     end;
 
     var

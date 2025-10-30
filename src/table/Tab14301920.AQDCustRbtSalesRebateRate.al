@@ -106,6 +106,18 @@ table 14301920 "AQD Sales Rebates Setup"
             Caption = 'Rebate Program Code';
             NotBlank = true;
             TableRelation = "AQD Cust Rebate Program Code";
+
+            trigger OnValidate()
+            var
+                RebateProgramCode: Record "AQD Cust Rebate Program Code";
+            begin
+                IF Rec."Rebate Program Code" <> '' THEN BEGIN
+                    RebateProgramCode.GET(rEC."Rebate Program Code");
+                    Rec."Rebate Type" := RebateProgramCode."Customer Default Rebate Type";
+                    Rec."Rebate %" := RebateProgramCode."Customer Default Rebate %";
+                    Rec."Rebate Per Quantity" := RebateProgramCode."Customer Def Rebate Per Qty";
+                END;
+            end;
         }
         field(7; "Starting Date"; Date)
         {

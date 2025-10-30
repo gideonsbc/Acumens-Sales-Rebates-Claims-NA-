@@ -114,26 +114,26 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Image = CampaignEntries;
                 RunObject = Page "AQD Rebate Customer Types";
             }
-            action("AQD Rebate Cust Type Eligib")
+            // action("AQD Rebate Cust Type Eligib")
+            // {
+            //     Caption = 'Rebate Customer Type Eligibility';
+            //     ApplicationArea = All;
+            //     Image = CampaignEntries;
+            //     RunObject = Page "AQD Rebate Cust Type Eligib";
+            // }
+            action("AQD CustItem Rebate Matrix")
             {
-                Caption = 'Rebate Customer Type Eligibility';
-                ApplicationArea = All;
-                Image = CampaignEntries;
-                RunObject = Page "AQD Rebate Cust Type Eligib";
-            }
-            action("AQD CustItem Rebate Eligib")
-            {
-                Caption = 'Customer Item Rebate Eligibility';
+                Caption = 'Customer Item Rebate Matrix';
                 ApplicationArea = All;
                 Image = PurchaseCreditMemo;
-                RunObject = Page "AQD CustItem Rebate Eligib";
+                RunObject = Page "AQD Rebate Customer Types";
             }
             action("Rebate Document Entries")
             {
                 Caption = 'Rebate Document Entries';
                 ApplicationArea = All;
                 Image = CampaignEntries;
-                RunObject = Page "AQD Rebate Document Entry";
+                RunObject = Page "AQD Cust Rebate Doc Entries";
             }
             action("Rebate Entries")
             {
@@ -169,24 +169,24 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Caption = 'Customer Rebate Batches';
                 RunObject = page "AQD Customer Rebate Batches";
             }
-            action("Customer Rebates")
-            {
-                ApplicationArea = All;
-                Caption = 'Customer Rebates';
-                RunObject = page "AQD Customer Rebates";
-            }
+            // action("Customer Rebates")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Customer Rebates';
+            //     RunObject = page "AQD Customer Rebates";
+            // }
             action("Posted Customer Rebate Batches")
             {
                 ApplicationArea = All;
                 Caption = 'Posted Customer Rebate Batches';
-                RunObject = page "AQD PostedCustomerRebate Batches";
+                RunObject = page "AQD Posted Cust Rebate Batches";
             }
-            action("Posted Customer Rebates")
-            {
-                ApplicationArea = All;
-                Caption = 'Posted Customer Rebates';
-                RunObject = page "AQD Posted Customer Rebates";
-            }
+            // action("Posted Customer Rebates")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Posted Customer Rebates';
+            //     RunObject = page "AQD Posted Cust Rebates";
+            // }
         }
         area(sections)
         {
@@ -238,10 +238,10 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 }
                 action(RebateDocumentEntries)
                 {
-                    Caption = 'Rebate Document Entries';
+                    Caption = 'Customer Rebate Document Entries';
                     ApplicationArea = All;
                     Image = CampaignEntries;
-                    RunObject = Page "AQD Rebate Document Entry";
+                    RunObject = Page "AQD Cust Rebate Doc Entries";
                 }
                 action(RebateEntries)
                 {
@@ -302,12 +302,12 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Caption = 'Customer Rebate Program Codes';
                     RunObject = page "AQD Cust Rebate Program Codes";
                 }
-                action("AQD Rebate Item Ledger Entries")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Rebate Item Ledger Entries';
-                    RunObject = page "AQD Rebate Item Ledger Entries";
-                }
+                // action("AQD Rebate Item Ledger Entries")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Rebate Item Ledger Entries';
+                //     RunObject = page "AQD Rebate Item Ledger Entries";
+                // }
             }
         }
         area(Creation)
@@ -367,13 +367,13 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Image = InventoryCalculation;
                     RunObject = Report "Inventory Valuation";
                 }
-                action("AQD Udt Rebate Customer Type")
-                {
-                    Caption = 'Update Rebate Customer Type';
-                    ApplicationArea = All;
-                    Image = CustomerGroup;
-                    RunObject = Report "AQD Udt Rebate Customer Type";
-                }
+                // action("AQD Udt Rebate Customer Type")
+                // {
+                //     Caption = 'Update Rebate Customer Type';
+                //     ApplicationArea = All;
+                //     Image = CustomerGroup;
+                //     RunObject = Report "AQD Udt Rebate Customer Type";
+                // }
             }
         }
         area(Processing)

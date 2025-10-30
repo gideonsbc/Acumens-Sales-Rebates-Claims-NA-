@@ -2,22 +2,17 @@ tableextension 14301911 "AQD CustRbt G/L Account Ext" extends "G/L Account"
 {
     fields
     {
-        field(14277004; "AQD Customer Rebatable"; Boolean)
+        field(14301910; "AQD Customer Rebate Enabled"; Boolean)
         {
             Caption = 'Customer Rebate Enabled';
             DataClassification = CustomerContent;
         }
-        field(14277010; "AQD Vendor Rebatable"; Boolean)
-        {
-            Caption = 'Vendor Rebate Enabled';
-            DataClassification = CustomerContent;
-        }
-        field(14277030; "AQD Rebate Category Code"; Code[20])
+        field(14301920; "AQD Rebate Category Code"; Code[20])
         {
             Caption = 'Rebate Category Code';
             TableRelation = "AQD Cust Rebate Item Category";
         }
-        field(14277050; "AQD Use Rebate Setup From"; enum "AQD Use Rebate Setup From")
+        field(14301930; "AQD Use Rebate Setup From"; enum "AQD Use Rebate Setup From")
         {
             Caption = 'Use Rebate Setup From';
 

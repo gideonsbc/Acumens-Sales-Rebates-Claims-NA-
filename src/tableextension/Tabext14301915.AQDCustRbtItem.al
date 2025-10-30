@@ -2,14 +2,9 @@ tableextension 14301915 "AQD CustRbt Item Ext" extends Item
 {
     fields
     {
-        field(14277004; "AQD Customer Rebatable"; Boolean)
+        field(14277004; "AQD Customer Rebate Enabled"; Boolean)
         {
             Caption = 'Customer Rebate Enabled';
-            DataClassification = CustomerContent;
-        }
-        field(14277008; "AQD Vendor Rebatable"; Boolean)
-        {
-            Caption = 'Vendor Rebate Enabled';
             DataClassification = CustomerContent;
         }
         field(14277012; "AQD Rebate Category Code"; Code[20])
@@ -51,10 +46,10 @@ tableextension 14301915 "AQD CustRbt Item Ext" extends Item
                     Error(AllowedValueValidationLable);
 
                 IF Rec."AQD Use Rebate Setup From" = Rec."AQD Use Rebate Setup From"::"Rebate Code" then
-                    Rec."AQD Rebate Posting Type" := Rec."AQD Rebate Posting Type"::" ";
+                    Rec."AQD Cust Rebate Posting Type" := Rec."AQD Cust Rebate Posting Type"::" ";
             end;
         }
-        field(14277060; "AQD Rebate Posting Type"; enum "AQD Rebate Posting Type")
+        field(14277060; "AQD Cust Rebate Posting Type"; enum "AQD Cust Rebate Posting Type")
         {
             Caption = 'Rebate Cost Posting Type';
         }

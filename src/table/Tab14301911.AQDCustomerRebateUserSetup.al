@@ -1,8 +1,8 @@
 table 14301911 "AQD Customer Rebate User Setup"
 {
     Caption = 'Customer Rebate User Setup';
-    DrillDownPageId = "AQD Rebate User Setup";
-    LookupPageId = "AQD Rebate User Setup";
+    DrillDownPageId = "AQD Customer Rebate User Setup";
+    LookupPageId = "AQD Customer Rebate User Setup";
     DataClassification = CustomerContent;
 
     fields

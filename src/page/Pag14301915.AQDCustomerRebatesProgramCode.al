@@ -23,17 +23,17 @@ page 14301915 "AQD Cust Rebate Program Codes"
                     ApplicationArea = All;
                     ToolTip = 'Specifies a description of what the code stands for.';
                 }
-                field("Rebate Posting Type"; Rec."Rebate Posting Type")
+                field("Cust Rebate Posting Type"; Rec."Customer Rebate Posting Type")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a Rebate Posting Type.';
+                    ToolTip = 'Specifies a Customer Rebate Posting Type.';
                 }
                 field("Customer Default Rebate Type"; Rec."Customer Default Rebate Type")
                 {
                     ApplicationArea = All;
                     Caption = 'Default Rebate Type';
                 }
-                field("Vendor Default Rebate %"; Rec."Customer Default Rebate %")
+                field("Cust Default Rebate %"; Rec."Customer Default Rebate %")
                 {
                     ApplicationArea = All;
                     BlankZero = true;
@@ -41,7 +41,7 @@ page 14301915 "AQD Cust Rebate Program Codes"
                     Editable = Rec."Customer Default Rebate Type" = Rec."Customer Default Rebate Type"::Percentage;
                     Enabled = Rec."Customer Default Rebate Type" = Rec."Customer Default Rebate Type"::Percentage;
                 }
-                field("Vendor Def Rebate Per Quantity"; Rec."Customer Def Rebate Per Quantity")
+                field("Cust Def Rebate Per Quantity"; Rec."Customer Def Rebate Per Qty")
                 {
                     ApplicationArea = All;
                     Caption = 'Default Rebate Per Quantity';
@@ -63,8 +63,5 @@ page 14301915 "AQD Cust Rebate Program Codes"
                 Visible = false;
             }
         }
-    }
-    actions
-    {
     }
 }

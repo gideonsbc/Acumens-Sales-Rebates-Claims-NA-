@@ -3,7 +3,7 @@ table 14301923 "AQD Cust Rebate Journal Line"
     DataClassification = CustomerContent;
     fields
     {
-        field(14277004; "AQDUser ID"; Code[50])
+        field(1; "AQD User ID"; Code[50])
         {
             Caption = 'User ID';
             Editable = false;
@@ -11,135 +11,124 @@ table 14301923 "AQD Cust Rebate Journal Line"
             TableRelation = User."User Name";
             ValidateTableRelation = false;
 
-            trigger OnLookup()
-            var
-                UserMgt: Codeunit "User Management";
-            begin
-            end;
-
             trigger OnValidate()
             var
-                UserMgt: Codeunit "User Management";
+                UserSelection: Codeunit "User Selection";
             begin
+                UserSelection.ValidateUserName("AQD User ID");
             end;
         }
-        field(14277005; "AQDLine No."; Integer)
+        field(2; "AQD Line No."; Integer)
         {
             Caption = 'Line No.';
         }
-        field(14277006; "AQDRebate Program Code"; Code[20])
+        field(20; "AQD Rebate Code"; Code[20])
         {
-            Caption = 'Rebate Program Code';
-
-            trigger OnValidate()
-            var
-                UserSetup: Record "User Setup";
-            begin
-            end;
+            Caption = 'Rebate Code';
         }
-        field(14277007; "AQDRebate Type"; Option)
+        field(30; "AQD Pay-To Rebate Type"; Option)
         {
             Caption = 'Pay-To Rebate Type';
             Editable = false;
             OptionCaption = ' ,Vendor,Customer';
             OptionMembers = " ",Vendor,Customer;
         }
-        field(14277008; AQDName; Text[100])
+        field(40; "AQD Name"; Text[100])
         {
             Caption = 'Name';
         }
-        field(14277009; AQDState; Text[30])
+        field(50; "AQD State"; Text[30])
         {
             Caption = 'State';
         }
-        field(14277010; "AQDLocation Code"; Code[10])
+        field(60; "AQD Location Code"; Code[10])
         {
             Caption = 'Location Code';
             TableRelation = Location WHERE("Use As In-Transit" = CONST(false));
         }
-        field(14277011; "AQDLocation Name"; Text[100])
+        field(70; "AQD Location Name"; Text[100])
         {
-            CalcFormula = Lookup(Location.Name WHERE(Code = FIELD("AQDLocation Code")));
+            CalcFormula = Lookup(Location.Name WHERE(Code = FIELD("AQD Location Code")));
             Caption = 'Location Name';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(14277012; "AQDShortcut Dimension 1 Code"; Code[20])
+        field(80; "AQD Shortcut Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,2,1';
             Caption = 'Shortcut Dimension 1 Code';
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
-        field(14277013; "AQDShortcut Dimension 2 Code"; Code[20])
+        field(90; "AQD Shortcut Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,2,2';
             Caption = 'Shortcut Dimension 2 Code';
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
-        field(14277014; "AQDDocument Type"; Option)
+        field(100; "AQD Document Type"; Option)
         {
             Caption = 'Document Type';
             Editable = false;
             OptionCaption = ' ,Invoice,Credit Memo,Adjustment';
             OptionMembers = " ",Invoice,"Credit Memo",Adjustment;
         }
-        field(14277015; "AQDDocument No."; Code[20])
+        field(110; "AQD Document No."; Code[20])
         {
             Caption = 'Document No.';
         }
-        field(14277016; "AQDCustomer No."; Code[20])
+        field(120; "AQD Customer No."; Code[20])
         {
             Caption = 'Customer No.';
             TableRelation = Customer;
         }
-        field(14277017; "AQDCustomer Name"; Text[100])
+        field(130; "AQD Customer Name"; Text[100])
         {
             Caption = 'Customer Name';
         }
-        field(14277018; "AQDBill-to Customer No."; Code[20])
+        field(140; "AQD Bill-to Customer No."; Code[20])
         {
             Caption = 'Bill-to Customer No.';
             NotBlank = true;
             TableRelation = Customer;
         }
-        field(14277019; "AQDBill-to Customer Name"; Text[100])
+        field(150; "AQD Bill-to Customer Name"; Text[100])
         {
             Caption = 'Bill-to Customer Name';
             TableRelation = Customer.Name;
             ValidateTableRelation = false;
         }
-        field(14277020; "AQDBase Amount"; Decimal)
+        field(160; "AQD Base Amount"; Decimal)
         {
             Caption = 'Base Amount';
             Editable = false;
         }
-        field(14277021; "AQDRebate Amount"; Decimal)
+        field(170; "AQD Rebate Amount"; Decimal)
         {
             AutoFormatType = 1;
             Caption = 'Rebate Amount';
             Editable = false;
         }
-        field(14277022; "AQDProfit Amount"; Decimal)
+        field(180; "AQD Profit Amount"; Decimal)
         {
             BlankZero = true;
             Caption = 'Profit Amount';
             Editable = false;
         }
-        field(14277023; "AQDStart Date"; Date)
+        field(190; "AQD Start Date"; Date)
         {
             Caption = 'Start Date';
         }
-        field(14277024; "AQDEnd Date"; Date)
+        field(200; "AQD End Date"; Date)
         {
             Caption = 'End Date';
         }
-        field(14277025; "AQDRun For"; Option)
+        field(210; "AQD Run For"; Option)
         {
             Caption = 'Run For';
             OptionCaption = 'Review,Process';
             OptionMembers = Review,Process;
         }
-        field(14277026; "AQDPayee Type"; Option)
+        field(220; "AQD Payee Type"; Option)
         {
             Caption = 'Payee Type';
             Editable = false;
@@ -151,14 +140,12 @@ table 14301923 "AQD Cust Rebate Journal Line"
 
     keys
     {
-        key(Key1; "AQDUser ID", "AQDLine No.")
+        key(Key1; "AQD User ID", "AQD Line No.")
         {
             Clustered = true;
         }
     }
-
     fieldgroups
     {
     }
 }
-

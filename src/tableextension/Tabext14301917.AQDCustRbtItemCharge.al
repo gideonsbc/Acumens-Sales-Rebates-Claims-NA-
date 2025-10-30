@@ -2,14 +2,9 @@ tableextension 14301917 "AQD CustRbt Item Charge Ext" extends "Item Charge"
 {
     fields
     {
-        field(14277004; "AQD Customer Rebatable"; Boolean)
+        field(14277004; "AQD Customer Rebate Enabled"; Boolean)
         {
             Caption = 'Customer Rebate Enabled';
-            DataClassification = CustomerContent;
-        }
-        field(14277010; "AQD Vendor Rebatable"; Boolean)
-        {
-            Caption = 'Vendor Rebate Enabled';
             DataClassification = CustomerContent;
         }
         field(14277030; "AQD Rebate Category Code"; Code[20])

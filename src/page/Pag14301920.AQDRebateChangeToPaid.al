@@ -1,4 +1,4 @@
-page 14301920 "AQD Rebate Change To Paid"
+page 14301920 "AQD Cust Rebate Change To Paid"
 {
     Caption = 'Customer Rebate Change To Paid';
     PageType = ConfirmationDialog;

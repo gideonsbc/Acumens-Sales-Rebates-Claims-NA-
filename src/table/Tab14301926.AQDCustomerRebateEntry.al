@@ -11,9 +11,9 @@ table 14301926 "AQD Customer Rebate Entry"
         {
             Caption = 'Entry No.';
         }
-        field(14277005; "Rebate Program Code"; Code[20])
+        field(14277005; "Rebate Code"; Code[20])
         {
-            Caption = 'Rebate Program Code';
+            Caption = 'Rebate Code';
         }
         field(14277006; "AQD Rebate Type"; Option)
         {
@@ -257,19 +257,19 @@ table 14301926 "AQD Customer Rebate Entry"
         {
             Clustered = true;
         }
-        key(Key2; "Rebate Program Code", "Document Posting Date", "Open", "Payable", "Document Type", "State")
+        key(Key2; "Rebate Code", "Document Posting Date", "Open", "Payable", "Document Type", "State")
         {
             SumIndexFields = "Remaining Rebate Amount", "Rebate Amount", "Base Amount";
         }
-        key(Key3; "Document No.", "Document Line No.", "Rebate Program Code")
+        key(Key3; "Document No.", "Document Line No.", "Rebate Code")
         {
             SumIndexFields = "Remaining Rebate Amount", "Rebate Amount", "Base Amount";
         }
-        key(Key4; "Open", "Payable", "Rebate Program Code")
+        key(Key4; "Open", "Payable", "Rebate Code")
         {
             SumIndexFields = "Remaining Rebate Amount";
         }
-        key(Key5; "Rebate Program Code", "Payable", "Open")
+        key(Key5; "Rebate Code", "Payable", "Open")
         {
             SumIndexFields = "Rebate Amount", "Remaining Rebate Amount";
         }
@@ -279,13 +279,13 @@ table 14301926 "AQD Customer Rebate Entry"
         key(Key7; "Document Type", "Rebate Amount")
         {
         }
-        key(Key8; "Rebate Program Code", "Document Posting Date", "Rebate Amount")
+        key(Key8; "Rebate Code", "Document Posting Date", "Rebate Amount")
         {
         }
-        key(Key9; "Sell-to Customer No.", "Document Type", "Rebate Program Code", "Document No.", "Document Line No.")
+        key(Key9; "Sell-to Customer No.", "Document Type", "Rebate Code", "Document No.", "Document Line No.")
         {
         }
-        key(Key10; "Sell-to Customer No.", "Document Type", "Rebate Program Code")
+        key(Key10; "Sell-to Customer No.", "Document Type", "Rebate Code")
         {
         }
         key(Key11; "Document No.", "Sell-to Customer No.", "Document Line No.", "Document Type")
@@ -294,7 +294,7 @@ table 14301926 "AQD Customer Rebate Entry"
         key(Key12; "Journal Template Name", "Journal Batch Name", "Journal Line No.")
         {
         }
-        key(Key13; "Rebate Program Code", "Document Type", "Document No.")
+        key(Key13; "Rebate Code", "Document Type", "Document No.")
         {
         }
     }

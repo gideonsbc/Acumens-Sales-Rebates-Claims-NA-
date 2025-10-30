@@ -16,9 +16,9 @@ table 14301916 "AQD Cust Rebate Program Code"
         {
             Caption = 'Description';
         }
-        field(4; "Rebate Posting Type"; enum "AQD Rebate Posting Type")
+        field(4; "Customer Rebate Posting Type"; enum "AQD Cust Rebate Posting Type")
         {
-            Caption = 'Rebate Posting Type';
+            Caption = 'Customer Rebate Posting Type';
         }
         field(5; "Customer Default Rebate %"; Decimal)
         {
@@ -40,11 +40,11 @@ table 14301916 "AQD Cust Rebate Program Code"
             begin
                 IF Rec."Customer Default Rebate Type" <> xRec."Customer Default Rebate Type" THEN BEGIN
                     Rec."Customer Default Rebate %" := 0;
-                    Rec."Customer Def Rebate Per Quantity" := 0;
+                    Rec."Customer Def Rebate Per Qty" := 0;
                 END;
             end;
         }
-        field(7; "Customer Def Rebate Per Quantity"; Decimal)
+        field(7; "Customer Def Rebate Per Qty"; Decimal)
         {
             BlankZero = true;
             Caption = 'Default Rebate Per Quantity';
@@ -54,6 +54,7 @@ table 14301916 "AQD Cust Rebate Program Code"
                 TestField("Customer Default Rebate Type");
             end;
         }
+
     }
 
     keys
@@ -66,11 +67,11 @@ table 14301916 "AQD Cust Rebate Program Code"
 
     fieldgroups
     {
-        fieldgroup(DropDown; "Code", Description, "Rebate Posting Type")
+        fieldgroup(DropDown; "Code", Description, "Customer Rebate Posting Type")
         {
         }
 
-        fieldgroup(Brick; "Code", Description, "Rebate Posting Type")
+        fieldgroup(Brick; "Code", Description, "Customer Rebate Posting Type")
         {
         }
     }
