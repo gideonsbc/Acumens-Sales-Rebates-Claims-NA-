@@ -93,7 +93,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
 
         if DoNotPayRebateFunc(
           Rec."AQD Do Not Pay Rebate",
-          Rec."AQD Rebate Vendor No",
           CalledFromDocumentType::Invoice,
           Rec."No.")
         then
@@ -110,7 +109,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
             repeat
                 if DoNotPayRebateFunc(
                   Rec."AQD Do Not Pay Rebate",
-                  Rec."AQD Rebate Vendor No",
                   CalledFromDocumentType::Invoice,
                   Rec."No.")
                 then
@@ -127,7 +125,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
 
         if DoNotPayRebateFunc(
           Rec."AQD Do Not Pay Rebate",
-          Rec."AQD Rebate Vendor No",
           CalledFromDocumentType::"Credit Memo",
           Rec."No.")
         then
@@ -144,7 +141,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
             repeat
                 if DoNotPayRebateFunc(
                   Rec."AQD Do Not Pay Rebate",
-                  Rec."AQD Rebate Vendor No",
                   CalledFromDocumentType::"Credit Memo",
                   Rec."No.")
                 then
@@ -217,7 +213,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         end;
     end;
 
-    procedure DoNotPayRebateFunc(var DocumentDonotPayRebateIn: Boolean; RebateCodeIn: Code[20]; DocumentTypeIn: Option Invoice,"Credit Memo"; DocumentNoIn: Code[20]): Boolean
+    procedure DoNotPayRebateFunc(var DocumentDonotPayRebateIn: Boolean; DocumentTypeIn: Option Invoice,"Credit Memo"; DocumentNoIn: Code[20]): Boolean
     var
         RebateUserSetup: Record "AQD Customer Rebate User Setup";
         PermissionError: Label 'You do not have the permission to update Do Not Pay Rebate';
@@ -241,7 +237,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         end;
 
         RebateDocEntry.Reset;
-        RebateDocEntry.SetRange("Rebate Code", RebateCodeIn);
         if DocumentTypeIn = DocumentTypeIn::Invoice then
             RebateDocEntry.SetRange("Document Type", RebateDocEntry."Document Type"::Invoice)
         else
@@ -362,7 +357,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         LocalSalesCrMemoHeader: Record "Sales Cr.Memo Header";
     begin
         SalesInvoiceHeader.Reset;
-        SalesInvoiceHeader.SetCurrentKey("Sell-to Customer No.", "AQD Rebate Vendor No", "Posting Date");
+        SalesInvoiceHeader.SetCurrentKey("Sell-to Customer No.", "Posting Date");
         SalesInvoiceHeader.SetRange("Sell-to Customer No.", CustomerIn."No.");
         SalesInvoiceHeader.SetRange("AQD Do Not Pay Rebate", false);
         SalesInvoiceHeader.SetRange("AQD Cust Rebate Entry Created", false);
@@ -374,7 +369,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                 SkipRecord := false;
 
                 if CustomerIn."AQD Rebate Payment Method" = CustomerIn."AQD Rebate Payment Method"::Check then
-                    if not Vendor.Get(SalesInvoiceHeader."AQD Rebate Vendor No") then
+                    if not Vendor.Get(CustomerIn."AQD Cust Rebate Vendor No") then
                         SkipRecord := true;
 
                 if IsPayRebateOnlyOnPaidInvoices() then begin
@@ -383,7 +378,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                         SkipRecord := true;
                 end;
 
-                //if SalesInvoiceHeader."AQD Rebate %" = 0 then
                 IF NOT IsRebataEnabledLineExist(SourceDocumentType::Invoice, SalesInvoiceHeader, LocalSalesCrMemoHeader) THEN
                     SkipRecord := true;
 
@@ -423,7 +417,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
     begin
         if CustomerIn."AQD Rebate Payment Method" = CustomerIn."AQD Rebate Payment Method"::Check then begin
             Clear(Vendor);
-            Vendor.Get(SalesInvoiceHeader."AQD Rebate Vendor No");
+            Vendor.Get(CustomerIn."AQD Cust Rebate Vendor No");
             if Vendor."AQD Cust Rbt Vendor Type" <> Vendor."AQD Cust Rbt Vendor Type"::"Rebate Vendor" then
                 Error(VendorTypeError, Vendor."AQD Cust Rbt Vendor Type");
         end;
@@ -472,7 +466,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         LocalSalesInvoiceHeader: Record "Sales Invoice Header";
     begin
         SalesCrMemoHeader.Reset;
-        SalesCrMemoHeader.SetCurrentKey("Sell-to Customer No.", "AQD Rebate Vendor No", "Posting Date");
+        SalesCrMemoHeader.SetCurrentKey("Sell-to Customer No.", "Posting Date");
         SalesCrMemoHeader.SetRange("Sell-to Customer No.", CustomerIn."No.");
         SalesCrMemoHeader.SetRange("AQD Do Not Pay Rebate", false);
         SalesCrMemoHeader.SetRange("AQD Rebate Entry Created", false);
@@ -484,7 +478,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                 SkipRecord := false;
 
                 if CustomerIn."AQD Rebate Payment Method" = CustomerIn."AQD Rebate Payment Method"::Check then
-                    if not Vendor.Get(SalesCrMemoHeader."AQD Rebate Vendor No") then
+                    if not Vendor.Get(CustomerIn."AQD Cust Rebate Vendor No") then
                         SkipRecord := true;
 
                 if IsPayRebateOnlyOnPaidInvoices() then begin
@@ -532,7 +526,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
     begin
         if CustomerIn."AQD Rebate Payment Method" = CustomerIn."AQD Rebate Payment Method"::Check then begin
             Clear(Vendor);
-            Vendor.Get(SalesCrMHeaderIn."AQD Rebate Vendor No");
+            Vendor.Get(CustomerIn."AQD Cust Rebate Vendor No");
             Vendor.TestField("AQD Cust Rbt Vendor Type", Vendor."AQD Cust Rbt Vendor Type"::"Rebate Vendor");
         end;
 
@@ -1233,20 +1227,8 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         CheckInvoiceRebateValidation(Rec, xRec, CurrFieldNo);
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Sales Invoice Header", 'OnAfterValidateEvent', 'AQD Rebate Vendor No', true, false)]
-    local procedure Table112_SalesInvoiceHeader_RebateVendorNo_OnValidate(var Rec: Record "Sales Invoice Header"; var xRec: Record "Sales Invoice Header"; CurrFieldNo: Integer)
-    begin
-        CheckInvoiceRebateValidation(Rec, xRec, CurrFieldNo);
-    end;
-
     [EventSubscriber(ObjectType::Table, Database::"Sales Cr.Memo Header", 'OnAfterValidateEvent', 'AQD Do Not Pay Rebate', true, false)]
     local procedure Table114_SalesCrMemoHeader_DoNotPayRebate_OnValidate(var Rec: Record "Sales Cr.Memo Header"; var xRec: Record "Sales Cr.Memo Header"; CurrFieldNo: Integer)
-    begin
-        CheckCrMemoRebateValidation(Rec, xRec, CurrFieldNo);
-    end;
-
-    [EventSubscriber(ObjectType::Table, Database::"Sales Cr.Memo Header", 'OnAfterValidateEvent', 'AQD Rebate Vendor No', true, false)]
-    local procedure Table114_SalesCrMemoHeader_RebateVendorNo_OnValidate(var Rec: Record "Sales Cr.Memo Header"; var xRec: Record "Sales Cr.Memo Header"; CurrFieldNo: Integer)
     begin
         CheckCrMemoRebateValidation(Rec, xRec, CurrFieldNo);
     end;
@@ -1267,7 +1249,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
 
         RebateDocumentEntry.Reset;
         if LocalCustomer."AQD Rebate Payment Method" = LocalCustomer."AQD Rebate Payment Method"::Check then
-            RebateDocumentEntry.SetRange("Rebate Code", xRec."AQD Rebate Vendor No")
+            RebateDocumentEntry.SetRange("Rebate Code", LocalCustomer."AQD Cust Rebate Vendor No")
         else
             if LocalCustomer."AQD Rebate Payment Method" = LocalCustomer."AQD Rebate Payment Method"::"Credit Memo" then
                 RebateDocumentEntry.SetRange("Rebate Code", Rec."Sell-to Customer No.");
@@ -1303,7 +1285,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
 
         RebateDocumentEntry.Reset;
         if LocalCustomer."AQD Rebate Payment Method" = LocalCustomer."AQD Rebate Payment Method"::Check then
-            RebateDocumentEntry.SetRange("Rebate Code", xRec."AQD Rebate Vendor No")
+            RebateDocumentEntry.SetRange("Rebate Code", LocalCustomer."AQD Cust Rebate Vendor No")
         else
             if LocalCustomer."AQD Rebate Payment Method" = LocalCustomer."AQD Rebate Payment Method"::"Credit Memo" then
                 RebateDocumentEntry.SetRange("Rebate Code", Rec."Sell-to Customer No.");

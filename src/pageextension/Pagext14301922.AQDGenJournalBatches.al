@@ -4,7 +4,7 @@ pageextension 14301922 "AQD Gen. Journal Batches" extends "General Journal Batch
     {
         addafter("Bank Statement Import Format")
         {
-            field("AQD AER Rebate"; Rec."AQD Customer Rebate")
+            field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
             {
                 ApplicationArea = All;
             }

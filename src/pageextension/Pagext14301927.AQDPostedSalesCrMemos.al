@@ -10,22 +10,22 @@ pageextension 14301927 "AQDCustRbt PostedSalesCrMemos" extends "Posted Sales Cre
                 Image = StopPayment;
                 ApplicationArea = All;
             }
-            action("AQD Update Rebate")
-            {
-                ApplicationArea = All;
-                Caption = 'Update Rebate';
-                Image = EditAdjustments;
-                RunObject = Page "AQD Edit CrMemo Rebate";
-                RunPageLink = "No." = FIELD("No.");
-            }
+            // action("AQD Update Rebate")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Update Rebate';
+            //     Image = EditAdjustments;
+            //     RunObject = Page "AQD Edit CrMemo Cust Rebate";
+            //     RunPageLink = "No." = FIELD("No.");
+            // }
         }
         addlast(Promoted)
         {
-            group("AQD Acumens Claims & Rebates")
+            group("Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Claims & Rebates';
+                Caption = 'Acumens Customer Rebates & Claims';
                 actionref("AQD DoNotPayRebate_AER"; "AQD DoNotPayRebate") { }
-                actionref("AQD UpdateRebate_AER"; "AQD Update Rebate") { }
+                //actionref("AQD UpdateRebate_AER"; "AQD Update Rebate") { }
             }
         }
     }

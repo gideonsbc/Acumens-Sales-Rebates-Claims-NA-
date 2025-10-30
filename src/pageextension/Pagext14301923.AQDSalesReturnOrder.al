@@ -4,18 +4,10 @@ pageextension 14301923 "AQD Sales Return Order" extends "Sales Return Order"
     {
         addafter("Shipping and Billing")
         {
-            group("AQD Rebate")
+            group("Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Claims & Rebates';
+                Caption = 'Acumens Customer Rebates & Claims';
                 field("AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Rebate")
-                {
-                    ApplicationArea = All;
-                }
-                // field("AQD Rebate %"; Rec."AQD Rebate %")
-                // {
-                //     ApplicationArea = All;
-                // }
-                field("AQD Rebate Vendor No"; Rec."AQD Rebate Vendor No")
                 {
                     ApplicationArea = All;
                 }

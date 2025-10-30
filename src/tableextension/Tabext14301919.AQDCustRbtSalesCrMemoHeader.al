@@ -8,12 +8,6 @@ tableextension 14301919 "AQD CustRbt SalesCrMemoHdr Ext" extends "Sales Cr.Memo 
             Editable = false;
             DataClassification = CustomerContent;
         }
-        field(14301920; "AQD Rebate Vendor No"; Code[20])
-        {
-            Caption = 'Rebate Vendor No.';
-            TableRelation = Vendor WHERE("AQD Cust Rbt Vendor Type" = CONST("Rebate Vendor"));
-            DataClassification = CustomerContent;
-        }
         field(14301930; "AQD Rebate Entry Created"; Boolean)
         {
             Caption = 'Rebate Entry Created';

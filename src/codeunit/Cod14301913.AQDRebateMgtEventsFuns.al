@@ -105,22 +105,6 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
         Rec."AQD Rebate Payment Method" := RebateSetup."Def. Rebate Payment Method";
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterSetFieldsBilltoCustomer', '', true, false)]
-    local procedure Table36_SalesHeader_OnAfterSetFieldsBilltoCustomer(var SalesHeader: Record "Sales Header"; Customer: Record Customer)
-    begin
-        UpdateSalespersonRebateInfo(SalesHeader, Customer);
-    end;
-
-    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterValidateEvent', 'Bill-to Customer No.', true, false)]
-    local procedure Table36_SalesHeader_BilltoCustomerNo(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
-    var
-        CustomerRec: Record Customer;
-    begin
-        if not CustomerRec.Get(Rec."Sell-to Customer No.") then
-            CustomerRec.Init;
-        UpdateSalespersonRebateInfo(Rec, CustomerRec);
-    end;
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::GenJnlManagement, 'OnBeforeLookupName', '', true, false)]
     local procedure Cod230_GenJnlManagement_OnBeforeLookupName(var GenJnlBatch: Record "Gen. Journal Batch")
     begin
@@ -386,12 +370,6 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
             END;
         END;
     END;
-
-    local procedure UpdateSalespersonRebateInfo(var SalesHeader: Record "Sales Header"; Customer: Record Customer)
-    begin
-        //SalesHeader."AQD Rebate %" := Customer."AQD Rebate %";
-        SalesHeader."AQD Rebate Vendor No" := Customer."AQD Cust Rebate Vendor No";
-    end;
 
     procedure ShowDocument(RebateJnlLine: Record "AQD Cust Rebate Journal Line")
     var

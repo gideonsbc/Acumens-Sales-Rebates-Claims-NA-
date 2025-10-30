@@ -1,105 +1,101 @@
-page 14301922 "AQD Edit CrMemo Rebate"
-{
-    ApplicationArea = All;
-    Caption = 'Edit Credit Memo Rebate';
-    DelayedInsert = false;
-    DeleteAllowed = false;
-    InsertAllowed = false;
-    PageType = Card;
-    Permissions = TableData "Sales Cr.Memo Header" = rm;
-    RefreshOnActivate = true;
-    ShowFilter = false;
-    SourceTable = "Sales Cr.Memo Header";
+// page 14301922 "AQD Edit CrMemo Cust Rebate"
+// {
+//     ApplicationArea = All;
+//     Caption = 'Edit Credit Memo Customer Rebate';
+//     DelayedInsert = false;
+//     DeleteAllowed = false;
+//     InsertAllowed = false;
+//     PageType = Card;
+//     Permissions = TableData "Sales Cr.Memo Header" = rm;
+//     RefreshOnActivate = true;
+//     ShowFilter = false;
+//     SourceTable = "Sales Cr.Memo Header";
 
-    layout
-    {
-        area(content)
-        {
-            group(General)
-            {
-                field("No."; Rec."No.")
-                {
-                    ApplicationArea = Basic, Suite;
-                    Editable = false;
-                    Importance = Promoted;
-                    ToolTip = 'Specifies the posted invoice number.';
-                }
-                field("Sell-to Customer Name"; Rec."Sell-to Customer Name")
-                {
-                    ApplicationArea = Basic, Suite;
-                    Caption = 'Customer';
-                    Editable = false;
-                    Importance = Promoted;
-                    TableRelation = Customer.Name;
-                    ToolTip = 'Specifies the name of the customer that you shipped the items on the invoice to.';
-                }
-                field("Posting Date"; Rec."Posting Date")
-                {
-                    ApplicationArea = Basic, Suite;
-                    Editable = false;
-                    ToolTip = 'Specifies the date on which the invoice was posted.';
-                }
-                field("Return Order No."; Rec."Return Order No.")
-                {
-                    ApplicationArea = Basic, Suite;
-                    Editable = false;
-                    Importance = Promoted;
-                    ToolTip = 'Specifies the number of the sales order that this invoice was posted from.';
-                }
-                field("External Document No."; Rec."External Document No.")
-                {
-                    ApplicationArea = Basic, Suite;
-                    Editable = false;
-                    Importance = Additional;
-                    ToolTip = 'Specifies the external document number that is entered on the sales header that this line was posted from.';
-                }
-                field("Salesperson Code"; Rec."Salesperson Code")
-                {
-                    ApplicationArea = Suite;
-                    Editable = false;
-                    Importance = Additional;
-                    ToolTip = 'Specifies which salesperson is associated with the invoice.';
-                }
-                field("AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Rebate")
-                {
-                    Editable = Rec."AQD Do Not Pay Rebate";
-                    ApplicationArea = All;
-                }
-                field("AQD Rebate Vendor No"; Rec."AQD Rebate Vendor No")
-                {
-                    ApplicationArea = All;
-                }
-                field("AQD Rebate Entry Created"; Rec."AQD Rebate Entry Created")
-                {
-                    ApplicationArea = All;
-                }
-                field("AQD Rebate Last Changed By"; Rec."AQD Rebate Last Changed By")
-                {
-                    ApplicationArea = All;
-                }
-                field("AQD Rebate LastChangd DateTime"; Rec."AQD Rebate LastChangd DateTime")
-                {
-                    ApplicationArea = All;
-                }
-            }
-        }
-    }
+//     layout
+//     {
+//         area(content)
+//         {
+//             group(General)
+//             {
+//                 field("No."; Rec."No.")
+//                 {
+//                     ApplicationArea = Basic, Suite;
+//                     Editable = false;
+//                     Importance = Promoted;
+//                     ToolTip = 'Specifies the posted invoice number.';
+//                 }
+//                 field("Sell-to Customer Name"; Rec."Sell-to Customer Name")
+//                 {
+//                     ApplicationArea = Basic, Suite;
+//                     Caption = 'Customer';
+//                     Editable = false;
+//                     Importance = Promoted;
+//                     TableRelation = Customer.Name;
+//                     ToolTip = 'Specifies the name of the customer that you shipped the items on the invoice to.';
+//                 }
+//                 field("Posting Date"; Rec."Posting Date")
+//                 {
+//                     ApplicationArea = Basic, Suite;
+//                     Editable = false;
+//                     ToolTip = 'Specifies the date on which the invoice was posted.';
+//                 }
+//                 field("Return Order No."; Rec."Return Order No.")
+//                 {
+//                     ApplicationArea = Basic, Suite;
+//                     Editable = false;
+//                     Importance = Promoted;
+//                     ToolTip = 'Specifies the number of the sales order that this invoice was posted from.';
+//                 }
+//                 field("External Document No."; Rec."External Document No.")
+//                 {
+//                     ApplicationArea = Basic, Suite;
+//                     Editable = false;
+//                     Importance = Additional;
+//                     ToolTip = 'Specifies the external document number that is entered on the sales header that this line was posted from.';
+//                 }
+//                 field("Salesperson Code"; Rec."Salesperson Code")
+//                 {
+//                     ApplicationArea = Suite;
+//                     Editable = false;
+//                     Importance = Additional;
+//                     ToolTip = 'Specifies which salesperson is associated with the invoice.';
+//                 }
+//                 field("AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Rebate")
+//                 {
+//                     Editable = Rec."AQD Do Not Pay Rebate";
+//                     ApplicationArea = All;
+//                 }
+//                 field("AQD Rebate Entry Created"; Rec."AQD Rebate Entry Created")
+//                 {
+//                     ApplicationArea = All;
+//                 }
+//                 field("AQD Rebate Last Changed By"; Rec."AQD Rebate Last Changed By")
+//                 {
+//                     ApplicationArea = All;
+//                 }
+//                 field("AQD Rebate LastChangd DateTime"; Rec."AQD Rebate LastChangd DateTime")
+//                 {
+//                     ApplicationArea = All;
+//                 }
+//             }
+//         }
+//     }
 
-    actions
-    {
-    }
+//     actions
+//     {
+//     }
 
-    trigger OnOpenPage()
-    begin
-        RebateUserSetup.Get(UserId);
+//     trigger OnOpenPage()
+//     begin
+//         RebateUserSetup.Get(UserId);
 
-        IsPageEditable := RebateUserSetup."Rebate Role" in [RebateUserSetup."Rebate Role"::"Sales Manager", RebateUserSetup."Rebate Role"::Admin];
-        CurrPage.Editable(IsPageEditable);
-    end;
+//         IsPageEditable := RebateUserSetup."Rebate Role" in [RebateUserSetup."Rebate Role"::"Sales Manager", RebateUserSetup."Rebate Role"::Admin];
+//         CurrPage.Editable(IsPageEditable);
+//     end;
 
-    var
-        RebateUserSetup: Record "AQD Customer Rebate User Setup";
+//     var
+//         RebateUserSetup: Record "AQD Customer Rebate User Setup";
 
-        IsPageEditable: Boolean;
-}
+//         IsPageEditable: Boolean;
+// }
 
