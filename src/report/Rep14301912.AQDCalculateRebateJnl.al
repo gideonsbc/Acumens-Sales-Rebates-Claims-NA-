@@ -1,6 +1,6 @@
 report 14301912 "AQD Calculate Cust Rebate Jnl"
 {
-    Caption = 'Calculate Rebate Rebate';
+    Caption = 'Calculate Customer Rebate';
     ProcessingOnly = true;
     ApplicationArea = All;
 
