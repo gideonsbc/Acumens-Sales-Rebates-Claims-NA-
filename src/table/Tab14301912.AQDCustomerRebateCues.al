@@ -23,13 +23,13 @@ table 14301912 "AQD Customer Rebate Cues"
             FieldClass = FlowField;
             Editable = false;
         }
-        field(22; "Customer Rebate Register"; Integer)
-        {
-            Caption = 'Customer Rebate Register';
-            CalcFormula = count("AQD Customer Rebate Register");
-            FieldClass = FlowField;
-            Editable = false;
-        }
+        // field(22; "Customer Rebate Register"; Integer)
+        // {
+        //     Caption = 'Customer Rebate Register';
+        //     CalcFormula = count("AQD Customer Rebate Register");
+        //     FieldClass = FlowField;
+        //     Editable = false;
+        // }
         field(50; "Date Filter"; Date)
         {
             Caption = 'Date Filter';

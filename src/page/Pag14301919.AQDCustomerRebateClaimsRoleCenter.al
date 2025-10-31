@@ -105,7 +105,7 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Caption = 'Customer Item Rebate Matrix';
                 ApplicationArea = All;
                 Image = PurchaseCreditMemo;
-                RunObject = Page "AQD Rebate Customer Types";
+                RunObject = Page "AQD Item Cust Rebate Matrix";
             }
             action("Sales Orders")
             {
@@ -198,34 +198,34 @@ page 14301919 "AQD Cust Rebate & Claims RC"
             }
             group(Journals)
             {
-                action("Customer Rebate Journal")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Customer Rebate Journal';
-                    Image = ConsumptionJournal;
-                    RunObject = Page "AQD Customer Rebate Journal";
-                }
-                action("Rebate Purchase Journal")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Rebate Purchase Journal';
-                    Image = Purchase;
-                    RunObject = Page "AQD Rebate Purch. Journal";
-                }
-                action("Rebate Payment Journal")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Rebate Payment Journal';
-                    Image = PaymentJournal;
-                    RunObject = Page "AQD Rebate Payment Journal";
-                }
-                action("Rebate Sales Journal")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Rebate Sales Journal';
-                    Image = Sales;
-                    RunObject = Page "AQD Rebate Sales Journal";
-                }
+                // action("Customer Rebate Journal")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Customer Rebate Journal';
+                //     Image = ConsumptionJournal;
+                //     RunObject = Page "AQD Customer Rebate Journal";
+                // }
+                // action("Rebate Purchase Journal")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Rebate Purchase Journal';
+                //     Image = Purchase;
+                //     RunObject = Page "AQD Rebate Purch. Journal";
+                // }
+                // action("Rebate Payment Journal")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Rebate Payment Journal';
+                //     Image = PaymentJournal;
+                //     RunObject = Page "AQD Rebate Payment Journal";
+                // }
+                // action("Rebate Sales Journal")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Rebate Sales Journal';
+                //     Image = Sales;
+                //     RunObject = Page "AQD Rebate Sales Journal";
+                // }
             }
             group(Reports)
             {
@@ -284,13 +284,6 @@ page 14301919 "AQD Cust Rebate & Claims RC"
             group(History)
             {
                 Caption = 'History';
-                action("Archived RebateRegister")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Customer Rebate Register';
-                    Image = Register;
-                    RunObject = Page "AQD Customer Rebate Register";
-                }
                 action("Posted Customer Rebate Batches")
                 {
                     ApplicationArea = All;

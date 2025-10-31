@@ -1,7 +1,15 @@
-pageextension 14301921 "AQD Sales Credit Memo" extends "Sales Credit Memo"
+pageextension 14301921 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Memo"
 {
     layout
     {
+        addafter("Document Date")
+        {
+            field("AQD Customer Rebate OrderDate"; Rec."AQD Customer Rebate Order Date")
+            {
+                ApplicationArea = All;
+            }
+        }
+
         addafter(Billing)
         {
             group("Acumens Customer Rebate and Claims")
@@ -11,6 +19,10 @@ pageextension 14301921 "AQD Sales Credit Memo" extends "Sales Credit Memo"
                 {
                     Caption = 'Rebate';
                     field("AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Rebate")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("AQD Customer Rebate Order Date"; Rec."AQD Customer Rebate Order Date")
                     {
                         ApplicationArea = All;
                     }

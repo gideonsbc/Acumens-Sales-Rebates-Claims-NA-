@@ -1,13 +1,25 @@
-pageextension 14301923 "AQD Sales Return Order" extends "Sales Return Order"
+pageextension 14301922 "AQD Sales Return Order" extends "Sales Return Order"
 {
     layout
     {
+        addafter("Order Date")
+        {
+            field("AQD Customer Rebate OrderDate"; Rec."AQD Customer Rebate Order Date")
+            {
+                ApplicationArea = All;
+            }
+        }
+
         addafter("Shipping and Billing")
         {
             group("Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
                 field("AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Rebate")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Customer Rebate Order Date"; Rec."AQD Customer Rebate Order Date")
                 {
                     ApplicationArea = All;
                 }

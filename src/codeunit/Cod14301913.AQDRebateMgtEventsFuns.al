@@ -50,6 +50,12 @@ codeunit 14301913 "AQD Rebate Mgt EventsFunctions"
         Rec."AQD Customer Rebate Enabled" := RebateSetup."Item Rebate Enabled";
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterInitRecord, '', FALSE, FALSE)]
+    local procedure Tab36_SalesHeader_OnAfterInitRecord(var SalesHeader: Record "Sales Header")
+    begin
+        SalesHeader."AQD Customer Rebate Order Date" := SalesHeader."Order Date";
+    end;
+
     [EventSubscriber(ObjectType::Table, Database::Resource, 'OnBeforeInsertEvent', '', true, false)]
     local procedure Table156_Resource_OnBeforeInsert(var Rec: Record Resource; RunTrigger: Boolean)
     var

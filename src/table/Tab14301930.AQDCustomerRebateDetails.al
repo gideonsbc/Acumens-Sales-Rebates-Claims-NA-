@@ -81,16 +81,21 @@ table 14301930 "AQD Customer Rebate Details"
             Caption = 'Unit Price';
             Editable = false;
         }
+        field(104; "Profit %"; Decimal)
+        {
+            Caption = 'Profit %';
+            DecimalPlaces = 2 : 2;
+        }
+        field(105; "Profit Amount"; Decimal)
+        {
+            BlankZero = true;
+            Caption = 'Profit Amount';
+        }
         field(110; "Rebate Type"; Option)
         {
             Caption = 'Rebate Type';
             OptionCaption = ' ,Per Quantity,Percentage';
             OptionMembers = " ","Per Quantity",Percentage;
-            Editable = false;
-        }
-        field(120; "Rebate Amount"; Decimal)
-        {
-            Caption = 'Rebate Amount';
             Editable = false;
         }
         field(125; "Rebate %"; Decimal)

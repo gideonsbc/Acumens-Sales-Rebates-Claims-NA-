@@ -35,7 +35,7 @@ report 14301915 "AQD Cust Rebate Remittance"
                     CurrReport.Skip;
 
                 repeat
-                    RebateRegister.Get(InvoiceVendorLedgerEntry."AQD Cust Rebate Register No.");
+                    //RebateRegister.Get(InvoiceVendorLedgerEntry."AQD Cust Rebate Register No.");
 
                     RebateDocSummary.Reset;
                     RebateDocSummary.SetCurrentKey("Rebate Register No.", "Vendor Ledger Entry No.");
@@ -46,8 +46,8 @@ report 14301915 "AQD Cust Rebate Remittance"
                             TmpRebateDocSummary.Init;
                             TmpRebateDocSummary := RebateDocSummary;
                             TmpRebateDocSummary."Check No." := "Document No.";
-                            TmpRebateDocSummary."Order Date" := RebateRegister."AQD Start Date";
-                            TmpRebateDocSummary."Rebate Approved Date" := RebateRegister."AQD End Date";
+                            //TmpRebateDocSummary."Order Date" := RebateRegister."AQD Start Date";
+                            //TmpRebateDocSummary."Rebate Approved Date" := RebateRegister."AQD End Date";
                             if TmpRebateDocSummary.Insert then;
                         until RebateDocSummary.Next = 0;
                     end;
@@ -67,39 +67,39 @@ report 14301915 "AQD Cust Rebate Remittance"
                 SetRange("Document Type", "Document Type"::Payment);
             end;
         }
-        dataitem("AQD Rebate Register"; "AQD Customer Rebate Register")
-        {
-            DataItemTableView = SORTING("AQD Entry No.");
+        // dataitem("AQD Rebate Register"; "AQD Customer Rebate Register")
+        // {
+        //     DataItemTableView = SORTING("AQD Entry No.");
 
-            trigger OnAfterGetRecord()
-            begin
-                CalcFields("AQD Status");
-                TestField("AQD Status", "AQD Status"::Paid);
+        //     trigger OnAfterGetRecord()
+        //     begin
+        //         CalcFields("AQD Status");
+        //         TestField("AQD Status", "AQD Status"::Paid);
 
-                RebateDocSummary.Reset;
-                RebateDocSummary.SetRange("Rebate Register No.", "AQD Entry No.");
-                if RebateDocSummary.FindFirst then begin
-                    repeat
-                        TmpRebateDocSummary.Init;
-                        TmpRebateDocSummary := RebateDocSummary;
-                        TmpRebateDocSummary."Check No." := "AQD Payment Ref. No.";
-                        TmpRebateDocSummary."Order Date" := "AQD Start Date";
-                        TmpRebateDocSummary."Rebate Approved Date" := "AQD End Date";
-                        if TmpRebateDocSummary.Insert then;
-                    until RebateDocSummary.Next = 0;
-                end;
-            end;
+        //         RebateDocSummary.Reset;
+        //         RebateDocSummary.SetRange("Rebate Register No.", "AQD Entry No.");
+        //         if RebateDocSummary.FindFirst then begin
+        //             repeat
+        //                 TmpRebateDocSummary.Init;
+        //                 TmpRebateDocSummary := RebateDocSummary;
+        //                 TmpRebateDocSummary."Check No." := "AQD Payment Ref. No.";
+        //                 TmpRebateDocSummary."Order Date" := "AQD Start Date";
+        //                 TmpRebateDocSummary."Rebate Approved Date" := "AQD End Date";
+        //                 if TmpRebateDocSummary.Insert then;
+        //             until RebateDocSummary.Next = 0;
+        //         end;
+        //     end;
 
-            trigger OnPreDataItem()
-            begin
-                if ReportRunFrom <> ReportRunFrom::"Rebate Register" then
-                    CurrReport.Break;
+        //     trigger OnPreDataItem()
+        //     begin
+        //         if ReportRunFrom <> ReportRunFrom::"Rebate Register" then
+        //             CurrReport.Break;
 
-                TmpRebateDocSummary.Reset;
-                if TmpRebateDocSummary.IsTemporary then
-                    TmpRebateDocSummary.DeleteAll;
-            end;
-        }
+        //         TmpRebateDocSummary.Reset;
+        //         if TmpRebateDocSummary.IsTemporary then
+        //             TmpRebateDocSummary.DeleteAll;
+        //     end;
+        // }
         dataitem(PrintRebateDocEntry; "Integer")
         {
             DataItemTableView = SORTING(Number) WHERE(Number = FILTER(1 ..));
@@ -273,7 +273,7 @@ report 14301915 "AQD Cust Rebate Remittance"
         Vendor: Record Vendor;
         Customer: Record Customer;
         InvoiceVendorLedgerEntry: Record "Vendor Ledger Entry";
-        RebateRegister: Record "AQD Customer Rebate Register";
+        //RebateRegister: Record "AQD Customer Rebate Register";
         RebateDocSummary: Record "AQD Cust Rebate Document Entry";
         TmpRebateDocSummary: Record "AQD Cust Rebate Document Entry" temporary;
         FormatAddress: Codeunit "Format Address";

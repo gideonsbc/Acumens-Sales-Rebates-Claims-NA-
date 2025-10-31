@@ -1,7 +1,14 @@
-pageextension 14301920 "AQD Sales Invoice" extends "Sales Invoice"
+pageextension 14301919 "AQD CustRbt Sales Order" extends "Sales Order"
 {
     layout
     {
+        addafter("Order Date")
+        {
+            field("AQD Customer Rebate OrderDate"; Rec."AQD Customer Rebate Order Date")
+            {
+                ApplicationArea = All;
+            }
+        }
         addafter("Invoice Details")
         {
             group("Acumens Customer Rebate and Claims")
@@ -11,6 +18,10 @@ pageextension 14301920 "AQD Sales Invoice" extends "Sales Invoice"
                 {
                     Caption = 'Rebate';
                     field("AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Rebate")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("AQD Customer Rebate Order Date"; Rec."AQD Customer Rebate Order Date")
                     {
                         ApplicationArea = All;
                     }
@@ -27,3 +38,4 @@ pageextension 14301920 "AQD Sales Invoice" extends "Sales Invoice"
         }
     }
 }
+

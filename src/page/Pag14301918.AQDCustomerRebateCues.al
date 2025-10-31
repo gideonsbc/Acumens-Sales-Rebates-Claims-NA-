@@ -24,36 +24,7 @@ page 14301918 "AQD Customer Rebate Cues"
                     ApplicationArea = All;
                     DrillDownPageId = "AQD Customer Rebate Entries";
                 }
-                field("Rebate Register"; Rec."Customer Rebate Register")
-                {
-                    Caption = 'Customer Rebate Register';
-                    ApplicationArea = All;
-                    DrillDownPageId = "AQD Customer Rebate Register";
-                }
             }
-            // cuegroup("Vendor Rebate Activities")
-            // {
-            //     Caption = 'Vendor';
-            //     field("Customer Rebates"; Rec."Customer Rebates")
-            //     {
-            //         Caption = 'Customer Rebates';
-            //         ApplicationArea = All;
-            //         DrillDownPageId = "AQD Customer Rebates";
-            //     }
-            //     field("Posted Customer Rebates"; Rec."Posted Customer Rebates")
-            //     {
-            //         Caption = 'Posted Customer Rebates';
-            //         ApplicationArea = All;
-            //         DrillDownPageId = "AQD Posted Customer Rebates";
-            //     }
-            //     field("Posted Customer Rebate Details"; Rec."Posted Customer Rebate Details")
-            //     {
-            //         Caption = 'Posted Customer Rebate Details';
-            //         ApplicationArea = All;
-            //         DrillDownPageId = "AQD Posted Cust Rebate Details";
-            //         Visible = false;
-            //     }
-            // }
         }
     }
     trigger OnOpenPage()
