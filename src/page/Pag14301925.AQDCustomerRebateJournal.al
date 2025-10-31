@@ -174,7 +174,7 @@ page 14301925 "AQD Customer Rebate Journal"
 
                 trigger OnAction()
                 var
-                    RebateMgtEventsFuns: Codeunit "AQD Rebate Mgt Events&Funs";
+                    RebateMgtEventsFuns: Codeunit "AQD Rebate Mgt EventsFunctions";
                 begin
                     Clear(RebateMgtEventsFuns);
                     RebateMgtEventsFuns.ShowDocument(Rec);
@@ -247,7 +247,7 @@ page 14301925 "AQD Customer Rebate Journal"
 
     local procedure UpdateBalance()
     var
-        RebateMgtEventsFuns: Codeunit "AQD Rebate Mgt Events&Funs";
+        RebateMgtEventsFuns: Codeunit "AQD Rebate Mgt EventsFunctions";
     begin
         RebateMgtEventsFuns.CalcBalance(Rec, TotalBaseAmount, TotalProfitAmount, TotalRebateAmount);
     end;

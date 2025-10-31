@@ -71,14 +71,14 @@ table 14301930 "AQD Customer Rebate Details"
             Caption = 'Quantity';
             Editable = false;
         }
-        field(90; "Direct Unit Cost"; Decimal)
-        {
-            Caption = 'Direct Unit Cost';
-            Editable = false;
-        }
-        field(100; "Unit Cost"; Decimal)
+        field(90; "Unit Cost"; Decimal)
         {
             Caption = 'Unit Cost';
+            Editable = false;
+        }
+        field(100; "Unit Price"; Decimal)
+        {
+            Caption = 'Unit Price';
             Editable = false;
         }
         field(110; "Rebate Type"; Option)
@@ -102,6 +102,15 @@ table 14301930 "AQD Customer Rebate Details"
         {
             Caption = 'Rebate Per Quantity';
             Editable = false;
+        }
+        field(140; "Rebate Order Date"; Date)
+        {
+            Caption = 'Rebate Order Date';
+            Editable = false;
+        }
+        field(145; "Posting Date"; Date)
+        {
+            Caption = 'Posting Date';
         }
         field(150; Amount; Decimal)
         {
@@ -187,14 +196,14 @@ table 14301930 "AQD Customer Rebate Details"
         {
             Caption = 'State';
         }
-        field(500; "Buy-from Vendor No."; Code[20])
+        field(500; "Sell-To Customer No."; Code[20])
         {
-            Caption = 'Buy-from Vendor No.';
+            Caption = 'Sell-To Customer No.';
             Editable = false;
         }
-        field(501; "Pay-to Vendor No."; Code[20])
+        field(501; "Bill-To Customer No."; Code[20])
         {
-            Caption = 'Pay-to Vendor No.';
+            Caption = 'Bill-To Customer No.';
             Editable = false;
         }
         field(560; "Rebate Status"; Enum "AQD Customer Rebate Status")

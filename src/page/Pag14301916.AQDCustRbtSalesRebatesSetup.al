@@ -5,7 +5,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
     DataCaptionExpression = GetCaption;
     DelayedInsert = true;
     PageType = List;
-    SourceTable = "AQD Sales Rebates Setup";
+    SourceTable = "AQD Sales Rebates Rate";
 
     layout
     {

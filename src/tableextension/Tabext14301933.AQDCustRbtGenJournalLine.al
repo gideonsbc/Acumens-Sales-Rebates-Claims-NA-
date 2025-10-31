@@ -1,4 +1,4 @@
-tableextension 14301931 "AQD CustRbt Gen. Jnl Line Ext" extends "Gen. Journal Line"
+tableextension 14301933 "AQD CustRbt Gen. Jnl Line Ext" extends "Gen. Journal Line"
 {
     fields
     {

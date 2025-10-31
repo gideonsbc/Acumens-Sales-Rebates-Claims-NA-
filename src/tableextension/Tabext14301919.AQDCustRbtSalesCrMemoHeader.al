@@ -2,9 +2,9 @@ tableextension 14301919 "AQD CustRbt SalesCrMemoHdr Ext" extends "Sales Cr.Memo 
 {
     fields
     {
-        field(14301910; "AQD Do Not Pay Rebate"; Boolean)
+        field(14301910; "AQD Do Not Pay Cust Rebate"; Boolean)
         {
-            Caption = 'Do Not Pay Rebate';
+            Caption = 'Do Not Pay Cust Rebate';
             Editable = false;
             DataClassification = CustomerContent;
         }
@@ -28,6 +28,15 @@ tableextension 14301919 "AQD CustRbt SalesCrMemoHdr Ext" extends "Sales Cr.Memo 
             TableRelation = "User Setup"."User ID";
             DataClassification = CustomerContent;
         }
+        field(14301960; "AQD Customer Rebate Status"; Enum "AQD Customer Rebate Status")
+        {
+            Caption = 'Customer Rebate Status';
+            DataClassification = CustomerContent;
+        }
+        field(14301970; "AQD Customer Rebate Order Date"; Date)
+        {
+            Caption = 'Rebate Order Date';
+            DataClassification = CustomerContent;
+        }
     }
 }
-

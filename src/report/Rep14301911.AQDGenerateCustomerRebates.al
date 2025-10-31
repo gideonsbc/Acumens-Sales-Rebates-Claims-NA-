@@ -9,15 +9,27 @@ report 14301911 "AQD Generate Customer Rebates"
         dataitem(Customer; Customer)
         {
             DataItemTableView = SORTING("No.") ORDER(Ascending) WHERE("AQD Enroll for Cust Rebate" = CONST(true));
-            RequestFilterFields = "No.";
+            RequestFilterFields = "No.", "Date Filter";
 
             trigger OnAfterGetRecord()
             begin
                 if GuiAllowed then
                     Window.Update(1, "No.");
 
+                Clear(DateArray);
+                DateArray[1] := Customer.GetRangeMin("Date Filter");
+                DateArray[2] := Customer.GetRangeMax("Date Filter");
+
+                //Summary
+                Clear(SummaryArray);
+                SummaryArray[1] := SellToCust;
+                SummaryArray[2] := RespCenter;
+                SummaryArray[3] := Location;
+                SummaryArray[4] := ShortDim1;
+                SummaryArray[5] := ShortDim2;
+
                 Clear(RebateCalculationMgt);
-                RebateCalculationMgt.CalculateRebate(Customer, false);
+                RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false);
             end;
 
             trigger OnPostDataItem()
@@ -40,6 +52,40 @@ report 14301911 "AQD Generate Customer Rebates"
 
         layout
         {
+            area(Content)
+            {
+                group("Create Rebate Summary By")
+                {
+                    Caption = 'Create Rebate Summary By';
+                    field(SellToCust; SellToCust)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Sell-To Customer No.';
+                    }
+                    field(RespCenter; RespCenter)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Responsibility Center';
+                    }
+                    field(Location; Location)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Location Code';
+                    }
+                    field(ShortDim1; ShortDim1)
+                    {
+                        ApplicationArea = All;
+                        CaptionClass = '1,2,1';
+                        Caption = 'Shortcut Dimension 1 Code';
+                    }
+                    field(ShortDim2; ShortDim2)
+                    {
+                        ApplicationArea = All;
+                        CaptionClass = '1,2,2';
+                        Caption = 'Shortcut Dimension 2 Code';
+                    }
+                }
+            }
         }
 
         actions
@@ -55,5 +101,14 @@ report 14301911 "AQD Generate Customer Rebates"
         RebateCalculationMgt: Codeunit "AQD Cust Rebate Calc Mgt";
         Text50001: Label 'Calculating Rebate for Customer No. #1########';
         Window: Dialog;
+        Location: Boolean;
+        ShortDim1: Boolean;
+        ShortDim2: Boolean;
+        SellToCust: Boolean;
+        RespCenter: Boolean;
+        SummaryArray: array[5] of Boolean;
+        StartPostingDate: Date;
+        EndPostingDate: Date;
+        DateArray: array[2] of Date;
 }
 

@@ -14,11 +14,11 @@ enum 14301914 "AQD Cust Rebate Document Type"
     {
         Caption = 'Credit Memo';
     }
-    value(4; Receipt)
+    value(4; Shipment)
     {
         Caption = 'Shipment';
     }
-    value(5; "Return Shipment")
+    value(5; "Return Receipt")
     {
         Caption = 'Return Receipt';
     }

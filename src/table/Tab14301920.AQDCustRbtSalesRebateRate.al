@@ -1,4 +1,4 @@
-table 14301920 "AQD Sales Rebates Setup"
+table 14301920 "AQD Sales Rebates Rate"
 {
     Caption = 'Sales Rebates Setup';
 

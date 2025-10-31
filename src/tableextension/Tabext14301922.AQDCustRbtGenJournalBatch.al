@@ -1,4 +1,4 @@
-tableextension 14301920 "AQD CustRbt Gen Jnl Batch Ext" extends "Gen. Journal Batch"
+tableextension 14301922 "AQD CustRbt Gen Jnl Batch Ext" extends "Gen. Journal Batch"
 {
     fields
     {

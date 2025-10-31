@@ -1,4 +1,4 @@
-tableextension 14301927 "AQD CustRbt PurchRcptHdr Ext" extends "Purch. Rcpt. Header"
+tableextension 14301931 "AQD CustRbt ReturnShptHdr Ext" extends "Return Shipment Header"
 {
     fields
     {

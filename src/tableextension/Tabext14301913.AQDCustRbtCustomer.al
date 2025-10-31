@@ -34,5 +34,10 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
             DataClassification = CustomerContent;
             TableRelation = "AQD Rebate Customer Type";
         }
+        field(14301960; "AQD Calculation Date"; Enum "AQD CustRebateCalculation Type")
+        {
+            Caption = 'Calculation Date';
+            DataClassification = CustomerContent;
+        }
     }
 }

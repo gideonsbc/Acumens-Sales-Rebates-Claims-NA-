@@ -31,6 +31,12 @@ pageextension 14301915 "AQD Customer Card" extends "Customer Card"
                         ApplicationArea = All;
                         Editable = (Rec."AQD Enroll for Cust Rebate") and (Rec."AQD Rebate Payment Method" = Rec."AQD Rebate Payment Method"::Check);
                     }
+                    field("AQD Calculation Date"; Rec."AQD Calculation Date")
+                    {
+                        ApplicationArea = All;
+                        Editable = Rec."AQD Enroll for Cust Rebate";
+                        Enabled = Rec."AQD Enroll for Cust Rebate";
+                    }
                 }
             }
         }

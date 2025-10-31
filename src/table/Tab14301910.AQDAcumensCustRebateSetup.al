@@ -129,7 +129,7 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
 
             trigger OnValidate()
             begin
-                IF Rec."Calculate Cust Rebate using" <> Rec."Calculate Cust Rebate using"::"Posted Receipt and Return Shipment" then
+                IF Rec."Calculate Cust Rebate using" <> Rec."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt" then
                     Rec."Pay Customer Rebate On" := Rec."Pay Customer Rebate On"::"All Invoices";
             end;
         }

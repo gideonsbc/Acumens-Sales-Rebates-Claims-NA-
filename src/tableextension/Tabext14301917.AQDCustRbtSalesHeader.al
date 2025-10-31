@@ -22,6 +22,11 @@ tableextension 14301917 "AQD CustRbt Sales Header Ext" extends "Sales Header"
             TableRelation = "User Setup"."User ID";
             DataClassification = CustomerContent;
         }
+        field(14301970; "AQD Customer Rebate Order Date"; Date)
+        {
+            Caption = 'Rebate Order Date';
+            DataClassification = CustomerContent;
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-tableextension 14301921 "AQD CustRbt Purchase Hdr Ext" extends "Purchase Header"
+tableextension 14301923 "AQD CustRbt Purchase Hdr Ext" extends "Purchase Header"
 {
     fields
     {

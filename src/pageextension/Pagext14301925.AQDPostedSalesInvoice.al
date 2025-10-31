@@ -12,7 +12,7 @@ pageextension 14301925 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                 group(Rebate)
                 {
                     Caption = 'Rebate';
-                    field("AQD AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Rebate")
+                    field("AQD AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Cust Rebate")
                     {
                         ApplicationArea = All;
                     }
@@ -25,6 +25,10 @@ pageextension 14301925 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                         ApplicationArea = All;
                     }
                     field("AQD Rebate LastChangd DateTime"; Rec."AQD CustRbt LastChangdDateTime")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("AQD Customer Rebate Status"; Rec."AQD Customer Rebate Status")
                     {
                         ApplicationArea = All;
                     }

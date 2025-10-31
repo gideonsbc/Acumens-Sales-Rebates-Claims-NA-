@@ -1,4 +1,4 @@
-tableextension 14301924 "AQD CustRbt Purch Inv Line Ext" extends "Purch. Inv. Line"
+tableextension 14301926 "AQD CustRbt Purch Inv Line Ext" extends "Purch. Inv. Line"
 {
     fields
     {

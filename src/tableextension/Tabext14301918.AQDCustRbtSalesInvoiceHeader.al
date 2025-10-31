@@ -2,9 +2,9 @@ tableextension 14301918 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
 {
     fields
     {
-        field(14301910; "AQD Do Not Pay Rebate"; Boolean)
+        field(14301910; "AQD Do Not Pay Cust Rebate"; Boolean)
         {
-            Caption = 'Do Not Pay Rebate';
+            Caption = 'Do Not Pay Cust Rebate';
             Editable = false;
             DataClassification = CustomerContent;
         }
@@ -26,6 +26,16 @@ tableextension 14301918 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
             Caption = 'Last Changed Date Time';
             Editable = false;
             TableRelation = "User Setup"."User ID";
+            DataClassification = CustomerContent;
+        }
+        field(14301960; "AQD Customer Rebate Status"; Enum "AQD Customer Rebate Status")
+        {
+            Caption = 'Customer Rebate Status';
+            DataClassification = CustomerContent;
+        }
+        field(14301970; "AQD Customer Rebate Order Date"; Date)
+        {
+            Caption = 'Rebate Order Date';
             DataClassification = CustomerContent;
         }
     }

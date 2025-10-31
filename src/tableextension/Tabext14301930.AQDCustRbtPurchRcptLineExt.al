@@ -1,4 +1,4 @@
-tableextension 14301926 "AQD CustRbt PurchCrMemoLineExt" extends "Purch. Cr. Memo Line"
+tableextension 14301930 "AQD CustRbt PurchRcptLineExt" extends "Purch. Rcpt. Line"
 {
     fields
     {

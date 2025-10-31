@@ -6,7 +6,7 @@ codeunit 14301912 "AQD Sales Rebate Calc. Mgt."
     end;
 
     var
-        TempSalesRebates: Record "AQD Sales Rebates Setup" temporary;
+        TempSalesRebates: Record "AQD Sales Rebates Rate" temporary;
         Item: Record Item;
         BillToCustomerNo: Code[20];
         //CustomerPriceGroup: Code[10];
@@ -58,7 +58,7 @@ codeunit 14301912 "AQD Sales Rebate Calc. Mgt."
         END;
 
         SalesRebateExists(BillToCustomerNo, RebateEntryIn."Rebate Item Category Code", ItemNo, VariantCode, UnitofMeasureCode, PostingDate);
-        CalcBestRebate(TempSalesRebates);
+        CalcBestSalesRebate(TempSalesRebates);
 
         RebateEntryIn."Rebate Type" := TempSalesRebates."Rebate Type";
         RebateEntryIn."Rebate %" := TempSalesRebates."Rebate %";
@@ -73,61 +73,61 @@ codeunit 14301912 "AQD Sales Rebate Calc. Mgt."
         EXIT(TempSalesRebates.FINDFIRST);
     end;
 
-    procedure FindSalesRebate(var ToSalesRebateSetup: Record "AQD Sales Rebates Setup" temporary; CustNo: Code[20]; CustPriceGrCode: Code[10]; ItemNo: Code[20]; VariantCode: Code[10]; UOM: Code[10]; StartingDate: Date)
+    procedure FindSalesRebate(var ToSalesRebateRate: Record "AQD Sales Rebates Rate" temporary; CustNo: Code[20]; CustPriceGrCode: Code[10]; ItemNo: Code[20]; VariantCode: Code[10]; UOM: Code[10]; StartingDate: Date)
     var
-        FromSalesRebate: Record "AQD Sales Rebates Setup";
+        FromSalesRebateRate: Record "AQD Sales Rebates Rate";
         TempTargetCampaignGr: Record "Campaign Target Group" temporary;
     begin
-        ToSalesRebateSetup.RESET;
-        IF ToSalesRebateSetup.ISTEMPORARY THEN
-            ToSalesRebateSetup.DELETEALL;
+        ToSalesRebateRate.RESET;
+        IF ToSalesRebateRate.ISTEMPORARY THEN
+            ToSalesRebateRate.DELETEALL;
 
-        FromSalesRebate.SETRANGE("No.", ItemNo);
-        FromSalesRebate.SETFILTER("Variant Code", '%1|%2', VariantCode, '');
-        FromSalesRebate.SETFILTER("Ending Date", '%1|>=%2', 0D, StartingDate);
+        FromSalesRebateRate.SETRANGE("No.", ItemNo);
+        FromSalesRebateRate.SETFILTER("Variant Code", '%1|%2', VariantCode, '');
+        FromSalesRebateRate.SETFILTER("Ending Date", '%1|>=%2', 0D, StartingDate);
         IF UOM <> '' THEN
-            FromSalesRebate.SETFILTER("Unit of Measure Code", '%1|%2', UOM, '');
-        FromSalesRebate.SETRANGE("Starting Date", 0D, StartingDate);
-        FromSalesRebate.SETRANGE("Customer Type", FromSalesRebate."Customer Type"::"All Customers");
-        FromSalesRebate.SETRANGE("Customer No.");
-        CopySalesRebateToSalesRebate(FromSalesRebate, ToSalesRebateSetup);
+            FromSalesRebateRate.SETFILTER("Unit of Measure Code", '%1|%2', UOM, '');
+        FromSalesRebateRate.SETRANGE("Starting Date", 0D, StartingDate);
+        FromSalesRebateRate.SETRANGE("Customer Type", FromSalesRebateRate."Customer Type"::"All Customers");
+        FromSalesRebateRate.SETRANGE("Customer No.");
+        CopySalesRebateToSalesRebate(FromSalesRebateRate, ToSalesRebateRate);
 
         IF CustNo <> '' THEN BEGIN
-            FromSalesRebate.SETRANGE("Customer Type", FromSalesRebate."Customer Type"::Customer);
-            FromSalesRebate.SETRANGE("Customer No.", CustNo);
-            CopySalesRebateToSalesRebate(FromSalesRebate, ToSalesRebateSetup);
+            FromSalesRebateRate.SETRANGE("Customer Type", FromSalesRebateRate."Customer Type"::Customer);
+            FromSalesRebateRate.SETRANGE("Customer No.", CustNo);
+            CopySalesRebateToSalesRebate(FromSalesRebateRate, ToSalesRebateRate);
         END;
 
         IF CustPriceGrCode <> '' THEN BEGIN
-            FromSalesRebate.SETRANGE("Customer Type", FromSalesRebate."Customer Type"::"Customer Type");
-            FromSalesRebate.SETRANGE("Customer No.", CustPriceGrCode);
-            CopySalesRebateToSalesRebate(FromSalesRebate, ToSalesRebateSetup);
+            FromSalesRebateRate.SETRANGE("Customer Type", FromSalesRebateRate."Customer Type"::"Customer Type");
+            FromSalesRebateRate.SETRANGE("Customer No.", CustPriceGrCode);
+            CopySalesRebateToSalesRebate(FromSalesRebateRate, ToSalesRebateRate);
         END;
     END;
 
-    procedure CalcBestRebate(var SalesRebatesSetup: Record "AQD Sales Rebates Setup")
+    procedure CalcBestSalesRebate(var SalesRebatesRate: Record "AQD Sales Rebates Rate")
     var
-        BestSalesRebateSetup: Record "AQD Sales Rebates Setup";
+        BestSalesRebateRate: Record "AQD Sales Rebates Rate";
         BestSalesRebateFound: Boolean;
         FoundSalesRebate: Boolean;
     begin
-        FoundSalesRebate := SalesRebatesSetup.FINDSET;
+        FoundSalesRebate := SalesRebatesRate.FINDSET;
         IF FoundSalesRebate THEN
             REPEAT
-                IF IsInMinQty(SalesRebatesSetup."Unit of Measure Code", SalesRebatesSetup."Minimum Quantity") THEN BEGIN
+                IF IsInMinQty(SalesRebatesRate."Unit of Measure Code", SalesRebatesRate."Minimum Quantity") THEN BEGIN
                     CASE TRUE OF
-                        ((BestSalesRebateSetup."Variant Code" = '') OR (SalesRebatesSetup."Variant Code" <> '')):
+                        ((BestSalesRebateRate."Variant Code" = '') OR (SalesRebatesRate."Variant Code" <> '')):
                             BEGIN
-                                BestSalesRebateSetup := SalesRebatesSetup;
+                                BestSalesRebateRate := SalesRebatesRate;
                                 BestSalesRebateFound := TRUE;
                             END;
                     END;
                 END;
-            UNTIL SalesRebatesSetup.NEXT = 0;
-        SalesRebatesSetup := BestSalesRebateSetup;
+            UNTIL SalesRebatesRate.NEXT = 0;
+        SalesRebatesRate := BestSalesRebateRate;
     end;
 
-    local procedure CopySalesRebateToSalesRebate(var FromSalesRebateSetup: Record "AQD Sales Rebates Setup"; var ToSalesRebateSetup: Record "AQD Sales Rebates Setup" temporary)
+    local procedure CopySalesRebateToSalesRebate(var FromSalesRebateSetup: Record "AQD Sales Rebates Rate"; var ToSalesRebateSetup: Record "AQD Sales Rebates Rate" temporary)
     begin
         IF FromSalesRebateSetup.FINDSET THEN
             REPEAT

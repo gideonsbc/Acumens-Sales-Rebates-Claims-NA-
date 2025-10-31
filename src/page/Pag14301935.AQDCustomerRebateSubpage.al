@@ -124,7 +124,7 @@ page 14301935 "AQD Customer Rebate Subpage"
         CASE RebateSetup."Calculate Cust Rebate using" of
             RebateSetup."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo":
                 VendorInvoiceCrMemoNo := TRUE;
-            RebateSetup."Calculate Cust Rebate using"::"Posted Receipt and Return Shipment":
+            RebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":
                 VendorInvoiceCrMemoNo := FALSE;
         END;
     end;

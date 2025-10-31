@@ -1,4 +1,4 @@
-tableextension 14301925 "AQD CustRbt PurchCrMemoHdr Ext" extends "Purch. Cr. Memo Hdr."
+tableextension 14301927 "AQD CustRbt PurchCrMemoHdr Ext" extends "Purch. Cr. Memo Hdr."
 {
     fields
     {

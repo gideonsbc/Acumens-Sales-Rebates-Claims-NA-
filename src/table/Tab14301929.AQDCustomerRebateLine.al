@@ -52,11 +52,6 @@ table 14301929 "AQD Customer Rebate Line"
         {
             Caption = 'Posting Date';
         }
-        field(80; "Vendor Order No."; Code[35])
-        {
-            Caption = 'Vendor Order No.';
-            Editable = false;
-        }
         field(90; "Vendor Shipment No."; Code[35])
         {
             Caption = 'Vendor Shipment No.';
@@ -140,10 +135,10 @@ table 14301929 "AQD Customer Rebate Line"
             Caption = 'Rebate Amount Changed DateTime';
             Editable = false;
         }
-        // field(300; "Purchaser Code"; Code[20])
-        // {
-        //     Caption = 'Purchaser Code';
-        // }
+        field(300; "Salesperson Code"; Code[20])
+        {
+            Caption = 'Salesperson Code';
+        }
         field(310; "Responsibility Center"; Code[10])
         {
             Caption = 'Responsibility Center';
@@ -238,17 +233,17 @@ table 14301929 "AQD Customer Rebate Line"
                 BEGIN
                     IF Rec."Document Type" = Rec."Document Type"::Invoice THEN BEGIN
                         IF SalesInvHdr.GET(Rec."Document No.") THEN begin
-                            SalesInvHdr."AQD Do Not Pay Rebate" := Rec.Exclude;
+                            SalesInvHdr."AQD Do Not Pay Cust Rebate" := Rec.Exclude;
                             SalesInvHdr.Modify();
                         end;
                     END ELSE IF Rec."Document Type" = Rec."Document Type"::"Credit Memo" THEN BEGIN
                         IF SalesCrMemoHdr.GET(Rec."Document No.") THEN begin
-                            SalesCrMemoHdr."AQD Do Not Pay Rebate" := Rec.Exclude;
+                            SalesCrMemoHdr."AQD Do Not Pay Cust Rebate" := Rec.Exclude;
                             SalesCrMemoHdr.Modify();
                         end;
                     END;
                 END;
-            RebateSetup."Calculate Cust Rebate using"::"Posted Receipt and Return Shipment":
+            RebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":
                 BEGIN
                     // RebateItemLdgrEntry.RESET;
                     // RebateItemLdgrEntry.SetRange("Document Type", Rec."Original Document Type");

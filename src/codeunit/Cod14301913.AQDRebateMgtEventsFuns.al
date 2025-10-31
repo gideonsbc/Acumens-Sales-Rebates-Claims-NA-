@@ -1,4 +1,4 @@
-codeunit 14301913 "AQD Rebate Mgt Events&Funs"
+codeunit 14301913 "AQD Rebate Mgt EventsFunctions"
 {
 
     trigger OnRun()
@@ -118,7 +118,7 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnAfterSalesShptLineInsert, '', false, false)]
     local procedure Cod80_SalesPost_OnAfterSalesShptLineInsert(var SalesShipmentLine: Record "Sales Shipment Line"; SalesLine: Record "Sales Line"; ItemShptLedEntryNo: Integer; WhseShip: Boolean; WhseReceive: Boolean; CommitIsSuppressed: Boolean; SalesInvoiceHeader: Record "Sales Invoice Header"; var TempWhseShptHeader: Record "Warehouse Shipment Header" temporary; var TempWhseRcptHeader: Record "Warehouse Receipt Header" temporary; SalesShptHeader: Record "Sales Shipment Header"; SalesHeader: Record "Sales Header")
     var
-        SalesRebateSetup: Record "AQD Sales Rebates Setup";
+        SalesRebateSetup: Record "AQD Sales Rebates Rate";
         RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         RebateItemCategory: Record "AQD Cust Rebate Item Category";
         RebateCategoryLine: Record "AQD Cust Rebate Category Lines";
@@ -410,47 +410,47 @@ codeunit 14301913 "AQD Rebate Mgt Events&Funs"
 
     procedure ShowPostedDocument(DocumentType: Enum "AQD Cust Rebate Document Type"; DocumentNo: COde[20])
     var
-        PostedPurchInvoice: Record "Purch. Inv. Header";
-        PostedPurchCrMemo: Record "Purch. Cr. Memo Hdr.";
-        PostedPurchReceiptHeader: Record "Purch. Rcpt. Header";
-        PostedReturnShptHeader: Record "Return Shipment Header";
-        PostedPurchInvoicePage: Page "Posted Purchase Invoice";
-        PostedPurchCrMemoPage: Page "Posted Purchase Credit Memo";
-        PostedPurchReceiptPage: Page "Posted Purchase Receipt";
-        PostedReturnShptPage: Page "Posted Return Shipment";
+        PostedSalesInvoice: Record "Sales Invoice Header";
+        PostedSalesCrMemo: Record "Sales Cr.Memo Header";
+        PostedSalesShptHeader: Record "Sales Shipment Header";
+        PostedReturnRcptHeader: Record "Return Receipt Header";
+        PostedSalesInvoicePage: Page "Posted Sales Invoice";
+        PostedSalesCrMemoPage: Page "Posted Sales Credit Memo";
+        PostedSalesShptPage: Page "Posted Sales Shipment";
+        PostedReturnRcptPage: Page "Posted Return Receipt";
     begin
         CASE DocumentType of
             DocumentType::Invoice:
                 begin
-                    PostedPurchInvoice.GET(DocumentNo);
+                    PostedSalesInvoice.GET(DocumentNo);
 
-                    clear(PostedPurchInvoicePage);
-                    PostedPurchInvoicePage.SetRecord(PostedPurchInvoice);
-                    PostedPurchInvoicePage.Run();
+                    clear(PostedSalesInvoicePage);
+                    PostedSalesInvoicePage.SetRecord(PostedSalesInvoice);
+                    PostedSalesInvoicePage.Run();
                 end;
             DocumentType::"Credit Memo":
                 begin
-                    PostedPurchCrMemo.GET(DocumentNo);
+                    PostedSalesCrMemo.GET(DocumentNo);
 
-                    clear(PostedPurchCrMemoPage);
-                    PostedPurchCrMemoPage.SetRecord(PostedPurchCrMemo);
-                    PostedPurchCrMemoPage.Run();
+                    clear(PostedSalesCrMemoPage);
+                    PostedSalesCrMemoPage.SetRecord(PostedSalesCrMemo);
+                    PostedSalesCrMemoPage.Run();
                 end;
-            DocumentType::Receipt:
+            DocumentType::Shipment:
                 begin
-                    PostedPurchReceiptHeader.GET(DocumentNo);
+                    PostedSalesShptHeader.GET(DocumentNo);
 
-                    clear(PostedPurchReceiptPage);
-                    PostedPurchReceiptPage.SetRecord(PostedPurchReceiptHeader);
-                    PostedPurchReceiptPage.Run();
+                    clear(PostedSalesShptPage);
+                    PostedSalesShptPage.SetRecord(PostedSalesShptHeader);
+                    PostedSalesShptPage.Run();
                 end;
-            DocumentType::"Return Shipment":
+            DocumentType::"Return Receipt":
                 begin
-                    PostedReturnShptHeader.GET(DocumentNo);
+                    PostedReturnRcptHeader.GET(DocumentNo);
 
-                    clear(PostedReturnShptPage);
-                    PostedReturnShptPage.SetRecord(PostedReturnShptHeader);
-                    PostedReturnShptPage.Run();
+                    clear(PostedReturnRcptPage);
+                    PostedReturnRcptPage.SetRecord(PostedReturnRcptHeader);
+                    PostedReturnRcptPage.Run();
                 end;
         END;
     end;
