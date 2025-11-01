@@ -44,8 +44,8 @@ table 14301911 "AQD Customer Rebate User Setup"
         field(14277006; "Rebate Role"; Option)
         {
             Caption = 'Rebate Role';
-            OptionCaption = 'Salesperson,Sales Manager,Purchaser,Purchase Manager,Admin';
-            OptionMembers = Salesperson,"Sales Manager",Purchaser,"Purchase Manager",Admin;
+            OptionCaption = 'Salesperson,Sales Manager,Admin';
+            OptionMembers = Salesperson,"Sales Manager",Admin;
         }
         field(14277007; "Global Dimension 1 Filter"; Code[250])
         {

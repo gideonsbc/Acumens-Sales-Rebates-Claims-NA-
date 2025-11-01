@@ -22,22 +22,22 @@ page 14301932 "AQD Customer Rebates Documents"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
-                field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
+                field("Buy-from Vendor No."; Rec."Sell-To Customer No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Buy-from Vendor No. field.', Comment = '%';
                 }
-                field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
+                field("Buy-from Vendor Name"; Rec."Sell-To Customer Name")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Buy-from Vendor Name field.', Comment = '%';
                 }
-                field("Pay-to Vendor No."; Rec."Pay-to Vendor No.")
+                field("Pay-to Vendor No."; Rec."Bill-To Customer No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay-to Vendor No. field.', Comment = '%';
                 }
-                field("Pay-to Name"; Rec."Pay-to Name")
+                field("Pay-to Name"; Rec."Bill-To Name")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Name field.', Comment = '%';
@@ -159,13 +159,19 @@ page 14301932 "AQD Customer Rebates Documents"
         }
     }
     trigger OnOpenPage()
+    var
+        CustomerRebateLine: Record "AQD Customer Rebate Line";
     begin
+        CustomerRebateLine.RESET;
+        IF CustomerRebateLine.FindFirst() then
+            CustomerRebateLine.DeleteAll(true);
+
         CustomerRebateUserSetup.Get(UserId);
         Rec.FilterGroup(2);
-        if CustomerRebateUserSetup."Rebate Role" = CustomerRebateUserSetup."Rebate Role"::Purchaser then
+        if CustomerRebateUserSetup."Rebate Role" = CustomerRebateUserSetup."Rebate Role"::Salesperson then
             CustomerRebateUserSetup.TestField("Salesperson Code Filter");
         if CustomerRebateUserSetup."Salesperson Code Filter" <> '' then
-            Rec.SetFilter("Purchaser Code", CustomerRebateUserSetup."Salesperson Code Filter");
+            Rec.SetFilter("Salesperson Code", CustomerRebateUserSetup."Salesperson Code Filter");
         if CustomerRebateUserSetup."Global Dimension 1 Filter" <> '' then
             Rec.SetFilter("Shortcut Dimension 1 Code", CustomerRebateUserSetup."Global Dimension 1 Filter");
         if CustomerRebateUserSetup."Global Dimension 2 Filter" <> '' then
@@ -180,14 +186,14 @@ page 14301932 "AQD Customer Rebates Documents"
         ApproveEnabled := false;
 
         if CustomerRebateUserSetup."Rebate Role" in
-           [CustomerRebateUserSetup."Rebate Role"::"Purchase Manager",
+           [CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
             CustomerRebateUserSetup."Rebate Role"::Admin]
         then
             PostEnabled := true;
 
         if CustomerRebateUserSetup."Rebate Role" in
-          [CustomerRebateUserSetup."Rebate Role"::Purchaser,
-           CustomerRebateUserSetup."Rebate Role"::"Purchase Manager",
+          [CustomerRebateUserSetup."Rebate Role"::Salesperson,
+           CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
            CustomerRebateUserSetup."Rebate Role"::Admin]
         then
             ApproveEnabled := true;
@@ -206,14 +212,14 @@ page 14301932 "AQD Customer Rebates Documents"
         PostEnabled := false;
         ApproveEnabled := false;
         if CustomerRebateUserSetup."Rebate Role" in
-           [CustomerRebateUserSetup."Rebate Role"::"Purchase Manager",
+           [CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
             CustomerRebateUserSetup."Rebate Role"::Admin]
         then
             PostEnabled := true;
 
         if CustomerRebateUserSetup."Rebate Role" in
-           [CustomerRebateUserSetup."Rebate Role"::Purchaser,
-            CustomerRebateUserSetup."Rebate Role"::"Purchase Manager",
+           [CustomerRebateUserSetup."Rebate Role"::Salesperson,
+            CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
             CustomerRebateUserSetup."Rebate Role"::Admin]
         then
             ApproveEnabled := true;

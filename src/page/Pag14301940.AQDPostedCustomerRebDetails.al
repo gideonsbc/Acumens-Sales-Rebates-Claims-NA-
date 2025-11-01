@@ -141,10 +141,10 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Rebate Amount Changed DateTime field.', Comment = '%';
                 }
-                field("Purchaser Code"; Rec."Purchaser Code")
+                field("Salesperson Code"; Rec."Salesperson Code")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Purchaser Code field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Salesperson Code field.', Comment = '%';
                 }
                 field("Responsibility Center"; Rec."Responsibility Center")
                 {
@@ -173,10 +173,10 @@ page 14301940 "AQD Posted Cust Rebate Details"
     begin
         CustomerRebateUserSetup.Get(UserId);
         Rec.FilterGroup(2);
-        if CustomerRebateUserSetup."Rebate Role" = CustomerRebateUserSetup."Rebate Role"::Purchaser then
+        if CustomerRebateUserSetup."Rebate Role" = CustomerRebateUserSetup."Rebate Role"::Salesperson then
             CustomerRebateUserSetup.TestField("Salesperson Code Filter");
         if CustomerRebateUserSetup."Salesperson Code Filter" <> '' then
-            Rec.SetFilter("Purchaser Code", CustomerRebateUserSetup."Salesperson Code Filter");
+            Rec.SetFilter("Salesperson Code", CustomerRebateUserSetup."Salesperson Code Filter");
         if CustomerRebateUserSetup."Global Dimension 1 Filter" <> '' then
             Rec.SetFilter("Shortcut Dimension 1 Code", CustomerRebateUserSetup."Global Dimension 1 Filter");
         if CustomerRebateUserSetup."Global Dimension 2 Filter" <> '' then

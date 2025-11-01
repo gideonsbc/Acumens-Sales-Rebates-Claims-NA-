@@ -2,8 +2,8 @@ table 14301930 "AQD Customer Rebate Details"
 {
     Caption = 'Customer Rebate Details';
     DataClassification = CustomerContent;
-    //DrillDownPageID = "AQD Customer Rebate Details";
-    //LookupPageID = "AQD Customer Rebate Details";
+    DrillDownPageID = "AQD Customer Rebate Details";
+    LookupPageID = "AQD Customer Rebate Details";
 
     fields
     {
@@ -166,17 +166,20 @@ table 14301930 "AQD Customer Rebate Details"
         {
             Caption = 'Document Type';
         }
-        // field(300; "Purchaser Code"; Code[20])
-        // {
-        //     Caption = 'Purchaser Code';
-        // }
+        field(300; "Salesperson Code"; Code[20])
+        {
+            Caption = 'Salesperson Code';
+            TableRelation = "Salesperson/Purchaser";
+        }
         field(310; "Responsibility Center"; Code[10])
         {
             Caption = 'Responsibility Center';
+            TableRelation = "Responsibility Center";
         }
         field(320; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
+            TableRelation = Location;
         }
         field(330; "Shortcut Dimension 1 Code"; Code[20])
         {
@@ -192,11 +195,6 @@ table 14301930 "AQD Customer Rebate Details"
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2),
                                                           Blocked = CONST(false));
         }
-        field(400; "Salesperson Code"; Code[20])
-        {
-            Caption = 'Salesperson Code';
-            TableRelation = "Salesperson/Purchaser";
-        }
         field(401; State; Text[30])
         {
             Caption = 'State';
@@ -205,11 +203,13 @@ table 14301930 "AQD Customer Rebate Details"
         {
             Caption = 'Sell-To Customer No.';
             Editable = false;
+            TableRelation = Customer;
         }
         field(501; "Bill-To Customer No."; Code[20])
         {
             Caption = 'Bill-To Customer No.';
             Editable = false;
+            TableRelation = Customer;
         }
         field(560; "Rebate Status"; Enum "AQD Customer Rebate Status")
         {

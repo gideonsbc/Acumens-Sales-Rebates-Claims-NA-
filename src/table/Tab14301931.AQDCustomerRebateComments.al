@@ -2,8 +2,8 @@ table 14301931 "AQD Customer Rebate Comments"
 {
     Caption = 'Vendor Rebate Comments';
     DataClassification = CustomerContent;
-    //DrillDownPageId = "AQD Customer Rebate Comments";
-    //LookupPageId = "AQD Customer Rebate Comments";
+    DrillDownPageId = "AQD Customer Rebate Comments";
+    LookupPageId = "AQD Customer Rebate Comments";
 
     fields
     {

@@ -24,54 +24,54 @@ page 14301938 "AQD Posted Customer Rebate"
                 }
                 group("Buy-from")
                 {
-                    field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
+                    field("Buy-from Vendor No."; Rec."Sell-To Customer No.")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Buy-from Vendor No. field.', Comment = '%';
                     }
-                    field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
+                    field("Buy-from Vendor Name"; Rec."Sell-To Customer Name")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Buy-from Vendor Name field.', Comment = '%';
                     }
-                    field("Buy-from Vendor Name 2"; Rec."Buy-from Vendor Name 2")
+                    field("Buy-from Vendor Name 2"; Rec."Sell-To Customer Name 2")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Buy-from Vendor Name 2 field.', Comment = '%';
                         Importance = Additional;
                     }
-                    field("Buy-from Address"; Rec."Buy-from Address")
+                    field("Buy-from Address"; Rec."Sell-To Address")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Buy-from Address field.', Comment = '%';
                     }
-                    field("Buy-from Address 2"; Rec."Buy-from Address 2")
+                    field("Buy-from Address 2"; Rec."Sell-To Address 2")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Buy-from Address 2 field.', Comment = '%';
                         Importance = Additional;
                     }
-                    field("Buy-from Contact"; Rec."Buy-from Contact")
+                    field("Buy-from Contact"; Rec."Sell-To Contact")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Buy-from Contact field.', Comment = '%';
                     }
-                    field("Buy-from Post Code"; Rec."Buy-from Post Code")
+                    field("Buy-from Post Code"; Rec."Sell-To Post Code")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Buy-from ZIP Code field.', Comment = '%';
                     }
-                    field("Buy-from City"; Rec."Buy-from City")
+                    field("Buy-from City"; Rec."Sell-To City")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Buy-from City field.', Comment = '%';
                     }
-                    field("Buy-from Country/Region Code"; Rec."Buy-from Country/Region Code")
+                    field("Buy-from Country/Region Code"; Rec."Sell-To Country/Region Code")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Buy-from Country/Region Code field.', Comment = '%';
                     }
-                    field("Buy-from County"; Rec."Buy-from County")
+                    field("Buy-from County"; Rec."Sell-To County")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Buy-from State field.', Comment = '%';

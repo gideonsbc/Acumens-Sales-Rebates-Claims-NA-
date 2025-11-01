@@ -129,10 +129,10 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Caption = 'Rebate Amount Changed DateTime';
             Editable = false;
         }
-        // field(300; "Purchaser Code"; Code[20])
-        // {
-        //     Caption = 'Purchaser Code';
-        // }
+        field(300; "Salesperson Code"; Code[20])
+        {
+            Caption = 'Salesperson Code';
+        }
         field(310; "Responsibility Center"; Code[10])
         {
             Caption = 'Responsibility Center';
@@ -147,11 +147,6 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Caption = 'Shortcut Dimension 1 Code';
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1),
                                                           Blocked = CONST(false));
-
-            trigger OnValidate()
-            begin
-                PurchaseHeader.ValidateShortcutDimCode(1, "Shortcut Dimension 1 Code");
-            end;
         }
         field(340; "Shortcut Dimension 2 Code"; Code[20])
         {
@@ -159,11 +154,6 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Caption = 'Shortcut Dimension 2 Code';
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2),
                                                           Blocked = CONST(false));
-
-            trigger OnValidate()
-            begin
-                PurchaseHeader.ValidateShortcutDimCode(2, "Shortcut Dimension 2 Code");
-            end;
         }
         field(350; "Currency Code"; Code[10])
         {
@@ -238,6 +228,5 @@ table 14301934 "AQD Posted Cust Rebate Line"
         }
     }
     var
-        PurchaseHeader: Record "Purchase Header";
         CustomerRebateDetails: Record "AQD Customer Rebate Details";
 }

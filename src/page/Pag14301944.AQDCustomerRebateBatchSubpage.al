@@ -29,19 +29,19 @@ page 14301944 "AQD Customer Rebate Subpg"
                     //     CustomerRebatePg.Run();
                     // end;
                 }
-                field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
+                field("Buy-from Vendor No."; Rec."Sell-To Customer No.")
                 {
                     ToolTip = 'Specifies the value of the Buy-from Vendor No. field.', Comment = '%';
                 }
-                field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
+                field("Buy-from Vendor Name"; Rec."Sell-To Customer Name")
                 {
                     ToolTip = 'Specifies the value of the Buy-from Vendor Name field.', Comment = '%';
                 }
-                field("Pay-to Vendor No."; Rec."Pay-to Vendor No.")
+                field("Pay-to Vendor No."; Rec."Bill-To Customer No.")
                 {
                     ToolTip = 'Specifies the value of the Pay-to Vendor No. field.', Comment = '%';
                 }
-                field("Pay-to Name"; Rec."Pay-to Name")
+                field("Pay-to Name"; Rec."Bill-To Name")
                 {
                     ToolTip = 'Specifies the value of the Name field.', Comment = '%';
                 }
@@ -57,9 +57,9 @@ page 14301944 "AQD Customer Rebate Subpg"
                 {
                     ToolTip = 'Specifies the value of the Calculated Rebate Amount field.';
                 }
-                field("Purchaser Code"; Rec."Purchaser Code")
+                field("Salesperson Code"; Rec."Salesperson Code")
                 {
-                    ToolTip = 'Specifies the value of the Purchaser Code field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Salesperson Code field.', Comment = '%';
                 }
                 field("Location Code"; Rec."Location Code")
                 {

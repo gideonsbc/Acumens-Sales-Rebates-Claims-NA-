@@ -33,10 +33,10 @@ page 14301935 "AQD Customer Rebate Subpage"
 
                     trigger OnDrillDown()
                     var
-                    //VendorRebatFunEvents: Codeunit "AQD Customer RebateMgtEventsFuns";
+                        RebateRebatMgtEventsFunEvents: Codeunit "AQD Rebate Mgt EventsFunctions";
                     begin
-                        //clear(VendorRebatFunEvents);
-                        //VendorRebatFunEvents.ShowPostedDocument(Rec."Document Type", Rec."Document No.");
+                        clear(RebateRebatMgtEventsFunEvents);
+                        RebateRebatMgtEventsFunEvents.ShowPostedDocument(Rec."Document Type", Rec."Document No.");
                     end;
                 }
                 field("Order No."; Rec."Order No.")
@@ -80,7 +80,7 @@ page 14301935 "AQD Customer Rebate Subpage"
                 field(Amount; Rec.Amount)
                 {
                     ApplicationArea = All;
-                    Caption = 'Purchase Amount';
+                    Caption = 'Sales Amount';
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                 }
                 field("Calculated Rebate Amount"; Rec."Calculated Rebate Amount")

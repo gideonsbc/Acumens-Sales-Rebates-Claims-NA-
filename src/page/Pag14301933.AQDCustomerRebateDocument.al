@@ -21,32 +21,32 @@ page 14301933 "AQD Customer Rebate Document"
                 }
                 group("Buy-from")
                 {
-                    field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
+                    field("Buy-from Vendor No."; Rec."Sell-To Customer No.")
                     {
                         ApplicationArea = All;
                         Caption = 'Vendor No.';
                         ToolTip = 'Specifies the value of the Buy-from Vendor No. field.', Comment = '%';
                     }
-                    field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
+                    field("Buy-from Vendor Name"; Rec."Sell-To Customer Name")
                     {
                         ApplicationArea = All;
                         Caption = 'Name';
                         ToolTip = 'Specifies the value of the Buy-from Vendor Name field.', Comment = '%';
                     }
-                    field("Buy-from Vendor Name 2"; Rec."Buy-from Vendor Name 2")
+                    field("Buy-from Vendor Name 2"; Rec."Sell-To Customer Name 2")
                     {
                         ApplicationArea = All;
                         Caption = 'Name 2';
                         Importance = Additional;
                         ToolTip = 'Specifies the value of the Buy-from Vendor Name 2 field.', Comment = '%';
                     }
-                    field("Buy-from Address"; Rec."Buy-from Address")
+                    field("Buy-from Address"; Rec."Sell-To Address")
                     {
                         ApplicationArea = All;
                         Caption = 'Address';
                         ToolTip = 'Specifies the value of the Buy-from Address field.', Comment = '%';
                     }
-                    field("Buy-from Address 2"; Rec."Buy-from Address 2")
+                    field("Buy-from Address 2"; Rec."Sell-To Address 2")
                     {
                         ApplicationArea = All;
                         Caption = 'Address 2';
@@ -54,31 +54,31 @@ page 14301933 "AQD Customer Rebate Document"
                         ToolTip = 'Specifies the value of the Buy-from Address 2 field.', Comment = '%';
                     }
 
-                    field("Buy-from Contact"; Rec."Buy-from Contact")
+                    field("Buy-from Contact"; Rec."Sell-To Contact")
                     {
                         ApplicationArea = All;
                         Caption = 'Contact';
                         ToolTip = 'Specifies the value of the Buy-from Contact field.', Comment = '%';
                     }
-                    field("Buy-from Post Code"; Rec."Buy-from Post Code")
+                    field("Buy-from Post Code"; Rec."Sell-To Post Code")
                     {
                         ApplicationArea = All;
                         Caption = 'Zip Code';
                         ToolTip = 'Specifies the value of the Buy-from ZIP Code field.', Comment = '%';
                     }
-                    field("Buy-from City"; Rec."Buy-from City")
+                    field("Buy-from City"; Rec."Sell-To City")
                     {
                         ApplicationArea = All;
                         Caption = 'City';
                         ToolTip = 'Specifies the value of the Buy-from City field.', Comment = '%';
                     }
-                    field("Buy-from Country/Region Code"; Rec."Buy-from Country/Region Code")
+                    field("Buy-from Country/Region Code"; Rec."Sell-To Country/Region Code")
                     {
                         ApplicationArea = All;
                         Caption = 'Country/Region Code';
                         ToolTip = 'Specifies the value of the Buy-from Country/Region Code field.', Comment = '%';
                     }
-                    field("Buy-from County"; Rec."Buy-from County")
+                    field("Buy-from County"; Rec."Sell-To County")
                     {
                         ApplicationArea = All;
                         Caption = 'County';
@@ -102,10 +102,9 @@ page 14301933 "AQD Customer Rebate Document"
                     Caption = 'Calculated Rebate Amount';
                     ToolTip = 'Specifies the value of the Calculated Rebate Amount field.';
                 }
-                field("Vendor Rebate Amount"; Rec."Customer Rebate Amount")
+                field("Customer Rebate Amount"; Rec."Customer Rebate Amount")
                 {
                     ApplicationArea = All;
-                    Caption = 'Vendor Rebate Amount';
                     ToolTip = 'Specifies the value of the Customer Rebate Amount field.';
                 }
                 field(Approved; Rec.Approved)
@@ -126,89 +125,69 @@ page 14301933 "AQD Customer Rebate Document"
 
                 group("Pay-To")
                 {
-                    field("Pay-to Vendor No."; Rec."Pay-to Vendor No.")
+                    field("Pay-to Vendor No."; Rec."Bill-To Customer No.")
                     {
                         ApplicationArea = All;
                         Caption = 'Vendor No.';
                         ToolTip = 'Specifies the value of the Pay-to Vendor No. field.', Comment = '%';
                     }
-                    field("Pay-to Name"; Rec."Pay-to Name")
+                    field("Pay-to Name"; Rec."Bill-To Name")
                     {
                         ApplicationArea = All;
                         Caption = 'Name';
                         ToolTip = 'Specifies the value of the Name field.', Comment = '%';
                     }
-                    field("Pay-to Name 2"; Rec."Pay-to Name 2")
+                    field("Pay-to Name 2"; Rec."Bill-To Name 2")
                     {
                         ApplicationArea = All;
                         Caption = 'Name 2';
                         ToolTip = 'Specifies the value of the Name 2 field.', Comment = '%';
                         Importance = Additional;
                     }
-                    field("Pay-to Address"; Rec."Pay-to Address")
+                    field("Pay-to Address"; Rec."Bill-To Address")
                     {
                         ApplicationArea = All;
                         Caption = 'Address';
                         ToolTip = 'Specifies the value of the Address field.', Comment = '%';
                     }
-                    field("Pay-to Address 2"; Rec."Pay-to Address 2")
+                    field("Pay-to Address 2"; Rec."Bill-To Address 2")
                     {
                         ApplicationArea = All;
                         Caption = 'Address 2';
                         ToolTip = 'Specifies the value of the Address 2 field.', Comment = '%';
                         Importance = Additional;
                     }
-                    field("Pay-to Contact"; Rec."Pay-to Contact")
+                    field("Pay-to Contact"; Rec."Bill-To Contact")
                     {
                         ApplicationArea = All;
                         Caption = 'Contact';
                         ToolTip = 'Specifies the value of the Contact field.', Comment = '%';
                     }
-                    field("Pay-to Post Code"; Rec."Pay-to Post Code")
+                    field("Pay-to Post Code"; Rec."Bill-To Post Code")
                     {
                         ApplicationArea = All;
                         Caption = 'Zip Code';
                         ToolTip = 'Specifies the value of the ZIP Code field.', Comment = '%';
                     }
-                    field("Pay-to City"; Rec."Pay-to City")
+                    field("Pay-to City"; Rec."Bill-To City")
                     {
                         ApplicationArea = All;
                         Caption = 'City';
                         ToolTip = 'Specifies the value of the City field.', Comment = '%';
                     }
 
-                    field("Pay-to Country/Region Code"; Rec."Pay-to Country/Region Code")
+                    field("Pay-to Country/Region Code"; Rec."Bill-To Country/Region Code")
                     {
                         ApplicationArea = All;
                         Caption = 'Country/Region Code';
                         ToolTip = 'Specifies the value of the Country/Region Code field.', Comment = '%';
                     }
-                    field("Pay-to County"; Rec."Pay-to County")
+                    field("Pay-to County"; Rec."Bill-To County")
                     {
                         ApplicationArea = All;
                         Caption = 'County';
                         ToolTip = 'Specifies the value of the Pay-to State field.', Comment = '%';
                     }
-                }
-                field("Posting Date"; Rec."Posting Date")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
-                }
-                field("Posting Description"; Rec."Posting Description")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Posting Description field.', Comment = '%';
-                }
-                field("Document Date"; Rec."Document Date")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Document Date field.', Comment = '%';
-                }
-                field("External Document No."; Rec."External Document No.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the External Document No. field.', Comment = '%';
                 }
                 field("Salesperson Code"; Rec."Salesperson Code")
                 {
@@ -239,6 +218,26 @@ page 14301933 "AQD Customer Rebate Document"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Global Dimension 2 Code field.', Comment = '%';
                     Importance = Additional;
+                }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
+                }
+                field("Posting Description"; Rec."Posting Description")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Posting Description field.', Comment = '%';
+                }
+                field("Document Date"; Rec."Document Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Document Date field.', Comment = '%';
+                }
+                field("External Document No."; Rec."External Document No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the External Document No. field.', Comment = '%';
                 }
             }
             part("AQD Customer Rebate Subpage"; "AQD Customer Rebate Subpage")
@@ -301,14 +300,14 @@ page 14301933 "AQD Customer Rebate Document"
         PostEnabled := false;
         ApproveEnabled := false;
         if CustomerRebateUserSetup."Rebate Role" in
-           [CustomerRebateUserSetup."Rebate Role"::"Purchase Manager",
+           [CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
             CustomerRebateUserSetup."Rebate Role"::Admin]
         then
             PostEnabled := true;
 
         if CustomerRebateUserSetup."Rebate Role" in
-           [CustomerRebateUserSetup."Rebate Role"::Purchaser,
-            CustomerRebateUserSetup."Rebate Role"::"Purchase Manager",
+           [CustomerRebateUserSetup."Rebate Role"::Salesperson,
+            CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
             CustomerRebateUserSetup."Rebate Role"::Admin]
         then
             ApproveEnabled := true;
@@ -322,14 +321,14 @@ page 14301933 "AQD Customer Rebate Document"
         ApproveEnabled := false;
 
         if CustomerRebateUserSetup."Rebate Role" in
-           [CustomerRebateUserSetup."Rebate Role"::"Purchase Manager",
+           [CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
             CustomerRebateUserSetup."Rebate Role"::Admin]
          then
             PostEnabled := true;
 
         if CustomerRebateUserSetup."Rebate Role" in
-          [CustomerRebateUserSetup."Rebate Role"::Purchaser,
-           CustomerRebateUserSetup."Rebate Role"::"Purchase Manager",
+          [CustomerRebateUserSetup."Rebate Role"::Salesperson,
+           CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
            CustomerRebateUserSetup."Rebate Role"::Admin]
         then
             ApproveEnabled := true;

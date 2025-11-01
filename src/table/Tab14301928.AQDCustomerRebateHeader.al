@@ -1,7 +1,7 @@
 table 14301928 "AQD Customer Rebate Header"
 {
     Caption = 'Customer Rebate Header';
-    DataCaptionFields = "No.", "Buy-from Vendor Name";
+    DataCaptionFields = "No.", "Sell-To Customer Name";
     DataClassification = CustomerContent;
     DrillDownPageId = "AQD Customer Rebates Documents";
     LookupPageId = "AQD Customer Rebates Documents";
@@ -12,109 +12,159 @@ table 14301928 "AQD Customer Rebate Header"
             Caption = 'No.';
             Editable = false;
         }
-        field(20; "Buy-from Vendor No."; Code[20])
+        field(20; "Sell-To Customer No."; Code[20])
         {
-            Caption = 'Buy-from Vendor No.';
+            Caption = 'Sell-To Customer No.';
             Editable = false;
         }
-        field(30; "Buy-from Vendor Name"; Text[100])
+        field(30; "Sell-To Customer Name"; Text[100])
         {
-            Caption = 'Buy-from Vendor Name';
+            Caption = 'Sell-To Customer Name';
             Editable = false;
         }
-        field(40; "Buy-from Vendor Name 2"; Text[50])
+        field(40; "Sell-To Customer Name 2"; Text[50])
         {
-            Caption = 'Buy-from Vendor Name 2';
+            Caption = 'Sell-To Customer Name 2';
             Editable = false;
         }
-        field(50; "Buy-from Address"; Text[100])
+        field(50; "Sell-To Address"; Text[100])
         {
-            Caption = 'Buy-from Address';
+            Caption = 'Sell-To Address';
             Editable = false;
         }
-        field(60; "Buy-from Address 2"; Text[50])
+        field(60; "Sell-To Address 2"; Text[50])
         {
-            Caption = 'Buy-from Address 2';
+            Caption = 'Sell-To Address 2';
             Editable = false;
         }
-        field(70; "Buy-from City"; Text[30])
+        field(70; "Sell-To City"; Text[30])
         {
-            Caption = 'Buy-from City';
+            Caption = 'Sell-To City';
             Editable = false;
         }
-        field(80; "Buy-from Contact"; Text[100])
+        field(80; "Sell-To Contact"; Text[100])
         {
-            Caption = 'Buy-from Contact';
+            Caption = 'Sell-To Contact';
             Editable = false;
         }
-        field(90; "Buy-from Post Code"; Code[20])
+        field(90; "Sell-To Post Code"; Code[20])
         {
-            Caption = 'Buy-from ZIP Code';
+            Caption = 'Sell-To ZIP Code';
             Editable = false;
         }
-        field(100; "Buy-from County"; Text[30])
+        field(100; "Sell-To County"; Text[30])
         {
-            Caption = 'Buy-from State';
+            Caption = 'Sell-To State';
             Editable = false;
         }
-        field(110; "Buy-from Country/Region Code"; Code[10])
+        field(110; "Sell-To Country/Region Code"; Code[10])
         {
-            Caption = 'Buy-from Country/Region Code';
+            Caption = 'Sell-To Country/Region Code';
             Editable = false;
         }
-        field(150; "Pay-to Vendor No."; Code[20])
+        field(150; "Bill-To Customer No."; Code[20])
         {
-            Caption = 'Pay-to Vendor No.';
+            Caption = 'Bill-To Customer No.';
             Editable = false;
         }
-        field(170; "Pay-to Name"; Text[100])
+        field(170; "Bill-To Name"; Text[100])
         {
             Caption = 'Name';
             Editable = false;
         }
-        field(180; "Pay-to Name 2"; Text[50])
+        field(180; "Bill-To Name 2"; Text[50])
         {
             Caption = 'Name 2';
             Editable = false;
         }
-        field(190; "Pay-to Address"; Text[100])
+        field(190; "Bill-To Address"; Text[100])
         {
             Caption = 'Address';
             Editable = false;
         }
-        field(200; "Pay-to Address 2"; Text[50])
+        field(200; "Bill-To Address 2"; Text[50])
         {
             Caption = 'Address 2';
             Editable = false;
         }
-        field(210; "Pay-to City"; Text[30])
+        field(210; "Bill-To City"; Text[30])
         {
             Caption = 'City';
             Editable = false;
         }
-        field(220; "Pay-to Contact"; Text[100])
+        field(220; "Bill-To Contact"; Text[100])
         {
             Caption = 'Contact';
             Editable = false;
         }
-        field(230; "Pay-to Post Code"; Code[20])
+        field(230; "Bill-To Post Code"; Code[20])
         {
             Caption = 'ZIP Code';
             Editable = false;
         }
-        field(240; "Pay-to County"; Text[30])
+        field(240; "Bill-To County"; Text[30])
         {
             Caption = 'Pay-to State';
             Editable = false;
         }
-        field(250; "Pay-to Country/Region Code"; Code[10])
+        field(250; "Bill-To Country/Region Code"; Code[10])
         {
             Caption = 'Country/Region Code';
             Editable = false;
         }
-        field(300; "Purchaser Code"; Code[20])
+        field(260; "Pay-to Vendor No."; Code[20])
         {
-            Caption = 'Purchaser Code';
+            Caption = 'Pay-to Vendor No.';
+            Editable = false;
+        }
+        field(261; "Pay-to Name"; Text[100])
+        {
+            Caption = 'Name';
+            Editable = false;
+        }
+        field(262; "Pay-to Name 2"; Text[50])
+        {
+            Caption = 'Name 2';
+            Editable = false;
+        }
+        field(263; "Pay-to Address"; Text[100])
+        {
+            Caption = 'Address';
+            Editable = false;
+        }
+        field(264; "Pay-to Address 2"; Text[50])
+        {
+            Caption = 'Address 2';
+            Editable = false;
+        }
+        field(265; "Pay-to City"; Text[30])
+        {
+            Caption = 'City';
+            Editable = false;
+        }
+        field(266; "Pay-to Contact"; Text[100])
+        {
+            Caption = 'Contact';
+            Editable = false;
+        }
+        field(267; "Pay-to Post Code"; Code[20])
+        {
+            Caption = 'ZIP Code';
+            Editable = false;
+        }
+        field(268; "Pay-to County"; Text[30])
+        {
+            Caption = 'Pay-to State';
+            Editable = false;
+        }
+        field(269; "Pay-to Country/Region Code"; Code[10])
+        {
+            Caption = 'Country/Region Code';
+            Editable = false;
+        }
+        field(300; "Salesperson Code"; Code[20])
+        {
+            Caption = 'Salesperson Code';
             Editable = false;
         }
         field(310; "Responsibility Center"; Code[10])
@@ -223,11 +273,6 @@ table 14301928 "AQD Customer Rebate Header"
             Caption = 'Posting Date Filter';
             FieldClass = FlowFilter;
         }
-        field(900; "Salesperson Code"; Code[20])
-        {
-            Caption = 'Salesperson Code';
-            TableRelation = "Salesperson/Purchaser";
-        }
         field(901; State; Text[30])
         {
             Caption = 'State';
@@ -286,7 +331,13 @@ table 14301928 "AQD Customer Rebate Header"
     trigger OnDelete()
     var
         CustomerRebateLine: Record "AQD Customer Rebate Line";
+        CustomerRebateComments: Record "AQD Customer Rebate Comments";
     begin
+        CustomerRebateComments.RESET;
+        CustomerRebateComments.SETRANGE("Rebate No.", Rec."No.");
+        IF CustomerRebateComments.FindFirst() THEN
+            CustomerRebateComments.DeleteAll();
+
         CustomerRebateLine.RESET;
         CustomerRebateLine.SetRange("Rebate No.", Rec."No.");
         IF CustomerRebateLine.FindFirst() then

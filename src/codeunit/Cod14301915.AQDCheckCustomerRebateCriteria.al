@@ -144,6 +144,8 @@ codeunit 14301915 "AQD ChkCustItemRbt Matrix Mgt"
                 end;
             end;
         END;
+
+        EXIT(TRUE);
     END;
 
     local procedure CopyCustomerSalesRebateToCustomerSalesRebate(var FromCustItemRebateMatrix: Record "AQD Cust Item Rebate Matrix"; var ToCustItemRebateMatrix: Record "AQD Cust Item Rebate Matrix" temporary)

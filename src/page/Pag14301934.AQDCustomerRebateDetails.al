@@ -158,7 +158,7 @@ page 14301934 "AQD Customer Rebate Details"
     begin
         CustomerRebateUserSetup.Get(UserId);
         Rec.FilterGroup(2);
-        if CustomerRebateUserSetup."Rebate Role" = CustomerRebateUserSetup."Rebate Role"::Purchaser then
+        if CustomerRebateUserSetup."Rebate Role" = CustomerRebateUserSetup."Rebate Role"::Salesperson then
             CustomerRebateUserSetup.TestField("Salesperson Code Filter");
         if CustomerRebateUserSetup."Salesperson Code Filter" <> '' then
             Rec.SetFilter("Salesperson Code", CustomerRebateUserSetup."Salesperson Code Filter");

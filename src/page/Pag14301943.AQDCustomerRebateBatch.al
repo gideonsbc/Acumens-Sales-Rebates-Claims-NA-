@@ -106,14 +106,14 @@ page 14301943 "AQD Customer Rebate Batch"
         ApproveEnabled := false;
 
         if RebateSetup."Rebate Role" in
-          [RebateSetup."Rebate Role"::"Purchase Manager",
+          [RebateSetup."Rebate Role"::"Sales Manager",
            RebateSetup."Rebate Role"::Admin]
         then
             PostEnabled := true;
 
         if RebateSetup."Rebate Role" in
-          [RebateSetup."Rebate Role"::Purchaser,
-           RebateSetup."Rebate Role"::"Purchase Manager",
+          [RebateSetup."Rebate Role"::Salesperson,
+           RebateSetup."Rebate Role"::"Sales Manager",
            RebateSetup."Rebate Role"::Admin]
         then
             ApproveEnabled := true;

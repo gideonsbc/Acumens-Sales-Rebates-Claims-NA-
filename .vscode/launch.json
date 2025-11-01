@@ -1,7 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
-         {
+        {
             "name": "Sandbox3",
             "request": "launch",
             "type": "al",
@@ -18,6 +18,17 @@
             "enableSqlInformationDebugger": true,
             "usePublicURLFromServer": true,
             "schemaUpdateMode": "ForceSync"
+        },
+        {
+            "name": "AL: Generated Attach request",
+            "request": "attach",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "Sandbox3",
+            "sessionId": 97670,
+            "breakOnNext": "WebClient",
+            "breakOnError": "ExcludeTry",
+            "tenant": "83f5a700-a594-48f4-a2e2-871155290ad5"
         }
     ]
 }

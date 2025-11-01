@@ -149,9 +149,9 @@ table 14301935 "AQD Posted Cust Reb Details"
         {
             Caption = 'Document Type';
         }
-        field(300; "Purchaser Code"; Code[20])
+        field(300; "Salesperson Code"; Code[20])
         {
-            Caption = 'Purchaser Code';
+            Caption = 'Salesperson Code';
         }
         field(310; "Responsibility Center"; Code[10])
         {
@@ -176,11 +176,6 @@ table 14301935 "AQD Posted Cust Reb Details"
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2),
                                                           Blocked = CONST(false));
         }
-        // field(400; "Salesperson Code"; Code[20])
-        // {
-        //     Caption = 'Salesperson Code';
-        //     TableRelation = "Salesperson/Purchaser";
-        // }
         field(360; "Rebate Purchase Doc Type"; Enum "AQD Rebate Purchase Doc Type")
         {
             Caption = 'Rebate Purchase Doc Type';
