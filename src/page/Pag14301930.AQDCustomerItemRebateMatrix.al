@@ -1,6 +1,6 @@
 namespace AcumenseRebatesBC.AcumenseRebatesBC;
 
-page 14301948 "AQD Item Cust Rebate Matrix"
+page 14301930 "AQD Item Cust Rebate Matrix"
 {
     ApplicationArea = All;
     Caption = 'Item Customer Rebate Matrix';
