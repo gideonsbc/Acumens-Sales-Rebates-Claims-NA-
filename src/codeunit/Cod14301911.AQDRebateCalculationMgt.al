@@ -1382,7 +1382,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                         GetSalesRebateDetails(CustomerRebateDetails);
                         CustomerRebateDetails."Profit %" := CalculateProfitPercentage(CustomerRebateDetails);
                         CalculateRebateAmount(CustomerRebateDetails);
-
                         CustomerRebateDetails."Calculated Line Rebate Amount" := CustomerRebateDetails."Customer Rebate Amount";
                         CustomerRebateDetails.Exclude := false;
                         CustomerRebateDetails.BatchID := GlobalBatchID;

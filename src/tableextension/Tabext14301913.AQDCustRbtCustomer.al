@@ -19,6 +19,15 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
             OptionCaption = ' ,Check,Credit Memo';
             OptionMembers = " ",Check,"Credit Memo";
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                IF Rec."AQD Rebate Payment Method" IN
+                    [Rec."AQD Rebate Payment Method"::" ",
+                     Rec."AQD Rebate Payment Method"::"Credit Memo"]
+                THEN
+                    Rec."AQD Cust Rebate Vendor No" := '';
+            end;
         }
         field(14301940; "AQD Payee Type"; Option)
         {
