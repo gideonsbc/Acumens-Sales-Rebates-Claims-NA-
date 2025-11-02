@@ -1,4 +1,4 @@
-codeunit 14301920 "AQD Cust Rebate SingleInstance"
+codeunit 14301911 "AQD Cust Rebate SingleInstance"
 {
     SingleInstance = true;
 
@@ -8,6 +8,7 @@ codeunit 14301920 "AQD Cust Rebate SingleInstance"
 
     var
         CalledFromRebate: Boolean;
+        ResultMessage: TEXT[250];
 
     procedure SetCalledFromRebate(CalledFromRebateIn: Boolean)
     begin
@@ -18,5 +19,14 @@ codeunit 14301920 "AQD Cust Rebate SingleInstance"
     begin
         CalledFromRebateIn := CalledFromRebate;
     end;
-}
 
+    procedure SetCustomerRebateBatchResult(ResultMessageIn: text[250])
+    begin
+        ResultMessage := ResultMessageIn;
+    end;
+
+    procedure GetCustomerRebateBatchResult(var ResultMessageIn: text[250])
+    begin
+        ResultMessageIn := ResultMessage;
+    end;
+}

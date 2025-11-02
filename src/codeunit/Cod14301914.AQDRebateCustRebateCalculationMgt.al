@@ -1,4 +1,4 @@
-codeunit 14301911 "AQD Cust Rebate Calc Mgt"
+codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 {
     Permissions = TableData "Cust. Ledger Entry" = rm,
                   TableData "Item Ledger Entry" = rm,
@@ -12,8 +12,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
     var
         RebateUserSetup: Record "AQD Customer Rebate User Setup";
         RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
-        RebateDocEntry: Record "AQD Cust Rebate Document Entry";
-        RebateEntry: Record "AQD Customer Rebate Entry";
         CustomerRebateHeader: Record "AQD Customer Rebate Header";
         TempCustomerRebateHeader: Record "AQD Customer Rebate Header";
         CustomerRebateLine: Record "AQD Customer Rebate Line";
@@ -70,208 +68,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         GlobalBatchStartDate: Date;
         GlobalBatchEndDate: Date;
         GlobalRebateBatchFrequency: Enum "AQD Rebate Batch Frequency";
-
-
-    [EventSubscriber(ObjectType::Page, Page::"AQD Cust Rebate Doc Entries", 'OnAfterActionEvent', 'DoNotPayRebate', true, false)]
-    local procedure Pag1477013_AQDCustRebateDocEntries_OnValidate_DoNotPayRebate(var Rec: Record "AQD Cust Rebate Document Entry")
-    var
-        CustomerRebateEntry: Record "AQD Customer Rebate Entry";
-    begin
-        if Rec.IsTemporary then
-            exit;
-
-        Rec.TestField(Open, true);
-        Rec.TestField(Payable, false);
-        Rec.TestField("Rebate Approved", false);
-        Rec.TestField("Payment Status", Rec."Payment Status"::" ");
-
-        CustomerRebateEntry.Reset;
-        CustomerRebateEntry.SetRange("Rebate Code", Rec."Rebate Code");
-        CustomerRebateEntry.SetRange("Document Type", Rec."Document Type");
-        CustomerRebateEntry.SetRange("Document No.", Rec."Document No.");
-        if CustomerRebateEntry.FindFirst then
-            CustomerRebateEntry.ModifyAll("Do Not Pay Rebate", Rec."Do Not Pay Rebate");
-    end;
-
-    [EventSubscriber(ObjectType::Page, Page::"Posted Sales Invoice", 'OnAfterActionEvent', 'AQD DoNotPayRebate', true, false)]
-    local procedure Page132_PostedSalesInvoice_Onpush_Action_DoNotPayRebate(var Rec: Record "Sales Invoice Header")
-    var
-        PermissionError: Label 'You do not have the permission to update Do Not Pay Rebate';
-        VendorPayableError: Label 'Vendor Payable is already generated for %1 %2. So, "Do Not Pay Rebate" cannot be updated.';
-        RebateAlreadyPaidError: Label 'Rebate has already been paid for %1 %2.';
-        PermissionConfirmMsg: Label 'Do you want to mark %1 %2 as non-Rebatable?';
-    begin
-        if Rec.IsTemporary then
-            exit;
-
-        if DoNotPayRebateFunc(
-          Rec."AQD Do Not Pay Cust Rebate",
-          CalledFromDocumentType::Invoice,
-          Rec."No.")
-        then
-            Rec.Modify;
-    end;
-
-    [EventSubscriber(ObjectType::Page, Page::"Posted Sales Invoices", 'OnAfterActionEvent', 'AQD DoNotPayRebate', true, false)]
-    local procedure Page143_PostedSalesInvoices_Onpush_Action_DoNotPayRebate(var Rec: Record "Sales Invoice Header")
-    begin
-        if Rec.IsTemporary then
-            exit;
-
-        if Rec.FindFirst then begin
-            repeat
-                if DoNotPayRebateFunc(
-                  Rec."AQD Do Not Pay Cust Rebate",
-                  CalledFromDocumentType::Invoice,
-                  Rec."No.")
-                then
-                    Rec.Modify;
-            until Rec.Next = 0;
-        end;
-    end;
-
-    [EventSubscriber(ObjectType::Page, Page::"Posted Sales Credit Memo", 'OnAfterActionEvent', 'AQD DoNotPayRebate', true, false)]
-    local procedure Page134_PostedSalesCreditMemo_Onpush_Action_DoNotPayRebate(var Rec: Record "Sales Cr.Memo Header")
-    begin
-        if Rec.IsTemporary then
-            exit;
-
-        if DoNotPayRebateFunc(
-          Rec."AQD Do Not Pay Cust Rebate",
-          CalledFromDocumentType::"Credit Memo",
-          Rec."No.")
-        then
-            Rec.Modify;
-    end;
-
-    [EventSubscriber(ObjectType::Page, Page::"Posted Sales Credit Memos", 'OnAfterActionEvent', 'AQD DoNotPayRebate', true, false)]
-    local procedure Page144_PostedSalesCreditMemos_Onpush_Action_DoNotPayRebate(var Rec: Record "Sales Cr.Memo Header")
-    begin
-        if Rec.IsTemporary then
-            exit;
-
-        if Rec.FindFirst then begin
-            repeat
-                if DoNotPayRebateFunc(
-                  Rec."AQD Do Not Pay Cust Rebate",
-                  CalledFromDocumentType::"Credit Memo",
-                  Rec."No.")
-                then
-                    Rec.Modify;
-            until Rec.Next = 0;
-        end;
-    end;
-
-    [EventSubscriber(ObjectType::Page, Page::"AQD Cust Rebate Doc Entries", 'OnAfterActionEvent', 'DoNotPayRebate', true, false)]
-    local procedure Page_70904_RebateDocumentEntries_OnPush_Action_DoNotPayRebate(var Rec: Record "AQD Cust Rebate Document Entry")
-    var
-        PermissionConfirmMsg: Label 'You really do not want to pay rebate on %1 %2';
-        GenJnlLine: Record "Gen. Journal Line";
-        SalesInvHeader: Record "Sales Invoice Header";
-        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
-        VendorPayableError: Label 'Vendor Payable is already generated for Invoice %1. So, "Do Not Pay Rebate" cannot be updated.';
-        PermissionError: Label 'You do not have the permission to update Do Not Pay Rebate.';
-        RebateAlreadyPaidError: Label 'Rebate has already been paid for %1 %2.';
-        DocumentType: Option Invoice,"Credit Memo";
-        DocumentTypeError: Label '"Do Not Pay Rebate" can be only updated for either Invoice or Credit Memo.';
-        DocumentFound: Boolean;
-    begin
-        if Rec.IsTemporary then
-            exit;
-
-        if not (Rec."Document Type" in [Rec."Document Type"::Invoice, Rec."Document Type"::"Credit Memo"]) then
-            Error(DocumentTypeError);
-
-        RebateUserSetup.Get(UserId);
-        if not (RebateUserSetup."Rebate Role" in
-          [RebateUserSetup."Rebate Role"::"Sales Manager",
-           RebateUserSetup."Rebate Role"::Admin])
-        then
-            Error(PermissionError);
-
-        if not Confirm(StrSubstNo(PermissionConfirmMsg, Format(DocumentType), Rec."Document No."), false) then
-            exit;
-
-        Rec.TestField(Open, true);
-        Rec.TestField(Payable, false);
-
-        if Rec."Document Type" = Rec."Document Type"::Invoice then
-            DocumentType := DocumentType::Invoice
-        else
-            if Rec."Document Type" = Rec."Document Type"::"Credit Memo" then
-                DocumentType := DocumentType::"Credit Memo";
-
-        DocumentFound := false;
-        if Rec."Document Type" = Rec."Document Type"::Invoice then begin
-            if SalesInvHeader.Get(Rec."Document No.") then
-                DocumentFound := true;
-        end else
-            if Rec."Document Type" = Rec."Document Type"::"Credit Memo" then begin
-                if SalesCrMemoHeader.Get(Rec."Document No.") then
-                    DocumentFound := true;
-            end;
-
-        if DocumentFound then begin
-            Rec.Validate("Do Not Pay Rebate", true);
-            Rec.Modify;
-
-            if Rec."Document Type" = Rec."Document Type"::Invoice then begin
-                SalesInvHeader."AQD Do Not Pay Cust Rebate" := true;
-                SalesInvHeader.Modify;
-            end else
-                if Rec."Document Type" = Rec."Document Type"::"Credit Memo" then begin
-                    SalesCrMemoHeader."AQD Do Not Pay Cust Rebate" := true;
-                    SalesCrMemoHeader.Modify;
-                end;
-        end;
-    end;
-
-    procedure DoNotPayRebateFunc(var DocumentDonotPayRebateIn: Boolean; DocumentTypeIn: Option Invoice,"Credit Memo"; DocumentNoIn: Code[20]): Boolean
-    var
-        RebateUserSetup: Record "AQD Customer Rebate User Setup";
-        PermissionError: Label 'You do not have the permission to update Do Not Pay Rebate';
-        VendorPayableError: Label 'Vendor Payable is already generated for %1 %2. So, "Do Not Pay Rebate" cannot be updated.';
-        RebateAlreadyPaidError: Label 'Rebate has already been paid for %1 %2.';
-        PermissionConfirmMsg: Label 'Do you want to mark %1 %2 as non-rebatable?';
-        RebateDocEntryFound: Boolean;
-    begin
-        ModifyRecord := false;
-        RebateUserSetup.Get(UserId);
-        if not (RebateUserSetup."Rebate Role" in
-          [RebateUserSetup."Rebate Role"::"Sales Manager",
-           RebateUserSetup."Rebate Role"::Admin])
-        then
-            Error(PermissionError);
-
-        if not FirstTime then begin
-            if not Confirm(StrSubstNo(PermissionConfirmMsg, Format(DocumentTypeIn), DocumentNoIn), false) then
-                exit(false);
-            FirstTime := true;
-        end;
-
-        RebateDocEntry.Reset;
-        if DocumentTypeIn = DocumentTypeIn::Invoice then
-            RebateDocEntry.SetRange("Document Type", RebateDocEntry."Document Type"::Invoice)
-        else
-            if DocumentTypeIn = DocumentTypeIn::"Credit Memo" then
-                RebateDocEntry.SetRange("Document Type", RebateDocEntry."Document Type"::"Credit Memo");
-        RebateDocEntry.SetRange("Document No.", DocumentNoIn);
-        if RebateDocEntry.FindFirst then begin
-            repeat
-                if not RebateDocEntry.Open then
-                    Error(StrSubstNo(RebateAlreadyPaidError, Format(RebateDocEntry."Document Type"), RebateDocEntry."Document No."));
-                if RebateDocEntry."Vendor Ledger Entry No." <> 0 then
-                    Error(VendorPayableError, Format(RebateDocEntry."Document Type"), RebateDocEntry."Document No.");
-
-                DocumentDonotPayRebateIn := true;
-                RebateDocEntry.Validate("Do Not Pay Rebate", DocumentDonotPayRebateIn);
-                RebateDocEntry.Modify;
-            until RebateDocEntry.Next = 0;
-        end;
-
-        exit(DocumentDonotPayRebateIn);
-    end;
-
 
     procedure UpdateOldDocumentsNonRebateEnable()
     var
@@ -428,11 +224,11 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                 IF NOT IsRebataEnabledLineExist(SourceDocumentType::Invoice, SalesInvoiceHeader, DummySalesCrMemoHeader, CustomerIn) THEN
                     SkipRecord := true;
 
-                RebateDocEntry.Reset;
-                RebateDocEntry.SetRange("Document Type", RebateDocEntry."Document Type"::Invoice);
-                RebateDocEntry.SetRange("Document No.", SalesInvoiceHeader."No.");
-                if RebateDocEntry.FindFirst then
-                    SkipRecord := true;
+                //RebateDocEntry.Reset;
+                //RebateDocEntry.SetRange("Document Type", RebateDocEntry."Document Type"::Invoice);
+                //RebateDocEntry.SetRange("Document No.", SalesInvoiceHeader."No.");
+                //if RebateDocEntry.FindFirst then
+                //    SkipRecord := true;
 
                 SalesInvLine.Reset;
                 SalesInvLine.SetRange("Document No.", SalesInvoiceHeader."No.");
@@ -477,7 +273,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
             exit;
 
         if IsRebataEnabledLineExist(SourceDocumentType::Invoice, SalesInvHeaderIn, SalesCrMemoHeader, CustomerIn) then begin
-            //InsertRebateDocumentEntry(DocumentType::Invoice, SalesInvHeaderIn, SalesCrMemoHeader, CustomerIn, Vendor);
             //Document
             InsertRebateHeader(DocumentType::Invoice, SalesInvHeaderIn, SalesCrMemoHeader, CustomerIn, RebateNo, SummaryArray);
             //Line
@@ -502,15 +297,14 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                         SalesInvLine."No.",
                         SalesInvHeaderIn."Posting Date")
                     then
-                        //InsertRebateEntry(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, Vendor);
                         InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo);
                 until SalesInvLine.Next = 0;
 
-                IF CustLdgrEntry.GET(SalesInvHeaderIn."Cust. Ledger Entry No.") then begin
-                    RebateDocEntry.CalcFields("Remaining Rebate Amount");
-                    CustLdgrEntry."AQD Customer Rebate Amount" := RebateDocEntry."Remaining Rebate Amount";
-                    CustLdgrEntry.Modify();
-                END
+                // IF CustLdgrEntry.GET(SalesInvHeaderIn."Cust. Ledger Entry No.") then begin
+                //     RebateDocEntry.CalcFields("Remaining Rebate Amount");
+                //     CustLdgrEntry."AQD Customer Rebate Amount" := RebateDocEntry."Remaining Rebate Amount";
+                //     CustLdgrEntry.Modify();
+                // END
             end;
         end;
     end;
@@ -612,7 +406,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
             exit;
 
         if IsRebataEnabledLineExist(SourceDocumentType::"Credit Memo", SalesInvoiceHeader, SalesCrMHeaderIn, CustomerIn) then begin
-            //InsertRebateDocumentEntry(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesCrMHeaderIn, CustomerIn, Vendor);
             //Document
             InsertRebateHeader(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesCrMHeaderIn, CustomerIn, RebateNo, SummaryArray);
             //Line
@@ -637,7 +430,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                         SalesCrMemoLine."No.",
                         SalesCrMHeaderIn."Posting Date")
                     then
-                        //InsertRebateEntry(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, Vendor);
                         InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo);
                 until SalesCrMemoLine.Next = 0;
 
@@ -1552,7 +1344,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
             exit;
         end;
 
-        if (CustomerRebateDetailsIn."Document Type" = RebateEntry."Document Type"::Invoice) and
+        if (CustomerRebateDetailsIn."Document Type" = CustomerRebateDetailsIn."Document Type"::Invoice) and
            (CustomerRebateDetailsIn."Profit %" < 0)
         then begin
             CustomerRebateDetailsIn."Rebate %" := 0;
@@ -1605,90 +1397,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Sales Invoice Header", 'OnAfterValidateEvent', 'AQD Do Not Pay Cust Rebate', true, false)]
-    local procedure Table112_SalesInvoiceHeader_DoNotPayRebate_OnValidate(var Rec: Record "Sales Invoice Header"; var xRec: Record "Sales Invoice Header"; CurrFieldNo: Integer)
-    begin
-        CheckInvoiceRebateValidation(Rec, xRec, CurrFieldNo);
-    end;
-
-    [EventSubscriber(ObjectType::Table, Database::"Sales Cr.Memo Header", 'OnAfterValidateEvent', 'AQD Do Not Pay Cust Rebate', true, false)]
-    local procedure Table114_SalesCrMemoHeader_DoNotPayRebate_OnValidate(var Rec: Record "Sales Cr.Memo Header"; var xRec: Record "Sales Cr.Memo Header"; CurrFieldNo: Integer)
-    begin
-        CheckCrMemoRebateValidation(Rec, xRec, CurrFieldNo);
-    end;
-
-    local procedure CheckInvoiceRebateValidation(var Rec: Record "Sales Invoice Header"; var xRec: Record "Sales Invoice Header"; CurrFieldNo: Integer)
-    var
-        RebateDocumentEntry: Record "AQD Cust Rebate Document Entry";
-        RebateIsAlreadyPaidError: Label 'Rebate is already paid for Invoice %1.';
-        RebateIsAlreadyPayableError: Label 'Rebate is already posted for Invoice %1.';
-        RebateIsAlreadyApprovedError: Label 'Rebate is already approved for Invoice %1.';
-        RebateIsAlreadyPaymentStatusError: Label 'Rebate Payment Status is %1 for Invoice %2.';
-        LocalCustomer: Record Customer;
-    begin
-        RebateSetup.Get;
-
-        if not LocalCustomer.Get(Rec."Sell-to Customer No.") then
-            LocalCustomer.Init;
-
-        RebateDocumentEntry.Reset;
-        if LocalCustomer."AQD Rebate Payment Method" = LocalCustomer."AQD Rebate Payment Method"::Check then
-            RebateDocumentEntry.SetRange("Rebate Code", LocalCustomer."AQD Cust Rebate Vendor No")
-        else
-            if LocalCustomer."AQD Rebate Payment Method" = LocalCustomer."AQD Rebate Payment Method"::"Credit Memo" then
-                RebateDocumentEntry.SetRange("Rebate Code", Rec."Sell-to Customer No.");
-        RebateDocumentEntry.SetRange("Document Type", RebateDocumentEntry."Document Type"::Invoice);
-        RebateDocumentEntry.SetRange("Document No.", Rec."No.");
-        if RebateDocumentEntry.FindFirst then begin
-            if not RebateDocumentEntry.Open then
-                Error(RebateIsAlreadyPaidError, RebateDocumentEntry."Document No.");
-            if RebateDocumentEntry.Payable then
-                Error(RebateIsAlreadyPayableError, RebateDocumentEntry."Document No.");
-            if RebateDocumentEntry."Rebate Approved" then
-                Error(RebateIsAlreadyApprovedError, RebateDocumentEntry."Document No.");
-            if RebateDocumentEntry."Payment Status" <> RebateDocumentEntry."Payment Status"::" " then
-                Error(RebateIsAlreadyPaymentStatusError, Format(RebateDocumentEntry."Payment Status"), RebateDocumentEntry."Document No.");
-        end;
-        Rec."AQD Cust Rebate LastChangedBy" := UserId;
-        Rec."AQD CustRbt LastChangdDateTime" := CurrentDateTime;
-    end;
-
-    local procedure CheckCrMemoRebateValidation(var Rec: Record "Sales Cr.Memo Header"; var xRec: Record "Sales Cr.Memo Header"; CurrFieldNo: Integer)
-    var
-        RebateDocumentEntry: Record "AQD Cust Rebate Document Entry";
-        RebateIsAlreadyPaidError: Label 'Rebate is already paid for Credit Memo %1.';
-        RebateIsAlreadyPayableError: Label 'Rebate is already posted for Credit Memo %1.';
-        RebateIsAlreadyApprovedError: Label 'Rebate is already approved for Invoice %1.';
-        RebateIsAlreadyPaymentStatusError: Label 'Rebate Payment Status is %1 for Credit Memo %2.';
-        LocalCustomer: Record Customer;
-    begin
-        RebateSetup.Get;
-
-        if not LocalCustomer.Get(Rec."Sell-to Customer No.") then
-            LocalCustomer.Init;
-
-        RebateDocumentEntry.Reset;
-        if LocalCustomer."AQD Rebate Payment Method" = LocalCustomer."AQD Rebate Payment Method"::Check then
-            RebateDocumentEntry.SetRange("Rebate Code", LocalCustomer."AQD Cust Rebate Vendor No")
-        else
-            if LocalCustomer."AQD Rebate Payment Method" = LocalCustomer."AQD Rebate Payment Method"::"Credit Memo" then
-                RebateDocumentEntry.SetRange("Rebate Code", Rec."Sell-to Customer No.");
-        RebateDocumentEntry.SetRange("Document Type", RebateDocumentEntry."Document Type"::"Credit Memo");
-        RebateDocumentEntry.SetRange("Document No.", Rec."No.");
-        if RebateDocumentEntry.FindFirst then begin
-            if not RebateDocumentEntry.Open then
-                Error(RebateIsAlreadyPaidError, RebateDocumentEntry."Document No.");
-            if RebateDocumentEntry.Payable then
-                Error(RebateIsAlreadyPayableError, RebateDocumentEntry."Document No.");
-            if RebateDocumentEntry."Rebate Approved" then
-                Error(RebateIsAlreadyApprovedError, RebateDocumentEntry."Document No.");
-            if RebateDocumentEntry."Payment Status" <> RebateDocumentEntry."Payment Status"::" " then
-                Error(RebateIsAlreadyPaymentStatusError, Format(RebateDocumentEntry."Payment Status"), RebateDocumentEntry."Document No.");
-        end;
-        Rec."AQD Rebate Last Changed By" := UserId;
-        Rec."AQD Rebate LastChangd DateTime" := CurrentDateTime;
-    end;
-
     procedure ProcessLine(GenJournalLine: Record "Gen. Journal Line"): Boolean
     var
         ExportNewLines: Boolean;
@@ -1739,37 +1447,7 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsertRebateDocEntry(DocumentType: Option " ",Invoice,"Credit Memo"; DocumentNo: Code[20]; var CustRebateDocEntry: Record "AQD Cust Rebate Document Entry")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterInsertRebateDocEntry(DocumentType: Option " ",Invoice,"Credit Memo"; DocumentNo: Code[20]; var CustRebateDocEntry: Record "AQD Cust Rebate Document Entry")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsertRebateEntry(DocumentType: Option " ",Invoice,"Credit Memo"; DocumentNo: Code[20]; DocumentLineNo: Integer; var CustomerRebateEntry: Record "AQD Customer Rebate Entry")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterInsertRebateEntry(DocumentType: Option " ",Invoice,"Credit Memo"; DocumentNo: Code[20]; DocumentLineNo: Integer; var CustomerRebateEntry: Record "AQD Customer Rebate Entry")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
     local procedure OnBeforeGetRebateRateForOtherTypes(DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; var IsRebateEnabled: Boolean; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsertRebateJournalLine(var RebateJnlLine: Record "AQD Cust Rebate Journal Line"; CustRebateDocEntry: Record "AQD Cust Rebate Document Entry"; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterInsertRebateJournalLine(var RebateJnlLine: Record "AQD Cust Rebate Journal Line"; CustRebateDocEntry: Record "AQD Cust Rebate Document Entry"; var IsHandled: Boolean)
     begin
     end;
 
@@ -1784,16 +1462,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterInitInvoiceRebateEntries(var CustomerRebateEntry: Record "AQD Customer Rebate Entry"; SalesInvoiceLine: Record "Sales Invoice Line")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterInitCreditMemoRebateEntries(var CustomerRebateEntry: Record "AQD Customer Rebate Entry"; SalesCrMemoLine: Record "Sales Cr.Memo Line")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
     local procedure OnBeforeGetSalesRebateDetail(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
     begin
     end;
@@ -1803,4 +1471,3 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 }
-

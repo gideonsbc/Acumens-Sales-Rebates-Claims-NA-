@@ -1,4 +1,4 @@
-codeunit 14301916 "AQD Sales Rebate Rate Calc Mgt"
+codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
 {
 
     trigger OnRun()

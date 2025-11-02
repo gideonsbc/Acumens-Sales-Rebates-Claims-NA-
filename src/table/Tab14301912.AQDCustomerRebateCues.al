@@ -9,27 +9,13 @@ table 14301912 "AQD Customer Rebate Cues"
         {
             Caption = 'Primary Key';
         }
-        field(20; "Rebate Document Entries"; Integer)
+        field(20; "Rebate Documents"; Integer)
         {
-            Caption = 'Rebate Document Entries';
-            CalcFormula = count("AQD Cust Rebate Document Entry" where("Document Posting Date" = field("Date Filter"), "Salesperson Code" = field("Salesperson Code Filter"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), State = field("State Filter")));
+            Caption = 'Rebate Document';
+            CalcFormula = count("AQD Customer Rebate Header" where("Salesperson Code" = field("Salesperson Code Filter"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), State = field("State Filter")));
             FieldClass = FlowField;
             Editable = false;
         }
-        field(21; "Rebate Entries"; Integer)
-        {
-            Caption = 'Rebate Entries';
-            CalcFormula = count("AQD Customer Rebate Entry" where("Document Posting Date" = field("Date Filter"), "Salesperson Code" = field("Salesperson Code Filter"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), "State" = field("State Filter")));
-            FieldClass = FlowField;
-            Editable = false;
-        }
-        // field(22; "Customer Rebate Register"; Integer)
-        // {
-        //     Caption = 'Customer Rebate Register';
-        //     CalcFormula = count("AQD Customer Rebate Register");
-        //     FieldClass = FlowField;
-        //     Editable = false;
-        // }
         field(50; "Date Filter"; Date)
         {
             Caption = 'Date Filter';

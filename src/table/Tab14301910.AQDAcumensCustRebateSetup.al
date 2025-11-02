@@ -204,9 +204,14 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Use Customer Rebate Criteria';
         }
-        field(440; "Auto Update Rbt Cust Type"; Boolean)
+        //field(440; "Auto Update Rbt Cust Type"; Boolean)
+        //{
+        //    Caption = 'Auto Update Rebate Customer Type';
+        //    
+        //}
+        field(450; "Auto Post Customer Rebate"; Boolean)
         {
-            Caption = 'Auto Update Rebate Customer Type';
+            Caption = 'Auto Post Customer Rebate';
         }
     }
     keys

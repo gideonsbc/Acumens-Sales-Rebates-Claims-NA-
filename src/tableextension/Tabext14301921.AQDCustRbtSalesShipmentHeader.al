@@ -38,5 +38,11 @@ tableextension 14301921 "AQD CustRbt Sales Shpt Hdr Ext" extends "Sales Shipment
             Caption = 'Rebate Order Date';
             DataClassification = CustomerContent;
         }
+        field(14301980; "AQD Customer Rebate No"; Code[20])
+        {
+            Caption = 'Customer Rebate No.';
+            DataClassification = CustomerContent;
+            Editable = FALSE;
+        }
     }
 }

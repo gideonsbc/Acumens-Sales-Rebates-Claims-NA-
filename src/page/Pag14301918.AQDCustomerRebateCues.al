@@ -12,17 +12,11 @@ page 14301918 "AQD Customer Rebate Cues"
             cuegroup("Customer Rebate Activities")
             {
                 Caption = 'Customer';
-                field("Rebate Document Entries"; Rec."Rebate Document Entries")
+                field("Rebate Document"; Rec."Rebate Documents")
                 {
-                    Caption = 'Rebate Document Entries';
+                    Caption = 'Rebate Documents';
                     ApplicationArea = All;
-                    DrillDownPageId = "AQD Cust Rebate Doc Entries";
-                }
-                field("Rebate Entries"; Rec."Rebate Entries")
-                {
-                    Caption = 'Rebate Entries';
-                    ApplicationArea = All;
-                    DrillDownPageId = "AQD Customer Rebate Entries";
+                    DrillDownPageId = "AQD Customer Rebates Documents";
                 }
             }
         }

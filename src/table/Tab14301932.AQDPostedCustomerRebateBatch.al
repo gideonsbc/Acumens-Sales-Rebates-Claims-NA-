@@ -87,6 +87,11 @@ table 14301932 "AQD Posted Cust Rebate Batch"
             Caption = 'Approved Date Time';
             Editable = false;
         }
+        field(910; "Last Processing Error Message"; Text[250])
+        {
+            Caption = 'Last Processing Error Message';
+            Editable = false;
+        }
     }
 
     keys

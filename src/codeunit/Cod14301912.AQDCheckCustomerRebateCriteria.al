@@ -1,4 +1,4 @@
-codeunit 14301915 "AQD ChkCustItemRbt Matrix Mgt"
+codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
 {
 
     trigger OnRun()
@@ -221,7 +221,4 @@ codeunit 14301915 "AQD ChkCustItemRbt Matrix Mgt"
         END;
         EXIT(IsEligible);
     end;
-
-    var
-        CustItemRebateMatrix: Record "AQD Cust Item Rebate Matrix" temporary;
 }

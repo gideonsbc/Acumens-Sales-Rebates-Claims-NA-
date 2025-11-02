@@ -1,6 +1,5 @@
-codeunit 14301914 "AQD Customer Rebate Post"
+codeunit 14301934 "AQD Old Customer Rebate Post"
 {
-    TableNo = "AQD Cust Rebate Journal Line";
 
     trigger OnRun()
     begin

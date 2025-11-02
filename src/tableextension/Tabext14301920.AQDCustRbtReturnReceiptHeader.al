@@ -38,5 +38,11 @@ tableextension 14301920 "AQD CustRbt Return RcptHdr Ext" extends "Return Receipt
             Caption = 'Rebate Order Date';
             DataClassification = CustomerContent;
         }
+        field(14301980; "AQD Customer Rebate No"; Code[20])
+        {
+            Caption = 'Customer Rebate No.';
+            DataClassification = CustomerContent;
+            Editable = FALSE;
+        }
     }
 }

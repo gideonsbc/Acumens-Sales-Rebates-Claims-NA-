@@ -38,5 +38,11 @@ tableextension 14301919 "AQD CustRbt SalesCrMemoHdr Ext" extends "Sales Cr.Memo 
             Caption = 'Rebate Order Date';
             DataClassification = CustomerContent;
         }
+        field(14301980; "AQD Customer Rebate No"; Code[20])
+        {
+            Caption = 'Customer Rebate No.';
+            DataClassification = CustomerContent;
+            Editable = FALSE;
+        }
     }
 }

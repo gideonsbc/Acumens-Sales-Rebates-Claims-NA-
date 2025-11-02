@@ -1,4 +1,4 @@
-codeunit 14301913 "AQD Rebate Mgt EventsFunctions"
+codeunit 14301913 "AQD RebateMgt EventsFunctions"
 {
 
     trigger OnRun()
@@ -377,43 +377,6 @@ codeunit 14301913 "AQD Rebate Mgt EventsFunctions"
         END;
     END;
 
-    procedure ShowDocument(RebateJnlLine: Record "AQD Cust Rebate Journal Line")
-    var
-        SalesInvHeader: Record "Sales Invoice Header";
-        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeShowDocument(RebateJnlLine, IsHandled);
-        if IsHandled then
-            exit;
-
-        case RebateJnlLine."AQD Document Type" of
-            RebateJnlLine."AQD Document Type"::Invoice:
-                begin
-                    SalesInvHeader.Get(RebateJnlLine."AQD Document No.");
-                    PAGE.RunModal(PAGE::"Posted Sales Invoice", SalesInvHeader);
-                end;
-            RebateJnlLine."AQD Document Type"::"Credit Memo":
-                begin
-                    SalesCrMemoHeader.Get(RebateJnlLine."AQD Document No.");
-                    PAGE.RunModal(PAGE::"Posted Sales Credit Memo", SalesCrMemoHeader);
-                end;
-        end;
-    end;
-
-    procedure CalcBalance(var RebateJnlLine: Record "AQD Cust Rebate Journal Line"; var TotalBaseAmount: Decimal; var TotalProfitAmount: Decimal; var TotalRebateAmount: Decimal)
-    var
-        TmpRebateJnlLine: Record "AQD Cust Rebate Journal Line";
-    begin
-        TmpRebateJnlLine.CopyFilters(RebateJnlLine);
-        TmpRebateJnlLine.CalcSums("AQD Base Amount", "AQD Profit Amount", "AQD Rebate Amount");
-
-        TotalBaseAmount := TmpRebateJnlLine."AQD Base Amount";
-        TotalProfitAmount := TmpRebateJnlLine."AQD Profit Amount";
-        TotalRebateAmount := TmpRebateJnlLine."AQD Rebate Amount";
-    end;
-
     procedure ShowPostedDocument(DocumentType: Enum "AQD Cust Rebate Document Type"; DocumentNo: COde[20])
     var
         PostedSalesInvoice: Record "Sales Invoice Header";
@@ -460,10 +423,4 @@ codeunit 14301913 "AQD Rebate Mgt EventsFunctions"
                 end;
         END;
     end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeShowDocument(RebateJnlLine: Record "AQD Cust Rebate Journal Line"; var IsHandled: Boolean)
-    begin
-    end;
 }
-
