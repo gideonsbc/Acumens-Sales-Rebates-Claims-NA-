@@ -67,13 +67,13 @@ page 14301946 "AQD Posted Cust Rebate Batch"
                     Editable = false;
                 }
             }
-            // part("AQD PostedCustomerRebate Subpage"; "AQD PostedCustomerRebate Subpage")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Posted Customer Rebate Documents';
-            //     SubPageLink = "Batch Entry No." = field("Entry No.");
-            //     UpdatePropagation = Both;
-            // }
+            part("AQD Posted Cust Rebate Subpage"; "AQD Posted Cust Rebate Subpage")
+            {
+                ApplicationArea = All;
+                Caption = 'Posted Customer Rebate Documents';
+                SubPageLink = "Batch Entry No." = field("Entry No.");
+                UpdatePropagation = Both;
+            }
         }
     }
 }

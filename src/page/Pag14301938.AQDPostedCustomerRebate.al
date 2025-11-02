@@ -22,59 +22,59 @@ page 14301938 "AQD Posted Customer Rebate"
                     Editable = false;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
-                group("Buy-from")
+                group("Sell-To")
                 {
-                    field("Buy-from Vendor No."; Rec."Sell-To Customer No.")
+                    field("Sell-To Customer No."; Rec."Sell-To Customer No.")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Buy-from Vendor No. field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Sell-To Customer No. field.', Comment = '%';
                     }
-                    field("Buy-from Vendor Name"; Rec."Sell-To Customer Name")
+                    field("Sell-To Customer Name"; Rec."Sell-To Customer Name")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Buy-from Vendor Name field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Sell-To Customer Name field.', Comment = '%';
                     }
-                    field("Buy-from Vendor Name 2"; Rec."Sell-To Customer Name 2")
+                    field("Sell-To Customer Name 2"; Rec."Sell-To Customer Name 2")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Buy-from Vendor Name 2 field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Sell-To Customer Name 2 field.', Comment = '%';
                         Importance = Additional;
                     }
-                    field("Buy-from Address"; Rec."Sell-To Address")
+                    field("Sell-To Address"; Rec."Sell-To Address")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Buy-from Address field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Sell-To Address field.', Comment = '%';
                     }
-                    field("Buy-from Address 2"; Rec."Sell-To Address 2")
+                    field("Sell-To Address 2"; Rec."Sell-To Address 2")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Buy-from Address 2 field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Sell-To Address 2 field.', Comment = '%';
                         Importance = Additional;
                     }
-                    field("Buy-from Contact"; Rec."Sell-To Contact")
+                    field("Sell-To Contact"; Rec."Sell-To Contact")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Buy-from Contact field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Sell-To Contact field.', Comment = '%';
                     }
-                    field("Buy-from Post Code"; Rec."Sell-To Post Code")
+                    field("Sell-To Post Code"; Rec."Sell-To Post Code")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Buy-from ZIP Code field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Sell-To ZIP Code field.', Comment = '%';
                     }
-                    field("Buy-from City"; Rec."Sell-To City")
+                    field("Sell-To City"; Rec."Sell-To City")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Buy-from City field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Sell-To City field.', Comment = '%';
                     }
-                    field("Buy-from Country/Region Code"; Rec."Sell-To Country/Region Code")
+                    field("Sell-To Country/Region Code"; Rec."Sell-To Country/Region Code")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Buy-from Country/Region Code field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Sell-To Country/Region Code field.', Comment = '%';
                     }
-                    field("Buy-from County"; Rec."Sell-To County")
+                    field("Sell-To County"; Rec."Sell-To County")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Buy-from State field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Sell-To State field.', Comment = '%';
                     }
                 }
                 field("AQD Calculation Date"; Rec."AQD Calculation Date")
@@ -115,59 +115,59 @@ page 14301938 "AQD Posted Customer Rebate"
                     ApplicationArea = All;
                     Editable = false;
                 }
-                group("Pay-To")
+                group("Bill-To")
                 {
-                    field("Pay-to Vendor No."; Rec."Pay-to Vendor No.")
+                    field("Bill-To Customer No."; Rec."Bill-To Customer No.")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Pay-to Vendor No. field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Bill-To Customer No. field.', Comment = '%';
                     }
-                    field("Pay-to Name"; Rec."Pay-to Name")
+                    field("Bill-To Name"; Rec."Bill-To Name")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Name field.', Comment = '%';
                     }
-                    field("Pay-to Name 2"; Rec."Pay-to Name 2")
+                    field("Bill-To Name 2"; Rec."Bill-To Name 2")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Name 2 field.', Comment = '%';
                         Importance = Additional;
                     }
-                    field("Pay-to Address"; Rec."Pay-to Address")
+                    field("Bill-To Address"; Rec."Bill-To Address")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Address field.', Comment = '%';
                     }
-                    field("Pay-to Address 2"; Rec."Pay-to Address 2")
+                    field("Bill-To Address 2"; Rec."Bill-To Address 2")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Address 2 field.', Comment = '%';
                         Importance = Additional;
                     }
-                    field("Pay-to Contact"; Rec."Pay-to Contact")
+                    field("Bill-To Contact"; Rec."Bill-To Contact")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Contact field.', Comment = '%';
                     }
-                    field("Pay-to Post Code"; Rec."Pay-to Post Code")
+                    field("Bill-To Post Code"; Rec."Bill-To Post Code")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the ZIP Code field.', Comment = '%';
                     }
-                    field("Pay-to City"; Rec."Pay-to City")
+                    field("Bill-To City"; Rec."Bill-To City")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the City field.', Comment = '%';
                     }
-                    field("Pay-to Country/Region Code"; Rec."Pay-to Country/Region Code")
+                    field("Bill-To Country/Region Code"; Rec."Bill-To Country/Region Code")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Country/Region Code field.', Comment = '%';
                     }
-                    field("Pay-to County"; Rec."Pay-to County")
+                    field("Bill-To County"; Rec."Bill-To County")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Pay-to State field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Bill-To State field.', Comment = '%';
                     }
                 }
                 field("Posting Date"; Rec."Posting Date")
@@ -224,6 +224,73 @@ page 14301938 "AQD Posted Customer Rebate"
                 {
                     ApplicationArea = All;
                     Editable = false;
+                }
+            }
+            group(PayToVendor)
+            {
+                Caption = 'Pay-To Vendor';
+                field("Pay-To Vendor No."; Rec."Pay-To Vendor No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Vendor No.';
+                    ToolTip = 'Specifies the value of the Pay-To Vendor No. field.', Comment = '%';
+                }
+                field("Pay-To Name"; Rec."Pay-To Name")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Name';
+                    ToolTip = 'Specifies the value of the Name field.', Comment = '%';
+                }
+                field("Pay-To Name 2"; Rec."Pay-To Name 2")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Name 2';
+                    ToolTip = 'Specifies the value of the Name 2 field.', Comment = '%';
+                    Importance = Additional;
+                }
+                field("Pay-To Address"; Rec."Pay-To Address")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Address';
+                    ToolTip = 'Specifies the value of the Address field.', Comment = '%';
+                }
+                field("Pay-To Address 2"; Rec."Pay-To Address 2")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Address 2';
+                    ToolTip = 'Specifies the value of the Address 2 field.', Comment = '%';
+                    Importance = Additional;
+                }
+                field("Pay-To Contact"; Rec."Pay-To Contact")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Contact';
+                    ToolTip = 'Specifies the value of the Contact field.', Comment = '%';
+                }
+                field("Pay-To Post Code"; Rec."Pay-To Post Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Zip Code';
+                    ToolTip = 'Specifies the value of the ZIP Code field.', Comment = '%';
+                }
+                field("Pay-To City"; Rec."Pay-To City")
+                {
+                    ApplicationArea = All;
+                    Caption = 'City';
+                    ToolTip = 'Specifies the value of the City field.', Comment = '%';
+                }
+
+                field("Pay-To Country/Region Code"; Rec."Pay-To Country/Region Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Country/Region Code';
+                    ToolTip = 'Specifies the value of the Country/Region Code field.', Comment = '%';
+                }
+                field("Pay-To County"; Rec."Pay-To County")
+                {
+                    ApplicationArea = All;
+                    Caption = 'County';
+                    ToolTip = 'Specifies the value of the Bill-To State field.', Comment = '%';
                 }
             }
             part("AQD Customer Rebate Subpage"; "AQD Posted Cust Reb Subpage")

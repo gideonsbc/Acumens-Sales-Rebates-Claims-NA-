@@ -9,8 +9,8 @@ page 14301937 "AQD Posted Customer Rebates"
     ApplicationArea = All;
     UsageCategory = Lists;
     RefreshOnActivate = true;
-    SourceTable = "AQD Customer Rebate Header";
-    CardPageId = "AQD Customer Rebate Document";
+    SourceTable = "AQD Posted Cust Rebate Header";
+    CardPageId = "AQD Posted Customer Rebates";
 
     layout
     {

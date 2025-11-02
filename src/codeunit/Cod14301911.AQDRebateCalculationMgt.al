@@ -14,7 +14,6 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         RebateDocEntry: Record "AQD Cust Rebate Document Entry";
         RebateEntry: Record "AQD Customer Rebate Entry";
-
         CustomerRebateHeader: Record "AQD Customer Rebate Header";
         TempCustomerRebateHeader: Record "AQD Customer Rebate Header";
         CustomerRebateLine: Record "AQD Customer Rebate Line";
@@ -333,6 +332,9 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
         //     UpdateRebateCustomerType.Run();
         //     COMMIT;
         // END;
+
+        CreatedCustomerRebate.RESET;
+        CreatedCustomerRebate.DeleteAll();
 
         Clear(PostingDescrptionText);
         PostingDescrptionText := StrSubstNo(RebatePeriodText, DateArray[1], DateArray[2]);
@@ -805,8 +807,9 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
     local procedure InsertRebateHeader(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeaderIn: Record "Sales Invoice Header"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; CustomerIn: Record Customer; var RebateNo: code[20]; SummaryArray: array[5] of Boolean)
     var
         CustomerRebateBatch: Record "AQD Customer Rebate Batch";
-        BuyFromVendorRec: Record Vendor;
-        PayToVendorRec: Record Vendor;
+        SellToCustomerRec: Record Customer;
+        BillToCustomerRec: Record Customer;
+        PayToVendor: Record Vendor;
         RebateVendorRec: Record Vendor;
         PayToVendorCode: Code[20];
         DocumentPostingDate: Date;
@@ -827,15 +830,16 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                         END;
                     END;
 
-                    //BuyFromVendorRec.GET(SalesInvHeaderIn."Buy-from Vendor No.");
-                    PayToVendorRec.GET(CustomerIn."AQD Cust Rebate Vendor No");
+                    BillToCustomerRec.GET(SalesInvHeaderIn."Bill-to Customer No.");
+                    SellToCustomerRec.GET(SalesInvHeaderIn."Sell-to Customer No.");
+
                     DocumentPostingDate := SalesInvHeaderIn."Posting Date";
 
-                    CreatedCustomerRebate.SetRange("Pay-to Vendor No.", PayToVendorRec."No.");
+                    CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesInvHeaderIn."Bill-to Customer No.");
                     if SummaryArray[1] then
-                        CreatedCustomerRebate.SetRange("Buy-from Vendor No.", SalesInvHeaderIn."Sell-To Customer No.")
+                        CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesInvHeaderIn."Sell-To Customer No.")
                     ELSE
-                        CreatedCustomerRebate.SetRange("Buy-from Vendor No.", PayToVendorRec."No.");
+                        CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesInvHeaderIn."Bill-to Customer No.");
                     if SummaryArray[2] then
                         CreatedCustomerRebate.SetRange("Responsibility Center", SalesInvHeaderIn."Responsibility Center");
                     if SummaryArray[3] then
@@ -860,15 +864,15 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                         END;
                     END;
 
-                    //BuyFromVendorRec.GET(SalesCrMemoHeaderIn."Buy-from Vendor No.");
-                    PayToVendorRec.GET(CustomerIn."AQD Cust Rebate Vendor No");
+                    BillToCustomerRec.GET(SalesCrMemoHeaderIn."Bill-To Customer No.");
+                    SellToCustomerRec.GET(SalesCrMemoHeaderIn."Sell-to Customer No.");
                     DocumentPostingDate := SalesCrMemoHeaderIn."Posting Date";
 
-                    CreatedCustomerRebate.SetRange("Pay-to Vendor No.", PayToVendorRec."No.");
+                    CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesCrMemoHeaderIn."Bill-to Customer No.");
                     if SummaryArray[1] then
-                        CreatedCustomerRebate.SetRange("Buy-from Vendor No.", SalesCrMemoHeaderIn."Sell-To Customer No.")
+                        CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesCrMemoHeaderIn."Sell-To Customer No.")
                     ELSE
-                        CreatedCustomerRebate.SetRange("Buy-from Vendor No.", PayToVendorRec."No.");
+                        CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesCrMemoHeaderIn."Bill-to Customer No.");
                     if SummaryArray[2] then
                         CreatedCustomerRebate.SetRange("Responsibility Center", SalesCrMemoHeaderIn."Responsibility Center");
                     if SummaryArray[3] then
@@ -881,6 +885,9 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                         CreatedCustomerRebate.SetRange(GlobalBatchID, GlobalBatchID);
                 end;
         end;
+
+        IF BillToCustomerRec."AQD Cust Rebate Vendor No" <> '' THEN
+            PayToVendor.GET(BillToCustomerRec."AQD Cust Rebate Vendor No");
 
         IF NOT CreatedCustomerRebate.FindFirst() then begin
             IF GlobalBatchID <> '' THEN BEGIN
@@ -903,44 +910,45 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
 
             CustomerRebateHeader.Init;
             CustomerRebateHeader."No." := NoSeriesMgt.GetNextNo(RebateSetup."Customer Rebate Nos", Today, true);
-            if SummaryArray[1] then begin
-                CustomerRebateHeader."Sell-To Customer No." := BuyFromVendorRec."No.";
-                CustomerRebateHeader."Sell-To Customer Name" := BuyFromVendorRec.Name;
-                CustomerRebateHeader."Sell-To Customer Name 2" := BuyFromVendorRec."Name 2";
-                CustomerRebateHeader."Sell-To Address" := BuyFromVendorRec.Address;
-                CustomerRebateHeader."Sell-To Address 2" := BuyFromVendorRec."Address 2";
-                CustomerRebateHeader."Sell-To City" := BuyFromVendorRec.City;
-                CustomerRebateHeader."Sell-To Contact" := BuyFromVendorRec.Contact;
-                CustomerRebateHeader."Sell-To Post Code" := BuyFromVendorRec."Post Code";
-                CustomerRebateHeader."Sell-To County" := BuyFromVendorRec.County;
-                CustomerRebateHeader."Sell-To Country/Region Code" := BuyFromVendorRec."Country/Region Code";
-            END ELSE begin
-                CustomerRebateHeader."Sell-To Customer No." := PayToVendorRec."No.";
-                CustomerRebateHeader."Sell-To Customer Name" := PayToVendorRec.Name;
-                CustomerRebateHeader."Sell-To Customer Name 2" := PayToVendorRec."Name 2";
-                CustomerRebateHeader."Sell-To Address" := PayToVendorRec.Address;
-                CustomerRebateHeader."Sell-To Address 2" := PayToVendorRec."Address 2";
-                CustomerRebateHeader."Sell-To City" := PayToVendorRec.City;
-                CustomerRebateHeader."Sell-To Contact" := PayToVendorRec.Contact;
-                CustomerRebateHeader."Sell-To Post Code" := PayToVendorRec."Post Code";
-                CustomerRebateHeader."Sell-To County" := PayToVendorRec."County";
-                CustomerRebateHeader."Sell-To Country/Region Code" := PayToVendorRec."Country/Region Code";
-            END;
-
-            CustomerRebateHeader."Bill-To Customer No." := PayToVendorRec."No.";
-            CustomerRebateHeader."Bill-To Name" := PayToVendorRec.Name;
-            CustomerRebateHeader."Bill-To Name 2" := PayToVendorRec."Name 2";
-            CustomerRebateHeader."Bill-To Address" := PayToVendorRec.Address;
-            CustomerRebateHeader."Bill-To Address 2" := PayToVendorRec."Address 2";
-            CustomerRebateHeader."Bill-To City" := PayToVendorRec.City;
-            CustomerRebateHeader."Bill-To Contact" := PayToVendorRec.Contact;
-            CustomerRebateHeader."Bill-To Post Code" := PayToVendorRec."Post Code";
-            CustomerRebateHeader."Bill-To County" := PayToVendorRec."County";
-            CustomerRebateHeader."Bill-To Country/Region Code" := PayToVendorRec."Country/Region Code";
 
             case DocumentType of
                 DocumentType::Invoice:
                     begin
+                        IF SummaryArray[1] THEN BEGIN
+                            CustomerRebateHeader."Sell-To Customer No." := SalesInvHeaderIn."Sell-to Customer No.";
+                            CustomerRebateHeader."Sell-To Customer Name" := SalesInvHeaderIn."Sell-to Customer Name";
+                            CustomerRebateHeader."Sell-To Customer Name 2" := SalesInvHeaderIn."Sell-to Customer Name 2";
+                            CustomerRebateHeader."Sell-To Address" := SalesInvHeaderIn."Sell-to Address";
+                            CustomerRebateHeader."Sell-To Address 2" := SalesInvHeaderIn."Sell-to Address 2";
+                            CustomerRebateHeader."Sell-To City" := SalesInvHeaderIn."Sell-to City";
+                            CustomerRebateHeader."Sell-To Contact" := SalesInvHeaderIn."Sell-to Contact";
+                            CustomerRebateHeader."Sell-To Post Code" := SalesInvHeaderIn."Sell-to Post Code";
+                            CustomerRebateHeader."Sell-To County" := SalesInvHeaderIn."Sell-to County";
+                            CustomerRebateHeader."Sell-To Country/Region Code" := SalesInvHeaderIn."Sell-to Country/Region Code";
+                        END ELSE BEGIN
+                            CustomerRebateHeader."Sell-To Customer No." := SalesInvHeaderIn."Bill-to Customer No.";
+                            CustomerRebateHeader."Sell-To Customer Name" := SalesInvHeaderIn."Bill-to Name";
+                            CustomerRebateHeader."Sell-To Customer Name 2" := SalesInvHeaderIn."Bill-to Name 2";
+                            CustomerRebateHeader."Sell-To Address" := SalesInvHeaderIn."Bill-to Address";
+                            CustomerRebateHeader."Sell-To Address 2" := SalesInvHeaderIn."Bill-to Address 2";
+                            CustomerRebateHeader."Sell-To City" := SalesInvHeaderIn."Bill-to City";
+                            CustomerRebateHeader."Sell-To Contact" := SalesInvHeaderIn."Bill-to Contact";
+                            CustomerRebateHeader."Sell-To Post Code" := SalesInvHeaderIn."Bill-to Post Code";
+                            CustomerRebateHeader."Sell-To County" := SalesInvHeaderIn."Bill-to County";
+                            CustomerRebateHeader."Sell-To Country/Region Code" := SalesInvHeaderIn."Bill-To Country/Region Code";
+                        END;
+
+                        CustomerRebateHeader."Bill-To Customer No." := SalesInvHeaderIn."Bill-to Customer No.";
+                        CustomerRebateHeader."Bill-To Name" := SalesInvHeaderIn."Bill-to Name";
+                        CustomerRebateHeader."Bill-To Name 2" := SalesInvHeaderIn."Bill-to Name 2";
+                        CustomerRebateHeader."Bill-To Address" := SalesInvHeaderIn."Bill-to Address";
+                        CustomerRebateHeader."Bill-To Address 2" := SalesInvHeaderIn."Bill-to Address 2";
+                        CustomerRebateHeader."Bill-To City" := SalesInvHeaderIn."Bill-to City";
+                        CustomerRebateHeader."Bill-To Contact" := SalesInvHeaderIn."Bill-to Contact";
+                        CustomerRebateHeader."Bill-To Post Code" := SalesInvHeaderIn."Bill-to Post Code";
+                        CustomerRebateHeader."Bill-To County" := SalesInvHeaderIn."Bill-to County";
+                        CustomerRebateHeader."Bill-To Country/Region Code" := SalesInvHeaderIn."Bill-To Country/Region Code";
+
                         CustomerRebateHeader."Salesperson Code" := SalesInvHeaderIn."Salesperson Code";
                         CustomerRebateHeader."External Document No." := SalesInvHeaderIn."External Document No.";
                         CustomerRebateHeader.State := SalesInvHeaderIn."Ship-to County";
@@ -955,6 +963,41 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                     end;
                 DocumentType::"Credit Memo":
                     begin
+                        IF SummaryArray[1] THEN BEGIN
+                            CustomerRebateHeader."Sell-To Customer No." := SalesCrMemoHeaderIn."Sell-to Customer No.";
+                            CustomerRebateHeader."Sell-To Customer Name" := SalesCrMemoHeaderIn."Sell-to Customer Name";
+                            CustomerRebateHeader."Sell-To Customer Name 2" := SalesCrMemoHeaderIn."Sell-to Customer Name 2";
+                            CustomerRebateHeader."Sell-To Address" := SalesCrMemoHeaderIn."Sell-to Address";
+                            CustomerRebateHeader."Sell-To Address 2" := SalesCrMemoHeaderIn."Sell-to Address 2";
+                            CustomerRebateHeader."Sell-To City" := SalesCrMemoHeaderIn."Sell-to City";
+                            CustomerRebateHeader."Sell-To Contact" := SalesCrMemoHeaderIn."Sell-to Contact";
+                            CustomerRebateHeader."Sell-To Post Code" := SalesCrMemoHeaderIn."Sell-to Post Code";
+                            CustomerRebateHeader."Sell-To County" := SalesCrMemoHeaderIn."Sell-to County";
+                            CustomerRebateHeader."Sell-To Country/Region Code" := SalesCrMemoHeaderIn."Sell-to Country/Region Code";
+                        END ELSE BEGIN
+                            CustomerRebateHeader."Sell-To Customer No." := SalesCrMemoHeaderIn."Bill-to Customer No.";
+                            CustomerRebateHeader."Sell-To Customer Name" := SalesCrMemoHeaderIn."Bill-to Name";
+                            CustomerRebateHeader."Sell-To Customer Name 2" := SalesCrMemoHeaderIn."Bill-to Name 2";
+                            CustomerRebateHeader."Sell-To Address" := SalesCrMemoHeaderIn."Bill-to Address";
+                            CustomerRebateHeader."Sell-To Address 2" := SalesCrMemoHeaderIn."Bill-to Address 2";
+                            CustomerRebateHeader."Sell-To City" := SalesCrMemoHeaderIn."Bill-to City";
+                            CustomerRebateHeader."Sell-To Contact" := SalesCrMemoHeaderIn."Bill-to Contact";
+                            CustomerRebateHeader."Sell-To Post Code" := SalesCrMemoHeaderIn."Bill-to Post Code";
+                            CustomerRebateHeader."Sell-To County" := SalesCrMemoHeaderIn."Bill-to County";
+                            CustomerRebateHeader."Sell-To Country/Region Code" := SalesCrMemoHeaderIn."Bill-To Country/Region Code";
+                        END;
+
+                        CustomerRebateHeader."Bill-To Customer No." := SalesCrMemoHeaderIn."Bill-to Customer No.";
+                        CustomerRebateHeader."Bill-To Name" := SalesCrMemoHeaderIn."Bill-to Name";
+                        CustomerRebateHeader."Bill-To Name 2" := SalesCrMemoHeaderIn."Bill-to Name 2";
+                        CustomerRebateHeader."Bill-To Address" := SalesCrMemoHeaderIn."Bill-to Address";
+                        CustomerRebateHeader."Bill-To Address 2" := SalesCrMemoHeaderIn."Bill-to Address 2";
+                        CustomerRebateHeader."Bill-To City" := SalesCrMemoHeaderIn."Bill-to City";
+                        CustomerRebateHeader."Bill-To Contact" := SalesCrMemoHeaderIn."Bill-to Contact";
+                        CustomerRebateHeader."Bill-To Post Code" := SalesCrMemoHeaderIn."Bill-to Post Code";
+                        CustomerRebateHeader."Bill-To County" := SalesCrMemoHeaderIn."Bill-to County";
+                        CustomerRebateHeader."Bill-To Country/Region Code" := SalesCrMemoHeaderIn."Bill-To Country/Region Code";
+
                         CustomerRebateHeader."Salesperson Code" := SalesCrMemoHeaderIn."Salesperson Code";
                         CustomerRebateHeader.State := SalesCrMemoHeaderIn."Ship-to County";
                         if SummaryArray[2] then
@@ -968,6 +1011,18 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                             CustomerRebateHeader."Shortcut Dimension 2 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 2 Code";
                     end;
             end;
+
+            CustomerRebateHeader."Pay-To Vendor No." := PayToVendor."No.";
+            CustomerRebateHeader."Pay-To Name" := PayToVendor.Name;
+            CustomerRebateHeader."Pay-To Name 2" := PayToVendor."Name 2";
+            CustomerRebateHeader."Pay-To Address" := PayToVendor.Address;
+            CustomerRebateHeader."Pay-To Address 2" := PayToVendor."Address 2";
+            CustomerRebateHeader."Pay-To City" := PayToVendor.City;
+            CustomerRebateHeader."Pay-To Contact" := PayToVendor.Contact;
+            CustomerRebateHeader."Pay-To Post Code" := PayToVendor."Post Code";
+            CustomerRebateHeader."Pay-To County" := PayToVendor.County;
+            CustomerRebateHeader."Pay-To Country/Region Code" := PayToVendor."Country/Region Code";
+
             CustomerRebateHeader."Posting Description" := PostingDescrptionText;
             CustomerRebateHeader."Posting Date" := Today;
             CustomerRebateHeader."Document Date" := Today;
@@ -981,16 +1036,18 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
 
             CreatedCustomerRebate.Init();
             CreatedCustomerRebate."Rebate No." := CustomerRebateHeader."No.";
-            CreatedCustomerRebate."Pay-to Vendor No." := CustomerRebateHeader."Bill-To Customer No.";
-            CreatedCustomerRebate."Buy-from Vendor No." := CustomerRebateHeader."Sell-To Customer No.";
+            CreatedCustomerRebate."Bill-To Customer No." := CustomerRebateHeader."Bill-To Customer No.";
+            CreatedCustomerRebate."Sell-To Customer No." := CustomerRebateHeader."Sell-To Customer No.";
             CreatedCustomerRebate."Location Code" := CustomerRebateHeader."Location Code";
             CreatedCustomerRebate."Responsibility Center" := CustomerRebateHeader."Responsibility Center";
             CreatedCustomerRebate."Shortcut Dimension 1 Code" := CustomerRebateHeader."Shortcut Dimension 1 Code";
             CreatedCustomerRebate."Shortcut Dimension 2 Code" := CustomerRebateHeader."Shortcut Dimension 2 Code";
             CreatedCustomerRebate.GlobalBatchID := GlobalBatchID;
             CreatedCustomerRebate.INSERT;
-        end else
+        end else begin
             RebateNo := CreatedCustomerRebate."Rebate No.";
+            CustomerRebateHeader.GET(RebateNo);
+        end;
     end;
 
     local procedure InsertRebateLine(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeaderIn: Record "Sales Invoice Header"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; RebateNo: Code[20]; var RebateLineNo: Integer)
@@ -1029,8 +1086,8 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Currency Code" := SalesInvHeaderIn."Currency Code";
                     CustomerRebateLine."Shortcut Dimension 1 Code" := SalesInvHeaderIn."Shortcut Dimension 1 Code";
                     CustomerRebateLine."Shortcut Dimension 2 Code" := SalesInvHeaderIn."Shortcut Dimension 2 Code";
-                    CustomerRebateLine."Buy-from Vendor No." := CustomerRebateHeader."Sell-To Customer No.";
-                    CustomerRebateLine."Pay-to Vendor No." := CustomerRebateHeader."Bill-To Customer No.";
+                    CustomerRebateLine."Sell-To Customer No." := CustomerRebateHeader."Sell-To Customer No.";
+                    CustomerRebateLine."Bill-To Customer No." := CustomerRebateHeader."Bill-To Customer No.";
                 end;
             DocumentType::"Credit Memo":
                 begin
@@ -1051,8 +1108,8 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Currency Code" := SalesCrMemoHeaderIn."Currency Code";
                     CustomerRebateLine."Shortcut Dimension 1 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 1 Code";
                     CustomerRebateLine."Shortcut Dimension 2 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 2 Code";
-                    CustomerRebateLine."Buy-from Vendor No." := CustomerRebateHeader."Sell-To Customer No.";
-                    CustomerRebateLine."Pay-to Vendor No." := CustomerRebateHeader."Bill-To Customer No.";
+                    CustomerRebateLine."Sell-To Customer No." := CustomerRebateHeader."Sell-To Customer No.";
+                    CustomerRebateLine."Bill-To Customer No." := CustomerRebateHeader."Bill-To Customer No.";
                 end;
         end;
         //CustomerRebateLine.Exclude := false;
@@ -1252,8 +1309,8 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                                     CustomerRebateDetails."Shortcut Dimension 1 Code" := SalesInvLineIn."Shortcut Dimension 1 Code";
                                     CustomerRebateDetails."Shortcut Dimension 2 Code" := SalesInvLineIn."Shortcut Dimension 2 Code";
                                     CustomerRebateDetails.State := SalesInvHeaderIn."Ship-to County";
-                                    CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Buy-from Vendor No.";
-                                    CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Pay-to Vendor No.";
+                                    CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Sell-To Customer No.";
+                                    CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Bill-To Customer No.";
                                     SalesInvLineIn.GetSalesShptLines(TempSalesShptLine);
                                     IF TempSalesShptLine.FindFirst() THEN BEGIN
                                         CustomerRebateDetails."Applies-to Doc. Type" := CustomerRebateDetails."Applies-to Doc. Type"::Shipment;
@@ -1302,8 +1359,8 @@ codeunit 14301911 "AQD Cust Rebate Calc Mgt"
                                     CustomerRebateDetails."Shortcut Dimension 1 Code" := SalesCrMemoLineIn."Shortcut Dimension 1 Code";
                                     CustomerRebateDetails."Shortcut Dimension 2 Code" := SalesCrMemoLineIn."Shortcut Dimension 2 Code";
                                     CustomerRebateDetails.State := SalesCrMemoHeaderIn."Ship-to County";
-                                    CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Buy-from Vendor No.";
-                                    CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Pay-to Vendor No.";
+                                    CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Sell-To Customer No.";
+                                    CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Bill-To Customer No.";
                                     SalesCrMemoLineIn.GetReturnRcptLines(TempReturnReceiptLine);
                                     IF TempReturnReceiptLine.FindFirst() THEN BEGIN
                                         CustomerRebateDetails."Applies-to Doc. Type" := CustomerRebateDetails."Applies-to Doc. Type"::"Return Receipt";

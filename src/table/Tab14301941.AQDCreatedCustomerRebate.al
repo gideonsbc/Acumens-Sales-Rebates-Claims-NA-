@@ -10,19 +10,19 @@ table 14301941 "AQD Created Customer Rebate"
             Caption = 'Rebate No.';
             NotBlank = true;
         }
-        field(20; "Pay-to Vendor No."; Code[20])
+        field(20; "Bill-To Customer No."; Code[20])
         {
-            Caption = 'Pay-to Vendor No.';
+            Caption = 'Bill-To Customer No.';
             Editable = false;
         }
-        field(30; "Buy-from Vendor No."; Code[20])
+        field(30; "Sell-To Customer No."; Code[20])
         {
-            Caption = 'Buy-from Vendor No.';
+            Caption = 'Sell-To Customer No.';
             Editable = false;
         }
-        field(40; "Purchaser Code"; Code[20])
+        field(40; "Salesperson Code"; Code[20])
         {
-            Caption = 'Purchaser Code';
+            Caption = 'Salesperson Code';
             Editable = false;
         }
         field(50; "Responsibility Center"; Code[10])
@@ -58,7 +58,7 @@ table 14301941 "AQD Created Customer Rebate"
     }
     keys
     {
-        key(Key1; "Rebate No.", "Pay-to Vendor No.", "Buy-from Vendor No.", "Responsibility Center", "Location Code", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code", GlobalBatchID)
+        key(Key1; "Rebate No.", "Bill-To Customer No.", "Sell-To Customer No.", "Responsibility Center", "Location Code", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code", GlobalBatchID)
         {
             Clustered = true;
         }
@@ -66,7 +66,7 @@ table 14301941 "AQD Created Customer Rebate"
 
     fieldgroups
     {
-        fieldgroup(Brick; "Rebate No.", "Pay-to Vendor No.")
+        fieldgroup(Brick; "Rebate No.", "Bill-To Customer No.")
         {
         }
     }

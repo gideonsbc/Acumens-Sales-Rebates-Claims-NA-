@@ -20,14 +20,14 @@ page 14301944 "AQD Customer Rebate Subpg"
                 {
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
 
-                    // trigger OnDrillDown()
-                    // var
-                    //     CustomerRebatePg: Page "AQD Customer Rebate";
-                    // begin
-                    //     clear(CustomerRebatePg);
-                    //     CustomerRebatePg.SetRecord(Rec);
-                    //     CustomerRebatePg.Run();
-                    // end;
+                    trigger OnDrillDown()
+                    var
+                        CustomerRebateDocumentPg: Page "AQD Customer Rebate Document";
+                    begin
+                        clear(CustomerRebateDocumentPg);
+                        CustomerRebateDocumentPg.SetRecord(Rec);
+                        CustomerRebateDocumentPg.Run();
+                    end;
                 }
                 field("Buy-from Vendor No."; Rec."Sell-To Customer No.")
                 {

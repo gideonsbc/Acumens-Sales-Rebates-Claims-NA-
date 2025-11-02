@@ -290,13 +290,12 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Caption = 'Posted Customer Rebate Batches';
                     RunObject = page "AQD Posted Cust Rebate Batches";
                 }
-                // action("Posted Customer Rebates")
-                // {
-                //     ApplicationArea = All;
-                //     Caption = 'Posted Customer Rebates';
-                //     RunObject = page "AQD Posted Cust Rebates";
-                // }
-
+                action("Posted Customer Rebates")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Posted Customer Rebates';
+                    RunObject = page "AQD Posted Customer Rebates";
+                }
             }
         }
     }
