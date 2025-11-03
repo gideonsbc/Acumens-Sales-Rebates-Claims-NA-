@@ -2,8 +2,8 @@ table 14301935 "AQD Posted Cust Reb Details"
 {
     Caption = 'Posted Customer Rebate Details';
     DataClassification = CustomerContent;
-    // DrillDownPageID = "AQD Posted Cust Rebate Details";
-    //LookupPageID = "AQD Posted Cust Rebate Details";
+    DrillDownPageID = "AQD Posted Cust Rebate Details";
+    LookupPageID = "AQD Posted Cust Rebate Details";
 
     fields
     {
@@ -176,24 +176,24 @@ table 14301935 "AQD Posted Cust Reb Details"
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2),
                                                           Blocked = CONST(false));
         }
-        field(360; "Rebate Purchase Doc Type"; Enum "AQD Rebate Purchase Doc Type")
+        field(360; "Rebate Credit Doc Type"; Enum "AQD Rebate Credit Doc Type")
         {
-            Caption = 'Rebate Purchase Doc Type';
+            Caption = 'Rebate Credit Doc Type';
             Editable = false;
         }
-        field(361; "Purchase Document No."; Code[20])
+        field(361; "Credit Document No."; Code[20])
         {
-            Caption = 'Purchase Document No.';
+            Caption = 'Credit Document No.';
             Editable = false;
         }
-        field(362; "Purchase Document Line No."; Integer)
+        field(362; "Credit Document Line No."; Integer)
         {
-            Caption = 'Purchase Document Line No.';
+            Caption = 'Credit Document Line No.';
             Editable = false;
         }
-        field(363; "Purchase Line No."; Integer)
+        field(363; "Credit Line No."; Integer)
         {
-            Caption = 'Purchase Line No.';
+            Caption = 'Credit Line No.';
             Editable = false;
         }
         field(401; State; Text[30])
@@ -215,43 +215,68 @@ table 14301935 "AQD Posted Cust Reb Details"
             Caption = 'Rebate Status';
             DataClassification = CustomerContent;
         }
-        field(570; "Applies-to Doc. Type"; Enum "Purchase Applies-to Document Type")
+        field(570; "Purch Applies-to Doc. Type"; Enum "Purchase Applies-to Document Type")
         {
-            Caption = 'Applies-to Doc. Type';
+            Caption = 'Purch Applies-to Doc. Type';
         }
-        field(580; "Applies-to Doc. No."; Code[20])
+        field(580; "Purch Applies-to Doc. No."; Code[20])
         {
-            Caption = 'Applies-to Doc. No.';
-            TableRelation = if ("Applies-to Doc. Type" = const(Order)) "Purchase Header"."No." where("Document Type" = const(Order))
+            Caption = 'Purch Applies-to Doc. No.';
+            TableRelation = if ("Purch Applies-to Doc. Type" = const(Order)) "Purchase Header"."No." where("Document Type" = const(Order))
             else
-            if ("Applies-to Doc. Type" = const(Invoice)) "Purchase Header"."No." where("Document Type" = const(Invoice))
+            if ("Purch Applies-to Doc. Type" = const(Invoice)) "Purchase Header"."No." where("Document Type" = const(Invoice))
             else
-            if ("Applies-to Doc. Type" = const("Return Order")) "Purchase Header"."No." where("Document Type" = const("Return Order"))
+            if ("Purch Applies-to Doc. Type" = const("Return Order")) "Purchase Header"."No." where("Document Type" = const("Return Order"))
             else
-            if ("Applies-to Doc. Type" = const("Credit Memo")) "Purchase Header"."No." where("Document Type" = const("Credit Memo"))
+            if ("Purch Applies-to Doc. Type" = const("Credit Memo")) "Purchase Header"."No." where("Document Type" = const("Credit Memo"))
             else
-            if ("Applies-to Doc. Type" = const(Receipt)) "Purch. Rcpt. Header"."No."
+            if ("Purch Applies-to Doc. Type" = const(Receipt)) "Purch. Rcpt. Header"."No."
             else
-            if ("Applies-to Doc. Type" = const("Return Shipment")) "Return Shipment Header"."No.";
+            if ("Purch Applies-to Doc. Type" = const("Return Shipment")) "Return Shipment Header"."No.";
         }
-        field(590; "Applies-to Doc. Line No."; Integer)
+        field(590; "Purch Applies-to Doc. Line No."; Integer)
         {
-            Caption = 'Applies-to Doc. Line No.';
-            TableRelation = if ("Applies-to Doc. Type" = const(Order)) "Purchase Line"."Line No." where("Document Type" = const(Order),
-                                                                                                       "Document No." = field("Applies-to Doc. No."))
+            Caption = 'Purch Applies-to Doc. Line No.';
+            TableRelation = if ("Purch Applies-to Doc. Type" = const(Order)) "Purchase Line"."Line No." where("Document Type" = const(Order),
+                                                                                                       "Document No." = field("Purch Applies-to Doc. No."))
             else
-            if ("Applies-to Doc. Type" = const(Invoice)) "Purchase Line"."Line No." where("Document Type" = const(Invoice),
-                                                                                                                                                                                         "Document No." = field("Applies-to Doc. No."))
+            if ("Purch Applies-to Doc. Type" = const(Invoice)) "Purchase Line"."Line No." where("Document Type" = const(Invoice),
+                                                                                                                                                                                         "Document No." = field("Purch Applies-to Doc. No."))
             else
-            if ("Applies-to Doc. Type" = const("Return Order")) "Purchase Line"."Line No." where("Document Type" = const("Return Order"),
-                                                                                                                                                                                                                                                                                  "Document No." = field("Applies-to Doc. No."))
+            if ("Purch Applies-to Doc. Type" = const("Return Order")) "Purchase Line"."Line No." where("Document Type" = const("Return Order"),
+                                                                                                                                                                                                                                                                                  "Document No." = field("Purch Applies-to Doc. No."))
             else
-            if ("Applies-to Doc. Type" = const("Credit Memo")) "Purchase Line"."Line No." where("Document Type" = const("Credit Memo"),
-                                                                                                                                                                                                                                                                                                                                                                          "Document No." = field("Applies-to Doc. No."))
+            if ("Purch Applies-to Doc. Type" = const("Credit Memo")) "Purchase Line"."Line No." where("Document Type" = const("Credit Memo"),
+                                                                                                                                                                                                                                                                                                                                                                          "Document No." = field("Purch Applies-to Doc. No."))
             else
-            if ("Applies-to Doc. Type" = const(Receipt)) "Purch. Rcpt. Line"."Line No." where("Document No." = field("Applies-to Doc. No."))
+            if ("Purch Applies-to Doc. Type" = const(Receipt)) "Purch. Rcpt. Line"."Line No." where("Document No." = field("Purch Applies-to Doc. No."))
             else
-            if ("Applies-to Doc. Type" = const("Return Shipment")) "Return Shipment Line"."Line No." where("Document No." = field("Applies-to Doc. No."));
+            if ("Purch Applies-to Doc. Type" = const("Return Shipment")) "Return Shipment Line"."Line No." where("Document No." = field("Purch Applies-to Doc. No."));
+        }
+
+        field(591; "Sales Applies-to Doc. Type"; Enum "Sales Applies-to Document Type")
+        {
+            Caption = 'Sales Applies-to Doc. Type';
+        }
+        field(592; "Sales Applies-to Doc. No."; Code[20])
+        {
+            Caption = 'Sales Applies-to Doc. No.';
+            TableRelation = if ("Sales Applies-to Doc. Type" = const(Order)) "Sales Header"."No." where("Document Type" = const(Order))
+            else if ("Sales Applies-to Doc. Type" = const(Invoice)) "Sales Header"."No." where("Document Type" = const(Invoice))
+            else if ("Sales Applies-to Doc. Type" = const("Return Order")) "Sales Header"."No." where("Document Type" = const("Return Order"))
+            else if ("Sales Applies-to Doc. Type" = const("Credit Memo")) "Sales Header"."No." where("Document Type" = const("Credit Memo"))
+            else if ("Sales Applies-to Doc. Type" = const(Shipment)) "Sales Shipment Header"."No."
+            else if ("Sales Applies-to Doc. Type" = const("Return Receipt")) "Return Receipt Header"."No.";
+        }
+        field(593; "Sales Applies-to Doc. Line No."; Integer)
+        {
+            Caption = 'Sales Applies-to Doc. Line No.';
+            TableRelation = if ("Sales Applies-to Doc. Type" = const(Order)) "Sales Line"."Line No." where("Document Type" = const(Order), "Document No." = field("Sales Applies-to Doc. No."))
+            else if ("Sales Applies-to Doc. Type" = const(Invoice)) "Sales Line"."Line No." where("Document Type" = const(Invoice), "Document No." = field("Sales Applies-to Doc. No."))
+            else if ("Sales Applies-to Doc. Type" = const("Return Order")) "Sales Line"."Line No." where("Document Type" = const("Return Order"), "Document No." = field("Sales Applies-to Doc. No."))
+            else if ("Sales Applies-to Doc. Type" = const("Credit Memo")) "Sales Line"."Line No." where("Document Type" = const("Credit Memo"), "Document No." = field("Sales Applies-to Doc. No."))
+            else if ("Sales Applies-to Doc. Type" = const(Shipment)) "Sales Shipment Line"."Line No." where("Document No." = field("Sales Applies-to Doc. No."))
+            else if ("Sales Applies-to Doc. Type" = const("Return Receipt")) "Return Receipt Line"."Line No." where("Document No." = field("Sales Applies-to Doc. No."));
         }
         field(600; "Batch Entry No."; Integer)
         {

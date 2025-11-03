@@ -33,10 +33,10 @@ page 14301935 "AQD Customer Rebate Subpage"
 
                     trigger OnDrillDown()
                     var
-                        RebateRebatMgtEventsFunEvents: Codeunit "AQD Rebate Mgt EventsFunctions";
+                        RebatMgtEventsFunctions: Codeunit "AQD RebateMgt EventsFunctions";
                     begin
-                        clear(RebateRebatMgtEventsFunEvents);
-                        RebateRebatMgtEventsFunEvents.ShowPostedDocument(Rec."Document Type", Rec."Document No.");
+                        clear(RebatMgtEventsFunctions);
+                        RebatMgtEventsFunctions.ShowPostedDocument(Rec."Document Type", Rec."Document No.");
                     end;
                 }
                 field("Order No."; Rec."Order No.")

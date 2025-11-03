@@ -192,7 +192,7 @@ table 14301933 "AQD Posted Cust Rebate Header"
                                                           Blocked = CONST(false));
             Editable = false;
         }
-        field(360; "Rebate Purchase Doc Type"; Enum "AQD Rebate Purchase Doc Type")
+        field(360; "Rebate Purchase Doc Type"; Enum "AQD Rebate Credit Doc Type")
         {
             Caption = 'Rebate Purchase Doc Type';
             Editable = false;
