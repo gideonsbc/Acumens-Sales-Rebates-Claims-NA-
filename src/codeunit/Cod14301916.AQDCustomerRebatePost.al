@@ -504,9 +504,9 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentPurchase."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Purch Applies-to Doc. No.";
                     ItemChargeAssignmentPurchase."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Purch Applies-to Doc. Line No.";
                     ItemChargeAssignmentPurchase."Applies-to Doc. Line Amount" := 0;
-                    ItemChargeAssignmentPurchase."AQD Rebate Document No." := PostedCustomerRebateLineDetails."Rebate No.";
-                    ItemChargeAssignmentPurchase."AQD Rebate Document Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
-                    ItemChargeAssignmentPurchase."AQD Rebate Line No" := PostedCustomerRebateLineDetails."Line No.";
+                    ItemChargeAssignmentPurchase."AQD Cust Rebate Document No." := PostedCustomerRebateLineDetails."Rebate No.";
+                    ItemChargeAssignmentPurchase."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
+                    ItemChargeAssignmentPurchase."AQD Cust Rebate Line No" := PostedCustomerRebateLineDetails."Line No.";
                     ItemChargeAssignmentPurchase.Insert(TRUE);
 
                     PostedCustomerRebateLineDetails."Rebate Credit Doc Type" := PostedCustomerRebateLineDetails."Rebate Credit Doc Type"::"Purchase Credit Memo";
@@ -688,9 +688,9 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentPurchase."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Purch Applies-to Doc. No.";
                     ItemChargeAssignmentPurchase."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Purch Applies-to Doc. Line No.";
                     ItemChargeAssignmentPurchase."Applies-to Doc. Line Amount" := 0;
-                    ItemChargeAssignmentPurchase."AQD Rebate Document No." := PostedCustomerRebateLineDetails."Rebate No.";
-                    ItemChargeAssignmentPurchase."AQD Rebate Document Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
-                    ItemChargeAssignmentPurchase."AQD Rebate Line No" := PostedCustomerRebateLineDetails."Line No.";
+                    ItemChargeAssignmentPurchase."AQD Cust Rebate Document No." := PostedCustomerRebateLineDetails."Rebate No.";
+                    ItemChargeAssignmentPurchase."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
+                    ItemChargeAssignmentPurchase."AQD Cust Rebate Line No" := PostedCustomerRebateLineDetails."Line No.";
                     ItemChargeAssignmentPurchase.Insert(TRUE);
 
                     PostedCustomerRebateLineDetails."Rebate Credit Doc Type" := PostedCustomerRebateLineDetails."Rebate Credit Doc Type"::"Purchase Invoice";
@@ -917,9 +917,9 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentSales."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. No.";
                     ItemChargeAssignmentSales."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. Line No.";
                     ItemChargeAssignmentSales."Applies-to Doc. Line Amount" := 0;
-                    ItemChargeAssignmentSales."AQD Rebate Document No." := PostedCustomerRebateLineDetails."Rebate No.";
-                    ItemChargeAssignmentSales."AQD Rebate Document Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
-                    ItemChargeAssignmentSales."AQD Rebate Line No" := PostedCustomerRebateLineDetails."Line No.";
+                    ItemChargeAssignmentSales."AQD Cust Rebate Doc No." := PostedCustomerRebateLineDetails."Rebate No.";
+                    ItemChargeAssignmentSales."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
+                    ItemChargeAssignmentSales."AQD Cust Rebate Line No" := PostedCustomerRebateLineDetails."Line No.";
                     ItemChargeAssignmentSales.Insert(TRUE);
 
                     PostedCustomerRebateLineDetails."Rebate Credit Doc Type" := PostedCustomerRebateLineDetails."Rebate Credit Doc Type"::"Sales Credit Memo";
@@ -1101,9 +1101,9 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentSales."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. No.";
                     ItemChargeAssignmentSales."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. Line No.";
                     ItemChargeAssignmentSales."Applies-to Doc. Line Amount" := 0;
-                    ItemChargeAssignmentSales."AQD Rebate Document No." := PostedCustomerRebateLineDetails."Rebate No.";
-                    ItemChargeAssignmentSales."AQD Rebate Document Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
-                    ItemChargeAssignmentSales."AQD Rebate Line No" := PostedCustomerRebateLineDetails."Line No.";
+                    ItemChargeAssignmentSales."AQD Cust Rebate Doc No." := PostedCustomerRebateLineDetails."Rebate No.";
+                    ItemChargeAssignmentSales."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
+                    ItemChargeAssignmentSales."AQD Cust Rebate Line No" := PostedCustomerRebateLineDetails."Line No.";
                     ItemChargeAssignmentSales.Insert(TRUE);
 
                     PostedCustomerRebateLineDetails."Rebate Credit Doc Type" := PostedCustomerRebateLineDetails."Rebate Credit Doc Type"::"Sales Invoice";
@@ -1254,7 +1254,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         IF NOT RunTrigger THEN // This means Record is deleted by User from Page
             EXIT;
 
-        IF Rec."AQD Rebate Document No." = '' THEN
+        IF Rec."AQD Cust Rebate Document No." = '' THEN
             EXIT;
 
         PostedCustomerRebateLineDetails.RESET;

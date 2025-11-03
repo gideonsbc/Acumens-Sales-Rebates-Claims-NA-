@@ -2,23 +2,23 @@ tableextension 14301937 "AQD CR ItemChrgAsgmtSales Ext" extends "Item Charge Ass
 {
     fields
     {
-        field(19301910; "AQD Rebate Document No."; Code[20])
+        field(19301910; "AQD Cust Rebate Doc No."; Code[20])
         {
-            Caption = 'Rebate Document No.';
+            Caption = 'Customer Rebate Document No.';
             DataClassification = CustomerContent;
             Editable = false;
         }
-        field(19301920; "AQD Rebate Document Line No"; Integer)
+        field(19301920; "AQD Cust Rebate Doc Line No"; Integer)
         {
             BlankZero = true;
-            Caption = 'Rebate Document Line No.';
+            Caption = 'Customer Rebate Document Line No.';
             DataClassification = CustomerContent;
             Editable = false;
         }
-        field(19301930; "AQD Rebate Line No"; Integer)
+        field(19301930; "AQD Cust Rebate Line No"; Integer)
         {
             BlankZero = true;
-            Caption = 'Rebate Line No.';
+            Caption = 'Customer Rebate Line No.';
             DataClassification = CustomerContent;
             Editable = false;
         }
