@@ -442,8 +442,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PurchaseCredirMemo."Document Type" := PurchaseCredirMemo."Document Type"::"Credit Memo";
             PurchaseCredirMemo."No." := '';
             PurchaseCredirMemo.Insert(TRUE);
-            PurchaseCredirMemo.Validate("Buy-from Vendor No.", PostedCustomerRebateLine."Buy-from Vendor No.");
-            PurchaseCredirMemo.VALIDATE("Pay-to Vendor No.", PostedCustomerRebateLine."Pay-to Vendor No.");
+            PurchaseCredirMemo.Validate("Buy-from Vendor No.", PostedCustomerRebateLine."Pay-To Vendor No.");
+            PurchaseCredirMemo.VALIDATE("Pay-to Vendor No.", PostedCustomerRebateLine."Pay-To Vendor No.");
             PurchaseCredirMemo.validate("Location Code", PostedCustomerRebateHeader."Location Code");
             PurchaseCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
             PurchaseCredirMemo."Posting Description" := PostedCustomerRebateHeader."Posting Description";
@@ -626,8 +626,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PurchInvoice.Insert(TRUE);
 
             PurchInvoice.SetHideValidationDialog(TRUE);
-            PurchInvoice.Validate("Buy-from Vendor No.", PostedCustomerRebateLine."Buy-from Vendor No.");
-            PurchInvoice.VALIDATE("Pay-to Vendor No.", PostedCustomerRebateLine."Pay-to Vendor No.");
+            PurchInvoice.Validate("Buy-from Vendor No.", PostedCustomerRebateLine."Pay-To Vendor No.");
+            PurchInvoice.VALIDATE("Pay-to Vendor No.", PostedCustomerRebateLine."Pay-To Vendor No.");
             PurchInvoice.validate("Location Code", PostedCustomerRebateHeader."Location Code");
             PurchInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
             PurchInvoice."Posting Description" := PostedCustomerRebateHeader."Posting Description";
@@ -855,8 +855,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesCredirMemo."Document Type" := SalesCredirMemo."Document Type"::"Credit Memo";
             SalesCredirMemo."No." := '';
             SalesCredirMemo.Insert(TRUE);
-            SalesCredirMemo.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Buy-from Vendor No.");
-            SalesCredirMemo.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Pay-to Vendor No.");
+            SalesCredirMemo.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Sell-To Customer No.");
+            SalesCredirMemo.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
             SalesCredirMemo.validate("Location Code", PostedCustomerRebateHeader."Location Code");
             SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
             SalesCredirMemo."Posting Description" := PostedCustomerRebateHeader."Posting Description";
@@ -1039,8 +1039,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesInvoice.Insert(TRUE);
 
             SalesInvoice.SetHideValidationDialog(TRUE);
-            SalesInvoice.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Buy-from Vendor No.");
-            SalesInvoice.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Pay-to Vendor No.");
+            SalesInvoice.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Sell-To Customer No.");
+            SalesInvoice.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
             SalesInvoice.validate("Location Code", PostedCustomerRebateHeader."Location Code");
             SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
             SalesInvoice."Posting Description" := PostedCustomerRebateHeader."Posting Description";

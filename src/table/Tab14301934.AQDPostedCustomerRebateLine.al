@@ -180,15 +180,21 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Caption = 'Posted';
             Editable = false;
         }
-        field(500; "Buy-from Vendor No."; Code[20])
+        field(500; "Sell-To Customer No."; Code[20])
         {
-            Caption = 'Buy-from Vendor No.';
+            Caption = 'Sell-To Customer No.';
             Editable = false;
         }
-        field(501; "Pay-to Vendor No."; Code[20])
+        field(501; "Bill-To Customer No."; Code[20])
         {
-            Caption = 'Pay-to Vendor No.';
+            Caption = 'Bill-To Customer No.';
             Editable = false;
+        }
+        field(510; "Pay-To Vendor No."; Code[20])
+        {
+            Caption = 'Pay-To Vendor No.';
+            Editable = false;
+            TableRelation = Vendor;
         }
         field(560; "Rebate Status"; Enum "AQD Customer Rebate Status")
         {
