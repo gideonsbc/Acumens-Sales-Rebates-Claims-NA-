@@ -252,9 +252,9 @@ table 14301933 "AQD Posted Cust Rebate Header"
             Caption = 'Created Date';
             Editable = false;
         }
-        field(560; "Rebate Status"; Enum "AQD Customer Rebate Status")
+        field(560; "Customer Rebate Status"; Enum "AQD Customer Rebate Status")
         {
-            Caption = 'Rebate Status';
+            Caption = 'Customer Rebate Status';
             DataClassification = CustomerContent;
         }
         field(570; "AQD Calculation Date"; Enum "AQD CustRebateCalculation Type")

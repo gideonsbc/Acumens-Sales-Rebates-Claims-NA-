@@ -52,24 +52,14 @@ table 14301929 "AQD Customer Rebate Line"
         {
             Caption = 'Posting Date';
         }
-        field(90; "Vendor Shipment No."; Code[35])
+        field(100; "External Document No."; Code[35])
         {
-            Caption = 'Vendor Shipment No.';
-            Editable = false;
-        }
-        field(100; "Vendor Invoice No."; Code[35])
-        {
-            Caption = 'Vendor Invoice No.';
-            Editable = false;
-        }
-        field(110; "Vendor Cr. Memo No."; Code[35])
-        {
-            Caption = 'Vendor Cr. Memo No.';
+            Caption = 'External Document No.';
             Editable = false;
         }
         field(120; "Original Document Type"; Enum "Item Ledger Document Type")
         {
-            Caption = 'Document Type';
+            Caption = 'Original Document Type';
         }
         field(150; Amount; Decimal)
         {
@@ -102,7 +92,7 @@ table 14301929 "AQD Customer Rebate Line"
             Caption = 'Customer Rebate Amount (Item Charge)';
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
-                                                                                           "AQD Rebate Posting Type" = const("Item Charge"),
+                                                                                           "AQD Cust Rebate Posting Type" = const("Item Charge"),
                                                                                            Exclude = const(false)));
             FieldClass = FlowField;
             Editable = false;
@@ -112,7 +102,7 @@ table 14301929 "AQD Customer Rebate Line"
             Caption = 'Customer Rebate Amt (GL)';
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
-                                                                                           "AQD Rebate Posting Type" = const("G/L Account"),
+                                                                                           "AQD Cust Rebate Posting Type" = const("G/L Account"),
                                                                                            Exclude = const(false)));
             FieldClass = FlowField;
             Editable = false;
@@ -181,6 +171,12 @@ table 14301929 "AQD Customer Rebate Line"
             Caption = 'Bill-To Customer No.';
             Editable = false;
         }
+        field(510; "Pay-To Vendor No."; Code[20])
+        {
+            Caption = 'Pay-To Vendor No.';
+            Editable = false;
+            TableRelation = Vendor;
+        }
         field(560; "Rebate Status"; Enum "AQD Customer Rebate Status")
         {
             Caption = 'Rebate Status';
@@ -195,7 +191,6 @@ table 14301929 "AQD Customer Rebate Line"
         {
             Caption = 'BatchId';
         }
-
     }
     keys
     {

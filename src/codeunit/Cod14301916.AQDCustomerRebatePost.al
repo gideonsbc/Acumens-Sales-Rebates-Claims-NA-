@@ -248,20 +248,20 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
                             IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Create and Post Cr. Memo" THEN BEGIN
                                 TmpInovoiceBuffer.RESET;
-                                IF TmpInovoiceBuffer.FindFirst() THEN begin
+                                IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
                                     REPEAT
                                         IF SalesHeader.GET(TmpInovoiceBuffer."Order Line No.",
-                                                              TmpInovoiceBuffer."Order No.")
+                                                           TmpInovoiceBuffer."Order No.")
                                         THEN BEGIN
                                             SalesHeader.Ship := TRUE;
                                             SalesHeader.Invoice := TRUE;
                                             SalesPost.Run(SalesHeader);
                                         END;
                                     UNTIL TmpInovoiceBuffer.Next() = 0;
-                                end;
+                                END;
 
                                 TmpCrMemoBuffer.RESET;
-                                IF TmpCrMemoBuffer.FindFirst() THEN begin
+                                IF TmpCrMemoBuffer.FindFirst() THEN BEGIN
                                     REPEAT
                                         IF SalesHeader.GET(TmpCrMemoBuffer."Order Line No.",
                                                            TmpCrMemoBuffer."Order No.")
@@ -401,8 +401,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
         IF TmpCrMemoBuffer.IsTemporary then
             TmpCrMemoBuffer.DeleteAll();
 
-        //IF PostedCustomerRebateHeader."AQD Rebate Status" <> PostedCustomerRebateHeader."AQD Rebate Status"::" " THEN
-        //    Error(RebateStatusError, PostedCustomerRebateHeader."AQD Rebate Status");
+        IF PostedCustomerRebateHeader."Customer Rebate Status" <> PostedCustomerRebateHeader."Customer Rebate Status"::" " THEN
+            Error(RebateStatusError, PostedCustomerRebateHeader."Customer Rebate Status");
 
         PostedCustomerRebateLine.Reset();
         PostedCustomerRebateLine.SetRange("Rebate No.", PostedCustomerRebateHeader."No.");
@@ -452,7 +452,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PurchaseCredirMemo."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
             PurchaseCredirMemo.Modify(TRUE);
 
-            PostedCustomerRebateHeader."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateHeader."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateHeader.Modify;
 
             TmpCrMemoBuffer.INIT;
@@ -492,7 +492,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PurchaseCrMemoLine."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLine."Line No.";
             PurchaseCrMemoLine.Modify(TRUE);
 
-            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateLine."Rebate Credit Doc Type" := PostedCustomerRebateLine."Rebate Credit Doc Type"::"Purchase Credit Memo";
             PostedCustomerRebateLine."Credit Document No." := PurchaseCrMemoLine."Document No.";
             PostedCustomerRebateLine."Credit Document Line No." := PurchaseCrMemoLine."Line No.";
@@ -522,18 +522,18 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentPurchase."Unit Cost" := PostedCustomerRebateLineDetails."Customer Rebate Amount";
                     ItemChargeAssignmentPurchase."Amount to Assign" := 0;
                     ItemChargeAssignmentPurchase."Amount to Handle" := 0;
-                    CASE PostedCustomerRebateLineDetails."Purch Applies-to Doc. Type" OF
-                        PostedCustomerRebateLineDetails."Purch Applies-to Doc. Type"::Receipt:
-                            ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::Receipt;
-                        PostedCustomerRebateLineDetails."Purch Applies-to Doc. Type"::Invoice:
+                    CASE PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type" OF
+                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Shipment:
+                            ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Sales Shipment";
+                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Invoice:
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::Invoice;
-                        PostedCustomerRebateLineDetails."Purch Applies-to Doc. Type"::"Return Shipment":
-                            ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Return Shipment";
-                        PostedCustomerRebateLineDetails."Purch Applies-to Doc. Type"::"Credit Memo":
+                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Return Receipt":
+                            ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Return Receipt";
+                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Credit Memo":
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Credit Memo";
                     END;
-                    ItemChargeAssignmentPurchase."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Purch Applies-to Doc. No.";
-                    ItemChargeAssignmentPurchase."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Purch Applies-to Doc. Line No.";
+                    ItemChargeAssignmentPurchase."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. No.";
+                    ItemChargeAssignmentPurchase."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. Line No.";
                     ItemChargeAssignmentPurchase."Applies-to Doc. Line Amount" := 0;
                     ItemChargeAssignmentPurchase."AQD Cust Rebate Document No." := PostedCustomerRebateLineDetails."Rebate No.";
                     ItemChargeAssignmentPurchase."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
@@ -544,7 +544,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails."Credit Document No." := ItemChargeAssignmentPurchase."Document No.";
                     PostedCustomerRebateLineDetails."Credit Document Line No." := ItemChargeAssignmentPurchase."Document Line No.";
                     PostedCustomerRebateLineDetails."Credit Line No." := ItemChargeAssignmentPurchase."Line No.";
-                    PostedCustomerRebateLineDetails."Rebate Status" := PostedCustomerRebateLineDetails."Rebate Status"::Created;
+                    PostedCustomerRebateLineDetails."Customer Rebate Status" := PostedCustomerRebateLineDetails."Customer Rebate Status"::Created;
                     PostedCustomerRebateLineDetails.Modify;
                 until PostedCustomerRebateLineDetails.Next() = 0;
 
@@ -584,7 +584,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PurchaseCrMemoLine."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLine."Line No.";
             PurchaseCrMemoLine.Modify(TRUE);
 
-            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateLine."Rebate Credit Doc Type" := PostedCustomerRebateLine."Rebate Credit Doc Type"::"Purchase Credit Memo";
             PostedCustomerRebateLine."Credit Document No." := PurchaseCrMemoLine."Document No.";
             PostedCustomerRebateLine."Credit Document Line No." := PurchaseCrMemoLine."Line No.";
@@ -603,7 +603,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails."Credit Document No." := PurchaseCrMemoLine."Document No.";
                     PostedCustomerRebateLineDetails."Credit Document Line No." := PurchaseCrMemoLine."Line No.";
                     PostedCustomerRebateLineDetails."Credit Line No." := 0;
-                    PostedCustomerRebateLineDetails."Rebate Status" := PostedCustomerRebateLineDetails."Rebate Status"::Created;
+                    PostedCustomerRebateLineDetails."Customer Rebate Status" := PostedCustomerRebateLineDetails."Customer Rebate Status"::Created;
                     PostedCustomerRebateLineDetails.Modify;
                 Until PostedCustomerRebateLineDetails.Next() = 0;
             END;
@@ -636,7 +636,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PurchInvoice."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
             PurchInvoice.Modify(TRUE);
 
-            PostedCustomerRebateHeader."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateHeader."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateHeader.Modify;
 
             TmpInovoiceBuffer.INIT;
@@ -676,7 +676,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PurchInvoiceLine."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLine."Line No.";
             PurchInvoiceLine.Modify(TRUE);
 
-            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateLine."Rebate Credit Doc Type" := PostedCustomerRebateLine."Rebate Credit Doc Type"::"Purchase Invoice";
             PostedCustomerRebateLine."Credit Document No." := PurchInvoiceLine."Document No.";
             PostedCustomerRebateLine."Credit Document Line No." := PurchInvoiceLine."Line No.";
@@ -706,18 +706,18 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentPurchase."Unit Cost" := PostedCustomerRebateLineDetails."Customer Rebate Amount";
                     ItemChargeAssignmentPurchase."Amount to Assign" := 0;
                     ItemChargeAssignmentPurchase."Amount to Handle" := 0;
-                    CASE PostedCustomerRebateLineDetails."Purch Applies-to Doc. Type" OF
-                        PostedCustomerRebateLineDetails."Purch Applies-to Doc. Type"::Receipt:
-                            ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::Receipt;
-                        PostedCustomerRebateLineDetails."Purch Applies-to Doc. Type"::Invoice:
+                    CASE PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type" OF
+                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Shipment:
+                            ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Sales Shipment";
+                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Invoice:
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::Invoice;
-                        PostedCustomerRebateLineDetails."Purch Applies-to Doc. Type"::"Return Shipment":
-                            ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Return Shipment";
-                        PostedCustomerRebateLineDetails."Purch Applies-to Doc. Type"::"Credit Memo":
+                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Return Receipt":
+                            ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Return Receipt";
+                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Credit Memo":
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Credit Memo";
                     END;
-                    ItemChargeAssignmentPurchase."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Purch Applies-to Doc. No.";
-                    ItemChargeAssignmentPurchase."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Purch Applies-to Doc. Line No.";
+                    ItemChargeAssignmentPurchase."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. No.";
+                    ItemChargeAssignmentPurchase."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. Line No.";
                     ItemChargeAssignmentPurchase."Applies-to Doc. Line Amount" := 0;
                     ItemChargeAssignmentPurchase."AQD Cust Rebate Document No." := PostedCustomerRebateLineDetails."Rebate No.";
                     ItemChargeAssignmentPurchase."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
@@ -728,7 +728,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails."Credit Document No." := ItemChargeAssignmentPurchase."Document No.";
                     PostedCustomerRebateLineDetails."Credit Document Line No." := ItemChargeAssignmentPurchase."Document Line No.";
                     PostedCustomerRebateLineDetails."Credit Line No." := ItemChargeAssignmentPurchase."Line No.";
-                    PostedCustomerRebateLineDetails."Rebate Status" := PostedCustomerRebateLineDetails."Rebate Status"::Created;
+                    PostedCustomerRebateLineDetails."Customer Rebate Status" := PostedCustomerRebateLineDetails."Customer Rebate Status"::Created;
                     PostedCustomerRebateLineDetails.Modify();
                 until PostedCustomerRebateLineDetails.Next() = 0;
 
@@ -768,7 +768,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PurchInvoiceLine."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLine."Line No.";
             PurchInvoiceLine.Modify(TRUE);
 
-            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateLine."Rebate Credit Doc Type" := PostedCustomerRebateLine."Rebate Credit Doc Type"::"Purchase Invoice";
             PostedCustomerRebateLine."Credit Document No." := PurchInvoiceLine."Document No.";
             PostedCustomerRebateLine."Credit Document Line No." := PurchInvoiceLine."Line No.";
@@ -787,7 +787,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails."Credit Document No." := PurchInvoiceLine."Document No.";
                     PostedCustomerRebateLineDetails."Credit Document Line No." := PurchInvoiceLine."Line No.";
                     PostedCustomerRebateLineDetails."Credit Line No." := 0;
-                    PostedCustomerRebateLineDetails."Rebate Status" := PostedCustomerRebateLineDetails."Rebate Status"::Created;
+                    PostedCustomerRebateLineDetails."Customer Rebate Status" := PostedCustomerRebateLineDetails."Customer Rebate Status"::Created;
                     PostedCustomerRebateLineDetails.Modify();
                 Until PostedCustomerRebateLineDetails.Next() = 0;
             END;
@@ -814,8 +814,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
         IF TmpCrMemoBuffer.IsTemporary then
             TmpCrMemoBuffer.DeleteAll();
 
-        //IF PostedCustomerRebateHeader."AQD Rebate Status" <> PostedCustomerRebateHeader."AQD Rebate Status"::" " THEN
-        //    Error(RebateStatusError, PostedCustomerRebateHeader."AQD Rebate Status");
+        IF PostedCustomerRebateHeader."Customer Rebate Status" <> PostedCustomerRebateHeader."Customer Rebate Status"::" " THEN
+            Error(RebateStatusError, PostedCustomerRebateHeader."Customer Rebate Status");
 
         PostedCustomerRebateLine.Reset();
         PostedCustomerRebateLine.SetRange("Rebate No.", PostedCustomerRebateHeader."No.");
@@ -865,7 +865,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesCredirMemo."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
             SalesCredirMemo.Modify(TRUE);
 
-            PostedCustomerRebateHeader."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateHeader."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateHeader.Modify;
 
             TmpCrMemoBuffer.INIT;
@@ -905,7 +905,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesCrMemoLine."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLine."Line No.";
             SalesCrMemoLine.Modify(TRUE);
 
-            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateLine."Rebate Credit Doc Type" := PostedCustomerRebateLine."Rebate Credit Doc Type"::"Sales Credit Memo";
             PostedCustomerRebateLine."Credit Document No." := SalesCrMemoLine."Document No.";
             PostedCustomerRebateLine."Credit Document Line No." := SalesCrMemoLine."Line No.";
@@ -957,7 +957,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails."Credit Document No." := ItemChargeAssignmentSales."Document No.";
                     PostedCustomerRebateLineDetails."Credit Document Line No." := ItemChargeAssignmentSales."Document Line No.";
                     PostedCustomerRebateLineDetails."Credit Line No." := ItemChargeAssignmentSales."Line No.";
-                    PostedCustomerRebateLineDetails."Rebate Status" := PostedCustomerRebateLineDetails."Rebate Status"::Created;
+                    PostedCustomerRebateLineDetails."Customer Rebate Status" := PostedCustomerRebateLineDetails."Customer Rebate Status"::Created;
                     PostedCustomerRebateLineDetails.Modify;
                 until PostedCustomerRebateLineDetails.Next() = 0;
 
@@ -997,7 +997,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesCrMemoLine."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLine."Line No.";
             SalesCrMemoLine.Modify(TRUE);
 
-            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateLine."Rebate Credit Doc Type" := PostedCustomerRebateLine."Rebate Credit Doc Type"::"Sales Credit Memo";
             PostedCustomerRebateLine."Credit Document No." := SalesCrMemoLine."Document No.";
             PostedCustomerRebateLine."Credit Document Line No." := SalesCrMemoLine."Line No.";
@@ -1016,7 +1016,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails."Credit Document No." := SalesCrMemoLine."Document No.";
                     PostedCustomerRebateLineDetails."Credit Document Line No." := SalesCrMemoLine."Line No.";
                     PostedCustomerRebateLineDetails."Credit Line No." := 0;
-                    PostedCustomerRebateLineDetails."Rebate Status" := PostedCustomerRebateLineDetails."Rebate Status"::Created;
+                    PostedCustomerRebateLineDetails."Customer Rebate Status" := PostedCustomerRebateLineDetails."Customer Rebate Status"::Created;
                     PostedCustomerRebateLineDetails.Modify;
                 Until PostedCustomerRebateLineDetails.Next() = 0;
             END;
@@ -1049,7 +1049,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesInvoice."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
             SalesInvoice.Modify(TRUE);
 
-            PostedCustomerRebateHeader."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateHeader."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateHeader.Modify;
 
             TmpInovoiceBuffer.INIT;
@@ -1089,7 +1089,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesInvoiceLine."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLine."Line No.";
             SalesInvoiceLine.Modify(TRUE);
 
-            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateLine."Rebate Credit Doc Type" := PostedCustomerRebateLine."Rebate Credit Doc Type"::"Sales Invoice";
             PostedCustomerRebateLine."Credit Document No." := SalesInvoiceLine."Document No.";
             PostedCustomerRebateLine."Credit Document Line No." := SalesInvoiceLine."Line No.";
@@ -1141,7 +1141,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails."Credit Document No." := ItemChargeAssignmentSales."Document No.";
                     PostedCustomerRebateLineDetails."Credit Document Line No." := ItemChargeAssignmentSales."Document Line No.";
                     PostedCustomerRebateLineDetails."Credit Line No." := ItemChargeAssignmentSales."Line No.";
-                    PostedCustomerRebateLineDetails."Rebate Status" := PostedCustomerRebateLineDetails."Rebate Status"::Created;
+                    PostedCustomerRebateLineDetails."Customer Rebate Status" := PostedCustomerRebateLineDetails."Customer Rebate Status"::Created;
                     PostedCustomerRebateLineDetails.Modify();
                 until PostedCustomerRebateLineDetails.Next() = 0;
 
@@ -1181,7 +1181,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesInvoiceLine."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLine."Line No.";
             SalesInvoiceLine.Modify(TRUE);
 
-            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Rebate Status"::Created;
+            PostedCustomerRebateLine."Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
             PostedCustomerRebateLine."Rebate Credit Doc Type" := PostedCustomerRebateLine."Rebate Credit Doc Type"::"Sales Invoice";
             PostedCustomerRebateLine."Credit Document No." := SalesInvoiceLine."Document No.";
             PostedCustomerRebateLine."Credit Document Line No." := SalesInvoiceLine."Line No.";
@@ -1200,7 +1200,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails."Credit Document No." := SalesInvoiceLine."Document No.";
                     PostedCustomerRebateLineDetails."Credit Document Line No." := SalesInvoiceLine."Line No.";
                     PostedCustomerRebateLineDetails."Credit Line No." := 0;
-                    PostedCustomerRebateLineDetails."Rebate Status" := PostedCustomerRebateLineDetails."Rebate Status"::Created;
+                    PostedCustomerRebateLineDetails."Customer Rebate Status" := PostedCustomerRebateLineDetails."Customer Rebate Status"::Created;
                     PostedCustomerRebateLineDetails.Modify();
                 Until PostedCustomerRebateLineDetails.Next() = 0;
             END;
@@ -1225,7 +1225,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             EXIT;
 
         IF PostedCustRebateHeader.GET(Rec."AQD Customer Rebate No") THEN begin
-            PostedCustRebateHeader."Rebate Status" := PostedCustRebateHeader."Rebate Status"::" ";
+            PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::" ";
             PostedCustRebateHeader."Rebate Purchase Doc Type" := PostedCustRebateHeader."Rebate Purchase Doc Type"::" ";
             PostedCustRebateHeader.Modify();
         end;
@@ -1261,7 +1261,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                         PostedCustRebateDetailLine.SetRange(Exclude, false);
                         If PostedCustRebateDetailLine.FindFirst() THEN begin
                             REPEAT
-                                PostedCustRebateDetailLine."Rebate Status" := PostedCustRebateDetailLine."Rebate Status"::" ";
+                                PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::" ";
                                 PostedCustRebateDetailLine."Rebate Credit Doc Type" := PostedCustRebateLine."Rebate Credit Doc Type"::" ";
                                 PostedCustRebateDetailLine."Credit Document No." := '';
                                 PostedCustRebateDetailLine."Credit Document Line No." := 0;
@@ -1296,7 +1296,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PostedCustomerRebateLineDetails."Credit Document No." := '';
             PostedCustomerRebateLineDetails."Credit Document Line No." := 0;
             PostedCustomerRebateLineDetails."Credit Line No." := 0;
-            PostedCustomerRebateLineDetails."Rebate Status" := PostedCustomerRebateLineDetails."Rebate Status"::" ";
+            PostedCustomerRebateLineDetails."Customer Rebate Status" := PostedCustomerRebateLineDetails."Customer Rebate Status"::" ";
             PostedCustomerRebateLineDetails.Modify;
         end;
     end;
@@ -1341,7 +1341,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                         THEN BEGIN
 
                             IF PostedCustRebateHeader.GET(PurchInvLine."AQD Cust Rebate Document No.") THEN begin
-                                PostedCustRebateHeader."Rebate Status" := PostedCustRebateHeader."Rebate Status"::Posted;
+                                PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Posted;
                                 PostedCustRebateHeader."Rebate Purchase Doc Type" := PostedCustRebateHeader."Rebate Purchase Doc Type"::" ";
                                 PostedCustRebateHeader.Modify();
                             end;
@@ -1358,7 +1358,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                             PostedCustRebateDetailLine.SetRange(Exclude, false);
                             If PostedCustRebateDetailLine.FindFirst() THEN begin
                                 repeat
-                                    PostedCustRebateDetailLine."Rebate Status" := PostedCustRebateDetailLine."Rebate Status"::Posted;
+                                    PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::Posted;
                                     PostedCustRebateDetailLine."Rebate Credit Doc Type" := PostedCustRebateDetailLine."Rebate Credit Doc Type"::"Purchase Invoice";
                                     PostedCustRebateDetailLine."Credit Document No." := PurchInvLine."Document No.";
                                     PostedCustRebateDetailLine."Credit Document Line No." := PurchInvLine."Line No.";
@@ -1388,7 +1388,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                         THEN BEGIN
 
                             IF PostedCustRebateHeader.GET(PurchCrMemoLine."AQD Cust Rebate Document No.") THEN begin
-                                PostedCustRebateHeader."Rebate Status" := PostedCustRebateHeader."Rebate Status"::Posted;
+                                PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Posted;
                                 PostedCustRebateHeader."Rebate Purchase Doc Type" := PostedCustRebateHeader."Rebate Purchase Doc Type"::" ";
                                 PostedCustRebateHeader.Modify();
                             end;
@@ -1405,7 +1405,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                             PostedCustRebateDetailLine.SetRange(Exclude, false);
                             If PostedCustRebateDetailLine.FindFirst() THEN begin
                                 repeat
-                                    PostedCustRebateDetailLine."Rebate Status" := PostedCustRebateDetailLine."Rebate Status"::Posted;
+                                    PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::Posted;
                                     PostedCustRebateDetailLine."Rebate Credit Doc Type" := PostedCustRebateDetailLine."Rebate Credit Doc Type"::"Purchase Credit Memo";
                                     PostedCustRebateDetailLine."Credit Document No." := PurchCrMemoLine."Document No.";
                                     PostedCustRebateDetailLine."Credit Document Line No." := PurchCrMemoLine."Line No.";

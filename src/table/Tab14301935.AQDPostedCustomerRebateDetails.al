@@ -14,11 +14,13 @@ table 14301935 "AQD Posted Cust Reb Details"
         }
         field(2; "Rebate Line No."; Integer)
         {
+            BlankZero = true;
             Caption = 'Rebate Line No.';
             Editable = false;
         }
         field(3; "Line No."; Integer)
         {
+            BlankZero = true;
             Caption = 'Line No.';
             Editable = false;
         }
@@ -34,6 +36,7 @@ table 14301935 "AQD Posted Cust Reb Details"
         }
         field(40; "Document Line No."; Integer)
         {
+            BlankZero = true;
             Caption = 'Document Line No.';
             Editable = false;
         }
@@ -68,15 +71,25 @@ table 14301935 "AQD Posted Cust Reb Details"
             Caption = 'Quantity';
             Editable = false;
         }
-        field(90; "Direct Unit Cost"; Decimal)
-        {
-            Caption = 'Direct Unit Cost';
-            Editable = false;
-        }
-        field(100; "Unit Cost"; Decimal)
+        field(90; "Unit Cost"; Decimal)
         {
             Caption = 'Unit Cost';
             Editable = false;
+        }
+        field(100; "Unit Price"; Decimal)
+        {
+            Caption = 'Unit Price';
+            Editable = false;
+        }
+        field(104; "Profit %"; Decimal)
+        {
+            Caption = 'Profit %';
+            DecimalPlaces = 2 : 2;
+        }
+        field(105; "Profit Amount"; Decimal)
+        {
+            BlankZero = true;
+            Caption = 'Profit Amount';
         }
         field(110; "Rebate Type"; Option)
         {
@@ -94,6 +107,15 @@ table 14301935 "AQD Posted Cust Reb Details"
         {
             Caption = 'Rebate Per Quantity';
             Editable = false;
+        }
+        field(140; "Rebate Order Date"; Date)
+        {
+            Caption = 'Rebate Order Date';
+            Editable = false;
+        }
+        field(145; "Posting Date"; Date)
+        {
+            Caption = 'Posting Date';
         }
         field(150; Amount; Decimal)
         {
@@ -117,8 +139,8 @@ table 14301935 "AQD Posted Cust Reb Details"
             var
                 RebateStatusError: Label 'Rebate Status must not be %1.';
             begin
-                IF Rec."Rebate Status" <> Rec."Rebate Status"::" " THEN
-                    Error(RebateStatusError, Rec."Rebate Status");
+                IF Rec."Customer Rebate Status" <> Rec."Customer Rebate Status"::" " THEN
+                    Error(RebateStatusError, Rec."Customer Rebate Status");
 
                 UpdateChangedBy();
             end;
@@ -152,14 +174,17 @@ table 14301935 "AQD Posted Cust Reb Details"
         field(300; "Salesperson Code"; Code[20])
         {
             Caption = 'Salesperson Code';
+            TableRelation = "Salesperson/Purchaser";
         }
         field(310; "Responsibility Center"; Code[10])
         {
             Caption = 'Responsibility Center';
+            TableRelation = "Responsibility Center";
         }
         field(320; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
+            TableRelation = Location;
         }
         field(330; "Shortcut Dimension 1 Code"; Code[20])
         {
@@ -188,11 +213,13 @@ table 14301935 "AQD Posted Cust Reb Details"
         }
         field(362; "Credit Document Line No."; Integer)
         {
+            BlankZero = TRUE;
             Caption = 'Credit Document Line No.';
             Editable = false;
         }
         field(363; "Credit Line No."; Integer)
         {
+            BlankZero = TRUE;
             Caption = 'Credit Line No.';
             Editable = false;
         }
@@ -200,58 +227,26 @@ table 14301935 "AQD Posted Cust Reb Details"
         {
             Caption = 'State';
         }
-        field(500; "Buy-from Vendor No."; Code[20])
+        field(500; "Sell-To Customer No."; Code[20])
         {
-            Caption = 'Buy-from Vendor No.';
+            Caption = 'Sell-To Customer No.';
             Editable = false;
         }
-        field(501; "Pay-to Vendor No."; Code[20])
+        field(501; "Bill-To Customer No."; Code[20])
         {
-            Caption = 'Pay-to Vendor No.';
+            Caption = 'Bill-To Customer No.';
             Editable = false;
         }
-        field(560; "Rebate Status"; Enum "AQD Customer Rebate Status")
+        field(510; "Pay-To Vendor No."; Code[20])
         {
-            Caption = 'Rebate Status';
+            Caption = 'Pay-To Vendor No.';
+            Editable = false;
+            TableRelation = Vendor;
+        }
+        field(560; "Customer Rebate Status"; Enum "AQD Customer Rebate Status")
+        {
+            Caption = 'Customer Rebate Status';
             DataClassification = CustomerContent;
-        }
-        field(570; "Purch Applies-to Doc. Type"; Enum "Purchase Applies-to Document Type")
-        {
-            Caption = 'Purch Applies-to Doc. Type';
-        }
-        field(580; "Purch Applies-to Doc. No."; Code[20])
-        {
-            Caption = 'Purch Applies-to Doc. No.';
-            TableRelation = if ("Purch Applies-to Doc. Type" = const(Order)) "Purchase Header"."No." where("Document Type" = const(Order))
-            else
-            if ("Purch Applies-to Doc. Type" = const(Invoice)) "Purchase Header"."No." where("Document Type" = const(Invoice))
-            else
-            if ("Purch Applies-to Doc. Type" = const("Return Order")) "Purchase Header"."No." where("Document Type" = const("Return Order"))
-            else
-            if ("Purch Applies-to Doc. Type" = const("Credit Memo")) "Purchase Header"."No." where("Document Type" = const("Credit Memo"))
-            else
-            if ("Purch Applies-to Doc. Type" = const(Receipt)) "Purch. Rcpt. Header"."No."
-            else
-            if ("Purch Applies-to Doc. Type" = const("Return Shipment")) "Return Shipment Header"."No.";
-        }
-        field(590; "Purch Applies-to Doc. Line No."; Integer)
-        {
-            Caption = 'Purch Applies-to Doc. Line No.';
-            TableRelation = if ("Purch Applies-to Doc. Type" = const(Order)) "Purchase Line"."Line No." where("Document Type" = const(Order),
-                                                                                                       "Document No." = field("Purch Applies-to Doc. No."))
-            else
-            if ("Purch Applies-to Doc. Type" = const(Invoice)) "Purchase Line"."Line No." where("Document Type" = const(Invoice),
-                                                                                                                                                                                         "Document No." = field("Purch Applies-to Doc. No."))
-            else
-            if ("Purch Applies-to Doc. Type" = const("Return Order")) "Purchase Line"."Line No." where("Document Type" = const("Return Order"),
-                                                                                                                                                                                                                                                                                  "Document No." = field("Purch Applies-to Doc. No."))
-            else
-            if ("Purch Applies-to Doc. Type" = const("Credit Memo")) "Purchase Line"."Line No." where("Document Type" = const("Credit Memo"),
-                                                                                                                                                                                                                                                                                                                                                                          "Document No." = field("Purch Applies-to Doc. No."))
-            else
-            if ("Purch Applies-to Doc. Type" = const(Receipt)) "Purch. Rcpt. Line"."Line No." where("Document No." = field("Purch Applies-to Doc. No."))
-            else
-            if ("Purch Applies-to Doc. Type" = const("Return Shipment")) "Return Shipment Line"."Line No." where("Document No." = field("Purch Applies-to Doc. No."));
         }
 
         field(591; "Sales Applies-to Doc. Type"; Enum "Sales Applies-to Document Type")
@@ -302,9 +297,9 @@ table 14301935 "AQD Posted Cust Reb Details"
         {
             Caption = 'BatchId';
         }
-        field(7050; "AQD Use Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
+        field(7050; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
-            Caption = 'Cust Rebate Posting By';
+            Caption = 'Use Cust Rebate Setup From';
             Editable = FALSE;
         }
         field(7060; "AQD Cust Rebate Posting Type"; enum "AQD Cust Rebate Posting Type")
@@ -325,8 +320,8 @@ table 14301935 "AQD Posted Cust Reb Details"
     var
         RebateStatusError: Label 'Rebate Status must not be %1.';
     begin
-        IF Rec."Rebate Status" <> Rec."Rebate Status"::" " THEN
-            Error(RebateStatusError, Rec."Rebate Status");
+        IF Rec."Customer Rebate Status" <> Rec."Customer Rebate Status"::" " THEN
+            Error(RebateStatusError, Rec."Customer Rebate Status");
 
         Rec."Rebate Amount Changed By" := UserId;
         Rec."Rebate Amount Changed DateTime" := CurrentDateTime;

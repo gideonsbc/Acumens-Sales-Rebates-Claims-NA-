@@ -329,11 +329,13 @@ page 14301933 "AQD Customer Rebate Document"
                 Visible = PostEnabled;
 
                 trigger OnAction()
+                var
+                    CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
                 begin
                     if not Rec.Approved then
                         Error('The document is not approved. Please approve it before posting.');
 
-                    //VendorRebatePost.PostVendorRebate(Rec, true);
+                    CustomerRebatePost.PostCustomerRebate(Rec, true);
 
                     CurrPage.Update(false);
                 end;

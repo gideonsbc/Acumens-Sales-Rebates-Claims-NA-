@@ -53,7 +53,7 @@ page 14301937 "AQD Posted Customer Rebates"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Posting Description field.', Comment = '%';
                 }
-                field("Rebate Status"; Rec."Rebate Status")
+                field("Rebate Status"; Rec."Customer Rebate Status")
                 {
                     ApplicationArea = All;
                     Editable = false;

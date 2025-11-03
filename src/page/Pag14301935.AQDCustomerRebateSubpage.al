@@ -65,17 +65,10 @@ page 14301935 "AQD Customer Rebate Subpage"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                 }
-                field("Vendor Invoice No."; Rec."Vendor Invoice No.")
+                field("External Document No."; Rec."External Document No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Vendor Invoice No. field.', Comment = '%';
-                    Visible = VendorInvoiceCrMemoNo;
-                }
-                field("Vendor Cr. Memo No."; Rec."Vendor Cr. Memo No.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Vendor Cr. Memo No. field.', Comment = '%';
-                    Visible = VendorInvoiceCrMemoNo;
+                    ToolTip = 'Specifies the value of the External Document No. field.', Comment = '%';
                 }
                 field(Amount; Rec.Amount)
                 {

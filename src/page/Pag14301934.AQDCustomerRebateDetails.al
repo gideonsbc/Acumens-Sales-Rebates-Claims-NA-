@@ -103,11 +103,11 @@ page 14301934 "AQD Customer Rebate Details"
                     Editable = false;
                     ToolTip = 'Specifies the value of the Use Rebate Setup From field.', Comment = '%';
                 }
-                field("AQD Rebate Posting Type"; Rec."AQD Rebate Posting Type")
+                field("AQD Cust Rebate Posting Type"; Rec."AQD Cust Rebate Posting Type")
                 {
                     ApplicationArea = All;
                     Editable = false;
-                    ToolTip = 'Specifies the value of the Rebate Posting Type field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Custstomer Rebate Posting Type field.', Comment = '%';
                 }
                 field(Exclude; Rec.Exclude)
                 {

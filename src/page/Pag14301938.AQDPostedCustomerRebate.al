@@ -220,7 +220,7 @@ page 14301938 "AQD Posted Customer Rebate"
                     ToolTip = 'Specifies the value of the Global Dimension 2 Code field.', Comment = '%';
                     Importance = Additional;
                 }
-                field("Rebate Status"; Rec."Rebate Status")
+                field("Rebate Status"; Rec."Customer Rebate Status")
                 {
                     ApplicationArea = All;
                     Editable = false;
@@ -316,22 +316,6 @@ page 14301938 "AQD Posted Customer Rebate"
                 RunObject = page "AQD Posted Cust Reb Comment";
                 RunPageLink = "Rebate No." = field("No.");
             }
-            // Not Required For Now. Not Delete
-            // action("Create Purchase Journal")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Create Purchase Journal';
-            //     Image = CreateDocument;
-
-            //     trigger OnAction()
-            //     var
-            //         VendorRebatePost: Codeunit "AQD Vendor Rebate Post";
-            //     begin
-            //         clear(VendorRebatePost);
-            //         VendorRebatePost.CreateVendorRebatePurchJournal(Rec);
-            //         CurrPage.UPDATE(false);
-            //     end;
-            // }
             action("Create Purchase Document")
             {
                 ApplicationArea = All;
@@ -368,14 +352,6 @@ page 14301938 "AQD Posted Customer Rebate"
         }
         area(Navigation)
         {
-            // action("AQD Rebate Purchase Journal")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Rebate Purchase Journal';
-            //     Image = OpenJournal;
-            //     RunObject = Page "AQD Rebate Purch. Journal";
-            //     ToolTip = 'Open the Rebate Purchase Journal.';
-            // }
             action("Purchase Invoices")
             {
                 ApplicationArea = All;
@@ -421,18 +397,12 @@ page 14301938 "AQD Posted Customer Rebate"
                 actionref(Comments_Promoted; Comments)
                 {
                 }
-                // actionref(CreatePurchaseJournal_Promoted; "Create Purchase Journal")
-                // {
-                // }
                 actionref(CreatePurchaseDocument_Promoted; "Create Purchase Document")
                 {
                 }
                 actionref(Vendor_Rebate_Details_Promoted; "Vendor Rebate Details")
                 {
                 }
-                // actionref(RebatePurchaseJournal_Promoted; "AQD Rebate Purchase Journal")
-                // {
-                // }
                 actionref(PurchaseInvoices_Promoted; "Purchase Invoices")
                 {
                 }

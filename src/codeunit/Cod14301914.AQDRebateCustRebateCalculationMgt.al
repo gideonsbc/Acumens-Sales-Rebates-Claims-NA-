@@ -869,7 +869,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Rebate Order Date" := SalesInvHeaderIn."Order Date";
                     CustomerRebateLine."Posting Date" := SalesInvHeaderIn."Posting Date";
                     CustomerRebateLine."Order No." := SalesInvHeaderIn."Order No.";
-                    CustomerRebateLine."Vendor Invoice No." := SalesInvHeaderIn."External Document No.";
+                    CustomerRebateLine."External Document No." := SalesInvHeaderIn."External Document No.";
                     CustomerRebateLine.Amount := SalesInvHeaderIn.Amount;
                     CustomerRebateLine."Amount Including VAT" := SalesInvHeaderIn."Amount Including VAT";
                     CustomerRebateLine."Salesperson Code" := SalesInvHeaderIn."Salesperson Code";
@@ -878,8 +878,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Currency Code" := SalesInvHeaderIn."Currency Code";
                     CustomerRebateLine."Shortcut Dimension 1 Code" := SalesInvHeaderIn."Shortcut Dimension 1 Code";
                     CustomerRebateLine."Shortcut Dimension 2 Code" := SalesInvHeaderIn."Shortcut Dimension 2 Code";
-                    CustomerRebateLine."Sell-To Customer No." := CustomerRebateHeader."Sell-To Customer No.";
-                    CustomerRebateLine."Bill-To Customer No." := CustomerRebateHeader."Bill-To Customer No.";
+                    CustomerRebateLine."Sell-To Customer No." := SalesInvHeaderIn."Sell-To Customer No.";
+                    CustomerRebateLine."Bill-To Customer No." := SalesInvHeaderIn."Bill-To Customer No.";
                 end;
             DocumentType::"Credit Memo":
                 begin
@@ -891,7 +891,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Order No." := SalesCrMemoHeaderIn."Return Order No.";
                     CustomerRebateLine.Description := SalesCrMemoHeaderIn."Posting Description";
                     CustomerRebateLine."Posting Date" := SalesCrMemoHeaderIn."Posting Date";
-                    //CustomerRebateLine."Vendor Cr. Memo No." := SalesCrMemoHeaderIn."Vendor Cr. Memo No.";
+                    CustomerRebateLine."External Document No." := SalesCrMemoHeaderIn."External Document No.";
                     CustomerRebateLine.Amount := -1 * SalesCrMemoHeaderIn.Amount;
                     CustomerRebateLine."Amount Including VAT" := -1 * SalesCrMemoHeaderIn."Amount Including VAT";
                     CustomerRebateLine."Salesperson Code" := SalesCrMemoHeaderIn."Salesperson Code";
@@ -900,11 +900,12 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Currency Code" := SalesCrMemoHeaderIn."Currency Code";
                     CustomerRebateLine."Shortcut Dimension 1 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 1 Code";
                     CustomerRebateLine."Shortcut Dimension 2 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 2 Code";
-                    CustomerRebateLine."Sell-To Customer No." := CustomerRebateHeader."Sell-To Customer No.";
-                    CustomerRebateLine."Bill-To Customer No." := CustomerRebateHeader."Bill-To Customer No.";
+                    CustomerRebateLine."Sell-To Customer No." := SalesCrMemoHeaderIn."Sell-To Customer No.";
+                    CustomerRebateLine."Bill-To Customer No." := SalesCrMemoHeaderIn."Bill-To Customer No.";
                 end;
         end;
         //CustomerRebateLine.Exclude := false;
+        CustomerRebateLine."Pay-To Vendor No." := CustomerRebateHeader."Pay-To Vendor No.";
         CustomerRebateLine.BatchID := GlobalBatchID;
         CustomerRebateLine."Batch Entry No." := GlobalBatchEntryNo;
         CustomerRebateLine.Insert;
@@ -1014,7 +1015,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             TempRebateCategoryLines."Rebate Category Code" := LocalRebateCategoryCode;
 
             TempRebateCategoryLines."AQD Use Rebate Setup From" := UseRebateCostSetupFrom;
-            TempRebateCategoryLines."AQD Rebate Posting Type" := RebateCostPostingType;
+            TempRebateCategoryLines."AQD Cust Rebate Posting Type" := RebateCostPostingType;
 
             RebateCategoryLines.RESET;
             RebateCategoryLines.SetRange("Rebate Category Code", LocalRebateCategoryCode);
@@ -1023,14 +1024,14 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     TempRebateCategoryLines."Line No." := RebateCategoryLines."Line No.";
                     TempRebateCategoryLines."Rebate Program Code" := RebateCategoryLines."Rebate Program Code";
 
-                    IF TempRebateCategoryLines."AQD Rebate Posting Type" = TempRebateCategoryLines."AQD Rebate Posting Type"::" " THEN begin
+                    IF TempRebateCategoryLines."AQD Cust Rebate Posting Type" = TempRebateCategoryLines."AQD Cust Rebate Posting Type"::" " THEN begin
                         IF RebateProgramCodeRec.GET(TempRebateCategoryLines."Rebate Program Code") THEN begin
-                            TempRebateCategoryLines."AQD Rebate Posting Type" := RebateProgramCodeRec."Customer Rebate Posting Type";
+                            TempRebateCategoryLines."AQD Cust Rebate Posting Type" := RebateProgramCodeRec."Customer Rebate Posting Type";
                         end;
                     end;
 
-                    IF TempRebateCategoryLines."AQD Rebate Posting Type" = TempRebateCategoryLines."AQD Rebate Posting Type"::" " THEN
-                        TempRebateCategoryLines."AQD Rebate Posting Type" := TempRebateCategoryLines."AQD Rebate Posting Type"::"G/L Account";
+                    IF TempRebateCategoryLines."AQD Cust Rebate Posting Type" = TempRebateCategoryLines."AQD Cust Rebate Posting Type"::" " THEN
+                        TempRebateCategoryLines."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type"::"G/L Account";
 
                     TempRebateCategoryLines.Insert();
                 until RebateCategoryLines.Next() = 0;
@@ -1038,14 +1039,14 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 TempRebateCategoryLines."Line No." := 10000;
                 TempRebateCategoryLines."Rebate Program Code" := RebateSetup."Default Rebate Program Code";
 
-                IF TempRebateCategoryLines."AQD Rebate Posting Type" = TempRebateCategoryLines."AQD Rebate Posting Type"::" " THEN begin
+                IF TempRebateCategoryLines."AQD Cust Rebate Posting Type" = TempRebateCategoryLines."AQD Cust Rebate Posting Type"::" " THEN begin
                     IF RebateProgramCodeRec.GET(TempRebateCategoryLines."Rebate Program Code") THEN begin
-                        TempRebateCategoryLines."AQD Rebate Posting Type" := RebateProgramCodeRec."Customer Rebate Posting Type";
+                        TempRebateCategoryLines."AQD Cust Rebate Posting Type" := RebateProgramCodeRec."Customer Rebate Posting Type";
                     end;
                 end;
 
-                IF TempRebateCategoryLines."AQD Rebate Posting Type" = TempRebateCategoryLines."AQD Rebate Posting Type"::" " THEN
-                    TempRebateCategoryLines."AQD Rebate Posting Type" := TempRebateCategoryLines."AQD Rebate Posting Type"::"G/L Account";
+                IF TempRebateCategoryLines."AQD Cust Rebate Posting Type" = TempRebateCategoryLines."AQD Cust Rebate Posting Type"::" " THEN
+                    TempRebateCategoryLines."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type"::"G/L Account";
 
                 TempRebateCategoryLines.INSERT;
             END;
@@ -1101,8 +1102,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                     CustomerRebateDetails."Shortcut Dimension 1 Code" := SalesInvLineIn."Shortcut Dimension 1 Code";
                                     CustomerRebateDetails."Shortcut Dimension 2 Code" := SalesInvLineIn."Shortcut Dimension 2 Code";
                                     CustomerRebateDetails.State := SalesInvHeaderIn."Ship-to County";
-                                    CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Sell-To Customer No.";
-                                    CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Bill-To Customer No.";
                                     SalesInvLineIn.GetSalesShptLines(TempSalesShptLine);
                                     IF TempSalesShptLine.FindFirst() THEN BEGIN
                                         CustomerRebateDetails."Applies-to Doc. Type" := CustomerRebateDetails."Applies-to Doc. Type"::Shipment;
@@ -1113,9 +1112,9 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                         CustomerRebateDetails."Applies-to Doc. No." := SalesInvLineIn."Document No.";
                                         CustomerRebateDetails."Applies-to Doc. Line No." := SalesInvLineIn."Line No.";
                                     END;
-                                end;
+                                END;
                             DocumentTypeIn::"Credit Memo":
-                                begin
+                                BEGIN
                                     CustomerRebateDetails.INIT;
                                     CustomerRebateDetails."Rebate No." := RebateNo;
                                     CustomerRebateDetails."Rebate Line No." := RebateLineNo;
@@ -1134,7 +1133,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                             CustomerRebateDetails.Type := CustomerRebateDetails.Type::Item;
                                         SalesCrMemoLineIn.Type::Resource:
                                             CustomerRebateDetails.Type := CustomerRebateDetails.Type::Resource;
-                                    end;
+                                    END;
                                     CustomerRebateDetails."No." := SalesCrMemoLineIn."No.";
                                     CustomerRebateDetails.Description := SalesCrMemoLineIn.Description;
                                     CustomerRebateDetails.Quantity := -1 * SalesCrMemoLineIn.Quantity;
@@ -1151,8 +1150,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                     CustomerRebateDetails."Shortcut Dimension 1 Code" := SalesCrMemoLineIn."Shortcut Dimension 1 Code";
                                     CustomerRebateDetails."Shortcut Dimension 2 Code" := SalesCrMemoLineIn."Shortcut Dimension 2 Code";
                                     CustomerRebateDetails.State := SalesCrMemoHeaderIn."Ship-to County";
-                                    CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Sell-To Customer No.";
-                                    CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Bill-To Customer No.";
                                     SalesCrMemoLineIn.GetReturnRcptLines(TempReturnReceiptLine);
                                     IF TempReturnReceiptLine.FindFirst() THEN BEGIN
                                         CustomerRebateDetails."Applies-to Doc. Type" := CustomerRebateDetails."Applies-to Doc. Type"::"Return Receipt";
@@ -1163,8 +1160,12 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                         CustomerRebateDetails."Applies-to Doc. No." := SalesCrMemoLineIn."Document No.";
                                         CustomerRebateDetails."Applies-to Doc. Line No." := SalesCrMemoLineIn."Line No.";
                                     END;
-                                end;
-                        end;
+                                END;
+                        END;
+                        CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Sell-To Customer No.";
+                        CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Bill-To Customer No.";
+                        CustomerRebateDetails."Pay-To Vendor No." := CustomerRebateLine."Pay-To Vendor No.";
+
                         // Calculate and Vendor Rebate Amount
                         CustomerRebateDetails."Rebate Item Category Code" := TempRebateCategoryLines."Rebate Category Code";
                         CustomerRebateDetails."Rebate Program Code" := TempRebateCategoryLines."Rebate Program Code";
@@ -1179,7 +1180,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         CustomerRebateDetails.BatchID := GlobalBatchID;
                         CustomerRebateDetails."Batch Entry No." := GlobalBatchEntryNo;
                         CustomerRebateDetails."AQD Use Cust Rebate Setup From" := TempRebateCategoryLines."AQD Use Rebate Setup From";
-                        CustomerRebateDetails."AQD Rebate Posting Type" := TempRebateCategoryLines."AQD Rebate Posting Type";
+                        CustomerRebateDetails."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type";
                         IF CustomerRebateDetails."Rebate Type" <> CustomerRebateDetails."Rebate Type"::" " then
                             CustomerRebateDetails.Insert();
                     END;

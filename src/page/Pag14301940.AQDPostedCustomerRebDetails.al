@@ -69,7 +69,7 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Quantity field.', Comment = '%';
                 }
-                field("Direct Unit Cost"; Rec."Direct Unit Cost")
+                field("Direct Unit Cost"; Rec."Unit Cost")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Direct Unit Cost field.', Comment = '%';
@@ -114,11 +114,11 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Customer Rebate Amount field.', Comment = '%';
                 }
-                field("AQD Use Rebate Setup From"; Rec."AQD Use Rebate Setup From")
+                field("AQD Use Cust Rebate Setup From"; Rec."AQD Use Cust Rebate Setup From")
                 {
                     ApplicationArea = All;
                     Editable = false;
-                    ToolTip = 'Specifies the value of the Use Rebate Setup From field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Use Cust Rebate Setup From field.', Comment = '%';
                 }
                 field("AQD Cust Rebate Posting Type"; Rec."AQD Cust Rebate Posting Type")
                 {
