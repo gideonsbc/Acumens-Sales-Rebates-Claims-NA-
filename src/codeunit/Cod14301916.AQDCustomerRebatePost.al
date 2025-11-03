@@ -223,6 +223,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
         BillToCustomer: Record Customer;
         PurchaseHeader: Record "Purchase Header";
         PurchPost: Codeunit "Purch.-Post";
+        SalesHeader: Record "Sales Header";
+        SalesPost: Codeunit "Sales-Post";
     begin
         CustomerRebateLine.Reset();
         CustomerRebateLine.SetRange("Rebate No.", CustomerRebateHeader."No.");
@@ -241,6 +243,38 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
                 CASE BillToCustomer."AQD Rebate Payment Method" OF
                     BillToCustomer."AQD Rebate Payment Method"::"Credit Memo":
+                        BEGIN
+                            CreateSalesDocument(PostedCustRebateHeader, false);
+
+                            IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Create and Post Cr. Memo" THEN BEGIN
+                                TmpInovoiceBuffer.RESET;
+                                IF TmpInovoiceBuffer.FindFirst() THEN begin
+                                    REPEAT
+                                        IF SalesHeader.GET(TmpInovoiceBuffer."Order Line No.",
+                                                              TmpInovoiceBuffer."Order No.")
+                                        THEN BEGIN
+                                            SalesHeader.Ship := TRUE;
+                                            SalesHeader.Invoice := TRUE;
+                                            SalesPost.Run(SalesHeader);
+                                        END;
+                                    UNTIL TmpInovoiceBuffer.Next() = 0;
+                                end;
+
+                                TmpCrMemoBuffer.RESET;
+                                IF TmpCrMemoBuffer.FindFirst() THEN begin
+                                    REPEAT
+                                        IF SalesHeader.GET(TmpCrMemoBuffer."Order Line No.",
+                                                           TmpCrMemoBuffer."Order No.")
+                                        THEN BEGIN
+                                            SalesHeader.Receive := TRUE;
+                                            SalesHeader.Invoice := TRUE;
+                                            SalesPost.Run(SalesHeader);
+                                        END;
+                                    UNTIL TmpCrMemoBuffer.Next() = 0;
+                                END;
+                            END
+                        END;
+                    BillToCustomer."AQD Rebate Payment Method"::Check:
                         BEGIN
                             CreatePurchaseDocument(PostedCustRebateHeader, false);
 
@@ -271,9 +305,6 @@ codeunit 14301916 "AQD Customer Rebate Post"
                                     UNTIL TmpCrMemoBuffer.Next() = 0;
                                 END;
                             END;
-                        END;
-                    BillToCustomer."AQD Rebate Payment Method"::Check:
-                        BEGIN
                         END;
                 END;
             END;
