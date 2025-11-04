@@ -217,9 +217,9 @@ table 14301930 "AQD Customer Rebate Details"
             Editable = false;
             TableRelation = Vendor;
         }
-        field(560; "Rebate Status"; Enum "AQD Customer Rebate Status")
+        field(560; "Customer Rebate Status"; Enum "AQD Customer Rebate Status")
         {
-            Caption = 'Rebate Status';
+            Caption = 'Customer Rebate Status';
             DataClassification = CustomerContent;
         }
         field(570; "Applies-to Doc. Type"; Enum "Sales Applies-to Document Type")
@@ -273,10 +273,12 @@ table 14301930 "AQD Customer Rebate Details"
         field(7050; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
             Caption = 'Use Cust Rebate Setup From';
+            Editable = FALSE;
         }
         field(7060; "AQD Cust Rebate Posting Type"; enum "AQD Cust Rebate Posting Type")
         {
             Caption = 'Cust Rebate Posting Type';
+            Editable = FALSE;
         }
     }
 

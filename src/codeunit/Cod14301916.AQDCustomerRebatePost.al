@@ -233,8 +233,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PostedCustRebateHeader.TransferFields(CustomerRebateHeader);
             PostedCustRebateHeader.Insert();
 
-            MoveVendorRebateLine(CustomerRebateHeader);
-            MoveVendorRebateComments(CustomerRebateHeader);
+            MoveCustomerRebateLine(CustomerRebateHeader);
+            MoveCustomerRebateComments(CustomerRebateHeader);
 
             CustomerRebateHeader.Delete();
 
@@ -328,43 +328,44 @@ codeunit 14301916 "AQD Customer Rebate Post"
         END;
     END;
 
-    local procedure MoveVendorRebateLine(VendorRebateHeader: Record "AQD Customer Rebate Header")
+    local procedure MoveCustomerRebateLine(CustomerRebateHeader: Record "AQD Customer Rebate Header")
     var
         PostedCustomerRebateLine: Record "AQD Posted Cust Rebate Line";
     begin
         CustomerRebateLine.Reset();
-        CustomerRebateLine.SetRange("Rebate No.", VendorRebateHeader."No.");
+        CustomerRebateLine.SetRange("Rebate No.", CustomerRebateHeader."No.");
         IF CustomerRebateLine.FindFirst() THEN BEGIN
             repeat
-                IF CustomerRebateLine.Posted or CustomerRebateLine.Exclude THEN BEGIN
-                    MoveVendorRebateDetails(CustomerRebateLine);
-                    PostedCustomerRebateLine.Init();
-                    PostedCustomerRebateLine.TransferFields(CustomerRebateLine);
-                    if PostedCustomerRebateLine.Insert() THEN
-                        CustomerRebateLine.Delete();
-                END;
+                //IF CustomerRebateLine.Posted or CustomerRebateLine.Exclude THEN BEGIN
+                MoveCustomerRebateDetails(CustomerRebateLine);
+
+                PostedCustomerRebateLine.Init();
+                PostedCustomerRebateLine.TransferFields(CustomerRebateLine);
+                if PostedCustomerRebateLine.Insert() THEN
+                    CustomerRebateLine.Delete();
+            //END;
             until CustomerRebateLine.Next() = 0;
         END;
     END;
 
-    local procedure MoveVendorRebateDetails(VendorRebateLine: Record "AQD Customer Rebate Line")
+    local procedure MoveCustomerRebateDetails(CustomerRebateLine: Record "AQD Customer Rebate Line")
     var
-        PostedVendorRebateDetails: Record "AQD Posted Cust Reb Details";
+        PostedCustomerRebateDetails: Record "AQD Posted Cust Reb Details";
     begin
         CustomerRebateDetails.Reset();
-        CustomerRebateDetails.SetRange("Rebate No.", VendorRebateLine."Rebate No.");
-        CustomerRebateDetails.SetRange("Rebate Line No.", VendorRebateLine."Line No.");
+        CustomerRebateDetails.SetRange("Rebate No.", CustomerRebateLine."Rebate No.");
+        CustomerRebateDetails.SetRange("Rebate Line No.", CustomerRebateLine."Line No.");
         IF CustomerRebateDetails.FindSet() THEN BEGIN
             REPEAT
-                PostedVendorRebateDetails.Init();
-                PostedVendorRebateDetails.TransferFields(CustomerRebateDetails);
-                if PostedVendorRebateDetails.Insert() then
+                PostedCustomerRebateDetails.Init();
+                PostedCustomerRebateDetails.TransferFields(CustomerRebateDetails);
+                if PostedCustomerRebateDetails.Insert() then
                     CustomerRebateDetails.Delete();
             UNTIL CustomerRebateDetails.Next() = 0;
         END;
     END;
 
-    local procedure MoveVendorRebateComments(CustomerRebateHeader: Record "AQD Customer Rebate Header")
+    local procedure MoveCustomerRebateComments(CustomerRebateHeader: Record "AQD Customer Rebate Header")
     var
         PostedCustomerRebateComments: Record "AQD Posted Cust Reb Comment";
     BEGIN
@@ -522,18 +523,18 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentPurchase."Unit Cost" := PostedCustomerRebateLineDetails."Customer Rebate Amount";
                     ItemChargeAssignmentPurchase."Amount to Assign" := 0;
                     ItemChargeAssignmentPurchase."Amount to Handle" := 0;
-                    CASE PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type" OF
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Shipment:
+                    CASE PostedCustomerRebateLineDetails."Applies-to Doc. Type" OF
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::Shipment:
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Sales Shipment";
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Invoice:
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::Invoice:
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::Invoice;
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Return Receipt":
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::"Return Receipt":
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Return Receipt";
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Credit Memo":
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::"Credit Memo":
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Credit Memo";
                     END;
-                    ItemChargeAssignmentPurchase."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. No.";
-                    ItemChargeAssignmentPurchase."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. Line No.";
+                    ItemChargeAssignmentPurchase."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Applies-to Doc. No.";
+                    ItemChargeAssignmentPurchase."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Applies-to Doc. Line No.";
                     ItemChargeAssignmentPurchase."Applies-to Doc. Line Amount" := 0;
                     ItemChargeAssignmentPurchase."AQD Cust Rebate Document No." := PostedCustomerRebateLineDetails."Rebate No.";
                     ItemChargeAssignmentPurchase."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
@@ -706,18 +707,18 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentPurchase."Unit Cost" := PostedCustomerRebateLineDetails."Customer Rebate Amount";
                     ItemChargeAssignmentPurchase."Amount to Assign" := 0;
                     ItemChargeAssignmentPurchase."Amount to Handle" := 0;
-                    CASE PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type" OF
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Shipment:
+                    CASE PostedCustomerRebateLineDetails."Applies-to Doc. Type" OF
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::Shipment:
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Sales Shipment";
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Invoice:
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::Invoice:
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::Invoice;
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Return Receipt":
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::"Return Receipt":
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Return Receipt";
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Credit Memo":
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::"Credit Memo":
                             ItemChargeAssignmentPurchase."Applies-to Doc. Type" := ItemChargeAssignmentPurchase."Applies-to Doc. Type"::"Credit Memo";
                     END;
-                    ItemChargeAssignmentPurchase."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. No.";
-                    ItemChargeAssignmentPurchase."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. Line No.";
+                    ItemChargeAssignmentPurchase."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Applies-to Doc. No.";
+                    ItemChargeAssignmentPurchase."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Applies-to Doc. Line No.";
                     ItemChargeAssignmentPurchase."Applies-to Doc. Line Amount" := 0;
                     ItemChargeAssignmentPurchase."AQD Cust Rebate Document No." := PostedCustomerRebateLineDetails."Rebate No.";
                     ItemChargeAssignmentPurchase."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
@@ -935,18 +936,18 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentSales."Unit Cost" := PostedCustomerRebateLineDetails."Customer Rebate Amount";
                     ItemChargeAssignmentSales."Amount to Assign" := 0;
                     ItemChargeAssignmentSales."Amount to Handle" := 0;
-                    CASE PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type" OF
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Shipment:
+                    CASE PostedCustomerRebateLineDetails."Applies-to Doc. Type" OF
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::Shipment:
                             ItemChargeAssignmentSales."Applies-to Doc. Type" := ItemChargeAssignmentSales."Applies-to Doc. Type"::Shipment;
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Invoice:
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::Invoice:
                             ItemChargeAssignmentSales."Applies-to Doc. Type" := ItemChargeAssignmentSales."Applies-to Doc. Type"::Invoice;
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Return Receipt":
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::"Return Receipt":
                             ItemChargeAssignmentSales."Applies-to Doc. Type" := ItemChargeAssignmentSales."Applies-to Doc. Type"::"Return Receipt";
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Credit Memo":
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::"Credit Memo":
                             ItemChargeAssignmentSales."Applies-to Doc. Type" := ItemChargeAssignmentSales."Applies-to Doc. Type"::"Credit Memo";
                     END;
-                    ItemChargeAssignmentSales."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. No.";
-                    ItemChargeAssignmentSales."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. Line No.";
+                    ItemChargeAssignmentSales."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Applies-to Doc. No.";
+                    ItemChargeAssignmentSales."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Applies-to Doc. Line No.";
                     ItemChargeAssignmentSales."Applies-to Doc. Line Amount" := 0;
                     ItemChargeAssignmentSales."AQD Cust Rebate Doc No." := PostedCustomerRebateLineDetails."Rebate No.";
                     ItemChargeAssignmentSales."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";
@@ -1119,18 +1120,18 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentSales."Unit Cost" := PostedCustomerRebateLineDetails."Customer Rebate Amount";
                     ItemChargeAssignmentSales."Amount to Assign" := 0;
                     ItemChargeAssignmentSales."Amount to Handle" := 0;
-                    CASE PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type" OF
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Shipment:
+                    CASE PostedCustomerRebateLineDetails."Applies-to Doc. Type" OF
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::Shipment:
                             ItemChargeAssignmentSales."Applies-to Doc. Type" := ItemChargeAssignmentSales."Applies-to Doc. Type"::Shipment;
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::Invoice:
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::Invoice:
                             ItemChargeAssignmentSales."Applies-to Doc. Type" := ItemChargeAssignmentSales."Applies-to Doc. Type"::Invoice;
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Return Receipt":
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::"Return Receipt":
                             ItemChargeAssignmentSales."Applies-to Doc. Type" := ItemChargeAssignmentSales."Applies-to Doc. Type"::"Return Receipt";
-                        PostedCustomerRebateLineDetails."Sales Applies-to Doc. Type"::"Credit Memo":
+                        PostedCustomerRebateLineDetails."Applies-to Doc. Type"::"Credit Memo":
                             ItemChargeAssignmentSales."Applies-to Doc. Type" := ItemChargeAssignmentSales."Applies-to Doc. Type"::"Credit Memo";
                     END;
-                    ItemChargeAssignmentSales."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. No.";
-                    ItemChargeAssignmentSales."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Sales Applies-to Doc. Line No.";
+                    ItemChargeAssignmentSales."Applies-to Doc. No." := PostedCustomerRebateLineDetails."Applies-to Doc. No.";
+                    ItemChargeAssignmentSales."Applies-to Doc. Line No." := PostedCustomerRebateLineDetails."Applies-to Doc. Line No.";
                     ItemChargeAssignmentSales."Applies-to Doc. Line Amount" := 0;
                     ItemChargeAssignmentSales."AQD Cust Rebate Doc No." := PostedCustomerRebateLineDetails."Rebate No.";
                     ItemChargeAssignmentSales."AQD Cust Rebate Doc Line No" := PostedCustomerRebateLineDetails."Rebate Line No.";

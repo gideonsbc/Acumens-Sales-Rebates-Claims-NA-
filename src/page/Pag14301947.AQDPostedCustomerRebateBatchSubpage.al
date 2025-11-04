@@ -22,7 +22,7 @@ page 14301947 "AQD Posted Cust Rebate Subpage"
 
                     trigger OnDrillDown()
                     var
-                        PostedCustomerRebatePg: Page "AQD Posted Customer Rebate";
+                        PostedCustomerRebatePg: Page "AQD Posted Customer Rebate Doc";
                     begin
                         clear(PostedCustomerRebatePg);
                         PostedCustomerRebatePg.SetRecord(Rec);

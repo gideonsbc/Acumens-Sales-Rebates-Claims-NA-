@@ -24,7 +24,7 @@ page 14301933 "AQD Customer Rebate Document"
                     field("Sell-To Customer No."; Rec."Sell-To Customer No.")
                     {
                         ApplicationArea = All;
-                        Caption = 'Vendor No.';
+                        Caption = 'Customer No.';
                         ToolTip = 'Specifies the value of the Sell-To Customer No. field.', Comment = '%';
                     }
                     field("Sell-To Customer Name"; Rec."Sell-To Customer Name")
