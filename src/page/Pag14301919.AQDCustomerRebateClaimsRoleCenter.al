@@ -196,6 +196,13 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Image = CalculateSalesTax;
                 RunObject = Report "AQD Generate Customer Rebates";
             }
+            action("Post Customer Rebate Batches")
+            {
+                ApplicationArea = All;
+                Caption = 'Post Customer Rebate Batches';
+                Image = CalculateSalesTax;
+                RunObject = Report "AQD Post Cust Rebate Batches";
+            }
             group(Journals)
             {
                 // action("Customer Rebate Journal")

@@ -5,7 +5,7 @@ table 14301922 "AQD Cust Item Rebate Matrix"
 
     fields
     {
-        field(1; "Line Type"; Enum "AQD Customer Rebate Line Type")
+        field(1; "Line Type"; Enum "AQD CustItemRebate Matrix Type")
         {
             Caption = 'Line Type';
             trigger OnValidate()
@@ -18,11 +18,7 @@ table 14301922 "AQD Cust Item Rebate Matrix"
         {
             Caption = 'No.';
             TableRelation = if ("Line Type" = const("Rebate Category")) "AQD Cust Rebate Item Category"
-            else if ("Line Type" = const(Item)) Item
-            else if ("Line Type" = const("G/L Account")) "G/L Account"
-            else if ("Line Type" = const(Resource)) Resource
-            else if ("Line Type" = const("Fixed Asset")) "Fixed Asset"
-            else if ("Line Type" = const("Charge (Item)")) "Item Charge";
+            else if ("Line Type" = const(Item)) Item;
 
             trigger OnValidate()
             begin
@@ -32,34 +28,6 @@ table 14301922 "AQD Cust Item Rebate Matrix"
                             begin
                                 IF Item.Get("No.") THEN
                                     Description := Item.Description
-                                ELSE
-                                    Description := '';
-                            end;
-                        Rec."Line Type"::Resource:
-                            begin
-                                IF Resource.Get("No.") THEN
-                                    Description := Resource.Name
-                                ELSE
-                                    Description := '';
-                            end;
-                        Rec."Line Type"::"G/L Account":
-                            begin
-                                IF GLAccount.Get("No.") THEN
-                                    Description := GLAccount.Name
-                                ELSE
-                                    Description := '';
-                            end;
-                        Rec."Line Type"::"Fixed Asset":
-                            begin
-                                IF FixAsset.Get("No.") THEN
-                                    Description := FixAsset.Description
-                                ELSE
-                                    Description := '';
-                            end;
-                        Rec."Line Type"::"Charge (Item)":
-                            begin
-                                IF ItemCharge.Get("No.") THEN
-                                    Description := ItemCharge.Description
                                 ELSE
                                     Description := '';
                             end;
@@ -139,7 +107,7 @@ table 14301922 "AQD Cust Item Rebate Matrix"
 
     keys
     {
-        key(Key1; "Line Type", "No.", "Customer Type", "Customer No.", "Rebate Program Code")
+        key(Key1; "Customer Type", "Customer No.", "Line Type", "No.", "Rebate Program Code")
         {
             Clustered = true;
         }
@@ -147,10 +115,10 @@ table 14301922 "AQD Cust Item Rebate Matrix"
 
     fieldgroups
     {
-        fieldgroup(Dropdown; "Line Type", "No.", "Customer Type", "Customer No.", "Rebate Program Code")
+        fieldgroup(Dropdown; "Customer Type", "Customer No.", "Line Type", "No.", "Rebate Program Code")
         {
         }
-        fieldgroup(Brick; "Line Type", "No.", "Customer Type", "Customer No.", "Rebate Program Code")
+        fieldgroup(Brick; "Customer Type", "Customer No.", "Line Type", "No.", "Rebate Program Code")
         {
         }
     }

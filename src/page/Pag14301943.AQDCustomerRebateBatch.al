@@ -77,7 +77,7 @@ page 14301943 "AQD Customer Rebate Batch"
     {
         area(Processing)
         {
-            action(AQDVendorRebateBatchPost)
+            action(AQDCustomerRebateBatchPost)
             {
                 ApplicationArea = All;
                 Caption = 'Post Batch';
@@ -91,8 +91,8 @@ page 14301943 "AQD Customer Rebate Batch"
                     if not Rec.Approved then
                         Error('Customer Rebate Batch is not approved. Please approve it before posting.');
 
-                    //if Confirm(StrSubstNo(UserConfirmLabel, Rec.BatchID)) then
-                    //    CustomerRebatePost.PostCustomerRebateBatch(Rec);
+                    if Confirm(StrSubstNo(UserConfirmLabel, Rec.BatchID)) then
+                        CustomerRebatePost.PostCustomerRebateBatch(Rec);
 
                     CurrPage.Update(false);
                 end;

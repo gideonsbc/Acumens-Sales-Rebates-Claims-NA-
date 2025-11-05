@@ -25,7 +25,6 @@ page 14301930 "AQD Item Cust Rebate Matrix"
                 field("Line Type"; Rec."Line Type")
                 {
                     ToolTip = 'Specifies the value of the Line Type field.', Comment = '%';
-                    Visible = FALSE;
                 }
                 field("No."; Rec."No.")
                 {
