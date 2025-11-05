@@ -1,4 +1,4 @@
-pageextension 14301915 "AQD Customer Card" extends "Customer Card"
+pageextension 14301915 "AQD CustRbt Customer Card" extends "Customer Card"
 {
     layout
     {

@@ -1,16 +1,17 @@
-pageextension 14301912 "AQD Fixed Asset Card" extends "Fixed Asset Card"
+pageextension 14301914 "AQD CustRbt G/L Account Card" extends "G/L Account Card"
 {
     layout
     {
-        addafter(Maintenance)
+        addafter("Cost Accounting")
         {
             group("Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
+
                 group(CustomerRebate)
                 {
                     Caption = 'Rebate';
-                    field("AQD Customer Rebate Enabled"; Rec."AQD Customer Rebate Enabled")
+                    field("AQD Customer Rebate Enable"; Rec."AQD Customer Rebate Enabled")
                     {
                         ApplicationArea = All;
                     }
@@ -31,6 +32,3 @@ pageextension 14301912 "AQD Fixed Asset Card" extends "Fixed Asset Card"
         }
     }
 }
-
-
-

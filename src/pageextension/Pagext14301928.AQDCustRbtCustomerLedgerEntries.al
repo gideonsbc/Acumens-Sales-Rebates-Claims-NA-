@@ -1,4 +1,4 @@
-pageextension 14301928 "AQD Cust Lder Entries Ext" extends "Customer Ledger Entries"
+pageextension 14301928 "AQD CustRbtCustLderEntries Ext" extends "Customer Ledger Entries"
 {
     layout
     {

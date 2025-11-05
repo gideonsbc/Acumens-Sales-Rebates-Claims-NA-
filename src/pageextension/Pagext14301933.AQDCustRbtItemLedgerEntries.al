@@ -1,4 +1,4 @@
-pageextension 14301934 "AQD Item Ledger Entries Ext" extends "Item Ledger Entries"
+pageextension 14301934 "AQD CustRbtItemLdgrEntries Ext" extends "Item Ledger Entries"
 {
     layout
     {

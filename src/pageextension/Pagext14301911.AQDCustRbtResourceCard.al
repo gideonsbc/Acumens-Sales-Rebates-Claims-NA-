@@ -1,17 +1,16 @@
-pageextension 14301914 "AQD G/L Account Card" extends "G/L Account Card"
+pageextension 14301911 "AQD CustRbt Resource Card" extends "Resource Card"
 {
     layout
     {
-        addafter("Cost Accounting")
+        addafter("Personal Data")
         {
             group("Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
-
                 group(CustomerRebate)
                 {
                     Caption = 'Rebate';
-                    field("AQD Customer Rebate Enable"; Rec."AQD Customer Rebate Enabled")
+                    field("AQD Customer Rebatable"; Rec."AQD Customer Rebate Enabled")
                     {
                         ApplicationArea = All;
                     }
@@ -32,3 +31,4 @@ pageextension 14301914 "AQD G/L Account Card" extends "G/L Account Card"
         }
     }
 }
+

@@ -1,4 +1,4 @@
-codeunit 14301913 "AQD RebateMgt EventsFunctions"
+codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
 {
 
     trigger OnRun()

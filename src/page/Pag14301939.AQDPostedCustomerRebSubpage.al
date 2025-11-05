@@ -35,7 +35,7 @@ page 14301939 "AQD Posted Cust Reb Subpage"
 
                     trigger OnDrillDown()
                     var
-                        RebateMgtEventsFunctions: Codeunit "AQD RebateMgt EventsFunctions";
+                        RebateMgtEventsFunctions: Codeunit "AQD CustRbtMgt EventsFunctions";
                     begin
                         clear(RebateMgtEventsFunctions);
                         RebateMgtEventsFunctions.ShowPostedDocument(Rec."Document Type", Rec."Document No.");

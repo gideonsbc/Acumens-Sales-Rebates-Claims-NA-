@@ -105,7 +105,7 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Caption = 'Rebate Customer Types';
                 ApplicationArea = All;
                 Image = CampaignEntries;
-                RunObject = Page "AQD Rebate Customer Types";
+                RunObject = Page "AQD Cust Rebate Customer Types";
             }
             // action("AQD Rebate Cust Type Eligib")
             // {

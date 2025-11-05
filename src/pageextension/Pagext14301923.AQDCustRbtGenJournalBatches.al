@@ -1,4 +1,4 @@
-pageextension 14301923 "AQD Gen. Journal Batches" extends "General Journal Batches"
+pageextension 14301923 "AQD CustRbt GenJnl Batches" extends "General Journal Batches"
 {
     layout
     {

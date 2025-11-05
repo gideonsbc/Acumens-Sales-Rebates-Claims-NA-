@@ -1,4 +1,4 @@
-codeunit 14301910 "AQD Acumens Rebate Setup Mgt"
+codeunit 14301910 "AQD Acumens CustRbt Setup Mgt"
 {
     trigger OnRun()
     begin

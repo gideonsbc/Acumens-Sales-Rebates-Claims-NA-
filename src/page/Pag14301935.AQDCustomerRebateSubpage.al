@@ -33,7 +33,7 @@ page 14301935 "AQD Customer Rebate Subpage"
 
                     trigger OnDrillDown()
                     var
-                        RebatMgtEventsFunctions: Codeunit "AQD RebateMgt EventsFunctions";
+                        RebatMgtEventsFunctions: Codeunit "AQD CustRbtMgt EventsFunctions";
                     begin
                         clear(RebatMgtEventsFunctions);
                         RebatMgtEventsFunctions.ShowPostedDocument(Rec."Document Type", Rec."Document No.");

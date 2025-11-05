@@ -1,4 +1,4 @@
-pageextension 14301924 "AQD Posted Sales Cr. Memo" extends "Posted Sales Credit Memo"
+pageextension 14301924 "AQD CustRbt Posted SalesCrMemo" extends "Posted Sales Credit Memo"
 {
     layout
     {

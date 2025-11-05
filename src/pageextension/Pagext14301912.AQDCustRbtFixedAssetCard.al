@@ -1,8 +1,8 @@
-pageextension 14301911 "AQD Resource Card" extends "Resource Card"
+pageextension 14301912 "AQD CustRbt Fixed Asset Card" extends "Fixed Asset Card"
 {
     layout
     {
-        addafter("Personal Data")
+        addafter(Maintenance)
         {
             group("Acumens Customer Rebate and Claims")
             {
@@ -10,7 +10,7 @@ pageextension 14301911 "AQD Resource Card" extends "Resource Card"
                 group(CustomerRebate)
                 {
                     Caption = 'Rebate';
-                    field("AQD Customer Rebatable"; Rec."AQD Customer Rebate Enabled")
+                    field("AQD Customer Rebate Enabled"; Rec."AQD Customer Rebate Enabled")
                     {
                         ApplicationArea = All;
                     }
@@ -31,4 +31,6 @@ pageextension 14301911 "AQD Resource Card" extends "Resource Card"
         }
     }
 }
+
+
 

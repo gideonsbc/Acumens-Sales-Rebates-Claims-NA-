@@ -36,7 +36,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                     trigger OnLookup(var Text: Text): Boolean
                     var
                         CustList: Page "Customer List";
-                        RebateCustomerTypeList: Page "AQD Rebate Customer Types";
+                        RebateCustomerTypeList: Page "AQD Cust Rebate Customer Types";
                     begin
                         IF CustomerTypeFilter = CustomerTypeFilter::"All Customers" THEN
                             EXIT;
@@ -354,7 +354,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
 
     var
         Cust: Record Customer;
-        RebateCustomerType: Record "AQD Rebate Customer Type";
+        RebateCustomerType: Record "AQD CustRbt RebateCustomerType";
         RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         ClientTypeManagement: Codeunit "Client Type Management";
         CustomerTypeFilter: Enum "AQD Rebate Cust Type Filter";
@@ -417,7 +417,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                 CustomerTypeFilter::"Customer Type":
                     begin
                         Rec.SetRange("Customer Type", Rec."Customer Type"::"Customer Type");
-                        CheckFilters(DATABASE::"AQD Rebate Customer Type", CustomerNoFilter);
+                        CheckFilters(DATABASE::"AQD CustRbt RebateCustomerType", CustomerNoFilter);
                     end;
                 CustomerTypeFilter::"All Customers":
                     begin
@@ -641,7 +641,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
         end;
     end;
 
-    local procedure SetCustomerNoEditable(CustomerTypeInput: Enum "AQD Rebate Customer Type"): Boolean
+    local procedure SetCustomerNoEditable(CustomerTypeInput: Enum "AQD Cust Rebate Customer Type"): Boolean
     begin
         exit(CustomerTypeInput <> CustomerTypeInput::"All Customers");
     end;

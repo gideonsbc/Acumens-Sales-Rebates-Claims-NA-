@@ -1,4 +1,4 @@
-pageextension 14301910 "AQD Item Card" extends "Item Card"
+pageextension 14301910 "AQD CustRbt Item Card" extends "Item Card"
 {
     layout
     {

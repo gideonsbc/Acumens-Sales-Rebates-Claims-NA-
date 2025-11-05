@@ -1,4 +1,4 @@
-pageextension 14301913 "AQD Item Charges" extends "Item Charges"
+pageextension 14301913 "AQD CustRbt Item Charges" extends "Item Charges"
 {
     layout
     {

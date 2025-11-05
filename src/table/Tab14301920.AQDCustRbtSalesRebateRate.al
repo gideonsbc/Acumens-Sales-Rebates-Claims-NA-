@@ -91,14 +91,14 @@ table 14301920 "AQD Sales Rebates Rate"
             Caption = 'Variant Code';
             TableRelation = "Item Variant".Code where("Item No." = field("No."));
         }
-        field(4; "Customer Type"; Enum "AQD Rebate Customer Type")
+        field(4; "Customer Type"; Enum "AQD Cust Rebate Customer Type")
         {
             Caption = 'Customer Type';
         }
         field(5; "Customer No."; Code[20])
         {
             Caption = 'Customer No.';
-            TableRelation = if ("Customer Type" = const("Customer Type")) "AQD Rebate Customer Type"
+            TableRelation = if ("Customer Type" = const("Customer Type")) "AQD CustRbt RebateCustomerType"
             else if ("Customer Type" = const(Customer)) Customer;
         }
         field(6; "Rebate Program Code"; Code[20])

@@ -1,4 +1,4 @@
-pageextension 14301922 "AQD Sales Return Order" extends "Sales Return Order"
+pageextension 14301922 "AQD CustRbt Sales Return Order" extends "Sales Return Order"
 {
     layout
     {
