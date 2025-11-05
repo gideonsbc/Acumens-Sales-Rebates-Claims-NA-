@@ -73,39 +73,6 @@ table 14301911 "AQD Customer Rebate User Setup"
         {
             Caption = 'State Filter';
         }
-        field(14277012; "Purch Journal Template Name"; Code[10])
-        {
-            Caption = 'Rebate Purchase Jnl Template Name';
-            TableRelation = "Gen. Journal Template" WHERE(Type = FILTER(Purchases));
-        }
-        field(14277013; "Purch Journal Batch Name"; Code[10])
-        {
-            Caption = 'Rebate Purchase Jnl Batch Name';
-            TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Purch Journal Template Name"),
-                                                             "AQD Customer Rebate" = CONST(true));
-        }
-        field(14277014; "Payment Journal Template Name"; Code[10])
-        {
-            Caption = 'Rebate Payment Journal Template Name';
-            TableRelation = "Gen. Journal Template" WHERE(Type = FILTER(Payments));
-        }
-        field(14277015; "Payment Journal Batch Name"; Code[10])
-        {
-            Caption = 'Rebate Payment Journal Batch Name';
-            TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Payment Journal Template Name"),
-                                                             "AQD Customer Rebate" = CONST(true));
-        }
-        field(14277016; "Sales Journal Template Name"; Code[10])
-        {
-            Caption = 'Rebate Sales Jnl Template Name';
-            TableRelation = "Gen. Journal Template" WHERE(Type = FILTER(Sales));
-        }
-        field(14277017; "Sales Journal Batch Name"; Code[10])
-        {
-            Caption = 'Rebate Sales Jnl Batch Name';
-            TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Sales Journal Template Name"),
-                                                             "AQD Customer Rebate" = CONST(true));
-        }
     }
 
     keys

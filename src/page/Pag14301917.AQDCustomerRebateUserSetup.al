@@ -45,30 +45,6 @@ page 14301917 "AQD Customer Rebate User Setup"
                 {
                     ApplicationArea = All;
                 }
-                field("Purch Journal Template Name"; Rec."Purch Journal Template Name")
-                {
-                    ApplicationArea = All;
-                }
-                field("Purch Journal Batch Name"; Rec."Purch Journal Batch Name")
-                {
-                    ApplicationArea = All;
-                }
-                field("Payment Journal Template Name"; Rec."Payment Journal Template Name")
-                {
-                    ApplicationArea = All;
-                }
-                field("Payment Journal Batch Name"; Rec."Payment Journal Batch Name")
-                {
-                    ApplicationArea = All;
-                }
-                field("Sales Journal Template Name"; Rec."Sales Journal Template Name")
-                {
-                    ApplicationArea = All;
-                }
-                field("Sales Journal Batch Name"; Rec."Sales Journal Batch Name")
-                {
-                    ApplicationArea = All;
-                }
             }
         }
         area(factboxes)
