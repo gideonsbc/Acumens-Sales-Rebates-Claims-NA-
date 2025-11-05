@@ -115,9 +115,9 @@ table 14301934 "AQD Posted Cust Rebate Line"
             FieldClass = FlowField;
             Editable = false;
         }
-        field(190; Exclude; Boolean)
+        field(190; "Do Not Credit"; Boolean)
         {
-            Caption = 'Exclude';
+            Caption = 'Do Not Credit';
         }
         field(200; "Rebate Amount Changed By"; Code[50])
         {
@@ -196,9 +196,9 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Editable = false;
             TableRelation = Vendor;
         }
-        field(560; "Rebate Status"; Enum "AQD Customer Rebate Status")
+        field(560; "Customer Rebate Status"; Enum "AQD Customer Rebate Status")
         {
-            Caption = 'Rebate Status';
+            Caption = 'Customer Rebate Status';
             DataClassification = CustomerContent;
         }
         field(600; "Batch Entry No."; Integer)

@@ -161,10 +161,15 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             Caption = 'Default Cust Rebate Program Code';
             TableRelation = "AQD Cust Rebate Program Code";
         }
-        field(350; "Default Item Charge No."; Code[20])
+        field(350; "Purchase Item Charge No."; Code[20])
         {
-            Caption = 'Default Item Charge No.';
-            TableRelation = "Item Charge" where("AQD Customer Rebate" = const(TRUE));
+            Caption = 'Purchase Item Charge No.';
+            TableRelation = "Item Charge";
+        }
+        field(355; "Sales Item Charge No."; Code[20])
+        {
+            Caption = 'Sales Item Charge No.';
+            TableRelation = "Item Charge";
         }
         field(360; "Default Setup Rebate Type"; Enum "AQD Vendor Rebate Line Type")
         {

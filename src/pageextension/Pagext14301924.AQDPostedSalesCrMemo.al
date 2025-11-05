@@ -11,7 +11,7 @@ pageextension 14301924 "AQD Posted Sales Cr. Memo" extends "Posted Sales Credit 
                 group(Rebate)
                 {
                     Caption = 'Rebate';
-                    field("AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Cust Rebate")
+                    field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
                     {
                         ApplicationArea = All;
                     }

@@ -16,6 +16,7 @@ table 14301928 "AQD Customer Rebate Header"
         {
             Caption = 'Sell-To Customer No.';
             Editable = false;
+            TableRelation = Customer;
         }
         field(30; "Sell-To Customer Name"; Text[100])
         {
@@ -66,6 +67,7 @@ table 14301928 "AQD Customer Rebate Header"
         {
             Caption = 'Bill-To Customer No.';
             Editable = false;
+            TableRelation = Customer;
         }
         field(170; "Bill-To Name"; Text[100])
         {
@@ -116,6 +118,7 @@ table 14301928 "AQD Customer Rebate Header"
         {
             Caption = 'Pay-to Vendor No.';
             Editable = false;
+            TableRelation = Vendor where("AQD Cust Rbt Vendor Type" = const("Rebate Vendor"));
         }
         field(261; "Pay-to Name"; Text[100])
         {
@@ -233,7 +236,7 @@ table 14301928 "AQD Customer Rebate Header"
         field(530; "Customer Rebate Amount"; Decimal)
         {
             Caption = 'Customer Rebate Amount';
-            CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("No."), Exclude = filter(false)));
+            CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("No."), "Do Not Credit" = filter(false)));
             FieldClass = FlowField;
             Editable = false;
         }

@@ -86,7 +86,7 @@ page 14301935 "AQD Customer Rebate Subpage"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Customer Rebate Amount field.', Comment = '%';
                 }
-                field(Exclude; Rec.Exclude)
+                field(Exclude; Rec."Do Not Credit")
                 {
                     ApplicationArea = All;
                     Caption = 'Excluded';

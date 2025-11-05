@@ -17,7 +17,7 @@ pageextension 14301920 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
                 group(CustomerRebate)
                 {
                     Caption = 'Rebate';
-                    field("AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Rebate")
+                    field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
                     {
                         ApplicationArea = All;
                     }

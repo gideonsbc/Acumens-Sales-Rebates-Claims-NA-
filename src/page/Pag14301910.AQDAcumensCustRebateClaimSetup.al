@@ -110,10 +110,15 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         ApplicationArea = All;
                         Caption = 'Rebate Program Code';
                     }
-                    field("Default Item Charge No."; Rec."Default Item Charge No.")
+                    field("Purchase Item Charge No."; Rec."Purchase Item Charge No.")
                     {
                         ApplicationArea = All;
-                        Caption = 'Item Charge No.';
+                        Caption = 'Purchase Item Charge No.';
+                    }
+                    field("Sales Item Charge No."; Rec."Sales Item Charge No.")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Sales Item Charge No.';
                     }
                     field("Default Rebate Payment Method"; Rec."Def. Rebate Payment Method")
                     {

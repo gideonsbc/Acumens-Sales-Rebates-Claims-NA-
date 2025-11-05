@@ -35,10 +35,10 @@ page 14301939 "AQD Posted Cust Reb Subpage"
 
                     trigger OnDrillDown()
                     var
-                    //VendorRebatFunEvents: Codeunit "AQD Vendor RebateMgtEventsFuns";
+                        RebateMgtEventsFunctions: Codeunit "AQD RebateMgt EventsFunctions";
                     begin
-                        //clear(VendorRebatFunEvents);
-                        //VendorRebatFunEvents.ShowPostedDocument(Rec."Document Type", Rec."Document No.");
+                        clear(RebateMgtEventsFunctions);
+                        RebateMgtEventsFunctions.ShowPostedDocument(Rec."Document Type", Rec."Document No.");
                     end;
                 }
                 field("Order No."; Rec."Order No.")
@@ -104,12 +104,12 @@ page 14301939 "AQD Posted Cust Reb Subpage"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Customer Rebate Amount field.', Comment = '%';
                 }
-                field(Exclude; Rec.Exclude)
+                field(Exclude; Rec."Do Not Credit")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Exclude field.', Comment = '%';
                 }
-                field("Rebate Status"; Rec."Rebate Status")
+                field("Rebate Status"; Rec."Customer Rebate Status")
                 {
                     ApplicationArea = All;
                     Editable = false;

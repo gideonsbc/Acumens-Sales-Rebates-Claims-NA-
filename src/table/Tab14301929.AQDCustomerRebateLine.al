@@ -93,7 +93,7 @@ table 14301929 "AQD Customer Rebate Line"
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
                                                                                            "AQD Cust Rebate Posting Type" = const("Item Charge"),
-                                                                                           Exclude = const(false)));
+                                                                                           "Do Not Credit" = const(false)));
             FieldClass = FlowField;
             Editable = false;
         }
@@ -103,13 +103,13 @@ table 14301929 "AQD Customer Rebate Line"
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
                                                                                            "AQD Cust Rebate Posting Type" = const("G/L Account"),
-                                                                                           Exclude = const(false)));
+                                                                                           "Do Not Credit" = const(false)));
             FieldClass = FlowField;
             Editable = false;
         }
-        field(190; Exclude; Boolean)
+        field(190; "Do Not Credit"; Boolean)
         {
-            Caption = 'Exclude';
+            Caption = 'Do Not Credit';
             trigger OnValidate()
             begin
                 UpdateChangedBy();
@@ -177,9 +177,9 @@ table 14301929 "AQD Customer Rebate Line"
             Editable = false;
             TableRelation = Vendor;
         }
-        field(560; "Rebate Status"; Enum "AQD Customer Rebate Status")
+        field(560; "Customer Rebate Status"; Enum "AQD Customer Rebate Status")
         {
-            Caption = 'Rebate Status';
+            Caption = 'Customer Rebate Status';
             DataClassification = CustomerContent;
         }
         field(600; "Batch Entry No."; Integer)
@@ -228,12 +228,12 @@ table 14301929 "AQD Customer Rebate Line"
                 BEGIN
                     IF Rec."Document Type" = Rec."Document Type"::Invoice THEN BEGIN
                         IF SalesInvHdr.GET(Rec."Document No.") THEN begin
-                            SalesInvHdr."AQD Do Not Pay Cust Rebate" := Rec.Exclude;
+                            SalesInvHdr."AQD No Customer Rebate" := Rec."Do Not Credit";
                             SalesInvHdr.Modify();
                         end;
                     END ELSE IF Rec."Document Type" = Rec."Document Type"::"Credit Memo" THEN BEGIN
                         IF SalesCrMemoHdr.GET(Rec."Document No.") THEN begin
-                            SalesCrMemoHdr."AQD Do Not Pay Cust Rebate" := Rec.Exclude;
+                            SalesCrMemoHdr."AQD No Customer Rebate" := Rec."Do Not Credit";
                             SalesCrMemoHdr.Modify();
                         end;
                     END;
@@ -252,7 +252,7 @@ table 14301929 "AQD Customer Rebate Line"
         CustomerRebateDetails.SetRange("Rebate Line No.", "Line No.");
         if CustomerRebateDetails.FindSet() then begin
             repeat
-                CustomerRebateDetails.Validate(Exclude, Rec.Exclude);
+                CustomerRebateDetails.Validate("Do Not Credit", Rec."Do Not Credit");
                 CustomerRebateDetails.Modify(true);
             until CustomerRebateDetails.Next() = 0;
         end;

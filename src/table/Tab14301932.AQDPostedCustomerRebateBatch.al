@@ -44,7 +44,7 @@ table 14301932 "AQD Posted Cust Rebate Batch"
         {
             Caption = 'Customer Rebate Amount';
             FieldClass = FlowField;
-            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Batch Entry No." = field("Entry No."), Exclude = filter(false)));
+            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Batch Entry No." = field("Entry No."), "Do Not Credit" = filter(false)));
             Editable = false;
         }
         field(100; "Created By"; Code[50])

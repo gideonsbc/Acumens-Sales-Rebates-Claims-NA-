@@ -159,13 +159,7 @@ page 14301932 "AQD Customer Rebates Documents"
         }
     }
     trigger OnOpenPage()
-    var
-        CustomerRebateLine: Record "AQD Customer Rebate Line";
     begin
-        CustomerRebateLine.RESET;
-        IF CustomerRebateLine.FindFirst() then
-            CustomerRebateLine.DeleteAll(true);
-
         CustomerRebateUserSetup.Get(UserId);
         Rec.FilterGroup(2);
         if CustomerRebateUserSetup."Rebate Role" = CustomerRebateUserSetup."Rebate Role"::Salesperson then

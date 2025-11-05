@@ -91,22 +91,6 @@ page 14301937 "AQD Posted Customer Rebates"
     {
         area(Processing)
         {
-            // Not Required For Now. Not Delete
-            // action("Create Purchase Journal")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Create Purchase Journal';
-            //     Image = CreateDocument;
-
-            //     trigger OnAction()
-            //     var
-            //         VendorRebatePost: Codeunit "AQD Vendor Rebate Post";
-            //     begin
-            //         clear(VendorRebatePost);
-            //         VendorRebatePost.CreateVendorRebatePurchJournal(Rec);
-            //         CurrPage.UPDATE(false);
-            //     end;
-            // }
             action("Create Purchase Document")
             {
                 ApplicationArea = All;
@@ -117,15 +101,15 @@ page 14301937 "AQD Posted Customer Rebates"
                 var
                     CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
                 begin
-                    //clear(VendorRebatePost);
-                    //VendorRebatePost.CreatePurchaseDocument(Rec, TRUE);
-                    //CurrPage.UPDATE(false);
+                    clear(CustomerRebatePost);
+                    CustomerRebatePost.CreatePurchaseDocument(Rec, TRUE);
+                    CurrPage.UPDATE(false);
                 end;
             }
-            action("Vendor Rebate Details")
+            action("Customer Rebate Details")
             {
                 ApplicationArea = All;
-                Caption = 'Vendor Rebate Details';
+                Caption = 'Customer Rebate Details';
                 Image = Report;
                 trigger OnAction()
                 var
@@ -196,7 +180,7 @@ page 14301937 "AQD Posted Customer Rebates"
                 actionref(CreatePurchaseDocument_Promoted; "Create Purchase Document")
                 {
                 }
-                actionref(Vendor_Rebate_Details_Promoted; "Vendor Rebate Details")
+                actionref(Customer_Rebate_Details_Promoted; "Customer Rebate Details")
                 {
                 }
                 // actionref(RebatePurchaseJournal_Promoted; "AQD Rebate Purchase Journal")

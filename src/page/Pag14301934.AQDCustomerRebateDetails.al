@@ -109,7 +109,7 @@ page 14301934 "AQD Customer Rebate Details"
                     Editable = false;
                     ToolTip = 'Specifies the value of the Custstomer Rebate Posting Type field.', Comment = '%';
                 }
-                field(Exclude; Rec.Exclude)
+                field(Exclude; Rec."Do Not Credit")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Exclude field.', Comment = '%';

@@ -17,7 +17,7 @@ pageextension 14301919 "AQD CustRbt Sales Order" extends "Sales Order"
                 group(CustomerRebate)
                 {
                     Caption = 'Rebate';
-                    field("AQD Do Not Pay Rebate"; Rec."AQD Do Not Pay Rebate")
+                    field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
                     {
                         ApplicationArea = All;
                     }

@@ -140,12 +140,12 @@ table 14301930 "AQD Customer Rebate Details"
                 UpdateChangedBy();
             end;
         }
-        field(190; Exclude; Boolean)
+        field(190; "Do Not Credit"; Boolean)
         {
-            Caption = 'Exclude';
+            Caption = 'Do Not Credit';
             trigger OnValidate()
             begin
-                if Exclude then
+                if "Do Not Credit" then
                     Validate("Customer Rebate Amount", 0)
                 else
                     Validate("Customer Rebate Amount", "Calculated Line Rebate Amount");

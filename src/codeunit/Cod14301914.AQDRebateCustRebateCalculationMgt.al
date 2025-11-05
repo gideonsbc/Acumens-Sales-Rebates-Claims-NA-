@@ -86,11 +86,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
         SalesInvoiceHeader.Reset;
         SalesInvoiceHeader.SetFilter("Posting Date", '<%1', RebateSetup."Start Date");
-        SalesInvoiceHeader.ModifyAll("AQD Do Not Pay Cust Rebate", true);
+        SalesInvoiceHeader.ModifyAll("AQD No Customer Rebate", true);
 
         SalesCrMemoHeader.Reset;
         SalesCrMemoHeader.SetFilter("Posting Date", '<%1', RebateSetup."Start Date");
-        SalesCrMemoHeader.ModifyAll("AQD Do Not Pay Cust Rebate", true);
+        SalesCrMemoHeader.ModifyAll("AQD No Customer Rebate", true);
 
         RebateSetup."Old Documents Updated" := true;
         RebateSetup.Modify;
@@ -190,7 +190,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         SalesInvoiceHeader.Reset;
         SalesInvoiceHeader.SetCurrentKey("Bill-to Customer No.", "Posting Date");
         SalesInvoiceHeader.SetRange("Bill-to Customer No.", CustomerIn."No.");
-        SalesInvoiceHeader.SetRange("AQD Do Not Pay Cust Rebate", false);
+        SalesInvoiceHeader.SetRange("AQD No Customer Rebate", false);
         SalesInvoiceHeader.SetRange("AQD Cust Rebate Entry Created", false);
         SalesInvoiceHeader.SetRange("AQD Customer Rebate Status", SalesInvoiceHeader."AQD Customer Rebate Status"::" ");
         SalesInvoiceHeader.SetFilter("Source Code", '<>%1', SourceCodeSetup."Deleted Document");
@@ -323,7 +323,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         SalesCrMemoHeader.Reset;
         SalesCrMemoHeader.SetCurrentKey("Bill-to Customer No.", "Posting Date");
         SalesCrMemoHeader.SetRange("Bill-to Customer No.", CustomerIn."No.");
-        SalesCrMemoHeader.SetRange("AQD Do Not Pay Cust Rebate", false);
+        SalesCrMemoHeader.SetRange("AQD No Customer Rebate", false);
         SalesCrMemoHeader.SetRange("AQD Customer Rebate Status", SalesCrMemoHeader."AQD Customer Rebate Status"::" ");
         SalesCrMemoHeader.SetRange("AQD Rebate Entry Created", false);
         SalesCrMemoHeader.SetFilter("Source Code", '<>%1', SourceCodeSetup."Deleted Document");
@@ -698,7 +698,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     GlobalBatchEntryNo := CustomerRebateBatch."Entry No.";
                 END ELSE
                     GlobalBatchEntryNo := CustomerRebateBatch."Entry No.";
-            end;
+            END;
 
             CustomerRebateHeader.Init;
             CustomerRebateHeader."No." := NoSeriesMgt.GetNextNo(RebateSetup."Customer Rebate Nos", Today, true);
@@ -1176,7 +1176,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         CustomerRebateDetails."Profit %" := CalculateProfitPercentage(CustomerRebateDetails);
                         CalculateRebateAmount(CustomerRebateDetails);
                         CustomerRebateDetails."Calculated Line Rebate Amount" := CustomerRebateDetails."Customer Rebate Amount";
-                        CustomerRebateDetails.Exclude := false;
+                        CustomerRebateDetails."Do Not Credit" := false;
                         CustomerRebateDetails.BatchID := GlobalBatchID;
                         CustomerRebateDetails."Batch Entry No." := GlobalBatchEntryNo;
                         CustomerRebateDetails."AQD Use Cust Rebate Setup From" := TempRebateCategoryLines."AQD Use Rebate Setup From";
