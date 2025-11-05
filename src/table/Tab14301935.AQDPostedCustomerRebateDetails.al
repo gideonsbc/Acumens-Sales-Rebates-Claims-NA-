@@ -40,7 +40,7 @@ table 14301935 "AQD Posted Cust Reb Details"
             Caption = 'Document Line No.';
             Editable = false;
         }
-        field(50; Type; enum "AQD Rebate Record Type")
+        field(50; Type; enum "AQD Cust Rebate Record Type")
         {
             Caption = 'Type';
             Editable = false;
@@ -201,7 +201,7 @@ table 14301935 "AQD Posted Cust Reb Details"
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2),
                                                           Blocked = CONST(false));
         }
-        field(360; "Rebate Credit Doc Type"; Enum "AQD Rebate Credit Doc Type")
+        field(360; "Rebate Credit Doc Type"; Enum "AQD CustRebate Credit Doc Type")
         {
             Caption = 'Rebate Credit Doc Type';
             Editable = false;

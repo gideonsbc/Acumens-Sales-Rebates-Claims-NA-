@@ -1,4 +1,4 @@
-enum 14301924 "AQD Rebate Category Type"
+enum 14301924 "AQD Cust Rebate Category Type"
 {
     Extensible = true;
 

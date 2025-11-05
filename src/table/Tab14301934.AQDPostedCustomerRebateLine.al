@@ -160,7 +160,7 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Caption = 'Currency Code';
             Editable = false;
         }
-        field(360; "Rebate Credit Doc Type"; Enum "AQD Rebate Credit Doc Type")
+        field(360; "Rebate Credit Doc Type"; Enum "AQD CustRebate Credit Doc Type")
         {
             Caption = 'Rebate Credit Doc Type';
             Editable = false;

@@ -8,7 +8,7 @@ report 14301913 "AQD Sug Cust Rebate Payments"
     {
         dataitem(Vendor; Vendor)
         {
-            DataItemTableView = SORTING(Blocked) WHERE(Blocked = FILTER(= " "), "AQD Cust Rbt Vendor Type" = FILTER("Rebate Vendor"), "AQD Payee Type" = FILTER("1099 Vendor"));
+            DataItemTableView = SORTING(Blocked) WHERE(Blocked = FILTER(= " "), "AQD Cust Rbt Vendor Type" = FILTER("Rebate Vendor"));
             RequestFilterFields = "No.", "Payment Method Code";
 
             trigger OnAfterGetRecord()
@@ -108,7 +108,6 @@ report 14301913 "AQD Sug Cust Rebate Payments"
             begin
                 FilterGroup(2);
                 SetFilter("AQD Cust Rbt Vendor Type", '<>%1', "AQD Cust Rbt Vendor Type"::" ");
-                SetRange("AQD Payee Type", "AQD Payee Type"::"1099 Vendor");
                 FilterGroup(0);
 
                 if LastDueDateToPayReq = 0D then

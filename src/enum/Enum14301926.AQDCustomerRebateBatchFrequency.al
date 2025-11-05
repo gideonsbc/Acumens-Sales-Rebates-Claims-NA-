@@ -1,4 +1,4 @@
-enum 14301926 "AQD Rebate Batch Frequency"
+enum 14301926 "AQD CustRebate Batch Frequency"
 {
     Extensible = true;
 

@@ -1,4 +1,4 @@
-enum 14301921 "AQD Rebate Cr. Memo Posting"
+enum 14301921 "AQD Cust Rebate CrMemo Posting"
 {
     Extensible = true;
 

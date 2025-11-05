@@ -171,11 +171,11 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             Caption = 'Sales Item Charge No.';
             TableRelation = "Item Charge";
         }
-        field(360; "Default Setup Rebate Type"; Enum "AQD Vendor Rebate Line Type")
+        field(360; "Default Setup Rebate Type"; Enum "AQD Customer Rebate Line Type")
         {
             Caption = 'Default Setup Rebate Type';
         }
-        field(370; "AQD Rebate Batch Frequency"; Enum "AQD Rebate Batch Frequency")
+        field(370; "AQD Rebate Batch Frequency"; Enum "AQD CustRebate Batch Frequency")
         {
             Caption = 'Rebate Batch Frequency';
         }
@@ -183,7 +183,7 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Start Date';
         }
-        field(390; "Rebate Cr. Memo Posting"; enum "AQD Rebate Cr. Memo Posting")
+        field(390; "Rebate Cr. Memo Posting"; enum "AQD Cust Rebate CrMemo Posting")
         {
             Caption = 'Rebate Cr. Memo Posting';
         }

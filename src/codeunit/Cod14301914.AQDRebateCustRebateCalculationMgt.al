@@ -67,7 +67,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         GlobalBatchEntryNo: Integer;
         GlobalBatchStartDate: Date;
         GlobalBatchEndDate: Date;
-        GlobalRebateBatchFrequency: Enum "AQD Rebate Batch Frequency";
+        GlobalRebateBatchFrequency: Enum "AQD CustRebate Batch Frequency";
 
     procedure UpdateOldDocumentsNonRebateEnable()
     var

@@ -70,7 +70,7 @@ table 14301927 "AQD Customer Rebate Batch"
             Caption = 'End Date';
             Editable = false;
         }
-        field(140; "AQD Rebate Batch Frequency"; Enum "AQD Rebate Batch Frequency")
+        field(140; "AQD Rebate Batch Frequency"; Enum "AQD CustRebate Batch Frequency")
         {
             Caption = 'Rebate Batch Frequency';
             Editable = false;

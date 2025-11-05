@@ -36,7 +36,7 @@ table 14301913 "AQD Cust Rebate Item Category"
                 end;
             end;
         }
-        field(70; "Category Type"; Enum "AQD Rebate Category Type")
+        field(70; "Category Type"; Enum "AQD Cust Rebate Category Type")
         {
             Caption = 'Type';
             trigger OnValidate()

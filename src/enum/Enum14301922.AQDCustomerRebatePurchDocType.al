@@ -1,4 +1,4 @@
-enum 14301922 "AQD Rebate Credit Doc Type"
+enum 14301922 "AQD CustRebate Credit Doc Type"
 {
     Extensible = true;
 
