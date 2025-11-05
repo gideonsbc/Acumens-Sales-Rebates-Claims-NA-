@@ -1340,7 +1340,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 IF PurchInvLine.FINDFIRST THEN begin
                     Repeat
                         IF PostedCustRebateLine.GET(PurchInvLine."AQD Cust Rebate Document No.",
-                                                PurchInvLine."AQD Cust Rebate Doc Line No") AND
+                                                    PurchInvLine."AQD Cust Rebate Doc Line No") AND
                            (NOT PostedCustRebateLine."Do Not Credit")
                         THEN BEGIN
 

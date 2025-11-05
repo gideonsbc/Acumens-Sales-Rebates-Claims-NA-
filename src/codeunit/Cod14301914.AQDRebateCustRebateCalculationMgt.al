@@ -339,7 +339,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         SkipRecord := true;
                 end;
 
-                //if SalesCrMemoHeader."AQD Rebate %" = 0 then
                 IF NOT IsRebataEnabledLineExist(SourceDocumentType::"Credit Memo", LocalSalesInvoiceHeader, SalesCrMemoHeader, CustomerIn) THEN
                     SkipRecord := true;
 
@@ -515,6 +514,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         IsRebateEnabled: Boolean;
     begin
         IsRebateEnabled := FALSE;
+        IsHandled := false;
+        OnBeforeCheckLineRebateEnabled(CustomerNo, DocumentLine_Type, DocumentLine_No, PostingDate, IsRebateEnabled, IsHandled);
+        IF IsHandled THEN
+            EXIT;
+
         case DocumentLine_Type of
             DocumentLine_Type::Item:
                 begin
@@ -587,6 +591,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 END;
             END;
         end;
+        OnAfterCheckLineRebateEnabled(CustomerNo, DocumentLine_Type, DocumentLine_No, PostingDate, IsRebateEnabled);
         EXIT(IsRebateEnabled);
     end;
     //>>New Functions
@@ -598,9 +603,15 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         BillToCustomerRec: Record Customer;
         PayToVendor: Record Vendor;
         RebateVendorRec: Record Vendor;
+        IsHandled: Boolean;
         PayToVendorCode: Code[20];
         DocumentPostingDate: Date;
     begin
+        IsHandled := false;
+        OnBeforeInitRebateHeader(DocumentType, SalesInvHeaderIn, SalesCrMemoHeaderIn, IsHandled);
+        IF IsHandled then
+            EXIT;
+
         Clear(CustomerRebateHeader);
 
         CreatedCustomerRebate.Reset();
@@ -641,7 +652,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             DocumentType::"Credit Memo":
                 begin
                     IF RebateSetup."AQD Rebate Batch Frequency" <> RebateSetup."AQD Rebate Batch Frequency"::" " then BEGIN
-                        //GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."Posting Date");
                         CASE CustomerIn."AQD Calculation Date" OF
                             CustomerIn."AQD Calculation Date"::" ",
                             CustomerIn."AQD Calculation Date"::"Shipment Date":
@@ -818,7 +828,12 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             CustomerRebateHeader.BatchID := GlobalBatchID;
             CustomerRebateHeader."Batch Entry No." := CustomerRebateBatch."Entry No.";
             CustomerRebateHeader."AQD Calculation Date" := CustomerIn."AQD Calculation Date";
-            CustomerRebateHeader.Insert;
+            IsHandled := FALSE;
+            OnBeforeInsertRebateHeader(CustomerRebateHeader, IsHandled);
+            IF NOT IsHandled THEN
+                CustomerRebateHeader.Insert;
+            OnAfterInsertRebateHeader(CustomerRebateHeader);
+
             RebateNo := CustomerRebateHeader."No.";
 
             CreatedCustomerRebate.Init();
@@ -840,7 +855,13 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     local procedure InsertRebateLine(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeaderIn: Record "Sales Invoice Header"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; RebateNo: Code[20]; var RebateLineNo: Integer)
     var
         LocalCustomerRebateLine: Record "AQD Customer Rebate Line";
+        IsHandled: Boolean;
     begin
+        IsHandled := false;
+        OnBeforeInitRebateLine(DocumentType, SalesInvHeaderIn, SalesCrMemoHeaderIn, IsHandled);
+        if IsHandled then
+            exit;
+
         LocalCustomerRebateLine.Reset();
         LocalCustomerRebateLine.SetRange("Rebate No.", RebateNo);
         if LocalCustomerRebateLine.FindLast() then
@@ -903,7 +924,12 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         CustomerRebateLine."Pay-To Vendor No." := CustomerRebateHeader."Pay-To Vendor No.";
         CustomerRebateLine.BatchID := GlobalBatchID;
         CustomerRebateLine."Batch Entry No." := GlobalBatchEntryNo;
-        CustomerRebateLine.Insert;
+
+        IsHandled := FALSE;
+        OnBeforeInsertRebateLine(CustomerRebateLine, IsHandled);
+        IF NOT IsHandled THEN
+            CustomerRebateLine.Insert;
+        OnAfterInsertRebateLine(CustomerRebateLine);
     end;
 
     local procedure InsertRebateDetail(DocumentTypeIn: Option " ",Invoice,"Credit Memo"; SalesInvHeaderIn: Record "Sales Invoice Header"; SalesInvLineIn: Record "Sales Invoice Line"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; SalesCrMemoLineIn: Record "Sales Cr.Memo Line"; Customer: Record Customer; RebateNo: Code[20]; RebateLineNo: Integer)
@@ -936,7 +962,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         LineNo := 1;
 
         IsHandled := false;
-        //OnBeforeInitRebateEntry(CustomerRebateDetailsLoc, IsHandled);
+        OnBeforeInitRebateDetail(DocumentTypeIn, SalesInvHeaderIn, SalesInvLineIn, SalesCrMemoHeaderIn, SalesCrMemoLineIn, Customer, IsHandled);
         if IsHandled then
             exit;
 
@@ -1176,8 +1202,13 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         CustomerRebateDetails."Batch Entry No." := GlobalBatchEntryNo;
                         CustomerRebateDetails."AQD Use Cust Rebate Setup From" := TempRebateCategoryLines."AQD Use Rebate Setup From";
                         CustomerRebateDetails."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type";
-                        IF CustomerRebateDetails."Rebate Type" <> CustomerRebateDetails."Rebate Type"::" " then
-                            CustomerRebateDetails.Insert();
+                        IF CustomerRebateDetails."Rebate Type" <> CustomerRebateDetails."Rebate Type"::" " then begin
+                            IsHandled := FALSE;
+                            OnBeforeInsertRebateDetail(CustomerRebateDetails, IsHandled);
+                            IF NOT IsHandled then
+                                CustomerRebateDetails.Insert();
+                            OnAfterInsertRebateDetail(CustomerRebateDetails);
+                        end;
                     END;
                 Until (TempRebateCategoryLines.Next() = 0);
             END;
@@ -1305,8 +1336,14 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     var
         LocalCustLocationInclude: Record "AQD Cust Rbt Include Cust Loc";
         LocalIncludeRecord: Boolean;
+        IsHandled: Boolean;
     begin
         LocalIncludeRecord := True;
+        IsHandled := FALSE;
+        OnBeforeCheckForCustomerRebateInclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalIncludeRecord, IsHandled);
+        IF IsHandled THEN
+            EXIT;
+
         Case SourceDocType OF
             SourceDocType::"Posted Invoice":
                 BEGIN
@@ -1351,6 +1388,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         LocalIncludeRecord := FALSE;
                 END;
         END;
+        OnAfterCheckForCustomerRebateInclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalIncludeRecord);
         EXIT(LocalIncludeRecord);
     END;
 
@@ -1358,8 +1396,14 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     var
         LocalCustLocationExclude: Record "AQD Cust Rbt Exclude Cust Loc";
         LocalExcludeRecord: Boolean;
+        IsHandled: Boolean;
     begin
         LocalExcludeRecord := FALSE;
+        IsHandled := FALSE;
+        OnBeforeCheckForCustomerRebateExclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalExcludeRecord, IsHandled);
+        IF IsHandled THEN
+            EXIT;
+
         Case SourceDocType OF
             SourceDocType::"Posted Invoice":
                 BEGIN
@@ -1404,6 +1448,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         LocalExcludeRecord := TRUE;
                 END;
         END;
+        OnAfterCheckForCustomerRebateExclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalExcludeRecord);
         EXIT(LocalExcludeRecord);
     END;
 
@@ -1534,6 +1579,51 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     end;
 
     [IntegrationEvent(false, false)]
+    local procedure OnBeforeInitRebateHeader(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeInsertRebateHeader(var CustomerRebateHeader: Record "AQD Customer Rebate Header"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterInsertRebateHeader(var CustomerRebateHeader: Record "AQD Customer Rebate Header")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeInitRebateLine(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeInsertRebateLine(var CustomerRebateLine: Record "AQD Customer Rebate Line"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterInsertRebateLine(var CustomerRebateLine: Record "AQD Customer Rebate Line")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeInitRebateDetail(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeader: Record "Sales Invoice Header"; SalesInvLineIn: Record "Sales Invoice Line"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; SalesCrMemoLine: Record "Sales Cr.Memo Line"; Customer: Record Customer; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeInsertRebateDetail(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterInsertRebateDetail(var CustomerRebateDetails: Record "AQD Customer Rebate Details")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
     local procedure OnAfterCalculateRebateAmount(var CustomerRebateDetails: Record "AQD Customer Rebate Details")
     begin
     end;
@@ -1570,6 +1660,36 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
     [IntegrationEvent(false, false)]
     local procedure OnAfterGetSalesRebateDetail(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeCheckLineRebateEnabled(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date; var IsRebateEnabled: Boolean; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterCheckLineRebateEnabled(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date; var IsRebateEnabled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeCheckForCustomerRebateInclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean; IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterCheckForCustomerRebateInclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeCheckForCustomerRebateExclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean; IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterCheckForCustomerRebateExclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean)
     begin
     end;
 }
