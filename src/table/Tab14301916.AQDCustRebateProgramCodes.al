@@ -40,14 +40,14 @@ table 14301916 "AQD Cust Rebate Program Code"
             begin
                 IF Rec."Customer Default Rebate Type" <> xRec."Customer Default Rebate Type" THEN BEGIN
                     Rec."Customer Default Rebate %" := 0;
-                    Rec."Customer Def Rebate Per Qty" := 0;
+                    Rec."Customer Def Rebate Per Unit" := 0;
                 END;
             end;
         }
-        field(7; "Customer Def Rebate Per Qty"; Decimal)
+        field(7; "Customer Def Rebate Per Unit"; Decimal)
         {
             BlankZero = true;
-            Caption = 'Default Rebate Per Quantity';
+            Caption = 'Default Rebate Per Unit';
             MinValue = 0;
             trigger OnValidate()
             begin

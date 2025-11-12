@@ -72,7 +72,7 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
 
         CustomerRebateDetailsLocIn."Rebate Type" := TempSalesRebatesRate."Rebate Type";
         CustomerRebateDetailsLocIn."Rebate %" := TempSalesRebatesRate."Rebate %";
-        CustomerRebateDetailsLocIn."Rebate Per Quantity" := TempSalesRebatesRate."Rebate Per Quantity";
+        CustomerRebateDetailsLocIn."Rebate Per Unit" := TempSalesRebatesRate."Rebate Per Unit";
     END;
 
     procedure SalesLineRebateExists(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"): Boolean;

@@ -1,4 +1,4 @@
-pageextension 14301933 "AQD CustRbt Posted PurchInv" extends "Posted Purchase Invoice"
+pageextension 14301932 "AQD CustRbt Posted PurchInv" extends "Posted Purchase Invoice"
 {
     layout
     {

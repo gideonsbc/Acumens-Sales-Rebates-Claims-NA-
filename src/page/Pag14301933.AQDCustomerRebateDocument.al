@@ -309,6 +309,13 @@ page 14301933 "AQD Customer Rebate Document"
             }
             part("AQD Customer Rebate Subpage"; "AQD Customer Rebate Subpage")
             {
+                Caption = 'Documents';
+                ApplicationArea = All;
+                SubPageLink = "Rebate No." = field("No.");
+                UpdatePropagation = Both;
+            }
+            part("AQD Customer Rebate Details"; "AQD Customer Rebate Details")
+            {
                 Caption = 'Document Lines';
                 ApplicationArea = All;
                 SubPageLink = "Rebate No." = field("No.");
@@ -368,16 +375,16 @@ page 14301933 "AQD Customer Rebate Document"
         CustomerRebateUserSetup.Get(UserId);
         PostEnabled := false;
         ApproveEnabled := false;
-        if CustomerRebateUserSetup."Rebate Role" in
-           [CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
-            CustomerRebateUserSetup."Rebate Role"::Admin]
+        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
+           [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
+            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
         then
             PostEnabled := true;
 
-        if CustomerRebateUserSetup."Rebate Role" in
-           [CustomerRebateUserSetup."Rebate Role"::Salesperson,
-            CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
-            CustomerRebateUserSetup."Rebate Role"::Admin]
+        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
+           [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson,
+            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
+            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
         then
             ApproveEnabled := true;
     end;
@@ -389,23 +396,22 @@ page 14301933 "AQD Customer Rebate Document"
         PostEnabled := false;
         ApproveEnabled := false;
 
-        if CustomerRebateUserSetup."Rebate Role" in
-           [CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
-            CustomerRebateUserSetup."Rebate Role"::Admin]
+        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
+           [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
+            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
          then
             PostEnabled := true;
 
-        if CustomerRebateUserSetup."Rebate Role" in
-          [CustomerRebateUserSetup."Rebate Role"::Salesperson,
-           CustomerRebateUserSetup."Rebate Role"::"Sales Manager",
-           CustomerRebateUserSetup."Rebate Role"::Admin]
+        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
+          [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson,
+           CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
+           CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
         then
             ApproveEnabled := true;
     end;
 
     var
-        //VendorRebatePost: Codeunit "AQD Vendor Rebate Post";
         PostEnabled: Boolean;
         ApproveEnabled: Boolean;
-        CustomerRebateUserSetup: Record "AQD Customer Rebate User Setup";
+        CustomerRebateUserSetup: Record "User Setup";
 }

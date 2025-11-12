@@ -287,12 +287,53 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Image = CostAccountingSetup;
                     RunObject = Page "AQD Acumens CustRbtClaim Setup";
                 }
-                action("Rebate User Setup")
+                action("User Setup")
                 {
-                    Caption = 'Customer Rebate User Setup';
+                    Caption = 'User Setup';
                     ApplicationArea = All;
                     Image = UserSetup;
-                    RunObject = Page "AQD Customer Rebate User Setup";
+                    RunObject = Page "User Setup";
+                }
+                action(AQDCustRbtIncludeCustomerLocations2)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Include Customer Locations';
+                    Image = Customer;
+                    RunObject = Page "AQD Cust Rbt Include Cust Loc";
+                }
+                action(AQDCustRbtExcludeCustomerLocations2)
+                {
+                    Caption = 'Exclude Customer Locations';
+                    ApplicationArea = All;
+                    Image = Customer;
+                    RunObject = Page "AQD Cust Rbt Exclude Cust Loc";
+                }
+                action("Customer Rebate Program Codes2")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Customer Rebate Program Codes';
+                    RunObject = page "AQD Cust Rebate Program Codes";
+                }
+                action("AQD Customer Rebate Item Categories2")
+                {
+                    Caption = 'Customer Rebate Item Categories';
+                    ApplicationArea = All;
+                    Image = Vendor;
+                    RunObject = Page "AQD Cust RebateItem Categories";
+                }
+                action("AQD Rebate Customer Types2")
+                {
+                    Caption = 'Rebate Customer Types';
+                    ApplicationArea = All;
+                    Image = CampaignEntries;
+                    RunObject = Page "AQD Cust Rebate Customer Types";
+                }
+                action("AQD CustItem Rebate Matrix2")
+                {
+                    Caption = 'Customer Item Rebate Matrix';
+                    ApplicationArea = All;
+                    Image = PurchaseCreditMemo;
+                    RunObject = Page "AQD Item Cust Rebate Matrix";
                 }
                 action("Sales Rebates Setup")
                 {

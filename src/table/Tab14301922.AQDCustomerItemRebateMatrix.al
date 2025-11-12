@@ -123,11 +123,6 @@ table 14301922 "AQD Cust Item Rebate Matrix"
         }
     }
     var
-        Vend: Record Vendor;
         Item: Record Item;
-        Resource: Record Resource;
-        GLAccount: Record "G/L Account";
-        ItemCharge: Record "Item Charge";
-        FixAsset: Record "Fixed Asset";
         ItemRebateCategory: Record "AQD Cust Rebate Item Category";
 }

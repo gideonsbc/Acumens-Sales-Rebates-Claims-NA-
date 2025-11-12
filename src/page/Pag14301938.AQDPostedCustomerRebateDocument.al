@@ -316,6 +316,14 @@ page 14301938 "AQD Posted Customer Rebate Doc"
             part("AQD Posted Cust Reb Subpage"; "AQD Posted Cust Reb Subpage")
             {
                 ApplicationArea = All;
+                Caption = 'Documents';
+                Editable = false;
+                SubPageLink = "Rebate No." = field("No.");
+                UpdatePropagation = Both;
+            }
+            part("AQD Posted Cust Rebate Details"; "AQD Posted Cust Rebate Details")
+            {
+                ApplicationArea = All;
                 Caption = 'Document Lines';
                 Editable = false;
                 SubPageLink = "Rebate No." = field("No.");

@@ -94,8 +94,8 @@ table 14301930 "AQD Customer Rebate Details"
         field(110; "Rebate Type"; Option)
         {
             Caption = 'Rebate Type';
-            OptionCaption = ' ,Per Quantity,Percentage';
-            OptionMembers = " ","Per Quantity",Percentage;
+            OptionCaption = ' ,Per Unit,Percentage';
+            OptionMembers = " ","Per Unit",Percentage;
             Editable = false;
         }
         field(125; "Rebate %"; Decimal)
@@ -103,9 +103,9 @@ table 14301930 "AQD Customer Rebate Details"
             Caption = 'Rebate %';
             Editable = false;
         }
-        field(130; "Rebate Per Quantity"; Decimal)
+        field(130; "Rebate Per Unit"; Decimal)
         {
-            Caption = 'Rebate Per Quantity';
+            Caption = 'Rebate Per Unit';
             Editable = false;
         }
         field(140; "Rebate Order Date"; Date)

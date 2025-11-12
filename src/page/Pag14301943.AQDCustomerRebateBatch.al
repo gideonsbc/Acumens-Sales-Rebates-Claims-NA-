@@ -1,4 +1,5 @@
 namespace AcumenseRebatesBC.AcumenseRebatesBC;
+using System.Security.User;
 
 page 14301943 "AQD Customer Rebate Batch"
 {
@@ -101,20 +102,20 @@ page 14301943 "AQD Customer Rebate Batch"
     }
     trigger OnOpenPage()
     begin
-        RebateSetup.Get(UserId);
+        RebateUserSetup.Get(UserId);
         PostEnabled := false;
         ApproveEnabled := false;
 
-        if RebateSetup."Rebate Role" in
-          [RebateSetup."Rebate Role"::"Sales Manager",
-           RebateSetup."Rebate Role"::Admin]
+        if RebateUserSetup."AQD Cust Rbt Rebate Role" in
+          [RebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
+           RebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
         then
             PostEnabled := true;
 
-        if RebateSetup."Rebate Role" in
-          [RebateSetup."Rebate Role"::Salesperson,
-           RebateSetup."Rebate Role"::"Sales Manager",
-           RebateSetup."Rebate Role"::Admin]
+        if RebateUserSetup."AQD Cust Rbt Rebate Role" in
+          [RebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson,
+           RebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
+           RebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
         then
             ApproveEnabled := true;
     end;
@@ -123,5 +124,5 @@ page 14301943 "AQD Customer Rebate Batch"
         CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
         PostEnabled: Boolean;
         ApproveEnabled: Boolean;
-        RebateSetup: Record "AQD Customer Rebate User Setup";
+        RebateUserSetup: Record "User Setup";
 }

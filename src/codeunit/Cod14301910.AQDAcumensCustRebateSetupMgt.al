@@ -64,29 +64,4 @@ codeunit 14301910 "AQD Acumens CustRbt Setup Mgt"
             if Confirm(StrSubstNo(UserConfirmMessage, Customer.FieldCaption("AQD Rebate Payment Method"))) then
                 Customer.ModifyAll("AQD Rebate Payment Method", Rec."Def. Rebate Payment Method");
     end;
-
-    [EventSubscriber(ObjectType::Page, Page::"AQD Customer Rebate User Setup", 'OnOpenPageEvent', '', true, false)]
-    local procedure Page70902_RebateUserSetup_OnOpenPage(var Rec: Record "AQD Customer Rebate User Setup")
-    var
-        RebateUserSetup: Record "AQD Customer Rebate User Setup";
-        UserSetup: Record "User Setup";
-    begin
-        UserSetup.Reset;
-        if UserSetup.FindFirst then begin
-            repeat
-                if RebateUserSetup.Get(UserSetup."User ID") then begin
-                    if RebateUserSetup."Salespers./Purch. Code" <> UserSetup."Salespers./Purch. Code" then begin
-                        RebateUserSetup."Salespers./Purch. Code" := UserSetup."Salespers./Purch. Code";
-                        RebateUserSetup.Modify;
-                    end;
-                end else begin
-                    RebateUserSetup.Init;
-                    RebateUserSetup."User ID" := UserSetup."User ID";
-                    RebateUserSetup."Salespers./Purch. Code" := UserSetup."Salespers./Purch. Code";
-                    RebateUserSetup."Salesperson Code Filter" := UserSetup."Salespers./Purch. Code";
-                    RebateUserSetup.Insert;
-                end;
-            until UserSetup.Next = 0;
-        end;
-    end;
 }

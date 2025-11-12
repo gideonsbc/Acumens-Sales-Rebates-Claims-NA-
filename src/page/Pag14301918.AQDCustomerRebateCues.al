@@ -32,21 +32,21 @@ page 14301918 "AQD Customer Rebate Cues"
 
         RebateUserSetup.Get(UserId);
         Rec.FilterGroup(2);
-        if RebateUserSetup."Rebate Role" = RebateUserSetup."Rebate Role"::Salesperson then
-            RebateUserSetup.TestField("Salesperson Code Filter");
-        if RebateUserSetup."Salesperson Code Filter" <> '' then
-            Rec.SetFilter("Salesperson Code Filter", RebateUserSetup."Salesperson Code Filter");
-        if RebateUserSetup."Global Dimension 1 Filter" <> '' then
-            Rec.SetFilter("Global Dimension 1 Filter", RebateUserSetup."Global Dimension 1 Filter");
-        if RebateUserSetup."Global Dimension 2 Filter" <> '' then
-            Rec.SetFilter("Global Dimension 2 Filter", RebateUserSetup."Global Dimension 2 Filter");
-        if RebateUserSetup."Location Filter" <> '' then
-            Rec.SetFilter("Location Filter", RebateUserSetup."Location Filter");
-        if RebateUserSetup."State Filter" <> '' then
-            Rec.SetFilter("State Filter", RebateUserSetup."State Filter");
+        if RebateUserSetup."AQD Cust Rbt Rebate Role" = RebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson then
+            RebateUserSetup.TestField("AQD Cust Rbt SP Code Filter");
+        if RebateUserSetup."AQD Cust Rbt SP Code Filter" <> '' then
+            Rec.SetFilter("Salesperson Code Filter", RebateUserSetup."AQD Cust Rbt SP Code Filter");
+        if RebateUserSetup."AQD Cust Rbt GlobalDim1Filter" <> '' then
+            Rec.SetFilter("Global Dimension 1 Filter", RebateUserSetup."AQD Cust Rbt GlobalDim1Filter");
+        if RebateUserSetup."AQD Cust Rbt GlobalDim2Filter" <> '' then
+            Rec.SetFilter("Global Dimension 2 Filter", RebateUserSetup."AQD Cust Rbt GlobalDim2Filter");
+        if RebateUserSetup."AQD Cust Rbt Location Filter" <> '' then
+            Rec.SetFilter("Location Filter", RebateUserSetup."AQD Cust Rbt Location Filter");
+        if RebateUserSetup."AQD Cust Rbt State Filter" <> '' then
+            Rec.SetFilter("State Filter", RebateUserSetup."AQD Cust Rbt State Filter");
         Rec.FilterGroup(0);
     end;
 
     var
-        RebateUserSetup: Record "AQD Customer Rebate User Setup";
+        RebateUserSetup: Record "User Setup";
 }

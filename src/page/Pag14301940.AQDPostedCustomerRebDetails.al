@@ -1,7 +1,7 @@
 page 14301940 "AQD Posted Cust Rebate Details"
 {
     Caption = 'Posted Customer Rebate Details';
-    PageType = List;
+    PageType = ListPart;
     ApplicationArea = All;
     UsageCategory = Lists;
     RefreshOnActivate = true;
@@ -19,10 +19,12 @@ page 14301940 "AQD Posted Cust Rebate Details"
                 field("Rebate No."; Rec."Rebate No.")
                 {
                     ApplicationArea = All;
+                    Visible = FALSE;
                 }
                 field("Rebate Line No."; Rec."Rebate Line No.")
                 {
                     ApplicationArea = All;
+                    Visible = FALSE;
                 }
                 field("Document Type"; Rec."Document Type")
                 {
@@ -38,16 +40,7 @@ page 14301940 "AQD Posted Cust Rebate Details"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Document Line No. field.', Comment = '%';
-                }
-                field("Rebate Item Category Code"; Rec."Rebate Item Category Code")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Rebate Category Code field.', Comment = '%';
-                }
-                field("Rebate Program Code"; Rec."Rebate Program Code")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Rebate Program Code field.', Comment = '%';
+                    Visible = FALSE;
                 }
                 field(Type; Rec."Type")
                 {
@@ -79,6 +72,16 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Unit Cost field.', Comment = '%';
                 }
+                field("Rebate Item Category Code"; Rec."Rebate Item Category Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Rebate Category Code field.', Comment = '%';
+                }
+                field("Rebate Program Code"; Rec."Rebate Program Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Rebate Program Code field.', Comment = '%';
+                }
                 field("Rebate Type"; Rec."Rebate Type")
                 {
                     ApplicationArea = All;
@@ -88,7 +91,7 @@ page 14301940 "AQD Posted Cust Rebate Details"
                 {
                     ApplicationArea = All;
                 }
-                field("Rebate Per Quantity"; Rec."Rebate Per Quantity")
+                field("Rebate Per Unit"; Rec."Rebate Per Unit")
                 {
                     ApplicationArea = All;
                 }
@@ -103,6 +106,7 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ApplicationArea = All;
                     Caption = 'Purchase Amount Incl. Tax';
                     ToolTip = 'Specifies the value of the Amount Including VAT field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Calculated Line Rebate Amount"; Rec."Calculated Line Rebate Amount")
                 {
@@ -119,12 +123,14 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the value of the Use Cust Rebate Setup From field.', Comment = '%';
+                    Visible = false;
                 }
                 field("AQD Cust Rebate Posting Type"; Rec."AQD Cust Rebate Posting Type")
                 {
                     ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the value of the Customer Rebate Posting Type field.', Comment = '%';
+                    Visible = false;
                 }
                 field(Exclude; Rec."Do Not Credit")
                 {
@@ -173,21 +179,21 @@ page 14301940 "AQD Posted Cust Rebate Details"
     begin
         CustomerRebateUserSetup.Get(UserId);
         Rec.FilterGroup(2);
-        if CustomerRebateUserSetup."Rebate Role" = CustomerRebateUserSetup."Rebate Role"::Salesperson then
-            CustomerRebateUserSetup.TestField("Salesperson Code Filter");
-        if CustomerRebateUserSetup."Salesperson Code Filter" <> '' then
-            Rec.SetFilter("Salesperson Code", CustomerRebateUserSetup."Salesperson Code Filter");
-        if CustomerRebateUserSetup."Global Dimension 1 Filter" <> '' then
-            Rec.SetFilter("Shortcut Dimension 1 Code", CustomerRebateUserSetup."Global Dimension 1 Filter");
-        if CustomerRebateUserSetup."Global Dimension 2 Filter" <> '' then
-            Rec.SetFilter("Shortcut Dimension 2 Code", CustomerRebateUserSetup."Global Dimension 2 Filter");
-        if CustomerRebateUserSetup."Location Filter" <> '' then
-            Rec.SetFilter("Location Code", CustomerRebateUserSetup."Location Filter");
-        if CustomerRebateUserSetup."State Filter" <> '' then
-            Rec.SetFilter(State, CustomerRebateUserSetup."State Filter");
+        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" = CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson then
+            CustomerRebateUserSetup.TestField("AQD Cust Rbt SP Code Filter");
+        if CustomerRebateUserSetup."AQD Cust Rbt SP Code Filter" <> '' then
+            Rec.SetFilter("Salesperson Code", CustomerRebateUserSetup."AQD Cust Rbt SP Code Filter");
+        if CustomerRebateUserSetup."AQD Cust Rbt GlobalDim1Filter" <> '' then
+            Rec.SetFilter("Shortcut Dimension 1 Code", CustomerRebateUserSetup."AQD Cust Rbt GlobalDim1Filter");
+        if CustomerRebateUserSetup."AQD Cust Rbt GlobalDim2Filter" <> '' then
+            Rec.SetFilter("Shortcut Dimension 2 Code", CustomerRebateUserSetup."AQD Cust Rbt GlobalDim2Filter");
+        if CustomerRebateUserSetup."AQD Cust Rbt Location Filter" <> '' then
+            Rec.SetFilter("Location Code", CustomerRebateUserSetup."AQD Cust Rbt Location Filter");
+        if CustomerRebateUserSetup."AQD Cust Rbt State Filter" <> '' then
+            Rec.SetFilter(State, CustomerRebateUserSetup."AQD Cust Rbt State Filter");
         Rec.FilterGroup(0);
     end;
 
     var
-        CustomerRebateUserSetup: Record "AQD Customer Rebate User Setup";
+        CustomerRebateUserSetup: Record "User Setup";
 }

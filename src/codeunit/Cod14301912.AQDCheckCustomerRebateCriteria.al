@@ -159,14 +159,12 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
                     LocalItem.GET(DocumentLine_No);
                     LocalItem.CalcFields("Sales (Qty.)", "Sales (LCY)");
 
-                    IF (CustItemRebateMatrix."Sales Quantity Threshold" <> 0) AND
-                        (CustItemRebateMatrix."Sales Quantity Threshold" < LocalItem."Sales (Qty.)")
-                    THEN
+                    //IF (CustItemRebateMatrix."Sales Quantity Threshold" <> 0) AND
+                    IF (CustItemRebateMatrix."Sales Quantity Threshold" < LocalItem."Sales (Qty.)") THEN
                         IsEligible := true;
 
-                    IF (CustItemRebateMatrix."Sales Amount Threshold" <> 0) AND
-                        (CustItemRebateMatrix."Sales Amount Threshold" < LocalItem."Sales (LCY)")
-                    THEN
+                    //IF (CustItemRebateMatrix."Sales Amount Threshold" <> 0) AND
+                    IF (CustItemRebateMatrix."Sales Amount Threshold" < LocalItem."Sales (LCY)") THEN
                         IsEligible := TRUE;
 
                     IF (FORMAT(CustItemRebateMatrix.EligiblePeriodAfterFirstShpt) <> '')

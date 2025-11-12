@@ -1,4 +1,4 @@
-pageextension 14301935 "AQD CustRbt PostedPurchCrMemo" extends "Posted Purchase Credit Memo"
+pageextension 14301934 "AQD CustRbt PostedPurchCrMemo" extends "Posted Purchase Credit Memo"
 {
     layout
     {

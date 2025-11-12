@@ -115,7 +115,7 @@ table 14301920 "AQD Sales Rebates Rate"
                     RebateProgramCode.GET(rEC."Rebate Program Code");
                     Rec."Rebate Type" := RebateProgramCode."Customer Default Rebate Type";
                     Rec."Rebate %" := RebateProgramCode."Customer Default Rebate %";
-                    Rec."Rebate Per Quantity" := RebateProgramCode."Customer Def Rebate Per Qty";
+                    Rec."Rebate Per Unit" := RebateProgramCode."Customer Def Rebate Per Unit";
                 END;
             end;
         }
@@ -151,7 +151,7 @@ table 14301920 "AQD Sales Rebates Rate"
             begin
                 IF Rec."Rebate Type" <> xRec."Rebate Type" THEN BEGIN
                     Rec."Rebate %" := 0;
-                    Rec."Rebate Per Quantity" := 0;
+                    Rec."Rebate Per Unit" := 0;
                 END;
             end;
         }
@@ -167,10 +167,10 @@ table 14301920 "AQD Sales Rebates Rate"
                 Rec.TestField("Rebate Type");
             end;
         }
-        field(50; "Rebate Per Quantity"; Decimal)
+        field(50; "Rebate Per Unit"; Decimal)
         {
             BlankZero = true;
-            Caption = 'Rebate Per Quantity';
+            Caption = 'Rebate Per Unit';
             MinValue = 0;
             trigger OnValidate()
             begin
@@ -275,7 +275,7 @@ table 14301920 "AQD Sales Rebates Rate"
             Rec."Last Changed Changed By" := USERID;
             Rec."Last Changed DataTime" := CURRENTDATETIME;
             Rec."Last Rebate Type" := xRec."Rebate Type";
-            Rec."Last Rebate Per Quantity" := xRec."Rebate Per Quantity";
+            Rec."Last Rebate Per Quantity" := xRec."Rebate Per Unit";
             Rec."Rebate %" := xRec."Rebate %";
         END;
     end;

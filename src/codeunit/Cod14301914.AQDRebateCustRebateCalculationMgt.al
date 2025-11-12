@@ -10,7 +10,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     end;
 
     var
-        RebateUserSetup: Record "AQD Customer Rebate User Setup";
         RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         CustomerRebateHeader: Record "AQD Customer Rebate Header";
         TempCustomerRebateHeader: Record "AQD Customer Rebate Header";
@@ -1116,7 +1115,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                     CustomerRebateDetails."Amount Including VAT" := SalesInvLineIn."Amount Including VAT";
                                     CustomerRebateDetails."Rebate Type" := CustomerRebateDetails."Rebate Type"::" ";
                                     CustomerRebateDetails."Rebate %" := 0;
-                                    CustomerRebateDetails."Rebate Per Quantity" := 0;
+                                    CustomerRebateDetails."Rebate Per Unit" := 0;
                                     CustomerRebateDetails."Salesperson Code" := SalesInvHeaderIn."Salesperson Code";
                                     CustomerRebateDetails."Responsibility Center" := SalesInvLineIn."Responsibility Center";
                                     CustomerRebateDetails."Location Code" := SalesInvLineIn."Location Code";
@@ -1162,7 +1161,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                     CustomerRebateDetails."Unit Price" := SalesCrMemoLineIn."Unit Price";
                                     CustomerRebateDetails."Rebate Type" := CustomerRebateDetails."Rebate Type"::" ";
                                     CustomerRebateDetails."Rebate %" := 0;
-                                    CustomerRebateDetails."Rebate Per Quantity" := 0;
+                                    CustomerRebateDetails."Rebate Per Unit" := 0;
                                     CustomerRebateDetails.Amount := -1 * SalesCrMemoLineIn.Amount;
                                     CustomerRebateDetails."Amount Including VAT" := -1 * SalesCrMemoLineIn."Amount Including VAT";
                                     CustomerRebateDetails."Salesperson Code" := SalesCrMemoHeaderIn."Salesperson Code";
@@ -1486,7 +1485,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
            (RebateSetup."Min GP% for Customer Rebate" > Abs(CustomerRebateDetailsIn."Profit %"))
         then begin
             CustomerRebateDetailsIn."Rebate %" := 0;
-            CustomerRebateDetailsIn."Rebate Per Quantity" := 0;
+            CustomerRebateDetailsIn."Rebate Per Unit" := 0;
             CustomerRebateDetailsIn."Customer Rebate Amount" := 0;
             exit;
         end;
@@ -1495,24 +1494,24 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
            (CustomerRebateDetailsIn."Profit %" < 0)
         then begin
             CustomerRebateDetailsIn."Rebate %" := 0;
-            CustomerRebateDetailsIn."Rebate Per Quantity" := 0;
+            CustomerRebateDetailsIn."Rebate Per Unit" := 0;
             CustomerRebateDetailsIn."Customer Rebate Amount" := 0;
             exit;
         end;
 
         case CustomerRebateDetailsIn."Rebate Type" of
-            CustomerRebateDetailsIn."Rebate Type"::"Per Quantity":
+            CustomerRebateDetailsIn."Rebate Type"::"Per Unit":
                 begin
-                    CustomerRebateDetailsIn."Customer Rebate Amount" := Round(CustomerRebateDetailsIn."Rebate Per Quantity" * CustomerRebateDetailsIn.Quantity, 0.01);
+                    CustomerRebateDetailsIn."Customer Rebate Amount" := Round(CustomerRebateDetailsIn."Rebate Per Unit" * CustomerRebateDetailsIn.Quantity, 0.01);
                     CustomerRebateDetailsIn."Rebate %" := 0;
                 end;
             CustomerRebateDetailsIn."Rebate Type"::Percentage:
                 begin
                     CustomerRebateDetailsIn."Customer Rebate Amount" := Round((CustomerRebateDetailsIn."Rebate %" / 100) * CustomerRebateDetailsIn.Amount, 0.01);
-                    CustomerRebateDetailsIn."Rebate Per Quantity" := 0;
+                    CustomerRebateDetailsIn."Rebate Per Unit" := 0;
                 end;
             else
-                CustomerRebateDetailsIn."Customer Rebate Amount" := Round(CustomerRebateDetailsIn."Rebate Per Quantity" * CustomerRebateDetailsIn.Quantity, 0.01);
+                CustomerRebateDetailsIn."Customer Rebate Amount" := Round(CustomerRebateDetailsIn."Rebate Per Unit" * CustomerRebateDetailsIn.Quantity, 0.01);
         end;
     end;
 

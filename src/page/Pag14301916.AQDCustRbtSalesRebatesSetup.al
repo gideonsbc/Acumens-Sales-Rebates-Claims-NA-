@@ -248,7 +248,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                     Editable = Rec."Rebate Type" = Rec."Rebate Type"::Percentage;
                     Enabled = Rec."Rebate Type" = Rec."Rebate Type"::Percentage;
                 }
-                field("Rebate Per Quantity"; Rec."Rebate Per Quantity")
+                field("Rebate Per Quantity"; Rec."Rebate Per Unit")
                 {
                     ApplicationArea = All;
                     Editable = Rec."Rebate Type" = Rec."Rebate Type"::"Per Quantity";
