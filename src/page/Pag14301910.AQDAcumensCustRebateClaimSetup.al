@@ -97,7 +97,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field("Require Vendor Rebate Approval"; Rec."Require Cust Rebate Approval")
+                field("Require Cust Rebate Approval"; Rec."Require Cust Rebate Approval")
                 {
                     ApplicationArea = All;
                 }
@@ -106,11 +106,11 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     ApplicationArea = All;
                     Editable = Rec."Require Cust Rebate Approval";
                 }
-                field("Auto Post Vendor Rebate"; Rec."Auto Post Customer Rebate")
+                field("Auto Post Cust Rebate"; Rec."Auto Post Customer Rebate")
                 {
                     ApplicationArea = All;
                 }
-                field("Vendor Accrual Type"; Rec."Customer Accrual Type")
+                field("Customer Accrual Type"; Rec."Customer Accrual Type")
                 {
                     ApplicationArea = All;
                 }
@@ -120,7 +120,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     field("Default Rebate Customer No."; Rec."Default Rebate Customer No.")
                     {
                         ApplicationArea = All;
-                        Caption = 'Rebate Vendor No.';
+                        Caption = 'Rebate Customer No.';
                         Editable = Rec."Customer Accrual Type" = Rec."Customer Accrual Type"::"Default Customer";
                     }
                     field("Default Setup Rebate Type"; Rec."Default Setup Rebate Type")
