@@ -15,6 +15,16 @@ page 14301948 "AQD Cust Rbt Include Cust Loc"
         {
             repeater(General)
             {
+                field("Customer Type"; Rec."Customer Type")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Customer Type field.', Comment = '%';
+                }
+                field("Customer No."; Rec."Customer No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Customer No. field.', Comment = '%';
+                }
                 field("Location Type"; Rec."Location Type")
                 {
                     ApplicationArea = All;
@@ -26,13 +36,6 @@ page 14301948 "AQD Cust Rbt Include Cust Loc"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Code field.', Comment = '%';
                     ShowMandatory = TRUE;
-                }
-                field("Ship-To Code"; Rec."Ship-To Code")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."Location Type" = Rec."Location Type"::"Ship-To Address";
-                    Enabled = Rec."Location Type" = Rec."Location Type"::"Ship-To Address";
-                    ToolTip = 'Specifies the value of the ShiP-To Code field.', Comment = '%';
                 }
                 field(Description; Rec.Description)
                 {

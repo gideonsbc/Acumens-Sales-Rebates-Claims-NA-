@@ -5,24 +5,38 @@ table 14301938 "AQD Cust Rbt Exclude Cust Loc"
 
     fields
     {
-        field(1; "Location Type"; ENUM "AQD CustRbt Cust Location Type")
+        field(1; "Customer Type"; Enum "AQD Cust Rebate Customer Type")
+        {
+            Caption = 'Customer Type';
+        }
+        field(2; "Customer No."; Code[20])
+        {
+            Caption = 'Customer No.';
+            TableRelation = if ("Customer Type" = const("Customer Type")) "AQD CustRbt RebateCustomerType"
+            else if ("Customer Type" = const(Customer)) Customer;
+        }
+        field(3; "Location Type"; ENUM "AQD CustRbt Cust Location Type")
         {
             Caption = 'Type';
             DataClassification = CustomerContent;
+            trigger OnValidate()
+            begin
+                IF Rec."Location Type" <> xRec."Location Type" THEN begin
+                    Rec."Location Code" := '';
+                    Rec.Description := '';
+                end
+            end;
         }
-        field(2; "Location Code"; Code[20])
+        field(4; "Location Code"; Code[20])
         {
             Caption = 'Code';
             DataClassification = CustomerContent;
             TableRelation = if ("Location Type" = const(Location)) Location where("Use As In-Transit" = const(false))
             else if ("Location Type" = const(Territory)) Territory
-            else if ("Location Type" = const("Ship-To Address")) Customer;
+            else if ("Location Type" = const("Ship-To Address")) "Ship-to Address".Code;
 
             trigger OnValidate()
             begin
-                IF Rec."Location Code" <> xRec."Location Code" THEN
-                    Rec."Ship-To Code" := '';
-
                 CASE "Location Type" OF
                     "Location Type"::Location:
                         BEGIN
@@ -40,28 +54,15 @@ table 14301938 "AQD Cust Rbt Exclude Cust Loc"
                         END;
                     "Location Type"::"Ship-To Address":
                         BEGIN
-                            IF ShipToAddress.GET("Location Code", "Ship-To Code") THEN
+                            Rec.TestField("Customer Type", Rec."Customer Type"::Customer);
+                            Rec.TestField("Customer No.");
+                            Rec.TestField("Location Type", Rec."Location Type"::"Ship-To Address");
+                            IF ShipToAddress.GET("Customer No.", "Location Code") THEN
                                 Description := ShipToAddress.Name
-                            ELSE IF Customer.GET("Location Code") THEN
+                            ELSE IF Customer.GET("Customer No.") THEN
                                 Description := Customer.Name;
                         END;
                 END;
-            END;
-        }
-        field(3; "Ship-To Code"; Code[10])
-        {
-            Caption = 'Ship-To Code';
-            DataClassification = CustomerContent;
-            TableRelation = "Ship-to Address".Code;
-            trigger OnValidate()
-            BEGIN
-                Rec.TestField("Location Type", Rec."Location Type"::"Ship-To Address");
-                Rec.TestField("Location Code");
-
-                IF ShipToAddress.GET("Location Code", "Ship-To Code") THEN
-                    Description := ShipToAddress.Name
-                ELSE IF Customer.GET("Location Code") THEN
-                    Description := Customer.Name;
             END;
         }
         field(20; Description; Text[100])
@@ -73,7 +74,7 @@ table 14301938 "AQD Cust Rbt Exclude Cust Loc"
 
     keys
     {
-        key(PK; "Location Type", "Location Code", "Ship-To Code")
+        key(PK; "Customer Type", "Customer No.", "Location Type", "Location Code")
         {
             Clustered = true;
         }
@@ -81,10 +82,10 @@ table 14301938 "AQD Cust Rbt Exclude Cust Loc"
 
     fieldgroups
     {
-        fieldgroup(Dropdown; "Location Type", "Location Code", "Ship-To Code")
+        fieldgroup(Dropdown; "Customer Type", "Customer No.", "Location Type", "Location Code")
         {
         }
-        fieldgroup(Brick; "Location Type", "Location Code", "Ship-To Code")
+        fieldgroup(Brick; "Customer Type", "Customer No.", "Location Type", "Location Code")
         {
         }
     }

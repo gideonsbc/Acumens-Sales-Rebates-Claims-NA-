@@ -12,7 +12,7 @@ enum 14301912 "AQD CustRbt Cust Location Type"
     }
     value(2; "Ship-To Address")
     {
-        Caption = 'Ship-To Address';
+        Caption = 'Ship-To Locations';
     }
     value(3; "Territory")
     {
