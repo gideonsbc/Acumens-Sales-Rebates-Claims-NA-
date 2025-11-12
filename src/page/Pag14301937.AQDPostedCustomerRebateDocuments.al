@@ -91,10 +91,10 @@ page 14301937 "AQD Posted Customer Rebates"
     {
         area(Processing)
         {
-            action("Create Purchase Document")
+            action("Create Sales Document")
             {
                 ApplicationArea = All;
-                Caption = 'Create Purchase Document';
+                Caption = 'Create Sales Document';
                 Image = CreateDocument;
 
                 trigger OnAction()
@@ -102,7 +102,7 @@ page 14301937 "AQD Posted Customer Rebates"
                     CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
                 begin
                     clear(CustomerRebatePost);
-                    CustomerRebatePost.CreatePurchaseDocument(Rec, TRUE);
+                    CustomerRebatePost.CreateSalesDocument(Rec, TRUE);
                     CurrPage.UPDATE(false);
                 end;
             }
@@ -132,41 +132,41 @@ page 14301937 "AQD Posted Customer Rebates"
             //     RunObject = Page "AQD Rebate Purch. Journal";
             //     ToolTip = 'Open the Rebate Purchase Journal.';
             // }
-            action("Purchase Invoices")
+            action("Sales Invoices")
             {
                 ApplicationArea = All;
-                Caption = 'Purchase Invoices';
-                Image = PurchaseInvoice;
-                RunObject = Page "Purchase Invoices";
+                Caption = 'Sales Invoices';
+                Image = SalesInvoice;
+                RunObject = Page "Sales Invoice List";
                 RunPageLink = "AQD Customer Rebate No" = field("No.");
-                ToolTip = 'Open the list of Purchase Invoices.';
+                ToolTip = 'Open the list of Sales Invoices.';
             }
-            action("Purchase Credit Memos")
+            action("Sales Credit Memos")
             {
                 ApplicationArea = All;
-                Caption = 'Purchase Credit Memos';
+                Caption = 'Sales Credit Memos';
                 Image = PurchaseCreditMemo;
-                RunObject = Page "Purchase Credit Memos";
+                RunObject = Page "Sales Credit Memos";
                 RunPageLink = "AQD Customer Rebate No" = field("No.");
-                ToolTip = 'Open the list of Purchase Credit Memos.';
+                ToolTip = 'Open the list of Sales Credit Memos.';
             }
-            action("Posted Purchase Invoices")
+            action("Posted Sales Invoices")
             {
                 ApplicationArea = All;
-                Caption = 'Posted Purchase Invoices';
+                Caption = 'Posted Sales Invoices';
                 Image = PostDocument;
-                RunObject = Page "Posted Purchase Invoices";
+                RunObject = Page "Posted Sales Invoices";
                 RunPageLink = "AQD Customer Rebate No" = field("No.");
-                ToolTip = 'Open the list of Posted Purchase Invoices.';
+                ToolTip = 'Open the list of Posted Sales Invoices.';
             }
-            action("Posted Purchase Credit Memos")
+            action("Posted Sales Credit Memos")
             {
                 ApplicationArea = All;
-                Caption = 'Posted Purchase Credit Memos';
+                Caption = 'Posted Sales Credit Memos';
                 Image = PostedCreditMemo;
-                RunObject = Page "Posted Purchase Credit Memos";
+                RunObject = Page "Posted Sales Credit Memos";
                 RunPageLink = "AQD Customer Rebate No" = field("No.");
-                ToolTip = 'Open the list of Posted Purchase Credit Memos.';
+                ToolTip = 'Open the list of Posted Sales Credit Memos.';
             }
         }
         area(Promoted)
@@ -177,7 +177,7 @@ page 14301937 "AQD Posted Customer Rebates"
                 // actionref(CreatePurchaseJournal_Promoted; "Create Purchase Journal")
                 // {
                 // }
-                actionref(CreatePurchaseDocument_Promoted; "Create Purchase Document")
+                actionref(CreateSalesDocument_Promoted; "Create Sales Document")
                 {
                 }
                 actionref(Customer_Rebate_Details_Promoted; "Customer Rebate Details")
@@ -186,16 +186,16 @@ page 14301937 "AQD Posted Customer Rebates"
                 // actionref(RebatePurchaseJournal_Promoted; "AQD Rebate Purchase Journal")
                 // {
                 // }
-                actionref(PurchaseInvoices_Promoted; "Purchase Invoices")
+                actionref(SalesInvoices_Promoted; "Sales Invoices")
                 {
                 }
-                actionref(PurchaseCreditMemos_Promoted; "Purchase Credit Memos")
+                actionref(SalesCreditMemos_Promoted; "Sales Credit Memos")
                 {
                 }
-                actionref(PostedPurchaseInvoices_Promoted; "Posted Purchase Invoices")
+                actionref(PostedSalesInvoices_Promoted; "Posted Sales Invoices")
                 {
                 }
-                actionref(PostedPurchaseCreditMemos_Promoted; "Posted Purchase Credit Memos")
+                actionref(PostedSalesCreditMemos_Promoted; "Posted Sales Credit Memos")
                 {
                 }
             }

@@ -177,6 +177,10 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Start Date';
         }
+        FIELD(385; "Post Customer Rebate Using"; Enum "AQD Post Cust Rebate Using")
+        {
+            Caption = 'Post Customer Rebate Using';
+        }
         field(390; "Rebate Cr. Memo Posting"; enum "AQD Cust Rebate CrMemo Posting")
         {
             Caption = 'Rebate Cr. Memo Posting';

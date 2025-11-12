@@ -38,6 +38,32 @@ page 14301914 "AQD Cust Rebate Customer Types"
                     ApplicationArea = All;
                     ToolTip = 'Specifies a Customer Name for Rebate.';
                 }
+                field("G/L Account No."; Rec."G/L Account No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies a Customer Rebate Expense G/L Account No.';
+
+                    trigger OnValidate()
+                    BEGIN
+                        IF (Rec."G/L Account No." <> '') AND
+                           (Rec."G/L Account No." = Rec."Bal. G/ Account No.")
+                        THEN
+                            ERROR(Text0000, Rec."G/L Account No.", Rec."Bal. G/ Account No.");
+                    END;
+                }
+                field("Bal. G/L Account No."; Rec."Bal. G/ Account No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies a Customer Rebate Expense Bal. G/L Account No.';
+
+                    trigger OnValidate()
+                    BEGIN
+                        IF (Rec."Bal. G/ Account No." <> '') AND
+                           (Rec."G/L Account No." = Rec."Bal. G/ Account No.")
+                        THEN
+                            ERROR(Text0000, Rec."G/L Account No.", Rec."Bal. G/ Account No.");
+                    END;
+                }
             }
         }
     }
@@ -66,4 +92,7 @@ page 14301914 "AQD Cust Rebate Customer Types"
         RecRef.GetTable(RebateCustomerType);
         exit(SelectionFilterManagement.GetSelectionFilter(RecRef, RebateCustomerType.FieldNo(Code)));
     end;
+
+    var
+        Text0000: Label '%1 and %2 must not be same.';
 }

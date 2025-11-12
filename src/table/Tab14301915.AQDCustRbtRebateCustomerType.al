@@ -34,6 +34,20 @@ table 14301915 "AQD CustRbt RebateCustomerType"
             FieldClass = FlowField;
             CalcFormula = lookup(Vendor.Name where("No." = Field("Rebate Customer No")));
         }
+        field(50; "G/L Account No."; Code[20])
+        {
+            Caption = 'G/L Account No.';
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        field(60; "Bal. G/ Account No."; Code[20])
+        {
+            Caption = 'Bal. G/ Account No.';
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
     }
 
     keys

@@ -201,9 +201,9 @@ table 14301935 "AQD Posted Cust Reb Details"
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2),
                                                           Blocked = CONST(false));
         }
-        field(360; "Rebate Credit Doc Type"; Enum "AQD CustRebate Credit Doc Type")
+        field(360; "Rebate Sales Doc Type"; Enum "AQD Post Cust Rebate Using")
         {
-            Caption = 'Rebate Credit Doc Type';
+            Caption = 'Rebate Sales Doc Type';
             Editable = false;
         }
         field(361; "Credit Document No."; Code[20])
@@ -279,6 +279,21 @@ table 14301935 "AQD Posted Cust Reb Details"
         {
             Editable = FALSE;
             Caption = 'Batch Entry No.';
+        }
+        field(910; "Sales Jnl Template Name"; Code[10])
+        {
+            Caption = 'Sales Jnl Template Name';
+            Editable = false;
+        }
+        field(915; "Sales Jnl Batch Name"; Code[10])
+        {
+            Caption = 'Sales Jnl Batch Name';
+            Editable = false;
+        }
+        field(920; "Sales Jnl Line No."; Integer)
+        {
+            Caption = 'Sales Jnl Line No.';
+            Editable = false;
         }
         field(950; BatchID; Code[50])
         {

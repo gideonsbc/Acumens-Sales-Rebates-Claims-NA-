@@ -89,6 +89,10 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
+                field("Post Customer Rebate Using"; Rec."Post Customer Rebate Using")
+                {
+                    ApplicationArea = All;
+                }
                 field("Rebate Cr. Memo Posting"; Rec."Rebate Cr. Memo Posting")
                 {
                     ApplicationArea = All;
@@ -144,34 +148,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         Caption = 'Sales Item Charge No.';
                     }
                 }
-                group("Rebate Purchase Journal")
-                {
-                    Caption = 'Rebate Purchase Journal';
-                    field("Purch Journal Template Name"; Rec."Purch Journal Template Name")
-                    {
-                        Caption = 'Journal Template Name';
-                        ApplicationArea = All;
-                    }
-                    field("Purch Journal Batch Name"; Rec."Purch Journal Batch Name")
-                    {
-                        Caption = 'Journal Batch Name';
-                        ApplicationArea = All;
-                    }
-                }
-                group("Rebate Payment Journal")
-                {
-                    Caption = 'Rebate Payment Journal';
-                    field("Payment Journal Template Name"; Rec."Payment Journal Template")
-                    {
-                        Caption = 'Journal Template Name';
-                        ApplicationArea = All;
-                    }
-                    field("Payment Journal Batch Name"; Rec."Payment Journal Batch Name")
-                    {
-                        Caption = 'Journal Batch Name';
-                        ApplicationArea = All;
-                    }
-                }
                 group("Rebate Sales Journal")
                 {
                     Caption = 'Rebate Sales Journal';
@@ -186,9 +162,40 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         ApplicationArea = All;
                     }
                 }
+                group("Rebate Purchase Journal")
+                {
+                    Caption = 'Rebate Purchase Journal';
+                    Visible = false;
+                    field("Purch Journal Template Name"; Rec."Purch Journal Template Name")
+                    {
+                        Caption = 'Journal Template Name';
+                        ApplicationArea = All;
+                    }
+                    field("Purch Journal Batch Name"; Rec."Purch Journal Batch Name")
+                    {
+                        Caption = 'Journal Batch Name';
+                        ApplicationArea = All;
+                    }
+                }
+                group("Rebate Payment Journal")
+                {
+                    Caption = 'Rebate Payment Journal';
+                    Visible = false;
+                    field("Payment Journal Template Name"; Rec."Payment Journal Template")
+                    {
+                        Caption = 'Journal Template Name';
+                        ApplicationArea = All;
+                    }
+                    field("Payment Journal Batch Name"; Rec."Payment Journal Batch Name")
+                    {
+                        Caption = 'Journal Batch Name';
+                        ApplicationArea = All;
+                    }
+                }
                 group("Rebate General Journal")
                 {
                     Caption = 'Rebate General Journal';
+                    Visible = false;
                     field("General Journal Template Name"; Rec."General Journal Template Name")
                     {
                         ApplicationArea = All;

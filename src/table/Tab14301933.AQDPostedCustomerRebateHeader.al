@@ -192,9 +192,9 @@ table 14301933 "AQD Posted Cust Rebate Header"
                                                           Blocked = CONST(false));
             Editable = false;
         }
-        field(360; "Rebate Purchase Doc Type"; Enum "AQD CustRebate Credit Doc Type")
+        field(360; "Rebate Sales Doc Type"; Enum "AQD Post Cust Rebate Using")
         {
-            Caption = 'Rebate Purchase Doc Type';
+            Caption = 'Rebate Sales Doc Type';
             Editable = false;
         }
         field(400; "External Document No."; Code[35])
@@ -288,6 +288,21 @@ table 14301933 "AQD Posted Cust Rebate Header"
         field(904; "Approved Date Time"; DateTime)
         {
             Caption = 'Approved Date Time';
+            Editable = false;
+        }
+        field(910; "Sales Jnl Template Name"; Code[10])
+        {
+            Caption = 'Sales Jnl Template Name';
+            Editable = false;
+        }
+        field(915; "Sales Jnl Batch Name"; Code[10])
+        {
+            Caption = 'Sales Jnl Batch Name';
+            Editable = false;
+        }
+        field(920; "Sales Jnl Line No."; Integer)
+        {
+            Caption = 'Sales Jnl Line No.';
             Editable = false;
         }
         field(950; BatchID; Code[50])

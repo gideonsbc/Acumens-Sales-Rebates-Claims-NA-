@@ -160,9 +160,9 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Caption = 'Currency Code';
             Editable = false;
         }
-        field(360; "Rebate Credit Doc Type"; Enum "AQD CustRebate Credit Doc Type")
+        field(360; "Rebate Sales Doc Type"; Enum "AQD Post Cust Rebate Using")
         {
-            Caption = 'Rebate Credit Doc Type';
+            Caption = 'Rebate Sales Doc Type';
             Editable = false;
         }
         field(361; "Credit Document No."; Code[20])
@@ -206,19 +206,19 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Editable = FALSE;
             Caption = 'Batch Entry No.';
         }
-        field(910; "Purchase Jnl Template Name"; Code[10])
+        field(910; "Sales Jnl Template Name"; Code[10])
         {
-            Caption = 'Purchase Jnl Template Name';
+            Caption = 'Sales Jnl Template Name';
             Editable = false;
         }
-        field(915; "Purchase Jnl Batch Name"; Code[10])
+        field(915; "Sales Jnl Batch Name"; Code[10])
         {
-            Caption = 'Purchase Jnl Batch Name';
+            Caption = 'Sales Jnl Batch Name';
             Editable = false;
         }
-        field(920; "Purchae Jnl Line No."; Integer)
+        field(920; "Sales Jnl Line No."; Integer)
         {
-            Caption = 'Purchae Jnl Line No.';
+            Caption = 'Sales Jnl Line No.';
             Editable = false;
         }
         field(950; BatchID; Code[50])
