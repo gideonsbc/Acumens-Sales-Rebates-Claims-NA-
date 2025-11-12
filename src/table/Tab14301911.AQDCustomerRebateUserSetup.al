@@ -4,6 +4,9 @@ table 14301911 "AQD Customer Rebate User Setup"
     DrillDownPageId = "AQD Customer Rebate User Setup";
     LookupPageId = "AQD Customer Rebate User Setup";
     DataClassification = CustomerContent;
+    ObsoleteState = Pending;
+    ObsoleteReason = 'Move to Cashflow App';
+    ObsoleteTag = '25.1023.0.6';
 
     fields
     {

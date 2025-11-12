@@ -103,7 +103,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[5] of Boolean; RegenerateEntries: Boolean)
     var
         LocalCustomer: Record Customer;
-    //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
+        //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
+        BatchPostCustomerRebate: Report "AQD Post Cust Rebate Batches";
     begin
         RebateSetup.Get;
         RebateSetup.TestField("Customer Rebate Nos");
@@ -153,9 +154,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 END;
         END;
 
-        //CLEAR(PostCustomerRebateBatches);
-        //PostCustomerRebateBatches.UseRequestPage(false);
-        //PostCustomerRebateBatches.Run();
+        IF RebateSetup."Auto Post Customer Rebate" THEN BEGIN
+            CLEAR(BatchPostCustomerRebate);
+            BatchPostCustomerRebate.UseRequestPage(false);
+            BatchPostCustomerRebate.Run();
+        END;
     end;
 
     local procedure BuildInvoiceRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[5] of Boolean)

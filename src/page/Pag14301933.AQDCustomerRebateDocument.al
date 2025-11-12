@@ -337,10 +337,13 @@ page 14301933 "AQD Customer Rebate Document"
 
                 trigger OnAction()
                 var
+                    CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
                     CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
                 begin
-                    if not Rec.Approved then
-                        Error('The document is not approved. Please approve it before posting.');
+                    CustomerRebateSetup.GET;
+                    IF CustomerRebateSetup."Require Cust Rebate Approval" THEN
+                        if not Rec.Approved then
+                            Error('The document is not approved. Please approve it before posting.');
 
                     CustomerRebatePost.PostCustomerRebate(Rec, true);
 

@@ -1,0 +1,13 @@
+enum 14301932 "AQD Customer Accrual Type"
+{
+    Extensible = true;
+
+    value(0; "Default Customer")
+    {
+        Caption = 'Default Customer';
+    }
+    value(1; "Customer Card")
+    {
+        Caption = 'Customer Card';
+    }
+}

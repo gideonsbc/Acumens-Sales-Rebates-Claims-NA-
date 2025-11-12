@@ -8,6 +8,12 @@ tableextension 14301917 "AQD CustRbt Sales Header Ext" extends "Sales Header"
             Editable = false;
             DataClassification = CustomerContent;
         }
+        field(14301920; "AQD Customer Rebate"; Boolean)
+        {
+            Caption = 'Customer Rebate';
+            DataClassification = CustomerContent;
+            Editable = FALSE;
+        }
         field(14301940; "AQD Rebate Last Changed By"; Code[50])
         {
             Caption = 'Last Changed By';

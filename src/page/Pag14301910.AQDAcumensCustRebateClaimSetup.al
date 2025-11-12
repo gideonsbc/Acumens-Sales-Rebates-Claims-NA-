@@ -97,9 +97,32 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
+                field("Require Vendor Rebate Approval"; Rec."Require Cust Rebate Approval")
+                {
+                    ApplicationArea = All;
+                }
+                field("Job Queue Auto Approve Rebate"; Rec."Job Queue Auto Approve Rebate")
+                {
+                    ApplicationArea = All;
+                    Editable = Rec."Require Cust Rebate Approval";
+                }
+                field("Auto Post Vendor Rebate"; Rec."Auto Post Customer Rebate")
+                {
+                    ApplicationArea = All;
+                }
+                field("Vendor Accrual Type"; Rec."Customer Accrual Type")
+                {
+                    ApplicationArea = All;
+                }
                 group(DefaultSetup)
                 {
                     Caption = 'Default Setup';
+                    field("Default Rebate Customer No."; Rec."Default Rebate Customer No.")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Rebate Vendor No.';
+                        Editable = Rec."Customer Accrual Type" = Rec."Customer Accrual Type"::"Default Customer";
+                    }
                     field("Default Setup Rebate Type"; Rec."Default Setup Rebate Type")
                     {
                         ApplicationArea = All;

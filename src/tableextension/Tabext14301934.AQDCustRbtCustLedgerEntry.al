@@ -2,9 +2,9 @@ tableextension 14301934 "AQD CustRbt CustLdgrEntry Ext" extends "Cust. Ledger En
 {
     fields
     {
-        field(14301910; "AQD Rebate Journal"; Boolean)
+        field(14301910; "AQD Customer Rebate"; Boolean)
         {
-            Caption = 'Rebate Journal';
+            Caption = 'Customer Rebate';
             Editable = false;
             DataClassification = CustomerContent;
         }

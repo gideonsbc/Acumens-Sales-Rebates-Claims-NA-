@@ -9,11 +9,15 @@ codeunit 14301916 "AQD Customer Rebate Post"
         CASE RunBy OF
             RunBy::"Customer Rebate Batch":
                 BEGIN
-                    IF RebateSetup."Auto Post Customer Rebate" THEN BEGIN
-                        IF NOT CustomerRebateBatch.Approved THEN BEGIN
-                            CustomerRebateBatch.Validate(Approved, TRUE);
-                            CustomerRebateBatch.Validate("Posting Date", Today);
-                            CustomerRebateBatch.Modify();
+                    IF RebateSetup."Require Cust Rebate Approval" THEN BEGIN
+                        IF RebateSetup."Job Queue Auto Approve Rebate" AND
+                           NOT GuiAllowed
+                        THEN BEGIN
+                            IF NOT CustomerRebateBatch.Approved THEN BEGIN
+                                CustomerRebateBatch.Validate(Approved, TRUE);
+                                CustomerRebateBatch.Validate("Posting Date", Today);
+                                CustomerRebateBatch.Modify();
+                            END;
                         END;
                     END;
                     PostCustomerRebateBatch(CustomerRebateBatch);
@@ -64,12 +68,12 @@ codeunit 14301916 "AQD Customer Rebate Post"
         CustomerRebateHeader: Record "AQD Customer Rebate Header";
         SavedRecords: Boolean;
     begin
-        IF NOT CustomerRebateBatch.Approved THEN
-            Error('Customer Rebate Batch is not approved. Please approve it before posting.');
+        RebateSetup.Get();
+        IF RebateSetup."Require Cust Rebate Approval" THEN
+            IF NOT CustomerRebateBatch.Approved THEN
+                Error('Customer Rebate Batch is not approved. Please approve it before posting.');
 
         SavedRecords := FALSE;
-
-        RebateSetup.Get();
 
         CustomerRebateBatch.TestField(BatchID);
 
@@ -1466,4 +1470,35 @@ codeunit 14301916 "AQD Customer Rebate Post"
             IF ItemJournalLine."Inventory Value Per" = ItemJournalLine."Inventory Value Per"::" " then
                 ItemJournalLine."Inventory Value Per" := ItemJournalLine."Inventory Value Per"::Item
     end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", OnAfterCopyGenJnlLineFromSalesHeader, '', FALSE, FALSE)]
+    local procedure Tab81_GenJnlLine_OnAfterCopyGenJnlLineFromSalesHeader(SalesHeader: Record "Sales Header"; var GenJournalLine: Record "Gen. Journal Line")
+    BEGIN
+        IF NOT SalesHeader."AQD Customer Rebate" THEN
+            EXIT;
+
+        GenJournalLine."AQD Cust Rebate Journal" := SalesHeader."AQD Customer Rebate";
+        GenJournalLine."AQD CR Sell-To Customer No." := SalesHeader."Sell-To Customer No.";
+        GenJournalLine."AQD CR Bill-To Customer No." := SalesHeader."Bill-to Customer No.";
+    END;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnPostCustOnAfterInitCustLedgEntry, '', FALSE, FALSE)]
+    local procedure Tab81_GenJnlLine_OnPostCustOnAfterInitCustLedgEntry(var GenJournalLine: Record "Gen. Journal Line"; var CustLedgEntry: Record "Cust. Ledger Entry"; Cust: Record Customer; CustPostingGr: Record "Customer Posting Group")
+    BEGIN
+        IF NOT GenJnlLine."AQD Cust Rebate Journal" THEN
+            EXIT;
+
+        CustLedgEntry."AQD Customer Rebate" := GenJnlLine."AQD Cust Rebate Journal";
+    END;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnBeforeInsertGlobalGLEntry, '', FALSE, FALSE)]
+    local procedure Tab81_GenJnlLine_OnBeforeInsertGlobalGLEntry(var GlobalGLEntry: Record "G/L Entry"; GenJournalLine: Record "Gen. Journal Line"; GLRegister: Record "G/L Register"; FiscalYearStartDate: Date)
+    BEGIN
+        IF NOT GenJournalLine."AQD Cust Rebate Journal" THEN
+            EXIT;
+
+        GlobalGLEntry."AQD Customer Rebate" := GenJournalLine."AQD Cust Rebate Journal";
+        GlobalGLEntry."AQD CR Sell-To Customer No." := GenJournalLine."AQD CR Sell-To Customer No.";
+        GlobalGLEntry."AQD CR Bill-To Customer No." := GenJournalLine."AQD CR Bill-To Customer No.";
+    END;
 }

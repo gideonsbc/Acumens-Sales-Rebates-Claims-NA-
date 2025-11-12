@@ -8,6 +8,12 @@ tableextension 14301918 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
             Editable = false;
             DataClassification = CustomerContent;
         }
+        field(14301920; "AQD Customer Rebate"; Boolean)
+        {
+            Caption = 'Customer Rebate';
+            DataClassification = CustomerContent;
+            Editable = FALSE;
+        }
         field(14301930; "AQD Cust Rebate Entry Created"; Boolean)
         {
             Caption = 'Rebate Entry Created';

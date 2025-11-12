@@ -218,6 +218,36 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Auto Post Customer Rebate';
         }
+        field(460; "Require Cust Rebate Approval"; Boolean)
+        {
+            Caption = 'Require Customer Rebate Approval';
+
+            trigger OnValidate()
+            begin
+                Rec."Job Queue Auto Approve Rebate" := FALSE;
+            end;
+        }
+        field(470; "Job Queue Auto Approve Rebate"; Boolean)
+        {
+            Caption = 'Job Queue Auto Approve Rebate';
+        }
+        field(480; "Default Rebate Customer No."; Code[20])
+        {
+            Caption = 'Default Rebate Customer No.';
+            TableRelation = Customer;
+            DataClassification = CustomerContent;
+        }
+        field(490; "Customer Accrual Type"; Enum "AQD Customer Accrual Type")
+        {
+            Caption = 'Customer Accrual Type';
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            BEGIN
+                IF Rec."Customer Accrual Type" <> xRec."Customer Accrual Type" THEN
+                    Rec."Default Rebate Customer No." := '';
+            END;
+        }
     }
     keys
     {

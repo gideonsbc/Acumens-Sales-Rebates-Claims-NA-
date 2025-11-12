@@ -88,9 +88,12 @@ page 14301943 "AQD Customer Rebate Batch"
                 trigger OnAction()
                 var
                     UserConfirmLabel: Label 'Do you want to post Rebate Batch %1?';
+                    CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
                 begin
-                    if not Rec.Approved then
-                        Error('Customer Rebate Batch is not approved. Please approve it before posting.');
+                    CustomerRebateSetup.GET;
+                    IF CustomerRebateSetup."Require Cust Rebate Approval" THEN
+                        if not Rec.Approved then
+                            Error('Customer Rebate Batch is not approved. Please approve it before posting.');
 
                     if Confirm(StrSubstNo(UserConfirmLabel, Rec.BatchID)) then
                         CustomerRebatePost.PostCustomerRebateBatch(Rec);

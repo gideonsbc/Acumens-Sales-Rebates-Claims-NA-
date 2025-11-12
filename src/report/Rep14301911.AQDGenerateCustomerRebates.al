@@ -96,8 +96,20 @@ report 14301911 "AQD Generate Customer Rebates"
     labels
     {
     }
+    trigger OnPreReport()
+    begin
+        CustomerRebateSetup.GET;
+        IF Customer.GETFILTER("Date Filter") <> '' THEN BEGIN
+            StartPostingDate := Customer.GetRangeMin("Date Filter");
+            EndPostingDate := Customer.GetRangeMax("Date Filter");
+        END ELSE begin
+            StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
+            EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
+        end;
+    end;
 
     var
+        CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         RebateCalculationMgt: Codeunit "AQD Cust Rebate Calc Mgt";
         Text50001: Label 'Calculating Rebate for Customer No. #1########';
         Window: Dialog;
