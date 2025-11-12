@@ -53,15 +53,4 @@ codeunit 14301910 "AQD Acumens CustRbt Setup Mgt"
         IF CONFIRM(UserConfirmMsg) then
             FixedAsset.ModifyAll("AQD Customer Rebate Enabled", Rec."Fixed Asset Rebate Enabled");
     end;
-
-    [EventSubscriber(ObjectType::Table, Database::"AQD Acumens CustRbtClaim Setup", 'OnAfterValidateEvent', 'Def. Rebate Payment Method', true, false)]
-    local procedure Table70900_RebateSetup_DefaultRebatePaymentMethod_OnAfterValidate(var Rec: Record "AQD Acumens CustRbtClaim Setup"; var xRec: Record "AQD Acumens CustRbtClaim Setup"; CurrFieldNo: Integer)
-    var
-        Customer: Record Customer;
-        UserConfirmMessage: Label 'Do you want to update %1 for all Customers?';
-    begin
-        if Rec."Def. Rebate Payment Method" <> Rec."Def. Rebate Payment Method"::" " then
-            if Confirm(StrSubstNo(UserConfirmMessage, Customer.FieldCaption("AQD Rebate Payment Method"))) then
-                Customer.ModifyAll("AQD Rebate Payment Method", Rec."Def. Rebate Payment Method");
-    end;
 }

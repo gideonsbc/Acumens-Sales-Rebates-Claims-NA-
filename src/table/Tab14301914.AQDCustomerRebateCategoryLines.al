@@ -28,7 +28,7 @@ table 14301914 "AQD Cust Rebate Category Lines"
         {
             Caption = 'Use Rebate Setup From'; // As Temporary Used
         }
-        field(7060; "AQD Cust Rebate Posting Type"; enum "AQD Cust Rebate Posting Type")
+        field(7060; "AQD Cust Rebate Posting Type"; enum "AQD CustRebate CostPostingType")
         {
             Caption = 'Cust Rebate Cost Type'; // As Temporary Used
         }

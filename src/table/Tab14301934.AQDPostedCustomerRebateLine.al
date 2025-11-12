@@ -190,9 +190,9 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Caption = 'Bill-To Customer No.';
             Editable = false;
         }
-        field(510; "Pay-To Vendor No."; Code[20])
+        field(510; "Rebate-To Customer No."; Code[20])
         {
-            Caption = 'Pay-To Vendor No.';
+            Caption = 'Rebate-To Customer No.';
             Editable = false;
             TableRelation = Vendor;
         }

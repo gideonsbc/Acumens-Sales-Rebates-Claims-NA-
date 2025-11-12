@@ -28,6 +28,16 @@ page 14301914 "AQD Cust Rebate Customer Types"
                     ApplicationArea = All;
                     ToolTip = 'Specifies a description of the Rebate Customer Type.';
                 }
+                field("Rebate Customer No"; Rec."Rebate Customer No")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies a Customer No. for Rebate.';
+                }
+                field("Rebate Customer Name"; Rec."Rebate Customer Name")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies a Customer Name for Rebate.';
+                }
             }
         }
     }

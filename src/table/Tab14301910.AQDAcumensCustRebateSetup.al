@@ -48,12 +48,6 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Pay Customer Rebate On';
         }
-        field(110; "Def. Rebate Payment Method"; Option)
-        {
-            Caption = 'Default Rebate Payment Method';
-            OptionCaption = ' ,Check,Credit Memo';
-            OptionMembers = " ",Check,"Credit Memo";
-        }
         field(130; "Purch Journal Template Name"; Code[10])
         {
             Caption = 'Rebate Purchase Jnl Template Name';

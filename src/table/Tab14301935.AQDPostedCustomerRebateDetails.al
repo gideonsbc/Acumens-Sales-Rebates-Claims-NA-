@@ -239,9 +239,9 @@ table 14301935 "AQD Posted Cust Reb Details"
             Editable = false;
             TableRelation = Customer;
         }
-        field(510; "Pay-To Vendor No."; Code[20])
+        field(510; "Rebate-To Customer No."; Code[20])
         {
-            Caption = 'Pay-To Vendor No.';
+            Caption = 'Rebate-To Customer No.';
             Editable = false;
             TableRelation = Vendor;
         }
@@ -289,7 +289,7 @@ table 14301935 "AQD Posted Cust Reb Details"
             Caption = 'Use Cust Rebate Setup From';
             Editable = FALSE;
         }
-        field(7060; "AQD Cust Rebate Posting Type"; enum "AQD Cust Rebate Posting Type")
+        field(7060; "AQD Cust Rebate Posting Type"; enum "AQD CustRebate CostPostingType")
         {
             Caption = 'Cust Rebate Posting Type';
             Editable = FALSE;

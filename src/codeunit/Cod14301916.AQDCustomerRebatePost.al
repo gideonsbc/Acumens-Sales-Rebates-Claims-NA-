@@ -245,72 +245,35 @@ codeunit 14301916 "AQD Customer Rebate Post"
             IF RebateSetup."Rebate Cr. Memo Posting" <> RebateSetup."Rebate Cr. Memo Posting"::Manual THEN BEGIN
                 BillToCustomer.GET(PostedCustRebateHeader."Bill-To Customer No.");
 
-                CASE BillToCustomer."AQD Rebate Payment Method" OF
-                    BillToCustomer."AQD Rebate Payment Method"::"Credit Memo":
-                        BEGIN
-                            CreateSalesDocument(PostedCustRebateHeader, false);
+                CreateSalesDocument(PostedCustRebateHeader, false);
 
-                            IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Create and Post Cr. Memo" THEN BEGIN
-                                TmpInovoiceBuffer.RESET;
-                                IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
-                                    REPEAT
-                                        IF SalesHeader.GET(TmpInovoiceBuffer."Order Line No.",
-                                                           TmpInovoiceBuffer."Order No.")
-                                        THEN BEGIN
-                                            SalesHeader.Ship := TRUE;
-                                            SalesHeader.Invoice := TRUE;
-                                            SalesPost.Run(SalesHeader);
-                                        END;
-                                    UNTIL TmpInovoiceBuffer.Next() = 0;
-                                END;
-
-                                TmpCrMemoBuffer.RESET;
-                                IF TmpCrMemoBuffer.FindFirst() THEN BEGIN
-                                    REPEAT
-                                        IF SalesHeader.GET(TmpCrMemoBuffer."Order Line No.",
-                                                           TmpCrMemoBuffer."Order No.")
-                                        THEN BEGIN
-                                            SalesHeader.Receive := TRUE;
-                                            SalesHeader.Invoice := TRUE;
-                                            SalesPost.Run(SalesHeader);
-                                        END;
-                                    UNTIL TmpCrMemoBuffer.Next() = 0;
-                                END;
-                            END
-                        END;
-                    BillToCustomer."AQD Rebate Payment Method"::Check:
-                        BEGIN
-                            CreatePurchaseDocument(PostedCustRebateHeader, false);
-
-                            IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Create and Post Cr. Memo" THEN BEGIN
-                                TmpInovoiceBuffer.RESET;
-                                IF TmpInovoiceBuffer.FindFirst() THEN begin
-                                    REPEAT
-                                        IF PurchaseHeader.GET(TmpInovoiceBuffer."Order Line No.",
-                                                              TmpInovoiceBuffer."Order No.")
-                                        THEN BEGIN
-                                            PurchaseHeader.Receive := TRUE;
-                                            PurchaseHeader.Invoice := TRUE;
-                                            PurchPost.Run(PurchaseHeader);
-                                        END;
-                                    UNTIL TmpInovoiceBuffer.Next() = 0;
-                                end;
-
-                                TmpCrMemoBuffer.RESET;
-                                IF TmpCrMemoBuffer.FindFirst() THEN begin
-                                    REPEAT
-                                        IF PurchaseHeader.GET(TmpCrMemoBuffer."Order Line No.",
-                                                              TmpCrMemoBuffer."Order No.")
-                                        THEN BEGIN
-                                            PurchaseHeader.Ship := TRUE;
-                                            PurchaseHeader.Invoice := TRUE;
-                                            PurchPost.Run(PurchaseHeader);
-                                        END;
-                                    UNTIL TmpCrMemoBuffer.Next() = 0;
-                                END;
+                IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Create and Post Cr. Memo" THEN BEGIN
+                    TmpInovoiceBuffer.RESET;
+                    IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
+                        REPEAT
+                            IF SalesHeader.GET(TmpInovoiceBuffer."Order Line No.",
+                                               TmpInovoiceBuffer."Order No.")
+                            THEN BEGIN
+                                SalesHeader.Ship := TRUE;
+                                SalesHeader.Invoice := TRUE;
+                                SalesPost.Run(SalesHeader);
                             END;
-                        END;
-                END;
+                        UNTIL TmpInovoiceBuffer.Next() = 0;
+                    END;
+
+                    TmpCrMemoBuffer.RESET;
+                    IF TmpCrMemoBuffer.FindFirst() THEN BEGIN
+                        REPEAT
+                            IF SalesHeader.GET(TmpCrMemoBuffer."Order Line No.",
+                                               TmpCrMemoBuffer."Order No.")
+                            THEN BEGIN
+                                SalesHeader.Receive := TRUE;
+                                SalesHeader.Invoice := TRUE;
+                                SalesPost.Run(SalesHeader);
+                            END;
+                        UNTIL TmpCrMemoBuffer.Next() = 0;
+                    END;
+                END
             END;
 
             IF CustomerRebateHeader.BatchID <> '' THEN BEGIN
@@ -447,8 +410,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PurchaseCredirMemo."Document Type" := PurchaseCredirMemo."Document Type"::"Credit Memo";
             PurchaseCredirMemo."No." := '';
             PurchaseCredirMemo.Insert(TRUE);
-            PurchaseCredirMemo.Validate("Buy-from Vendor No.", PostedCustomerRebateLine."Pay-To Vendor No.");
-            PurchaseCredirMemo.VALIDATE("Pay-to Vendor No.", PostedCustomerRebateLine."Pay-To Vendor No.");
+            PurchaseCredirMemo.Validate("Buy-from Vendor No.", PostedCustomerRebateLine."Rebate-To Customer No.");
+            PurchaseCredirMemo.VALIDATE("Pay-to Vendor No.", PostedCustomerRebateLine."Rebate-To Customer No.");
             PurchaseCredirMemo.validate("Location Code", PostedCustomerRebateHeader."Location Code");
             PurchaseCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
             PurchaseCredirMemo."Posting Description" := PostedCustomerRebateHeader."Posting Description";
@@ -633,8 +596,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PurchInvoice.Insert(TRUE);
 
             PurchInvoice.SetHideValidationDialog(TRUE);
-            PurchInvoice.Validate("Buy-from Vendor No.", PostedCustomerRebateLine."Pay-To Vendor No.");
-            PurchInvoice.VALIDATE("Pay-to Vendor No.", PostedCustomerRebateLine."Pay-To Vendor No.");
+            PurchInvoice.Validate("Buy-from Vendor No.", PostedCustomerRebateLine."Rebate-To Customer No.");
+            PurchInvoice.VALIDATE("Pay-to Vendor No.", PostedCustomerRebateLine."Rebate-To Customer No.");
             PurchInvoice.validate("Location Code", PostedCustomerRebateHeader."Location Code");
             PurchInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
             PurchInvoice."Posting Description" := PostedCustomerRebateHeader."Posting Description";
@@ -861,8 +824,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesCredirMemo."Document Type" := SalesCredirMemo."Document Type"::"Credit Memo";
             SalesCredirMemo."No." := '';
             SalesCredirMemo.Insert(TRUE);
-            SalesCredirMemo.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Sell-To Customer No.");
-            SalesCredirMemo.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
+            SalesCredirMemo.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
+            SalesCredirMemo.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Rebate-To Customer No.");
             SalesCredirMemo.validate("Location Code", PostedCustomerRebateHeader."Location Code");
             SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
             SalesCredirMemo."Posting Description" := PostedCustomerRebateHeader."Posting Description";
@@ -1047,8 +1010,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesInvoice.Insert(TRUE);
 
             SalesInvoice.SetHideValidationDialog(TRUE);
-            SalesInvoice.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Sell-To Customer No.");
-            SalesInvoice.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
+            SalesInvoice.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
+            SalesInvoice.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Rebate-To Customer No.");
             SalesInvoice.validate("Location Code", PostedCustomerRebateHeader."Location Code");
             SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
             SalesInvoice."Posting Description" := PostedCustomerRebateHeader."Posting Description";

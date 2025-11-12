@@ -1,4 +1,4 @@
-enum 14301928 "AQD Cust Rebate Posting Type"
+enum 14301928 "AQD CustRebate CostPostingType"
 {
     Extensible = true;
 

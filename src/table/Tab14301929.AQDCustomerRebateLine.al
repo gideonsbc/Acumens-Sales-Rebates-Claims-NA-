@@ -171,11 +171,11 @@ table 14301929 "AQD Customer Rebate Line"
             Caption = 'Bill-To Customer No.';
             Editable = false;
         }
-        field(510; "Pay-To Vendor No."; Code[20])
+        field(510; "Rebate-To Customer No."; Code[20])
         {
-            Caption = 'Pay-To Vendor No.';
+            Caption = 'Rebate-To Customer No.';
             Editable = false;
-            TableRelation = Vendor;
+            TableRelation = Customer;
         }
         field(560; "Customer Rebate Status"; Enum "AQD Customer Rebate Status")
         {

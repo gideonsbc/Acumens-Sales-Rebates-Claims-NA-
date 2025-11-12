@@ -103,7 +103,7 @@ table 14301933 "AQD Posted Cust Rebate Header"
         }
         field(240; "Bill-To County"; Text[30])
         {
-            Caption = 'Pay-to State';
+            Caption = 'Bill-to State';
             Editable = false;
         }
         field(250; "Bill-To Country/Region Code"; Code[10])
@@ -111,52 +111,52 @@ table 14301933 "AQD Posted Cust Rebate Header"
             Caption = 'Country/Region Code';
             Editable = false;
         }
-        field(260; "Pay-to Vendor No."; Code[20])
+        field(260; "Rebate-To Customer No."; Code[20])
         {
-            Caption = 'Pay-to Vendor No.';
+            Caption = 'Rebate-To Customer No.';
             Editable = false;
         }
-        field(261; "Pay-to Name"; Text[100])
+        field(261; "Rebate-to Name"; Text[100])
         {
             Caption = 'Name';
             Editable = false;
         }
-        field(262; "Pay-to Name 2"; Text[50])
+        field(262; "Rebate-To Name 2"; Text[50])
         {
             Caption = 'Name 2';
             Editable = false;
         }
-        field(263; "Pay-to Address"; Text[100])
+        field(263; "Rebate-To Address"; Text[100])
         {
             Caption = 'Address';
             Editable = false;
         }
-        field(264; "Pay-to Address 2"; Text[50])
+        field(264; "Rebate-To Address 2"; Text[50])
         {
             Caption = 'Address 2';
             Editable = false;
         }
-        field(265; "Pay-to City"; Text[30])
+        field(265; "Rebate-To City"; Text[30])
         {
             Caption = 'City';
             Editable = false;
         }
-        field(266; "Pay-to Contact"; Text[100])
+        field(266; "Rebate-To Contact"; Text[100])
         {
             Caption = 'Contact';
             Editable = false;
         }
-        field(267; "Pay-to Post Code"; Code[20])
+        field(267; "Rebate-To Post Code"; Code[20])
         {
             Caption = 'ZIP Code';
             Editable = false;
         }
-        field(268; "Pay-to County"; Text[30])
+        field(268; "Rebate-To County"; Text[30])
         {
-            Caption = 'Pay-to State';
+            Caption = 'Rebate-To State';
             Editable = false;
         }
-        field(269; "Pay-to Country/Region Code"; Code[10])
+        field(269; "Rebate-To Country/Region Code"; Code[10])
         {
             Caption = 'Country/Region Code';
             Editable = false;

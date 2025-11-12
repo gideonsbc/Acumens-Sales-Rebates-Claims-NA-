@@ -2,9 +2,9 @@ pageextension 14301928 "AQD CustRbtCustLderEntries Ext" extends "Customer Ledger
 {
     layout
     {
-        addafter("Sales (LCY)")
+        addlast(Control1)
         {
-            field("AQD Customer Rebate Amount"; Rec."AQD Customer Rebate Amount")
+            field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
             {
                 ApplicationArea = All;
                 Editable = false;

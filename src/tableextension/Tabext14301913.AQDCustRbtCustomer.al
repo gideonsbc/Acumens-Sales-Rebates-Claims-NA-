@@ -7,35 +7,22 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
             Caption = 'Enroll for Rebate';
             DataClassification = CustomerContent;
         }
-        field(14301920; "AQD Cust Rebate Vendor No"; Code[20])
+        field(14301920; "AQD Cust Rebate Customer No"; Code[20])
         {
-            Caption = 'Rebate Vendor No.';
-            TableRelation = Vendor WHERE("AQD Cust Rbt Vendor Type" = CONST("Rebate Vendor"));
+            Caption = 'Rebate Customer No.';
+            TableRelation = Customer;
             DataClassification = CustomerContent;
         }
-        field(14301930; "AQD Rebate Payment Method"; Option)
+        field(14277030; "AQD Cust RebatePosting SrcType"; enum "AQD Cust RebatePosting SrcType")
         {
-            Caption = 'Rebate Payment Method';
-            OptionCaption = ' ,Check,Credit Memo';
-            OptionMembers = " ",Check,"Credit Memo";
+            Caption = 'Cust Rebate Posting Type';
             DataClassification = CustomerContent;
 
             trigger OnValidate()
-            begin
-                IF Rec."AQD Rebate Payment Method" IN
-                    [Rec."AQD Rebate Payment Method"::" ",
-                     Rec."AQD Rebate Payment Method"::"Credit Memo"]
-                THEN
-                    Rec."AQD Cust Rebate Vendor No" := '';
-            end;
-        }
-        field(14301940; "AQD Payee Type"; Option)
-        {
-            Caption = 'Payee Type';
-            InitValue = "W2 Employee";
-            OptionCaption = ' ,1099 Customer,W2 Employee';
-            OptionMembers = " ","1099 Customer","W2 Employee";
-            DataClassification = CustomerContent;
+            BEGIN
+                IF Rec."AQD Cust RebatePosting SrcType" <> xRec."AQD Cust RebatePosting SrcType" THEN
+                    Rec."AQD Cust Rebate Customer No" := '';
+            END;
         }
         field(14301950; "AQD Rebate Customer Type"; Code[20])
         {
@@ -43,7 +30,7 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
             DataClassification = CustomerContent;
             TableRelation = "AQD CustRbt RebateCustomerType";
         }
-        field(14301960; "AQD Calculation Date"; Enum "AQD CustRebateCalculation Type")
+        field(14301960; "AQD CustRbt Calculation Date"; Enum "AQD CustRebateCalculation Type")
         {
             Caption = 'Calculation Date';
             DataClassification = CustomerContent;

@@ -20,6 +20,11 @@ table 14301941 "AQD Created Customer Rebate"
             Caption = 'Sell-To Customer No.';
             Editable = false;
         }
+        field(35; "Rebate-To Customer No."; Code[20])
+        {
+            Caption = 'Rebate-To Customer No.';
+            Editable = false;
+        }
         field(40; "Salesperson Code"; Code[20])
         {
             Caption = 'Salesperson Code';

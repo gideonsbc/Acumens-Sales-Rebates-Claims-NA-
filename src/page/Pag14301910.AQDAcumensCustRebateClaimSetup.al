@@ -143,25 +143,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         ApplicationArea = All;
                         Caption = 'Sales Item Charge No.';
                     }
-                    field("Default Rebate Payment Method"; Rec."Def. Rebate Payment Method")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Rebate Payment Method';
-
-                        trigger OnValidate()
-                        begin
-                            if Rec."Def. Rebate Payment Method" = Rec."Def. Rebate Payment Method"::Check then begin
-                                Rec."Sales Journal Template Name" := '';
-                                Rec."Sales Journal Batch Name" := '';
-                            end else
-                                if Rec."Def. Rebate Payment Method" = Rec."Def. Rebate Payment Method"::"Credit Memo" then begin
-                                    Rec."Purch Journal Template Name" := '';
-                                    Rec."Purch Journal Batch Name" := '';
-                                    Rec."Payment Journal Template" := '';
-                                    Rec."Payment Journal Batch Name" := '';
-                                end;
-                        end;
-                    }
                 }
                 group("Rebate Purchase Journal")
                 {
@@ -346,7 +327,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             Rec.Validate("Item Charge Rebate Enabled", true);
             Rec.Validate("Fixed Asset Rebate Enabled", true);
             Rec."Pay Customer Rebate On" := Rec."Pay Customer Rebate On"::"All Invoices";
-            Rec."Def. Rebate Payment Method" := Rec."Def. Rebate Payment Method"::Check;
             //Purchase
             GenJournalTemplate.Reset();
             GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::Purchases);

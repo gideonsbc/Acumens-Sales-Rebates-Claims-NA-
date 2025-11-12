@@ -18,11 +18,11 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
             TempSalesRebatesRate.DeleteAll();
 
         BillToCustomer.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.");
-        Case BillToCustomer."AQD Calculation Date" OF
-            BillToCustomer."AQD Calculation Date"::" ",
-            BillToCustomer."AQD Calculation Date"::"Shipment Date":
+        Case BillToCustomer."AQD CustRbt Calculation Date" OF
+            BillToCustomer."AQD CustRbt Calculation Date"::" ",
+            BillToCustomer."AQD CustRbt Calculation Date"::"Shipment Date":
                 DocumentDate := CustomerRebateDetailsLocIn."Posting Date";
-            BillToCustomer."AQD Calculation Date"::"Rebate Order Date":
+            BillToCustomer."AQD CustRbt Calculation Date"::"Rebate Order Date":
                 DocumentDate := CustomerRebateDetailsLocIn."Rebate Order Date";
         END;
 

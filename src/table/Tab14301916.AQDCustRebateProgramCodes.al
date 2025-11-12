@@ -16,7 +16,7 @@ table 14301916 "AQD Cust Rebate Program Code"
         {
             Caption = 'Description';
         }
-        field(4; "Customer Rebate Posting Type"; enum "AQD Cust Rebate Posting Type")
+        field(4; "Customer Rebate Posting Type"; enum "AQD CustRebate CostPostingType")
         {
             Caption = 'Customer Rebate Posting Type';
         }

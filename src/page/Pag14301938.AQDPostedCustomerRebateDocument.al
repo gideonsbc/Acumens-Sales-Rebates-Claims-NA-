@@ -249,64 +249,64 @@ page 14301938 "AQD Posted Customer Rebate Doc"
             group(PayToVendor)
             {
                 Caption = 'Pay-To Vendor';
-                field("Pay-To Vendor No."; Rec."Pay-To Vendor No.")
+                field("Pay-To Vendor No."; Rec."Rebate-To Customer No.")
                 {
                     ApplicationArea = All;
                     Caption = 'Vendor No.';
                     ToolTip = 'Specifies the value of the Pay-To Vendor No. field.', Comment = '%';
                 }
-                field("Pay-To Name"; Rec."Pay-To Name")
+                field("Pay-To Name"; Rec."Rebate-to Name")
                 {
                     ApplicationArea = All;
                     Caption = 'Name';
                     ToolTip = 'Specifies the value of the Name field.', Comment = '%';
                 }
-                field("Pay-To Name 2"; Rec."Pay-To Name 2")
+                field("Pay-To Name 2"; Rec."Rebate-To Name 2")
                 {
                     ApplicationArea = All;
                     Caption = 'Name 2';
                     ToolTip = 'Specifies the value of the Name 2 field.', Comment = '%';
                     Importance = Additional;
                 }
-                field("Pay-To Address"; Rec."Pay-To Address")
+                field("Pay-To Address"; Rec."Rebate-To Address")
                 {
                     ApplicationArea = All;
                     Caption = 'Address';
                     ToolTip = 'Specifies the value of the Address field.', Comment = '%';
                 }
-                field("Pay-To Address 2"; Rec."Pay-To Address 2")
+                field("Pay-To Address 2"; Rec."Rebate-To Address 2")
                 {
                     ApplicationArea = All;
                     Caption = 'Address 2';
                     ToolTip = 'Specifies the value of the Address 2 field.', Comment = '%';
                     Importance = Additional;
                 }
-                field("Pay-To Contact"; Rec."Pay-To Contact")
+                field("Pay-To Contact"; Rec."Rebate-To Contact")
                 {
                     ApplicationArea = All;
                     Caption = 'Contact';
                     ToolTip = 'Specifies the value of the Contact field.', Comment = '%';
                 }
-                field("Pay-To Post Code"; Rec."Pay-To Post Code")
+                field("Pay-To Post Code"; Rec."Rebate-To Post Code")
                 {
                     ApplicationArea = All;
                     Caption = 'Zip Code';
                     ToolTip = 'Specifies the value of the ZIP Code field.', Comment = '%';
                 }
-                field("Pay-To City"; Rec."Pay-To City")
+                field("Pay-To City"; Rec."Rebate-To City")
                 {
                     ApplicationArea = All;
                     Caption = 'City';
                     ToolTip = 'Specifies the value of the City field.', Comment = '%';
                 }
 
-                field("Pay-To Country/Region Code"; Rec."Pay-To Country/Region Code")
+                field("Pay-To Country/Region Code"; Rec."Rebate-To Country/Region Code")
                 {
                     ApplicationArea = All;
                     Caption = 'Country/Region Code';
                     ToolTip = 'Specifies the value of the Country/Region Code field.', Comment = '%';
                 }
-                field("Pay-To County"; Rec."Pay-To County")
+                field("Pay-To County"; Rec."Rebate-To County")
                 {
                     ApplicationArea = All;
                     Caption = 'County';

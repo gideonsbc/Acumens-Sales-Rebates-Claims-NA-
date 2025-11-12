@@ -33,7 +33,7 @@ tableextension 14301910 "AQD CustRbt Item Ext" extends Item
                     Rec."AQD Cust Rebate Posting Type" := Rec."AQD Cust Rebate Posting Type"::" ";
             end;
         }
-        field(14301950; "AQD Cust Rebate Posting Type"; enum "AQD Cust Rebate Posting Type")
+        field(14301950; "AQD Cust Rebate Posting Type"; enum "AQD CustRebate CostPostingType")
         {
             Caption = 'Rebate Cost Posting Type';
             DataClassification = CustomerContent;

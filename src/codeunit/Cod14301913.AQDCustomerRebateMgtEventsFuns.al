@@ -24,18 +24,6 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         Rec."AQD Customer Rebate Enabled" := RebateSetup."G/L Account Rebate Enabled";
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::Customer, 'OnBeforeInsertEvent', '', true, false)]
-    local procedure Table18_Customer_OnBeforeInsert(var Rec: Record Customer; RunTrigger: Boolean)
-    begin
-        if Rec.IsTemporary then
-            exit;
-
-        if not RebateSetup.Get then
-            exit;
-
-        Rec."AQD Rebate Payment Method" := RebateSetup."Def. Rebate Payment Method";
-    end;
-
     [EventSubscriber(ObjectType::Table, Database::Item, 'OnBeforeInsertEvent', '', true, false)]
     local procedure Table27_Item_OnBeforeInsert(var Rec: Record Item; RunTrigger: Boolean)
     var
@@ -96,19 +84,6 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
             EXIT;
 
         Rec."AQD Customer Rebate Enabled" := RebateSetup."G/L Account Rebate Enabled";
-    end;
-
-
-    [EventSubscriber(ObjectType::Table, Database::"Vendor", 'OnBeforeInsertEvent', '', false, false)]
-    local procedure UpdateReferencedIdsVendorOnInsert(var Rec: Record Vendor; RunTrigger: Boolean)
-    begin
-        if Rec.IsTemporary() then
-            exit;
-
-        if not RebateSetup.Get then
-            exit;
-
-        Rec."AQD Rebate Payment Method" := RebateSetup."Def. Rebate Payment Method";
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::GenJnlManagement, 'OnBeforeLookupName', '', true, false)]
