@@ -17,8 +17,16 @@ report 14301911 "AQD Generate Customer Rebates"
                     Window.Update(1, "No.");
 
                 Clear(DateArray);
-                DateArray[1] := Customer.GetRangeMin("Date Filter");
-                DateArray[2] := Customer.GetRangeMax("Date Filter");
+                CustomerRebateSetup.GET;
+                IF Customer.GETFILTER("Date Filter") <> '' THEN BEGIN
+                    StartPostingDate := Customer.GetRangeMin("Date Filter");
+                    EndPostingDate := Customer.GetRangeMax("Date Filter");
+                END ELSE begin
+                    StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
+                    EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
+                end;
+                DateArray[1] := StartPostingDate;
+                DateArray[2] := EndPostingDate;
 
                 //Summary
                 Clear(SummaryArray);
@@ -30,7 +38,7 @@ report 14301911 "AQD Generate Customer Rebates"
                 SummaryArray[6] := BillToCust;
 
                 Clear(RebateCalculationMgt);
-                RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false);
+                RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false, ShptRcptNo, InvCrMemoNo);
             end;
 
             trigger OnPostDataItem()
@@ -119,6 +127,12 @@ report 14301911 "AQD Generate Customer Rebates"
         end;
     end;
 
+    procedure SetShptRcptNoAndInvCrMemoNo(ShptRcptNoIn: Code[20]; InvCrMemoNoIn: Code[20])
+    begin
+        ShptRcptNo := ShptRcptNoIn;
+        InvCrMemoNo := InvCrMemoNoIn;
+    end;
+
     var
         CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         RebateCalculationMgt: Codeunit "AQD Cust Rebate Calc Mgt";
@@ -134,5 +148,6 @@ report 14301911 "AQD Generate Customer Rebates"
         StartPostingDate: Date;
         EndPostingDate: Date;
         DateArray: array[2] of Date;
+        ShptRcptNo: Code[20];
+        InvCrMemoNo: Code[20];
 }
-

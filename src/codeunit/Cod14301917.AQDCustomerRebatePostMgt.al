@@ -27,6 +27,8 @@ codeunit 14301917 "AQD Customer Rebate Post Mgt"
 
         IF CustomerRebateBatch.FindFirst() THEN BEGIN
             REPEAT
+                COMMIT; // There is nothing to commit except real time transaction
+
                 ClearLastError();
                 UpdateWindow(1, CustomerRebateBatch.BatchID);
 

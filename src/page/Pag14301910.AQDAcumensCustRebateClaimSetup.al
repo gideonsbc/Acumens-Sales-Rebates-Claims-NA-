@@ -89,34 +89,42 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field("Post Customer Rebate Using"; Rec."Post Customer Rebate Using")
-                {
-                    ApplicationArea = All;
-                }
-                field("Rebate Cr. Memo Posting"; Rec."Rebate Cr. Memo Posting")
-                {
-                    ApplicationArea = All;
-                }
                 field("Min GP% for Customer Rebate"; Rec."Min GP% for Customer Rebate")
                 {
                     ApplicationArea = All;
                 }
-                field("Require Cust Rebate Approval"; Rec."Require Cust Rebate Approval")
+                group(ApprovalAndPosting)
                 {
-                    ApplicationArea = All;
-                }
-                field("Job Queue Auto Approve Rebate"; Rec."Job Queue Auto Approve Rebate")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."Require Cust Rebate Approval";
-                }
-                field("Auto Post Cust Rebate"; Rec."Auto Post Customer Rebate")
-                {
-                    ApplicationArea = All;
-                }
-                field("Customer Accrual Type"; Rec."Customer Accrual Type")
-                {
-                    ApplicationArea = All;
+                    Caption = 'Approval And Posting';
+                    field("Real Time Customer Rebate"; Rec."Real Time Customer Rebate")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("Require Cust Rebate Approval"; Rec."Require Cust Rebate Approval")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("Job Queue Auto Approve Rebate"; Rec."Job Queue Auto Approve Rebate")
+                    {
+                        ApplicationArea = All;
+                        Editable = Rec."Require Cust Rebate Approval";
+                    }
+                    field("Auto Post Cust Rebate"; Rec."Auto Post Customer Rebate")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("Post Customer Rebate Using"; Rec."Post Customer Rebate Using")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("Rebate Cr. Memo Posting"; Rec."Rebate Cr. Memo Posting")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("Customer Accrual Type"; Rec."Customer Accrual Type")
+                    {
+                        ApplicationArea = All;
+                    }
                 }
                 group(DefaultSetup)
                 {
@@ -162,51 +170,51 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         ApplicationArea = All;
                     }
                 }
-                group("Rebate Purchase Journal")
-                {
-                    Caption = 'Rebate Purchase Journal';
-                    Visible = false;
-                    field("Purch Journal Template Name"; Rec."Purch Journal Template Name")
-                    {
-                        Caption = 'Journal Template Name';
-                        ApplicationArea = All;
-                    }
-                    field("Purch Journal Batch Name"; Rec."Purch Journal Batch Name")
-                    {
-                        Caption = 'Journal Batch Name';
-                        ApplicationArea = All;
-                    }
-                }
-                group("Rebate Payment Journal")
-                {
-                    Caption = 'Rebate Payment Journal';
-                    Visible = false;
-                    field("Payment Journal Template Name"; Rec."Payment Journal Template")
-                    {
-                        Caption = 'Journal Template Name';
-                        ApplicationArea = All;
-                    }
-                    field("Payment Journal Batch Name"; Rec."Payment Journal Batch Name")
-                    {
-                        Caption = 'Journal Batch Name';
-                        ApplicationArea = All;
-                    }
-                }
-                group("Rebate General Journal")
-                {
-                    Caption = 'Rebate General Journal';
-                    Visible = false;
-                    field("General Journal Template Name"; Rec."General Journal Template Name")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Journal Template Name';
-                    }
-                    field("General Journal Batch Name"; Rec."General Journal Batch Name")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Journal Batch Name';
-                    }
-                }
+                // group("Rebate Purchase Journal")
+                // {
+                //     Caption = 'Rebate Purchase Journal';
+                //     Visible = false;
+                //     field("Purch Journal Template Name"; Rec."Purch Journal Template Name")
+                //     {
+                //         Caption = 'Journal Template Name';
+                //         ApplicationArea = All;
+                //     }
+                //     field("Purch Journal Batch Name"; Rec."Purch Journal Batch Name")
+                //     {
+                //         Caption = 'Journal Batch Name';
+                //         ApplicationArea = All;
+                //     }
+                // }
+                // group("Rebate Payment Journal")
+                // {
+                //     Caption = 'Rebate Payment Journal';
+                //     Visible = false;
+                //     field("Payment Journal Template Name"; Rec."Payment Journal Template")
+                //     {
+                //         Caption = 'Journal Template Name';
+                //         ApplicationArea = All;
+                //     }
+                //     field("Payment Journal Batch Name"; Rec."Payment Journal Batch Name")
+                //     {
+                //         Caption = 'Journal Batch Name';
+                //         ApplicationArea = All;
+                //     }
+                // }
+                // group("Rebate General Journal")
+                // {
+                //     Caption = 'Rebate General Journal';
+                //     Visible = false;
+                //     field("General Journal Template Name"; Rec."General Journal Template Name")
+                //     {
+                //         ApplicationArea = All;
+                //         Caption = 'Journal Template Name';
+                //     }
+                //     field("General Journal Batch Name"; Rec."General Journal Batch Name")
+                //     {
+                //         ApplicationArea = All;
+                //         Caption = 'Journal Batch Name';
+                //     }
+                // }
             }
             group("Number Series")
             {
@@ -335,45 +343,45 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             Rec.Validate("Fixed Asset Rebate Enabled", true);
             Rec."Pay Customer Rebate On" := Rec."Pay Customer Rebate On"::"All Invoices";
             //Purchase
-            GenJournalTemplate.Reset();
-            GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::Purchases);
-            if GenJournalTemplate.FindFirst() then begin
-                Rec."Purch Journal Template Name" := GenJournalTemplate.Name;
-                GenJournalBatch.Reset();
-                GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
-                GenJournalBatch.SetRange("AQD Customer Rebate", true);
-                if GenJournalBatch.FindFirst() then
-                    Rec."Purch Journal Batch Name" := GenJournalBatch.Name
-                ELSE begin
-                    GenJournalBatch.Init();
-                    GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
-                    GenJournalBatch.Name := 'CUSTREBATE';
-                    GenJournalBatch.Description := 'Purchase Rebate Batch';
-                    GenJournalBatch."AQD Customer Rebate" := TRUE;
-                    GenJournalBatch.Insert();
-                    Rec."Purch Journal Batch Name" := GenJournalBatch.Name;
-                end;
-            end;
-            //Payment
-            GenJournalTemplate.Reset();
-            GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::Payments);
-            if GenJournalTemplate.FindFirst() then begin
-                Rec."Payment Journal Template" := GenJournalTemplate.Name;
-                GenJournalBatch.Reset();
-                GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
-                GenJournalBatch.SetRange("AQD Customer Rebate", true);
-                if GenJournalBatch.FindFirst() then
-                    Rec."Payment Journal Batch Name" := GenJournalBatch.Name
-                ELSE begin
-                    GenJournalBatch.Init();
-                    GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
-                    GenJournalBatch.Name := 'CUSTREBATE';
-                    GenJournalBatch.Description := 'Payments Rebate Batch';
-                    GenJournalBatch."AQD Customer Rebate" := TRUE;
-                    GenJournalBatch.Insert();
-                    Rec."Payment Journal Batch Name" := GenJournalBatch.Name;
-                end;
-            end;
+            // GenJournalTemplate.Reset();
+            // GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::Purchases);
+            // if GenJournalTemplate.FindFirst() then begin
+            //     Rec."Purch Journal Template Name" := GenJournalTemplate.Name;
+            //     GenJournalBatch.Reset();
+            //     GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
+            //     GenJournalBatch.SetRange("AQD Customer Rebate", true);
+            //     if GenJournalBatch.FindFirst() then
+            //         Rec."Purch Journal Batch Name" := GenJournalBatch.Name
+            //     ELSE begin
+            //         GenJournalBatch.Init();
+            //         GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
+            //         GenJournalBatch.Name := 'CUSTREBATE';
+            //         GenJournalBatch.Description := 'Purchase Rebate Batch';
+            //         GenJournalBatch."AQD Customer Rebate" := TRUE;
+            //         GenJournalBatch.Insert();
+            //         Rec."Purch Journal Batch Name" := GenJournalBatch.Name;
+            //     end;
+            // end;
+            // //Payment
+            // GenJournalTemplate.Reset();
+            // GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::Payments);
+            // if GenJournalTemplate.FindFirst() then begin
+            //     Rec."Payment Journal Template" := GenJournalTemplate.Name;
+            //     GenJournalBatch.Reset();
+            //     GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
+            //     GenJournalBatch.SetRange("AQD Customer Rebate", true);
+            //     if GenJournalBatch.FindFirst() then
+            //         Rec."Payment Journal Batch Name" := GenJournalBatch.Name
+            //     ELSE begin
+            //         GenJournalBatch.Init();
+            //         GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
+            //         GenJournalBatch.Name := 'CUSTREBATE';
+            //         GenJournalBatch.Description := 'Payments Rebate Batch';
+            //         GenJournalBatch."AQD Customer Rebate" := TRUE;
+            //         GenJournalBatch.Insert();
+            //         Rec."Payment Journal Batch Name" := GenJournalBatch.Name;
+            //     end;
+            // end;
             //Sales
             GenJournalTemplate.Reset();
             GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::Sales);
@@ -395,25 +403,25 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 end;
             end;
             //General
-            GenJournalTemplate.Reset();
-            GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::General);
-            if GenJournalTemplate.FindFirst() then begin
-                Rec."General Journal Template Name" := GenJournalTemplate.Name;
-                GenJournalBatch.Reset();
-                GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
-                GenJournalBatch.SetRange("AQD Customer Rebate", true);
-                if GenJournalBatch.FindFirst() then
-                    Rec."General Journal Batch Name" := GenJournalBatch.Name
-                ELSE begin
-                    GenJournalBatch.Init();
-                    GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
-                    GenJournalBatch.Name := 'CUSTREBATE';
-                    GenJournalBatch.Description := 'General Rebate Batch';
-                    GenJournalBatch."AQD Customer Rebate" := TRUE;
-                    GenJournalBatch.Insert();
-                    Rec."General Journal Batch Name" := GenJournalBatch.Name;
-                end;
-            end;
+            // GenJournalTemplate.Reset();
+            // GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::General);
+            // if GenJournalTemplate.FindFirst() then begin
+            //     Rec."General Journal Template Name" := GenJournalTemplate.Name;
+            //     GenJournalBatch.Reset();
+            //     GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
+            //     GenJournalBatch.SetRange("AQD Customer Rebate", true);
+            //     if GenJournalBatch.FindFirst() then
+            //         Rec."General Journal Batch Name" := GenJournalBatch.Name
+            //     ELSE begin
+            //         GenJournalBatch.Init();
+            //         GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
+            //         GenJournalBatch.Name := 'CUSTREBATE';
+            //         GenJournalBatch.Description := 'General Rebate Batch';
+            //         GenJournalBatch."AQD Customer Rebate" := TRUE;
+            //         GenJournalBatch.Insert();
+            //         Rec."General Journal Batch Name" := GenJournalBatch.Name;
+            //     end;
+            // end;
             Rec."Customer Rebate Nos" := 'CRB';
             Rec.Modify(true);
         end;

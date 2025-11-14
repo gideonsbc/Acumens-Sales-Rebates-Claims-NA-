@@ -352,6 +352,77 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         END;
     END;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnAfterPostSalesDoc, '', false, false)]
+    local procedure Cod80_SalesPost_OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; SalesShptHdrNo: Code[20]; RetRcpHdrNo: Code[20]; SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; CommitIsSuppressed: Boolean; InvtPickPutaway: Boolean; var CustLedgerEntry: Record "Cust. Ledger Entry"; WhseShip: Boolean; WhseReceiv: Boolean; PreviewMode: Boolean)
+    var
+        CustRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+        SourceCodeSetup: Record "Source Code Setup";
+        SalesShptHdr: Record "Sales Shipment Header";
+        SalesInvHdr: Record "Sales Invoice Header";
+        SalesReturnRcpt: Record "Return Receipt Header";
+        SalesCrMemoHdr: Record "Sales Cr.Memo Header";
+        GenerateCustomerRebate: Report "AQD Generate Customer Rebates";
+        ShptRcptNo: Code[20];
+        InvCrMemoNo: Code[20];
+        SourceCode: Code[20];
+        IsHandled: Boolean;
+    begin
+        IF PreviewMode THEN
+            EXIT;
+
+        SourceCodeSetup.GET;
+        IF SalesHeader."AQD Customer Rebate" THEN
+            EXIT;
+
+        IF NOT CustRebateSetup.GET THEN
+            EXIT;
+
+        IF NOT CustRebateSetup."Real Time Customer Rebate" THEN
+            EXIT;
+
+        IF SalesShptHdrNo <> '' then begin
+            ShptRcptNo := SalesShptHdrNo;
+            IF SalesShptHdr.GET(SalesShptHdrNo) THEN BEGIN
+                IF SalesShptHdr."Source Code" = SourceCodeSetup."Deleted Document" THEN
+                    EXIT;
+            END;
+        end;
+
+        IF RetRcpHdrNo <> '' then BEGIN
+            ShptRcptNo := RetRcpHdrNo;
+            IF SalesReturnRcpt.GET(RetRcpHdrNo) THEN BEGIN
+                IF SalesReturnRcpt."Source Code" = SourceCodeSetup."Deleted Document" THEN
+                    EXIT;
+            END;
+        END;
+
+        IF SalesInvHdrNo <> '' then BEGIN
+            InvCrMemoNo := SalesInvHdrNo;
+            IF SalesInvHdr.GET(SalesInvHdrNo) THEN BEGIN
+                IF SalesInvHdr."Source Code" = SourceCodeSetup."Deleted Document" THEN
+                    EXIT;
+            END;
+        END;
+
+        if SalesCrMemoHdrNo <> '' then BEGIN
+            InvCrMemoNo := SalesCrMemoHdrNo;
+            IF SalesCrMemoHdr.GET(SalesCrMemoHdrNo) THEN BEGIN
+                IF SalesCrMemoHdr."Source Code" = SourceCodeSetup."Deleted Document" THEN
+                    EXIT;
+            END;
+        END;
+
+        IsHandled := false;
+        OnBeforeGenerateRealTimeCustomerRebate(SalesHeader, SalesShptHdrNo, RetRcpHdrNo, SalesInvHdrNo, SalesCrMemoHdrNo, PreviewMode, IsHandled);
+        IF IsHandled then
+            exit;
+
+        CLEAR(GenerateCustomerRebate);
+        GenerateCustomerRebate.SetShptRcptNoAndInvCrMemoNo(ShptRcptNo, InvCrMemoNo);
+        GenerateCustomerRebate.UseRequestPage(false);
+        GenerateCustomerRebate.Run();
+    end;
+
     procedure ShowPostedDocument(DocumentType: Enum "AQD Cust Rebate Document Type"; DocumentNo: COde[20])
     var
         PostedSalesInvoice: Record "Sales Invoice Header";
@@ -398,4 +469,9 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
                 end;
         END;
     end;
+
+    [IntegrationEvent(true, false)]
+    local procedure OnBeforeGenerateRealTimeCustomerRebate(var SalesHeader: Record "Sales Header"; SalesShptHdrNo: Code[20]; RetRcpHdrNo: Code[20]; SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; PreviewMode: Boolean; var IsHandled: Boolean)
+    BEGIN
+    END;
 }

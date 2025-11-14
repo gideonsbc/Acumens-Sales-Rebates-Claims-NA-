@@ -48,17 +48,17 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Pay Customer Rebate On';
         }
-        field(130; "Purch Journal Template Name"; Code[10])
-        {
-            Caption = 'Rebate Purchase Jnl Template Name';
-            TableRelation = "Gen. Journal Template" WHERE(Type = FILTER(Purchases));
-        }
-        field(140; "Purch Journal Batch Name"; Code[10])
-        {
-            Caption = 'Rebate Purchase Jnl Batch Name';
-            TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Purch Journal Template Name"),
-                                                             "AQD Customer Rebate" = CONST(true));
-        }
+        // field(130; "Purch Journal Template Name"; Code[10])
+        // {
+        //     Caption = 'Rebate Purchase Jnl Template Name';
+        //     TableRelation = "Gen. Journal Template" WHERE(Type = FILTER(Purchases));
+        // }
+        // field(140; "Purch Journal Batch Name"; Code[10])
+        // {
+        //     Caption = 'Rebate Purchase Jnl Batch Name';
+        //     TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Purch Journal Template Name"),
+        //                                                      "AQD Customer Rebate" = CONST(true));
+        // }
         field(150; "Rebate Expense Account"; Code[20])
         {
             Caption = 'Rebate Expense G/L Account No.';
@@ -66,17 +66,17 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
                                                  "Account Type" = CONST(Posting),
                                                  Blocked = CONST(false));
         }
-        field(160; "Payment Journal Template"; Code[10])
-        {
-            Caption = 'Payment Journal Template Name';
-            TableRelation = "Gen. Journal Template" WHERE(Type = FILTER(Payments));
-        }
-        field(170; "Payment Journal Batch Name"; Code[10])
-        {
-            Caption = 'Payment Journal Batch Name';
-            TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Payment Journal Template"),
-                                                             "AQD Customer Rebate" = CONST(true));
-        }
+        // field(160; "Payment Journal Template"; Code[10])
+        // {
+        //     Caption = 'Payment Journal Template Name';
+        //     TableRelation = "Gen. Journal Template" WHERE(Type = FILTER(Payments));
+        // }
+        // field(170; "Payment Journal Batch Name"; Code[10])
+        // {
+        //     Caption = 'Payment Journal Batch Name';
+        //     TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Payment Journal Template"),
+        //                                                      "AQD Customer Rebate" = CONST(true));
+        // }
         field(180; "Sales Journal Template Name"; Code[10])
         {
             Caption = 'Rebate Sales Jnl Template Name';
@@ -98,16 +98,16 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             Caption = 'Customer Rebate Nos';
             TableRelation = "No. Series";
         }
-        field(250; "General Journal Template Name"; Code[10])
-        {
-            Caption = 'Rebate General Jnl Template Name';
-            TableRelation = "Gen. Journal Template" WHERE(Type = FILTER(General));
-        }
-        field(260; "General Journal Batch Name"; Code[10])
-        {
-            Caption = 'Rebate General Jnl Batch Name';
-            TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("General Journal Template Name"));
-        }
+        // field(250; "General Journal Template Name"; Code[10])
+        // {
+        //     Caption = 'Rebate General Jnl Template Name';
+        //     TableRelation = "Gen. Journal Template" WHERE(Type = FILTER(General));
+        // }
+        // field(260; "General Journal Batch Name"; Code[10])
+        // {
+        //     Caption = 'Rebate General Jnl Batch Name';
+        //     TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("General Journal Template Name"));
+        // }
         field(270; "Pay Cust Rebate On"; Enum "AQD Customer Rebate On Type")
         {
             Caption = 'Pay Customer Rebate On';
@@ -145,11 +145,6 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Block Auto Created Sale Rebate Rate';
         }
-        field(310; "Customer Rebate Source Code"; Code[10])
-        {
-            Caption = 'Customer Rebate Source Code';
-            TableRelation = "Source Code";
-        }
         field(340; "Default Rebate Program Code"; Code[10])
         {
             Caption = 'Default Cust Rebate Program Code';
@@ -172,6 +167,10 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         field(370; "AQD Rebate Batch Frequency"; Enum "AQD CustRebate Batch Frequency")
         {
             Caption = 'Rebate Batch Frequency';
+        }
+        field(375; "Real Time Customer Rebate"; Boolean)
+        {
+            Caption = 'Real Time Customer Rebate';
         }
         field(380; "Customer Rebate Start Date"; Date)
         {
@@ -198,7 +197,7 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Block Auto Created Sales Rebate Rate';
         }
-        field(420; "Cust Rebate Source Code"; Code[10])
+        field(420; "Customer Rebate Source Code"; Code[10])
         {
             Caption = 'Customer Rebate Source Code';
             TableRelation = "Source Code";

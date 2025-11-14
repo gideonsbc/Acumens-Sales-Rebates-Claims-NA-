@@ -100,7 +100,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 
-    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean; RegenerateEntries: Boolean)
+    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20])
     var
         LocalCustomer: Record Customer;
         //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
@@ -112,8 +112,12 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         if not CustomerIn."AQD Enroll for Cust Rebate" then
             exit;
 
-        if CustomerIn."AQD Cust Rebate Customer No" = '' then
-            exit;
+        IF RebateSetup."Customer Accrual Type" = RebateSetup."Customer Accrual Type"::"Customer Card" THEN BEGIN
+            IF CustomerIn."AQD Cust RebatePosting SrcType" = CustomerIn."AQD Cust RebatePosting SrcType"::"Customer Card" THEN
+                if CustomerIn."AQD Cust Rebate Customer No" = '' THEN
+                    EXIT;
+        END ELSE IF RebateSetup."Customer Accrual Type" = RebateSetup."Customer Accrual Type"::"Default Customer" THEN
+                RebateSetup.TestField("Default Rebate Customer No.");
 
         // IF RebateSetup."Auto Update Rebate Cust Type" THEN BEGIN
         //     Commit();  // There is nothing to Commit
@@ -140,11 +144,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             RebateSetup."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo":
                 BEGIN
                     // Calculate Rebate for Posted Sales Invoices
-                    BuildInvoiceRebate(CustomerIn, DateArray, SummaryArray);
+                    BuildInvoiceRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
 
                     // Calculate Rebate for Posted Sales Credit memos
                     if not RebateSetup."Prevent Negative Cust Rebate" then
-                        BuildCrMemoRebate(CustomerIn, DateArray, SummaryArray);
+                        BuildCrMemoRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
                 END;
             RebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":
                 BEGIN
@@ -160,7 +164,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         END;
     end;
 
-    local procedure BuildInvoiceRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean)
+    local procedure BuildInvoiceRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20])
     var
         SkipRecord: Boolean;
         DummySalesCrMemoHeader: Record "Sales Cr.Memo Header";
@@ -174,6 +178,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
         SalesInvoiceHeader.Reset;
         SalesInvoiceHeader.SetCurrentKey("Bill-to Customer No.", "Posting Date");
+        IF InvCrMemoNo <> '' THEN
+            SalesInvoiceHeader.SetRange("No.", InvCrMemoNo);
         SalesInvoiceHeader.SetRange("Bill-to Customer No.", CustomerIn."No.");
         SalesInvoiceHeader.SetRange("AQD No Customer Rebate", false);
         SalesInvoiceHeader.SetRange("AQD Cust Rebate Entry Created", false);
@@ -291,7 +297,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         end;
     end;
 
-    local procedure BuildCrMemoRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean)
+    local procedure BuildCrMemoRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20])
     var
         RebateToCustomer: Record Customer;
         SkipRecord: Boolean;
@@ -305,6 +311,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
         SalesCrMemoHeader.Reset;
         SalesCrMemoHeader.SetCurrentKey("Bill-to Customer No.", "Posting Date");
+        IF InvCrMemoNo <> '' THEN
+            SalesCrMemoHeader.SetRange("No.", InvCrMemoNo);
         SalesCrMemoHeader.SetRange("Bill-to Customer No.", CustomerIn."No.");
         SalesCrMemoHeader.SetRange("AQD No Customer Rebate", false);
         SalesCrMemoHeader.SetRange("AQD Customer Rebate Status", SalesCrMemoHeader."AQD Customer Rebate Status"::" ");
@@ -735,7 +743,10 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 IF NOT CustomerRebateBatch.FindFirst() THEN BEGIN
                     CustomerRebateBatch.INIT;
                     CustomerRebateBatch.BatchID := GlobalBatchID;
-                    CustomerRebateBatch."Posting Date" := TODAY;
+                    IF GlobalRebateBatchFrequency = GlobalRebateBatchFrequency::Day THEN
+                        CustomerRebateBatch."Posting Date" := GlobalBatchStartDate
+                    ELSE
+                        CustomerRebateBatch."Posting Date" := TODAY;
                     CustomerRebateBatch."Created By" := UserId;
                     CustomerRebateBatch."Created Date" := Today;
                     CustomerRebateBatch."Start Date" := GlobalBatchStartDate;
@@ -789,7 +800,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                             CustomerRebateHeader."Bill-To County" := SalesInvHeaderIn."Bill-to County";
                             CustomerRebateHeader."Bill-To Country/Region Code" := SalesInvHeaderIn."Bill-To Country/Region Code";
                         END ELSE BEGIN
-                            CustomerRebateHeader."Bill-To Customer No." := RebateCustomerRec."Bill-to Customer No.";
+                            CustomerRebateHeader."Bill-To Customer No." := RebateCustomerRec."No.";
                             CustomerRebateHeader."Bill-To Name" := RebateCustomerRec.Name;
                             CustomerRebateHeader."Bill-To Name 2" := RebateCustomerRec."Name 2";
                             CustomerRebateHeader."Bill-To Address" := RebateCustomerRec.Address;
@@ -889,7 +900,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             CustomerRebateHeader."Rebate-To Country/Region Code" := RebateCustomerRec."Country/Region Code";
 
             CustomerRebateHeader."Posting Description" := PostingDescrptionText;
-            CustomerRebateHeader."Posting Date" := Today;
+            CustomerRebateHeader."Posting Date" := CustomerRebateBatch."Posting Date";
             CustomerRebateHeader."Document Date" := Today;
             CustomerRebateHeader."Created By" := UserId;
             CustomerRebateHeader."Created Date" := Today;
@@ -1299,19 +1310,31 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         Case RebateSetup."AQD Rebate Batch Frequency" of
             RebateSetup."AQD Rebate Batch Frequency"::Day:
                 begin
-                    DateRec.SetRange("Period Type", DateRec."Period Type"::Date);
-                    IF DateRec.FindFirst() then begin
-                        LocalBatchID := FORMAT(DateRec."Period End");
-                        LocalBatchID := DelChr(LocalBatchID, '=', '/');
-                        LocalBatchID := DelChr(LocalBatchID, '=', '-');
-                        LocalBatchID := 'DATE ' + LocalBatchID;
-                        GlobalBatchStartDate := DateRec."Period Start";
-                        GlobalBatchEndDate := DateRec."Period End";
-                        GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
-                        PostingDescrptionText := StrSubstNo(RebatePeriodText,
-                                                    FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' + FORMAT(DateRec."Period Start"),
-                                                    DateRec."Period End");
-                    end;
+                    LocalBatchID := FORMAT(DocumentPostingDate);
+                    LocalBatchID := DelChr(LocalBatchID, '=', '/');
+                    LocalBatchID := DelChr(LocalBatchID, '=', '-');
+                    LocalBatchID := 'DATE ' + LocalBatchID;
+                    GlobalBatchStartDate := DocumentPostingDate;
+                    GlobalBatchEndDate := DocumentPostingDate;
+                    GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
+                    PostingDescrptionText := StrSubstNo(RebatePeriodText,
+                                                        FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' +
+                                                        FORMAT(DocumentPostingDate),
+                                                        FORMAT(DocumentPostingDate));
+
+                    // DateRec.SetRange("Period Type", DateRec."Period Type"::Date);
+                    // IF DateRec.FindFirst() then begin
+                    //     LocalBatchID := FORMAT(DateRec."Period End");
+                    //     LocalBatchID := DelChr(LocalBatchID, '=', '/');
+                    //     LocalBatchID := DelChr(LocalBatchID, '=', '-');
+                    //     LocalBatchID := 'DATE ' + LocalBatchID;
+                    //     GlobalBatchStartDate := DateRec."Period Start";
+                    //     GlobalBatchEndDate := DateRec."Period End";
+                    //     GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
+                    //     PostingDescrptionText := StrSubstNo(RebatePeriodText,
+                    //                                 FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' + FORMAT(DateRec."Period Start"),
+                    //                                 DateRec."Period End");
+                    // end;
                 end;
             RebateSetup."AQD Rebate Batch Frequency"::Week:
                 begin
@@ -1406,6 +1429,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         LocalCustLocationInclude: Record "AQD Cust Rbt Include Cust Loc";
         LocalIncludeRecord: Boolean;
         IsHandled: Boolean;
+        ExitLoop: Boolean;
     begin
         LocalIncludeRecord := True;
         IsHandled := FALSE;
@@ -1430,11 +1454,17 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     IF LocalCustLocationInclude.FINDFIRST THEN
                         LocalIncludeRecord := FALSE;
 
+                    ExitLoop := FALSE;
                     LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', SalesInvoiceHeader."Sell-to Customer No.", '');
                     LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::"Ship-To Address");
-                    LocalCustLocationInclude.SETFILTER("Location Code", SalesInvoiceHeader."Ship-to Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+                    IF LocalCustLocationInclude.FindFirst() THEN BEGIN
+                        REPEAT
+                            IF LocalCustLocationInclude."Location Code" = SalesInvoiceHeader."Ship-to Code" THEN
+                                ExitLoop := TRUE;
+                        UNTIL (LocalCustLocationInclude.Next() = 0) OR ExitLoop;
+                        IF NOT ExitLoop THEN
+                            LocalIncludeRecord := FALSE;
+                    END;
 
                     // Customer Type
                     LocalCustLocationInclude.RESET;
@@ -1482,11 +1512,17 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     IF LocalCustLocationInclude.FINDFIRST THEN
                         LocalIncludeRecord := FALSE;
 
+                    ExitLoop := FALSE;
                     LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', SalesCrMemoHeader."Sell-to Customer No.", '');
                     LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::"Ship-To Address");
-                    LocalCustLocationInclude.SETFILTER("Location Code", SalesCrMemoHeader."Ship-to Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+                    IF LocalCustLocationInclude.FindFirst() THEN BEGIN
+                        REPEAT
+                            IF LocalCustLocationInclude."Location Code" = SalesCrMemoHeader."Ship-to Code" THEN
+                                ExitLoop := TRUE;
+                        UNTIL (LocalCustLocationInclude.Next() = 0) OR ExitLoop;
+                        IF NOT ExitLoop THEN
+                            LocalIncludeRecord := FALSE;
+                    END;
 
                     //Customer Type
                     LocalCustLocationInclude.RESET;

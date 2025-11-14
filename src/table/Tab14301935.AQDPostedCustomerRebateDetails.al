@@ -206,21 +206,21 @@ table 14301935 "AQD Posted Cust Reb Details"
             Caption = 'Rebate Sales Doc Type';
             Editable = false;
         }
-        field(361; "Credit Document No."; Code[20])
+        field(361; "Rebate Sales Document No."; Code[20])
         {
-            Caption = 'Credit Document No.';
+            Caption = 'Rebate Sales Document No.';
             Editable = false;
         }
-        field(362; "Credit Document Line No."; Integer)
+        field(362; "Rebate Sales Document Line No."; Integer)
         {
             BlankZero = TRUE;
-            Caption = 'Credit Document Line No.';
+            Caption = 'Rebate Sales Document Line No.';
             Editable = false;
         }
-        field(363; "Credit Line No."; Integer)
+        field(363; "Rebate Sales Line No."; Integer)
         {
             BlankZero = TRUE;
-            Caption = 'Credit Line No.';
+            Caption = 'Rebate Sales Line No.';
             Editable = false;
         }
         field(401; State; Text[30])
