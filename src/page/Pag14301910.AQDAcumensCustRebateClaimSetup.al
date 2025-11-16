@@ -85,6 +85,10 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
+                field("Create Rebate per Bill-To Cust"; Rec."Create Rebate per Bill-To Cust")
+                {
+                    ApplicationArea = All;
+                }
                 field("Use Cust Rebate Criteria"; Rec."Use Cust Rebate Criteria")
                 {
                     ApplicationArea = All;
@@ -316,7 +320,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
     begin
         IF NOT SourceCodeRec.GET('CREBTGNLJL') THEN BEGIN
             SourceCodeRec.Init();
-            SourceCodeRec.Code := 'CREBTGNLJL';
+            SourceCodeRec.Code := 'RBTSALES';
             SourceCodeRec.Description := 'Customer Rebate';
             SourceCodeRec.Insert();
         END;
@@ -324,7 +328,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
         Rec.Reset;
         if not Rec.Get then begin
             Rec.Init();
-            Rec."Customer Rebate Source Code" := 'CREBTGNLJL';
+            Rec."Customer Rebate Source Code" := 'RBTSALES';
             Rec.Insert();
             InitializeDefaultSetups();
         end;

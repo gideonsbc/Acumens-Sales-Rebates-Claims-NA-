@@ -172,6 +172,10 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Real Time Customer Rebate';
         }
+        field(378; "Create Rebate per Bill-To Cust"; Boolean)
+        {
+            Caption = 'Create Rebate per Bill-To Customer';
+        }
         field(380; "Customer Rebate Start Date"; Date)
         {
             Caption = 'Start Date';

@@ -365,6 +365,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         ShptRcptNo: Code[20];
         InvCrMemoNo: Code[20];
         SourceCode: Code[20];
+        BillToCustomerNo: Code[20];
         IsHandled: Boolean;
     begin
         IF PreviewMode THEN
@@ -385,6 +386,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
             IF SalesShptHdr.GET(SalesShptHdrNo) THEN BEGIN
                 IF SalesShptHdr."Source Code" = SourceCodeSetup."Deleted Document" THEN
                     EXIT;
+                BillToCustomerNo := SalesShptHdr."Bill-to Customer No.";
             END;
         end;
 
@@ -393,6 +395,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
             IF SalesReturnRcpt.GET(RetRcpHdrNo) THEN BEGIN
                 IF SalesReturnRcpt."Source Code" = SourceCodeSetup."Deleted Document" THEN
                     EXIT;
+                BillToCustomerNo := SalesReturnRcpt."Bill-to Customer No.";
             END;
         END;
 
@@ -401,6 +404,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
             IF SalesInvHdr.GET(SalesInvHdrNo) THEN BEGIN
                 IF SalesInvHdr."Source Code" = SourceCodeSetup."Deleted Document" THEN
                     EXIT;
+                BillToCustomerNo := SalesInvHdr."Bill-to Customer No.";
             END;
         END;
 
@@ -409,6 +413,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
             IF SalesCrMemoHdr.GET(SalesCrMemoHdrNo) THEN BEGIN
                 IF SalesCrMemoHdr."Source Code" = SourceCodeSetup."Deleted Document" THEN
                     EXIT;
+                BillToCustomerNo := SalesCrMemoHdr."Bill-to Customer No.";
             END;
         END;
 
@@ -418,7 +423,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
             exit;
 
         CLEAR(GenerateCustomerRebate);
-        GenerateCustomerRebate.SetShptRcptNoAndInvCrMemoNo(ShptRcptNo, InvCrMemoNo);
+        GenerateCustomerRebate.SetShptRcptNoAndInvCrMemoNo(BillToCustomerNo, ShptRcptNo, InvCrMemoNo);
         GenerateCustomerRebate.UseRequestPage(false);
         GenerateCustomerRebate.Run();
     end;

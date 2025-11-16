@@ -13,6 +13,10 @@ report 14301911 "AQD Generate Customer Rebates"
 
             trigger OnAfterGetRecord()
             begin
+                CurrentCount += 1;
+                IF CurrentCount = TotalCount then
+                    LastRecord := TRUE;
+
                 if GuiAllowed then
                     Window.Update(1, "No.");
 
@@ -43,19 +47,30 @@ report 14301911 "AQD Generate Customer Rebates"
                 SummaryArray[4] := ShortDim2;
 
                 Clear(RebateCalculationMgt);
-                RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false, ShptRcptNo, InvCrMemoNo);
+                RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false, ShptRcptNo, InvCrMemoNo, LastRecord);
             end;
 
             trigger OnPostDataItem()
             begin
                 if GuiAllowed then
                     Window.Close;
+                CreatedCustomerRebate.RESET;
+                CreatedCustomerRebate.DeleteAll();
             end;
 
             trigger OnPreDataItem()
             begin
                 if GuiAllowed then
                     Window.Open(Text50001);
+
+                IF BillToCustomerNo <> '' THEN
+                    Customer.SetRange("No.", BillToCustomerNo);
+
+                TotalCount := Customer.COUNT;
+                CurrentCount := 0;
+
+                CreatedCustomerRebate.RESET;
+                CreatedCustomerRebate.DeleteAll();
             end;
         }
     }
@@ -132,14 +147,16 @@ report 14301911 "AQD Generate Customer Rebates"
         end;
     end;
 
-    procedure SetShptRcptNoAndInvCrMemoNo(ShptRcptNoIn: Code[20]; InvCrMemoNoIn: Code[20])
+    procedure SetShptRcptNoAndInvCrMemoNo(BillToCustomerNoIn: Code[20]; ShptRcptNoIn: Code[20]; InvCrMemoNoIn: Code[20])
     begin
+        BillToCustomerNo := BillToCustomerNoIn;
         ShptRcptNo := ShptRcptNoIn;
         InvCrMemoNo := InvCrMemoNoIn;
     end;
 
     var
         CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+        CreatedCustomerRebate: Record "AQD Created Customer Rebate";
         RebateCalculationMgt: Codeunit "AQD Cust Rebate Calc Mgt";
         Text50001: Label 'Calculating Rebate for Customer No. #1########';
         Window: Dialog;
@@ -155,4 +172,8 @@ report 14301911 "AQD Generate Customer Rebates"
         DateArray: array[2] of Date;
         ShptRcptNo: Code[20];
         InvCrMemoNo: Code[20];
+        BillToCustomerNo: Code[20];
+        TotalCount: Integer;
+        CurrentCount: Integer;
+        LastRecord: Boolean;
 }

@@ -86,24 +86,24 @@ page 14301939 "AQD Posted Cust Reb Subpage"
                     Editable = false;
                     ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                 }
-                field("Vendor Invoice No."; Rec."Vendor Invoice No.")
+                field("Customer Invoice No."; Rec."Customer Invoice No.")
                 {
                     ApplicationArea = All;
                     Editable = false;
-                    ToolTip = 'Specifies the value of the Vendor Invoice No. field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Customer Invoice No. field.', Comment = '%';
                     Visible = VendorInvoiceCrMemoNo;
                 }
-                field("Vendor Cr. Memo No."; Rec."Vendor Cr. Memo No.")
+                field("Customer Cr. Memo No."; Rec."Customer Cr. Memo No.")
                 {
                     ApplicationArea = All;
                     Editable = false;
-                    ToolTip = 'Specifies the value of the Vendor Cr. Memo No. field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Customer Cr. Memo No. field.', Comment = '%';
                     Visible = VendorInvoiceCrMemoNo;
                 }
                 field(Amount; Rec.Amount)
                 {
                     ApplicationArea = All;
-                    Caption = 'Purchase Amount';
+                    Caption = 'Sales Amount';
                     Editable = false;
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                 }

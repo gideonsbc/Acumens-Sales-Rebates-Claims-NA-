@@ -363,6 +363,61 @@ page 14301938 "AQD Posted Customer Rebate Doc"
                 end;
             }
         }
+        area(Navigation)
+        {
+            action("Create Sales Document")
+            {
+                ApplicationArea = All;
+                Caption = 'Create Sales Document';
+                Image = CreateDocument;
+
+                trigger OnAction()
+                var
+                    CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
+                begin
+                    clear(CustomerRebatePost);
+                    CustomerRebatePost.CreateSalesFromPostedRebateDocument(Rec, TRUE);
+                    CurrPage.UPDATE(false);
+                end;
+            }
+            action("Sales Invoices")
+            {
+                ApplicationArea = All;
+                Caption = 'Sales Invoices';
+                Image = SalesInvoice;
+                RunObject = Page "Sales Invoice List";
+                RunPageLink = "AQD Customer Rebate No" = field("No.");
+                ToolTip = 'Open the list of Sales Invoices.';
+            }
+            action("Sales Credit Memos")
+            {
+                ApplicationArea = All;
+                Caption = 'Sales Credit Memos';
+                Image = PurchaseCreditMemo;
+                RunObject = Page "Sales Credit Memos";
+                RunPageLink = "AQD Customer Rebate No" = field("No.");
+                ToolTip = 'Open the list of Sales Credit Memos.';
+            }
+            action("Posted Sales Invoices")
+            {
+                ApplicationArea = All;
+                Caption = 'Posted Sales Invoices';
+                Image = PostDocument;
+                RunObject = Page "Posted Sales Invoices";
+                RunPageLink = "AQD Customer Rebate No" = field("No.");
+                ToolTip = 'Open the list of Posted Sales Invoices.';
+            }
+            action("Posted Sales Credit Memos")
+            {
+                ApplicationArea = All;
+                Caption = 'Posted Sales Credit Memos';
+                Image = PostedCreditMemo;
+                RunObject = Page "Posted Sales Credit Memos";
+                RunPageLink = "AQD Customer Rebate No" = field("No.");
+                ToolTip = 'Open the list of Posted Sales Credit Memos.';
+            }
+        }
+
         area(Promoted)
         {
             group(Category_Category4)
@@ -372,6 +427,21 @@ page 14301938 "AQD Posted Customer Rebate Doc"
                 {
                 }
                 actionref(Customer_Rebate_Details_Promoted; "Customer Rebate Details")
+                {
+                }
+                actionref(CreateSalesDocument_Promoted; "Create Sales Document")
+                {
+                }
+                actionref(SalesInvoices_Promoted; "Sales Invoices")
+                {
+                }
+                actionref(SalesCreditMemos_Promoted; "Sales Credit Memos")
+                {
+                }
+                actionref(PostedSalesInvoices_Promoted; "Posted Sales Invoices")
+                {
+                }
+                actionref(PostedSalesCreditMemos_Promoted; "Posted Sales Credit Memos")
                 {
                 }
             }

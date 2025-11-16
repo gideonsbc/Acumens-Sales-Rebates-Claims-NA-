@@ -100,7 +100,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 
-    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20])
+    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; LastRecord: Boolean)
     var
         LocalCustomer: Record Customer;
         //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
@@ -132,9 +132,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         //     COMMIT;
         // END;
 
-        CreatedCustomerRebate.RESET;
-        CreatedCustomerRebate.DeleteAll();
-
         Clear(PostingDescrptionText);
         PostingDescrptionText := StrSubstNo(RebatePeriodText, DateArray[1], DateArray[2]);
 
@@ -157,10 +154,13 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 END;
         END;
 
-        IF RebateSetup."Auto Post Customer Rebate" THEN BEGIN
-            CLEAR(BatchPostCustomerRebate);
-            BatchPostCustomerRebate.UseRequestPage(false);
-            BatchPostCustomerRebate.Run();
+        IF LastRecord THEN BEGIN
+            IF RebateSetup."Auto Post Customer Rebate" THEN BEGIN
+                CLEAR(BatchPostCustomerRebate);
+                BatchPostCustomerRebate.SetCalledFromGenerateCustomerRebate(TRUE);
+                BatchPostCustomerRebate.UseRequestPage(false);
+                BatchPostCustomerRebate.Run();
+            END;
         END;
     end;
 
@@ -661,6 +661,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     //         CreatedCustomerRebate.SetRange("Sell-To Customer No.", RebateCustomerRec."No.");
                     // END;
 
+                    IF RebateSetup."Create Rebate per Bill-To Cust" then
+                        CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesInvHeaderIn."Bill-to Customer No.");
                     if SummaryArray[1] then
                         CreatedCustomerRebate.SetRange("Responsibility Center", SalesInvHeaderIn."Responsibility Center");
                     if SummaryArray[2] then
@@ -721,7 +723,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     //     ELSE
                     //         CreatedCustomerRebate.SetRange("Sell-To Customer No.", RebateCustomerRec."No.");
                     // END;
-
+                    IF RebateSetup."Create Rebate per Bill-To Cust" then
+                        CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesCrMemoHeaderIn."Bill-to Customer No.");
                     if SummaryArray[1] then
                         CreatedCustomerRebate.SetRange("Responsibility Center", SalesCrMemoHeaderIn."Responsibility Center");
                     if SummaryArray[2] then
@@ -917,7 +920,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             CreatedCustomerRebate.Init();
             CreatedCustomerRebate."Rebate No." := CustomerRebateHeader."No.";
             // CreatedCustomerRebate."Sell-To Customer No." := CustomerRebateHeader."Sell-To Customer No.";
-            // CreatedCustomerRebate."Bill-To Customer No." := CustomerRebateHeader."Bill-To Customer No.";
+            IF RebateSetup."Create Rebate per Bill-To Cust" then
+                CreatedCustomerRebate."Bill-To Customer No." := BillToCustomerRec."No.";
             CreatedCustomerRebate."Rebate-To Customer No." := CustomerRebateHeader."Rebate-To Customer No.";
             CreatedCustomerRebate."Location Code" := CustomerRebateHeader."Location Code";
             CreatedCustomerRebate."Responsibility Center" := CustomerRebateHeader."Responsibility Center";
@@ -974,6 +978,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Shortcut Dimension 1 Code" := SalesInvHeaderIn."Shortcut Dimension 1 Code";
                     CustomerRebateLine."Shortcut Dimension 2 Code" := SalesInvHeaderIn."Shortcut Dimension 2 Code";
                     CustomerRebateLine."Sell-To Customer No." := SalesInvHeaderIn."Sell-To Customer No.";
+                    CustomerRebateLine."Sell-To Customer Name" := SalesInvHeaderIn."Sell-To Customer Name";
                     CustomerRebateLine."Bill-To Customer No." := SalesInvHeaderIn."Bill-To Customer No.";
                     CustomerRebateLine."Bill-To Customer Name" := SalesInvHeaderIn."Bill-To Name";
                 end;
@@ -997,6 +1002,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Shortcut Dimension 1 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 1 Code";
                     CustomerRebateLine."Shortcut Dimension 2 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 2 Code";
                     CustomerRebateLine."Sell-To Customer No." := SalesCrMemoHeaderIn."Sell-To Customer No.";
+                    CustomerRebateLine."Sell-To Customer Name" := SalesCrMemoHeaderIn."Sell-To Customer Name";
                     CustomerRebateLine."Bill-To Customer No." := SalesCrMemoHeaderIn."Bill-To Customer No.";
                     CustomerRebateLine."Bill-To Customer Name" := SalesCrMemoHeaderIn."Bill-To Name";
                 end;
@@ -1815,8 +1821,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         BillToCustomer."AQD Cust RebatePosting SrcType"::"Customer Type":
                             BEGIN
                                 IF LocalCustomerRebateType.GET(BillToCustomer."AQD Rebate Customer Type") THEN BEGIN
-                                    IF BillToCustomer."AQD Cust Rebate Customer No" <> '' THEN BEGIN
-                                        IF NOT RebateToCUstomer.Get(BillToCustomer."AQD Cust Rebate Customer No") then
+                                    IF LocalCustomerRebateType."Rebate Customer No" <> '' THEN BEGIN
+                                        IF NOT RebateToCUstomer.Get(LocalCustomerRebateType."Rebate Customer No") then
                                             SkipRecordIn := true;
                                     END ELSE
                                         SkipRecordIn := true;

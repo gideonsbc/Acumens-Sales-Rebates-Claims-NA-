@@ -32,7 +32,7 @@ table 14301915 "AQD CustRbt RebateCustomerType"
             Caption = 'Rebate Customer Name';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup(Vendor.Name where("No." = Field("Rebate Customer No")));
+            CalcFormula = lookup(Customer.Name where("No." = Field("Rebate Customer No")));
         }
         field(50; "G/L Account No."; Code[20])
         {

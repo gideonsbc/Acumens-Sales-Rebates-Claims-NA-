@@ -20,13 +20,20 @@ report 14301917 "AQD Post Cust Rebate Batches"
                 RunBy := RunBy::"Customer Rebate Batch";
 
                 CLEAR(CustomerRebatePostMgt);
-                CustomerRebatePostMgt.SetCustomerRebateBatchParameters(RunBy, "AQD Customer Rebate Batch", FALSE);
+                CustomerRebatePostMgt.SetCustomerRebateBatchParameters(RunBy, "AQD Customer Rebate Batch", FALSE, CalledFromGenerateCustomerRebate);
                 CustomerRebatePostMgt.Run();
                 CurrReport.Break();
             END;
         }
     }
+
+    procedure SetCalledFromGenerateCustomerRebate(CalledFromGenerateCustomerRebateIn: Boolean)
+    begin
+        CalledFromGenerateCustomerRebate := CalledFromGenerateCustomerRebateIn;
+    end;
+
     var
         CustomerRebatePostMgt: Codeunit "AQD Customer Rebate Post Mgt";
         RunBy: Enum "AQD Customer Rebate Posting";
+        CalledFromGenerateCustomerRebate: Boolean;
 }

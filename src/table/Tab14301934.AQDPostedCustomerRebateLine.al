@@ -49,24 +49,24 @@ table 14301934 "AQD Posted Cust Rebate Line"
         {
             Caption = 'Posting Date';
         }
-        field(80; "Vendor Order No."; Code[35])
+        field(80; "Customer Order No."; Code[35])
         {
-            Caption = 'Vendor Order No.';
+            Caption = 'Customer Order No.';
             Editable = false;
         }
-        field(90; "Vendor Shipment No."; Code[35])
+        field(90; "Customer Shipment No."; Code[35])
         {
-            Caption = 'Vendor Shipment No.';
+            Caption = 'Customer Shipment No.';
             Editable = false;
         }
-        field(100; "Vendor Invoice No."; Code[35])
+        field(100; "Customer Invoice No."; Code[35])
         {
-            Caption = 'Vendor Invoice No.';
+            Caption = 'Customer Invoice No.';
             Editable = false;
         }
-        field(110; "Vendor Cr. Memo No."; Code[35])
+        field(110; "Customer Cr. Memo No."; Code[35])
         {
-            Caption = 'Vendor Cr. Memo No.';
+            Caption = 'Customer Cr. Memo No.';
             Editable = false;
         }
         field(120; "Original Document Type"; Enum "Item Ledger Document Type")

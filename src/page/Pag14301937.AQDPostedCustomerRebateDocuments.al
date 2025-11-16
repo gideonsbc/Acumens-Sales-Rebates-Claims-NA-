@@ -91,7 +91,7 @@ page 14301937 "AQD Posted Customer Rebates"
                 field("Sales Amount"; Rec."Sales Amount")
                 {
                     ApplicationArea = All;
-                    Caption = 'Purchase Amount';
+                    Caption = 'Sales Amount';
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                 }
             }
@@ -112,7 +112,7 @@ page 14301937 "AQD Posted Customer Rebates"
                     CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
                 begin
                     clear(CustomerRebatePost);
-                    CustomerRebatePost.CreateSalesDocument(Rec, TRUE);
+                    CustomerRebatePost.CreateSalesFromPostedRebateDocument(Rec, TRUE);
                     CurrPage.UPDATE(false);
                 end;
             }

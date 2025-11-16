@@ -98,7 +98,7 @@ page 14301940 "AQD Posted Cust Rebate Details"
                 field(Amount; Rec.Amount)
                 {
                     ApplicationArea = All;
-                    Caption = 'Purchase Amount';
+                    Caption = 'Sales Amount';
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                 }
                 field("Amount Including VAT"; Rec."Amount Including VAT")

@@ -8,10 +8,11 @@ codeunit 14301917 "AQD Customer Rebate Post Mgt"
         END;
     end;
 
-    procedure SetCustomerRebateBatchParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateBatchIn: Record "AQD Customer Rebate Batch"; ShowResultIn: Boolean)
+    procedure SetCustomerRebateBatchParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateBatchIn: Record "AQD Customer Rebate Batch"; ShowResultIn: Boolean; CalledFromGenerateCustomerRebateIn: Boolean)
     begin
         RunBy := RunByIn;
         ShowResult := ShowResultIn;
+        CalledFromGenerateCustomerRebate := CalledFromGenerateCustomerRebateIn;
         CustomerRebateBatch.CopyFilters(CustomerRebateBatchIn);
     end;
 
@@ -32,13 +33,14 @@ codeunit 14301917 "AQD Customer Rebate Post Mgt"
                 ClearLastError();
                 UpdateWindow(1, CustomerRebateBatch.BatchID);
 
+
                 if CustomerRebateBatch."Last Processing Error Message" <> '' then begin
                     CustomerRebateBatch."Last Processing Error Message" := '';
                     UpdateRecord := true;
                 end;
 
                 Clear(VendorRebatePost);
-                VendorRebatePost.SetVendorRebateBatchParameters(RunBy, CustomerRebateBatch);
+                VendorRebatePost.SetVendorRebateBatchParameters(RunBy, CustomerRebateBatch, CalledFromGenerateCustomerRebate);
                 if VendorRebatePost.Run() then begin
                     SuccessfulCount += 1;
                     UpdateRecord := false;
@@ -118,4 +120,5 @@ codeunit 14301917 "AQD Customer Rebate Post Mgt"
         SuccessfulCount: Integer;
         ErrorCount: Integer;
         ShowResult: Boolean;
+        CalledFromGenerateCustomerRebate: Boolean;
 }
