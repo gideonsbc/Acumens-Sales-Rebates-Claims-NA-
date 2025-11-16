@@ -975,6 +975,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Shortcut Dimension 2 Code" := SalesInvHeaderIn."Shortcut Dimension 2 Code";
                     CustomerRebateLine."Sell-To Customer No." := SalesInvHeaderIn."Sell-To Customer No.";
                     CustomerRebateLine."Bill-To Customer No." := SalesInvHeaderIn."Bill-To Customer No.";
+                    CustomerRebateLine."Bill-To Customer Name" := SalesInvHeaderIn."Bill-To Name";
                 end;
             DocumentType::"Credit Memo":
                 begin
@@ -997,6 +998,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Shortcut Dimension 2 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 2 Code";
                     CustomerRebateLine."Sell-To Customer No." := SalesCrMemoHeaderIn."Sell-To Customer No.";
                     CustomerRebateLine."Bill-To Customer No." := SalesCrMemoHeaderIn."Bill-To Customer No.";
+                    CustomerRebateLine."Bill-To Customer Name" := SalesCrMemoHeaderIn."Bill-To Name";
                 end;
         end;
         //CustomerRebateLine.Exclude := false;

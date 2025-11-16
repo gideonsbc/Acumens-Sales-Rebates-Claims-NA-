@@ -161,6 +161,11 @@ table 14301929 "AQD Customer Rebate Line"
             Caption = 'Posted';
             Editable = false;
         }
+        field(499; "Sell-To Customer Name"; Text[100])
+        {
+            Caption = 'Sell-To Customer Name';
+            Editable = false;
+        }
         field(500; "Sell-To Customer No."; Code[20])
         {
             Caption = 'Sell-To Customer No.';
@@ -169,6 +174,11 @@ table 14301929 "AQD Customer Rebate Line"
         field(501; "Bill-To Customer No."; Code[20])
         {
             Caption = 'Bill-To Customer No.';
+            Editable = false;
+        }
+        field(502; "Bill-To Customer Name"; Text[100])
+        {
+            Caption = 'Bill-To Customer Name';
             Editable = false;
         }
         field(510; "Rebate-To Customer No."; Code[20])

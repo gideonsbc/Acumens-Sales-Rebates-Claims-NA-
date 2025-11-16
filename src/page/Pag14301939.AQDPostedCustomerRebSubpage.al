@@ -50,8 +50,13 @@ page 14301939 "AQD Posted Cust Reb Subpage"
                 field("Sell-To Customer No."; Rec."Sell-To Customer No.")
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Bill-To Customer No."; Rec."Bill-To Customer No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Bill-To Customer Name"; Rec."Bill-To Customer Name")
                 {
                     ApplicationArea = All;
                 }
