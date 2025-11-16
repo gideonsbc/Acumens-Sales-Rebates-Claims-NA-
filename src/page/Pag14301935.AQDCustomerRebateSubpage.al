@@ -48,6 +48,15 @@ page 14301935 "AQD Customer Rebate Subpage"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Description field.', Comment = '%';
+                    Visible = false;
+                }
+                field("Sell-To Customer No."; Rec."Sell-To Customer No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Bill-To Customer No."; Rec."Bill-To Customer No.")
+                {
+                    ApplicationArea = All;
                 }
                 field("Order Date"; Rec."Order Date")
                 {

@@ -47,11 +47,20 @@ page 14301939 "AQD Posted Cust Reb Subpage"
                     Editable = false;
                     ToolTip = 'Specifies the value of the Order No. field.', Comment = '%';
                 }
+                field("Sell-To Customer No."; Rec."Sell-To Customer No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Bill-To Customer No."; Rec."Bill-To Customer No.")
+                {
+                    ApplicationArea = All;
+                }
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the value of the Description field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Order Date"; Rec."Order Date")
                 {
