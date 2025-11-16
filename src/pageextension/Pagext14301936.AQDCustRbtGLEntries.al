@@ -8,10 +8,10 @@ pageextension 14301936 "AQD Cust Rbt GL Entry Ext" extends "General Ledger Entri
             {
                 ApplicationArea = All;
             }
-            field("AQD CR Sell-To Customer No."; Rec."AQD CR Sell-To Customer No.")
-            {
-                ApplicationArea = All;
-            }
+            // field("AQD CR Sell-To Customer No."; Rec."AQD CR Sell-To Customer No.")
+            // {
+            //     ApplicationArea = All;
+            // }
             field("AQD CR Bill-To Customer No."; Rec."AQD CR Bill-To Customer No.")
             {
                 ApplicationArea = All;

@@ -30,12 +30,17 @@ report 14301911 "AQD Generate Customer Rebates"
 
                 //Summary
                 Clear(SummaryArray);
-                SummaryArray[1] := SellToCust;
-                SummaryArray[2] := RespCenter;
-                SummaryArray[3] := Location;
-                SummaryArray[4] := ShortDim1;
-                SummaryArray[5] := ShortDim2;
-                SummaryArray[6] := BillToCust;
+                //SummaryArray[1] := SellToCust;
+                // SummaryArray[2] := RespCenter;
+                // SummaryArray[3] := Location;
+                // SummaryArray[4] := ShortDim1;
+                // SummaryArray[5] := ShortDim2;
+                // SummaryArray[6] := BillToCust;
+
+                SummaryArray[1] := RespCenter;
+                SummaryArray[2] := Location;
+                SummaryArray[3] := ShortDim1;
+                SummaryArray[4] := ShortDim2;
 
                 Clear(RebateCalculationMgt);
                 RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false, ShptRcptNo, InvCrMemoNo);
@@ -66,21 +71,21 @@ report 14301911 "AQD Generate Customer Rebates"
                 group("Create Rebate Summary By")
                 {
                     Caption = 'Create Rebate Summary By';
-                    field(SellToCust; SellToCust)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Sell-To Customer No.';
-                        trigger OnValidate()
-                        begin
-                            BillToCust := SellToCust;
-                        end;
-                    }
-                    field(BillToCust; BillToCust)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Bill-To Customer No.';
-                        Editable = NOT SellToCust;
-                    }
+                    // field(SellToCust; SellToCust)
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Sell-To Customer No.';
+                    //     trigger OnValidate()
+                    //     begin
+                    //         BillToCust := SellToCust;
+                    //     end;
+                    // }
+                    // field(BillToCust; BillToCust)
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Bill-To Customer No.';
+                    //     Editable = NOT SellToCust;
+                    // }
                     field(RespCenter; RespCenter)
                     {
                         ApplicationArea = All;
@@ -141,8 +146,8 @@ report 14301911 "AQD Generate Customer Rebates"
         Location: Boolean;
         ShortDim1: Boolean;
         ShortDim2: Boolean;
-        SellToCust: Boolean;
-        BillToCust: Boolean;
+        // SellToCust: Boolean;
+        // BillToCust: Boolean;
         RespCenter: Boolean;
         SummaryArray: array[6] of Boolean;
         StartPostingDate: Date;

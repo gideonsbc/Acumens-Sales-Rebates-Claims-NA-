@@ -11,106 +11,106 @@ table 14301933 "AQD Posted Cust Rebate Header"
             Caption = 'No.';
             Editable = false;
         }
-        field(20; "Sell-To Customer No."; Code[20])
-        {
-            Caption = 'Sell-To Customer No.';
-            Editable = false;
-        }
-        field(30; "Sell-To Customer Name"; Text[100])
-        {
-            Caption = 'Sell-To Customer Name';
-            Editable = false;
-        }
-        field(40; "Sell-To Customer Name 2"; Text[50])
-        {
-            Caption = 'Sell-To Customer Name 2';
-            Editable = false;
-        }
-        field(50; "Sell-To Address"; Text[100])
-        {
-            Caption = 'Sell-To Address';
-            Editable = false;
-        }
-        field(60; "Sell-To Address 2"; Text[50])
-        {
-            Caption = 'Sell-To Address 2';
-            Editable = false;
-        }
-        field(70; "Sell-To City"; Text[30])
-        {
-            Caption = 'Sell-To City';
-            Editable = false;
-        }
-        field(80; "Sell-To Contact"; Text[100])
-        {
-            Caption = 'Sell-To Contact';
-            Editable = false;
-        }
-        field(90; "Sell-To Post Code"; Code[20])
-        {
-            Caption = 'Sell-To ZIP Code';
-            Editable = false;
-        }
-        field(100; "Sell-To County"; Text[30])
-        {
-            Caption = 'Sell-To State';
-            Editable = false;
-        }
-        field(110; "Sell-To Country/Region Code"; Code[10])
-        {
-            Caption = 'Sell-To Country/Region Code';
-            Editable = false;
-        }
-        field(150; "Bill-To Customer No."; Code[20])
-        {
-            Caption = 'Bill-To Customer No.';
-            Editable = false;
-        }
-        field(170; "Bill-To Name"; Text[100])
-        {
-            Caption = 'Name';
-            Editable = false;
-        }
-        field(180; "Bill-To Name 2"; Text[50])
-        {
-            Caption = 'Name 2';
-            Editable = false;
-        }
-        field(190; "Bill-To Address"; Text[100])
-        {
-            Caption = 'Address';
-            Editable = false;
-        }
-        field(200; "Bill-To Address 2"; Text[50])
-        {
-            Caption = 'Address 2';
-            Editable = false;
-        }
-        field(210; "Bill-To City"; Text[30])
-        {
-            Caption = 'City';
-            Editable = false;
-        }
-        field(220; "Bill-To Contact"; Text[100])
-        {
-            Caption = 'Contact';
-            Editable = false;
-        }
-        field(230; "Bill-To Post Code"; Code[20])
-        {
-            Caption = 'ZIP Code';
-            Editable = false;
-        }
-        field(240; "Bill-To County"; Text[30])
-        {
-            Caption = 'Bill-to State';
-            Editable = false;
-        }
-        field(250; "Bill-To Country/Region Code"; Code[10])
-        {
-            Caption = 'Country/Region Code';
-            Editable = false;
-        }
+        // field(20; "Sell-To Customer No."; Code[20])
+        // {
+        //     Caption = 'Sell-To Customer No.';
+        //     Editable = false;
+        // }
+        // field(30; "Sell-To Customer Name"; Text[100])
+        // {
+        //     Caption = 'Sell-To Customer Name';
+        //     Editable = false;
+        // }
+        // field(40; "Sell-To Customer Name 2"; Text[50])
+        // {
+        //     Caption = 'Sell-To Customer Name 2';
+        //     Editable = false;
+        // }
+        // field(50; "Sell-To Address"; Text[100])
+        // {
+        //     Caption = 'Sell-To Address';
+        //     Editable = false;
+        // }
+        // field(60; "Sell-To Address 2"; Text[50])
+        // {
+        //     Caption = 'Sell-To Address 2';
+        //     Editable = false;
+        // }
+        // field(70; "Sell-To City"; Text[30])
+        // {
+        //     Caption = 'Sell-To City';
+        //     Editable = false;
+        // }
+        // field(80; "Sell-To Contact"; Text[100])
+        // {
+        //     Caption = 'Sell-To Contact';
+        //     Editable = false;
+        // }
+        // field(90; "Sell-To Post Code"; Code[20])
+        // {
+        //     Caption = 'Sell-To ZIP Code';
+        //     Editable = false;
+        // }
+        // field(100; "Sell-To County"; Text[30])
+        // {
+        //     Caption = 'Sell-To State';
+        //     Editable = false;
+        // }
+        // field(110; "Sell-To Country/Region Code"; Code[10])
+        // {
+        //     Caption = 'Sell-To Country/Region Code';
+        //     Editable = false;
+        // }
+        // field(150; "Bill-To Customer No."; Code[20])
+        // {
+        //     Caption = 'Bill-To Customer No.';
+        //     Editable = false;
+        // }
+        // field(170; "Bill-To Name"; Text[100])
+        // {
+        //     Caption = 'Name';
+        //     Editable = false;
+        // }
+        // field(180; "Bill-To Name 2"; Text[50])
+        // {
+        //     Caption = 'Name 2';
+        //     Editable = false;
+        // }
+        // field(190; "Bill-To Address"; Text[100])
+        // {
+        //     Caption = 'Address';
+        //     Editable = false;
+        // }
+        // field(200; "Bill-To Address 2"; Text[50])
+        // {
+        //     Caption = 'Address 2';
+        //     Editable = false;
+        // }
+        // field(210; "Bill-To City"; Text[30])
+        // {
+        //     Caption = 'City';
+        //     Editable = false;
+        // }
+        // field(220; "Bill-To Contact"; Text[100])
+        // {
+        //     Caption = 'Contact';
+        //     Editable = false;
+        // }
+        // field(230; "Bill-To Post Code"; Code[20])
+        // {
+        //     Caption = 'ZIP Code';
+        //     Editable = false;
+        // }
+        // field(240; "Bill-To County"; Text[30])
+        // {
+        //     Caption = 'Bill-to State';
+        //     Editable = false;
+        // }
+        // field(250; "Bill-To Country/Region Code"; Code[10])
+        // {
+        //     Caption = 'Country/Region Code';
+        //     Editable = false;
+        // }
         field(260; "Rebate-To Customer No."; Code[20])
         {
             Caption = 'Rebate-To Customer No.';
@@ -254,7 +254,7 @@ table 14301933 "AQD Posted Cust Rebate Header"
         }
         field(560; "Customer Rebate Status"; Enum "AQD Customer Rebate Status")
         {
-            Caption = 'Customer Rebate Status';
+            Caption = 'Rebate Status';
             DataClassification = CustomerContent;
         }
         field(570; "AQD Calculation Date"; Enum "AQD CustRebateCalculation Type")

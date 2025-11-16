@@ -50,7 +50,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         //RebateItemLdgrEntry: Record "AQD Rebate Item Ledger Entry";
         GenJnlPost: Codeunit "Gen. Jnl.-Post";
         NoSeriesMgt: Codeunit "No. Series";
-        TempRebateSummary: Record "Invoice Posting Buffer";
+        TmpPostCustomerRebateByBillTo: Record "Invoice Posting Buffer" temporary;
         RunBy: Enum "AQD Customer Rebate Posting";
         GlobalGroupID: Text[20];
         PurchaseRebateForText: Label 'Purchase Rebate for ';
@@ -112,9 +112,10 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
         OnBeforePostCustomerRebates(CustomerRebateHeader);
 
-        TempRebateSummary.RESET;
-        IF TempRebateSummary.IsTemporary then
-            TempRebateSummary.DeleteAll();
+        TmpPostCustomerRebateByBillTo.RESET;
+        IF TmpPostCustomerRebateByBillTo.IsTemporary then
+            TmpPostCustomerRebateByBillTo.DeleteAll();
+
         GlobalGroupID := 'G00000001';
 
         RebateSetup.Get();
@@ -240,18 +241,38 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
             MoveCustomerRebateLine(CustomerRebateHeader);
             MoveCustomerRebateComments(CustomerRebateHeader);
-
-            CustomerRebateHeader.Delete();
+            TmpPostCustomerRebateByBillTo.RESET;
 
             IF RebateSetup."Rebate Cr. Memo Posting" <> RebateSetup."Rebate Cr. Memo Posting"::Manual THEN BEGIN
-                BillToCustomer.GET(PostedCustRebateHeader."Bill-To Customer No.");
+                TmpInovoiceBuffer.RESET;
+                IF TmpInovoiceBuffer.IsTemporary then
+                    TmpInovoiceBuffer.DeleteAll();
 
-                Case RebateSetup."Post Customer Rebate Using" OF
-                    RebateSetup."Post Customer Rebate Using"::"Sales Document":
-                        BEGIN
-                            CreateSalesDocument(PostedCustRebateHeader, false);
+                TmpCrMemoBuffer.RESET;
+                IF TmpCrMemoBuffer.IsTemporary then
+                    TmpCrMemoBuffer.DeleteAll();
 
-                            IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Auto Create and Post" THEN BEGIN
+                IF TmpPostCustomerRebateByBillTo.FindFirst() THEN BEGIN
+                    REPEAT
+                        BillToCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
+                        Case RebateSetup."Post Customer Rebate Using" OF
+                            RebateSetup."Post Customer Rebate Using"::"Sales Document":
+                                BEGIN
+                                    CreateSalesDocument(PostedCustRebateHeader, false);
+                                END;
+                            RebateSetup."Post Customer Rebate Using"::"Sales Journal":
+                                BEGIN
+                                    CreateSalesJournal(PostedCustRebateHeader);
+                                END;
+                        END;
+                    UNTIL TmpPostCustomerRebateByBillTo.Next() = 0;
+                END;
+
+                IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Auto Create and Post" THEN BEGIN
+                    Case RebateSetup."Post Customer Rebate Using" OF
+                        RebateSetup."Post Customer Rebate Using"::"Sales Document":
+                            BEGIN
+
                                 TmpInovoiceBuffer.RESET;
                                 IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
                                     REPEAT
@@ -277,46 +298,55 @@ codeunit 14301916 "AQD Customer Rebate Post"
                                         END;
                                     UNTIL TmpCrMemoBuffer.Next() = 0;
                                 END;
-                            END
-                        END;
-                    RebateSetup."Post Customer Rebate Using"::"Sales Journal By Rebate Doc":
-                        BEGIN
-                            CreateRebateToGLByRebateDocument(PostedCustRebateHeader);
-                            IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Auto Create and Post" THEN BEGIN
+                            END;
+                        RebateSetup."Post Customer Rebate Using"::"Sales Journal":
+                            BEGIN
                                 GenJnlLine.RESET;
                                 GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
                                 GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
                                 IF GenJnlLine.FindFirst() THEN
                                     CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
                             END;
-                        END;
-                    RebateSetup."Post Customer Rebate Using"::"Sales Journal By Rebate Doc Line":
-                        BEGIN
-                            CreateRebateToGLByRebateLine(PostedCustRebateHeader);
-                            IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Auto Create and Post" THEN BEGIN
-                                GenJnlLine.RESET;
-                                GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
-                                GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
-                                IF GenJnlLine.FindFirst() THEN
-                                    CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
-                            END;
-                        END;
+                    // RebateSetup."Post Customer Rebate Using"::"Sales Journal By Rebate Doc Line":
+                    //     BEGIN
+                    //         CreateRebateToGLByRebateLine(PostedCustRebateHeader);
+                    //         IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Auto Create and Post" THEN BEGIN
+                    //             GenJnlLine.RESET;
+                    //             GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+                    //             GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                    //             IF GenJnlLine.FindFirst() THEN
+                    //                 CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+                    //         END;
+                    //     END;
+                    END;
                 END;
+            END;
 
-                IF CustomerRebateHeader.BatchID <> '' THEN BEGIN
-                    LocalCustomerRebateHeader.RESET;
-                    LocalCustomerRebateHeader.SetRange("Batch Entry No.", CustomerRebateHeader."Batch Entry No.");
-                    LocalCustomerRebateHeader.SetRange(BatchID, CustomerRebateHeader.BatchID);
-                    IF NOT LocalCustomerRebateHeader.FindFirst() THEN begin
-                        CustomerRebateBatch.RESET;
-                        CustomerRebateBatch.SetRange("Entry No.", CustomerRebateHeader."Batch Entry No.");
-                        CustomerRebateBatch.SETRANGE(BatchID, CustomerRebateHeader.BatchID);
-                        IF CustomerRebateBatch.FindFirst() THEN BEGIN
-                            PostedCustomerRebateBatch.Init();
-                            PostedCustomerRebateBatch.TransferFields(CustomerRebateBatch);
-                            PostedCustomerRebateBatch.Insert();
-                            CustomerRebateBatch.Delete();
-                        END;
+            CustomerRebateDetails.RESET;
+            CustomerRebateDetails.SetRange("Rebate No.", CustomerRebateHeader."No.");
+            CustomerRebateDetails.DeleteAll();
+
+            CustomerRebateLine.DeleteAll();
+
+            CustomerRebatecomments.Reset();
+            CustomerRebatecomments.SetRange("Rebate No.", CustomerRebateHeader."No.");
+            CustomerRebatecomments.DeleteAll();
+
+            CustomerRebateHeader.Delete();
+
+            IF CustomerRebateHeader.BatchID <> '' THEN BEGIN
+                LocalCustomerRebateHeader.RESET;
+                LocalCustomerRebateHeader.SetRange("Batch Entry No.", CustomerRebateHeader."Batch Entry No.");
+                LocalCustomerRebateHeader.SetRange(BatchID, CustomerRebateHeader.BatchID);
+                IF NOT LocalCustomerRebateHeader.FindFirst() THEN begin
+                    CustomerRebateBatch.RESET;
+                    CustomerRebateBatch.SetRange("Entry No.", CustomerRebateHeader."Batch Entry No.");
+                    CustomerRebateBatch.SETRANGE(BatchID, CustomerRebateHeader.BatchID);
+                    IF CustomerRebateBatch.FindFirst() THEN BEGIN
+                        PostedCustomerRebateBatch.Init();
+                        PostedCustomerRebateBatch.TransferFields(CustomerRebateBatch);
+                        PostedCustomerRebateBatch.Insert();
+                        CustomerRebateBatch.Delete();
                     END;
                 END;
             END;
@@ -331,13 +361,24 @@ codeunit 14301916 "AQD Customer Rebate Post"
         CustomerRebateLine.SetRange("Rebate No.", CustomerRebateHeader."No.");
         IF CustomerRebateLine.FindFirst() THEN BEGIN
             repeat
+                TmpPostCustomerRebateByBillTo.RESET;
+                TmpPostCustomerRebateByBillTo.SetRange("G/L Account", CustomerRebateLine."Rebate No.");
+                TmpPostCustomerRebateByBillTo.SetRange("Gen. Bus. Posting Group", CustomerRebateLine."Bill-To Customer No.");
+                IF NOT TmpPostCustomerRebateByBillTo.FINDFIRST THEN BEGIN
+                    TmpPostCustomerRebateByBillTo.Init();
+                    TmpPostCustomerRebateByBillTo."Group ID" := GlobalGroupID;
+                    TmpPostCustomerRebateByBillTo."G/L Account" := CustomerRebateLine."Rebate No.";
+                    TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group" := CustomerRebateLine."Bill-To Customer No.";
+                    TmpPostCustomerRebateByBillTo.INSERT;
+                    GlobalGroupID := IncStr(GlobalGroupID);
+                END;
+
                 //IF CustomerRebateLine.Posted or CustomerRebateLine.Exclude THEN BEGIN
                 MoveCustomerRebateDetails(CustomerRebateLine);
 
                 PostedCustomerRebateLine.Init();
                 PostedCustomerRebateLine.TransferFields(CustomerRebateLine);
-                if PostedCustomerRebateLine.Insert() THEN
-                    CustomerRebateLine.Delete();
+                PostedCustomerRebateLine.Insert();
             //END;
             until CustomerRebateLine.Next() = 0;
         END;
@@ -354,8 +395,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             REPEAT
                 PostedCustomerRebateDetails.Init();
                 PostedCustomerRebateDetails.TransferFields(CustomerRebateDetails);
-                if PostedCustomerRebateDetails.Insert() then
-                    CustomerRebateDetails.Delete();
+                PostedCustomerRebateDetails.Insert();
             UNTIL CustomerRebateDetails.Next() = 0;
         END;
     END;
@@ -803,14 +843,6 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
         RebateSetup.GET;
 
-        TmpInovoiceBuffer.RESET;
-        IF TmpInovoiceBuffer.IsTemporary then
-            TmpInovoiceBuffer.DeleteAll();
-
-        TmpCrMemoBuffer.RESET;
-        IF TmpCrMemoBuffer.IsTemporary then
-            TmpCrMemoBuffer.DeleteAll();
-
         IF PostedCustomerRebateHeader."Customer Rebate Status" <> PostedCustomerRebateHeader."Customer Rebate Status"::" " THEN
             Error(RebateStatusError, PostedCustomerRebateHeader."Customer Rebate Status");
 
@@ -1209,135 +1241,135 @@ codeunit 14301916 "AQD Customer Rebate Post"
     end;
 
     //>> Create Sales Journal
-    local procedure CreateRebateToGLByRebateDocument(var PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header")
-    var
-        GenJnlTemplate: Record "Gen. Journal Template";
-        GenJnlBatch: Record "Gen. Journal Line";
-        PostedCustRebateLine: Record "AQD Posted Cust Rebate Line";
-        PostedCustRebateDetailLine: Record "AQD Posted Cust Reb Details";
-        LocalBillToCustomer: Record Customer;
-        LocalBillToCustomerType: Record "AQD CustRbt RebateCustomerType";
-        DocumentNo: Code[20];
-        LineNo: Integer;
-        RebateStatusError: Label 'Rebate Status must not be %1.';
-    begin
-        RebateSetup.TestField("Sales Journal Template Name");
-        RebateSetup.TestField("Sales Journal Batch Name");
+    // local procedure CreateRebateToGLByRebateDocument(var PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header")
+    // var
+    //     GenJnlTemplate: Record "Gen. Journal Template";
+    //     GenJnlBatch: Record "Gen. Journal Line";
+    //     PostedCustRebateLine: Record "AQD Posted Cust Rebate Line";
+    //     PostedCustRebateDetailLine: Record "AQD Posted Cust Reb Details";
+    //     LocalBillToCustomer: Record Customer;
+    //     LocalBillToCustomerType: Record "AQD CustRbt RebateCustomerType";
+    //     DocumentNo: Code[20];
+    //     LineNo: Integer;
+    //     RebateStatusError: Label 'Rebate Status must not be %1.';
+    // begin
+    //     RebateSetup.TestField("Sales Journal Template Name");
+    //     RebateSetup.TestField("Sales Journal Batch Name");
 
-        IF PostedCustRebateHeader."Customer Rebate Status" <> PostedCustRebateHeader."Customer Rebate Status"::" " THEN
-            Error(RebateStatusError, PostedCustRebateHeader."Customer Rebate Status");
+    //     IF PostedCustRebateHeader."Customer Rebate Status" <> PostedCustRebateHeader."Customer Rebate Status"::" " THEN
+    //         Error(RebateStatusError, PostedCustRebateHeader."Customer Rebate Status");
 
-        LocalBillToCustomer.Get(PostedCustRebateHeader."Bill-To Customer No.");
-        LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Rebate Customer Type");
+    //     LocalBillToCustomer.Get(PostedCustRebateHeader."Bill-To Customer No.");
+    //     LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Rebate Customer Type");
 
-        PostedCustRebateHeader.CalcFields("Customer Rebate Amount");
+    //     PostedCustRebateHeader.CalcFields("Customer Rebate Amount");
 
-        GenJnlLine.Reset;
-        GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
-        GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
-        if GenJnlLine.FINDLAST() then
-            LineNo := GenJnlLine."Line No.";
+    //     GenJnlLine.Reset;
+    //     GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+    //     GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+    //     if GenJnlLine.FINDLAST() then
+    //         LineNo := GenJnlLine."Line No.";
 
-        Clear(DocumentNo);
-        GeneralJournalInit(DocumentNo);
-        IF DocumentNo = '' then
-            DocumentNo := PostedCustRebateHeader."No.";
+    //     Clear(DocumentNo);
+    //     GeneralJournalInit(DocumentNo);
+    //     IF DocumentNo = '' then
+    //         DocumentNo := PostedCustRebateHeader."No.";
 
-        //GenJnlTemplate.Get(JnlBatch."Journal Template Name");
-        GenJnlTemplate.GET(RebateSetup."Sales Journal Template Name");
+    //     //GenJnlTemplate.Get(JnlBatch."Journal Template Name");
+    //     GenJnlTemplate.GET(RebateSetup."Sales Journal Template Name");
 
-        LineNo += 10000;
-        GenJnlLine.Init;
-        GenJnlLine."Journal Template Name" := RebateSetup."Sales Journal Template Name";
-        GenJnlLine."Journal Batch Name" := RebateSetup."Sales Journal Batch Name";
-        GenJnlLine."Line No." := LineNo;
-        GenJnlLine.Insert(true);
+    //     LineNo += 10000;
+    //     GenJnlLine.Init;
+    //     GenJnlLine."Journal Template Name" := RebateSetup."Sales Journal Template Name";
+    //     GenJnlLine."Journal Batch Name" := RebateSetup."Sales Journal Batch Name";
+    //     GenJnlLine."Line No." := LineNo;
+    //     GenJnlLine.Insert(true);
 
-        GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
-        GenJnlLine."Reason Code" := GenJnlBatch."Reason Code";
-        GenJnlLine.UpdateJournalBatchID();
-        GenJnlLine.SetHideValidation(true);
-        GenJnlLine."Posting Date" := PostedCustRebateHeader."Posting Date";
-        if PostedCustRebateHeader."Customer Rebate Amount" > 0 then
-            GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
-        else if PostedCustRebateHeader."Customer Rebate Amount" < 0 then
-            GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
-        GenJnlLine."Document No." := DocumentNo;
-        GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
-        GenJnlLine.Validate("Account No.", LocalBillToCustomerType."G/L Account No.");
-        GenJnlLine.Description := PostedCustRebateHeader."Posting Description";
-        GenJnlLine.Validate(Amount, PostedCustRebateHeader."Customer Rebate Amount");
-        GenJnlLine."Shortcut Dimension 1 Code" := PostedCustRebateHeader."Shortcut Dimension 1 Code";
-        GenJnlLine.Validate("Shortcut Dimension 1 Code");
-        GenJnlLine."Shortcut Dimension 2 Code" := PostedCustRebateHeader."Shortcut Dimension 2 Code";
-        GenJnlLine.Validate("Shortcut Dimension 2 Code");
-        GenJnlLine."External Document No." := PostedCustRebateHeader."External Document No.";
-        if GenJnlLine."External Document No." = '' then
-            GenJnlLine."External Document No." := GenJnlLine."Document No.";
-        IF GenJnlLine."Document Type" = GenJnlLine."Document Type"::Invoice THEN
-            GenJnlLine."AQD Cust Rebate Document Type" := GenJnlLine."AQD Cust Rebate Document Type"::Invoice
-        ELSE IF GenJnlLine."Document Type" = GenJnlLine."Document Type"::"Credit Memo" THEN
-            GenJnlLine."AQD Cust Rebate Document Type" := GenJnlLine."AQD Cust Rebate Document Type"::"Credit Memo";
-        GenJnlLine."AQD Cust Rebate Document No." := PostedCustRebateHeader."No.";
-        GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
-        GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-        GenJnlLine.Validate("Bal. Account No.", LocalBillToCustomerType."Bal. G/ Account No.");
-        GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
-        GenJnlLine."AQD Cust Rebate Journal" := TRUE;
-        GenJnlLine."AQD CR Sell-To Customer No." := PostedCustRebateHeader."Sell-To Customer No.";
-        GenJnlLine."AQD CR Bill-To Customer No." := PostedCustRebateHeader."Bill-To Customer No.";
-        GenJnlLine.Modify(TRUE);
-        if GenJnlLine.Amount = 0 then
-            GenJnlLine.Delete();
+    //     GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
+    //     GenJnlLine."Reason Code" := GenJnlBatch."Reason Code";
+    //     GenJnlLine.UpdateJournalBatchID();
+    //     GenJnlLine.SetHideValidation(true);
+    //     GenJnlLine."Posting Date" := PostedCustRebateHeader."Posting Date";
+    //     if PostedCustRebateHeader."Customer Rebate Amount" > 0 then
+    //         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
+    //     else if PostedCustRebateHeader."Customer Rebate Amount" < 0 then
+    //         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
+    //     GenJnlLine."Document No." := DocumentNo;
+    //     GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
+    //     GenJnlLine.Validate("Account No.", LocalBillToCustomerType."G/L Account No.");
+    //     GenJnlLine.Description := PostedCustRebateHeader."Posting Description";
+    //     GenJnlLine.Validate(Amount, PostedCustRebateHeader."Customer Rebate Amount");
+    //     GenJnlLine."Shortcut Dimension 1 Code" := PostedCustRebateHeader."Shortcut Dimension 1 Code";
+    //     GenJnlLine.Validate("Shortcut Dimension 1 Code");
+    //     GenJnlLine."Shortcut Dimension 2 Code" := PostedCustRebateHeader."Shortcut Dimension 2 Code";
+    //     GenJnlLine.Validate("Shortcut Dimension 2 Code");
+    //     GenJnlLine."External Document No." := PostedCustRebateHeader."External Document No.";
+    //     if GenJnlLine."External Document No." = '' then
+    //         GenJnlLine."External Document No." := GenJnlLine."Document No.";
+    //     IF GenJnlLine."Document Type" = GenJnlLine."Document Type"::Invoice THEN
+    //         GenJnlLine."AQD Cust Rebate Document Type" := GenJnlLine."AQD Cust Rebate Document Type"::Invoice
+    //     ELSE IF GenJnlLine."Document Type" = GenJnlLine."Document Type"::"Credit Memo" THEN
+    //         GenJnlLine."AQD Cust Rebate Document Type" := GenJnlLine."AQD Cust Rebate Document Type"::"Credit Memo";
+    //     GenJnlLine."AQD Cust Rebate Document No." := PostedCustRebateHeader."No.";
+    //     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
+    //     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
+    //     GenJnlLine.Validate("Bal. Account No.", LocalBillToCustomerType."Bal. G/ Account No.");
+    //     GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
+    //     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
+    //     //GenJnlLine."AQD CR Sell-To Customer No." := PostedCustRebateHeader."Sell-To Customer No.";
+    //     GenJnlLine."AQD CR Bill-To Customer No." := PostedCustRebateHeader."Bill-To Customer No.";
+    //     GenJnlLine.Modify(TRUE);
+    //     if GenJnlLine.Amount = 0 then
+    //         GenJnlLine.Delete();
 
-        PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Created;
-        PostedCustRebateHeader."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc";
-        PostedCustRebateHeader."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
-        PostedCustRebateHeader."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
-        PostedCustRebateHeader."Sales Jnl Line No." := GenJnlLine."Line No.";
-        PostedCustRebateHeader.Modify();
+    //     PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Created;
+    //     PostedCustRebateHeader."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc";
+    //     PostedCustRebateHeader."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
+    //     PostedCustRebateHeader."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
+    //     PostedCustRebateHeader."Sales Jnl Line No." := GenJnlLine."Line No.";
+    //     PostedCustRebateHeader.Modify();
 
-        PostedCustRebateLine.RESET;
-        PostedCustRebateLine.SetRange("Rebate No.", PostedCustRebateHeader."No.");
-        PostedCustRebateLine.SetRange("Customer Rebate Status", PostedCustRebateLine."Customer Rebate Status"::" ");
-        PostedCustRebateLine.SetRange("Do Not Credit", FALSE);
-        IF PostedCustRebateLine.FindFirst() THEN BEGIN
-            REPEAT
-                PostedCustRebateLine."Customer Rebate Status" := PostedCustRebateLine."Customer Rebate Status"::Created;
-                PostedCustRebateLine."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc";
-                PostedCustRebateLine."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
-                PostedCustRebateLine."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
-                PostedCustRebateLine."Sales Jnl Line No." := GenJnlLine."Line No.";
-                PostedCustRebateLine.Modify();
+    //     PostedCustRebateLine.RESET;
+    //     PostedCustRebateLine.SetRange("Rebate No.", PostedCustRebateHeader."No.");
+    //     PostedCustRebateLine.SetRange("Customer Rebate Status", PostedCustRebateLine."Customer Rebate Status"::" ");
+    //     PostedCustRebateLine.SetRange("Do Not Credit", FALSE);
+    //     IF PostedCustRebateLine.FindFirst() THEN BEGIN
+    //         REPEAT
+    //             PostedCustRebateLine."Customer Rebate Status" := PostedCustRebateLine."Customer Rebate Status"::Created;
+    //             PostedCustRebateLine."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc";
+    //             PostedCustRebateLine."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
+    //             PostedCustRebateLine."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
+    //             PostedCustRebateLine."Sales Jnl Line No." := GenJnlLine."Line No.";
+    //             PostedCustRebateLine.Modify();
 
-                PostedCustRebateDetailLine.RESET;
-                PostedCustRebateDetailLine.SetRange("Rebate No.", PostedCustRebateLine."Rebate No.");
-                PostedCustRebateDetailLine.SetRange("Rebate Line No.", PostedCustRebateLine."Line No.");
-                PostedCustRebateDetailLine.SetRange("Do Not Credit", false);
-                If PostedCustRebateDetailLine.FindFirst() THEN begin
-                    repeat
-                        PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::Created;
-                        PostedCustRebateDetailLine."Rebate Sales Doc Type" := PostedCustRebateDetailLine."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc";
-                        PostedCustRebateDetailLine."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
-                        PostedCustRebateDetailLine."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
-                        PostedCustRebateDetailLine."Sales Jnl Line No." := GenJnlLine."Line No.";
-                        PostedCustRebateDetailLine.Modify();
+    //             PostedCustRebateDetailLine.RESET;
+    //             PostedCustRebateDetailLine.SetRange("Rebate No.", PostedCustRebateLine."Rebate No.");
+    //             PostedCustRebateDetailLine.SetRange("Rebate Line No.", PostedCustRebateLine."Line No.");
+    //             PostedCustRebateDetailLine.SetRange("Do Not Credit", false);
+    //             If PostedCustRebateDetailLine.FindFirst() THEN begin
+    //                 repeat
+    //                     PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::Created;
+    //                     PostedCustRebateDetailLine."Rebate Sales Doc Type" := PostedCustRebateDetailLine."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc";
+    //                     PostedCustRebateDetailLine."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
+    //                     PostedCustRebateDetailLine."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
+    //                     PostedCustRebateDetailLine."Sales Jnl Line No." := GenJnlLine."Line No.";
+    //                     PostedCustRebateDetailLine.Modify();
 
-                    // RebateItemLdgrEntry.RESET;
-                    // RebateItemLdgrEntry.SetRange("AQD Rebate No", PostedCustRebateDetailLine."Rebate No.");
-                    // RebateItemLdgrEntry.SetRange("AQD Rebate Line No", PostedCustRebateDetailLine."Rebate Line No.");
-                    // RebateItemLdgrEntry.SetRange("AQD Rebate Detail Line No.", PostedCustRebateDetailLine."Line No.");
-                    // IF RebateItemLdgrEntry.FindFirst() THEN begin
-                    //     RebateItemLdgrEntry."AQD Rebate Status" := RebateItemLdgrEntry."AQD Rebate Status"::Created;
-                    //     RebateItemLdgrEntry.Modify;
-                    // end;
-                    until PostedCustRebateDetailLine.Next() = 0;
-                end;
-            UNTIL PostedCustRebateLine.Next() = 0;
-        END;
-    end;
+    //                 // RebateItemLdgrEntry.RESET;
+    //                 // RebateItemLdgrEntry.SetRange("AQD Rebate No", PostedCustRebateDetailLine."Rebate No.");
+    //                 // RebateItemLdgrEntry.SetRange("AQD Rebate Line No", PostedCustRebateDetailLine."Rebate Line No.");
+    //                 // RebateItemLdgrEntry.SetRange("AQD Rebate Detail Line No.", PostedCustRebateDetailLine."Line No.");
+    //                 // IF RebateItemLdgrEntry.FindFirst() THEN begin
+    //                 //     RebateItemLdgrEntry."AQD Rebate Status" := RebateItemLdgrEntry."AQD Rebate Status"::Created;
+    //                 //     RebateItemLdgrEntry.Modify;
+    //                 // end;
+    //                 until PostedCustRebateDetailLine.Next() = 0;
+    //             end;
+    //         UNTIL PostedCustRebateLine.Next() = 0;
+    //     END;
+    // end;
 
-    local procedure CreateRebateToGLByRebateLine(var PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header")
+    local procedure CreateSalesJournal(var PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header")
     var
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlBatch: Record "Gen. Journal Line";
@@ -1356,8 +1388,11 @@ codeunit 14301916 "AQD Customer Rebate Post"
         IF PostedCustRebateHeader."Customer Rebate Status" <> PostedCustRebateHeader."Customer Rebate Status"::" " THEN
             Error(RebateStatusError, PostedCustRebateHeader."Customer Rebate Status");
 
+        TmpPostCustomerRebateByBillTo.TestField("Gen. Bus. Posting Group"); // Bill-To Customer No.
+
         PostedCustRebateLine.Reset();
         PostedCustRebateLine.SetRange("Rebate No.", PostedCustRebateHeader."No.");
+        PostedCustRebateLine.SetRange("Bill-To Customer No.", TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
         PostedCustRebateLine.SetRange("Customer Rebate Status", PostedCustRebateLine."Customer Rebate Status"::" ");
         PostedCustRebateLine.SetRange("Do Not Credit", false);
         if PostedCustRebateLine.FindSet() then begin
@@ -1367,7 +1402,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 IF DocumentNo = '' then
                     DocumentNo := PostedCustRebateHeader."No.";
 
-                LocalBillToCustomer.Get(PostedCustRebateHeader."Bill-To Customer No.");
+                LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
                 LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Rebate Customer Type");
 
                 PostedCustRebateLine.CalcFields("Customer Rebate Amount");
@@ -1418,13 +1453,13 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                 GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                 GenJnlLine."AQD Cust Rebate Journal" := TRUE;
-                GenJnlLine."AQD CR Sell-To Customer No." := PostedCustRebateLine."Sell-To Customer No.";
+                //GenJnlLine."AQD CR Sell-To Customer No." := PostedCustRebateLine."Sell-To Customer No.";
                 GenJnlLine."AQD CR Bill-To Customer No." := PostedCustRebateLine."Bill-To Customer No.";
                 GenJnlLine.Modify(TRUE);
                 if GenJnlLine.Amount = 0 then
                     GenJnlLine.Delete();
                 PostedCustRebateLine."Customer Rebate Status" := PostedCustRebateLine."Customer Rebate Status"::Created;
-                PostedCustRebateLine."Rebate Sales Doc Type" := PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc Line";
+                PostedCustRebateLine."Rebate Sales Doc Type" := PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Journal";
                 PostedCustRebateLine."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
                 PostedCustRebateLine."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
                 PostedCustRebateLine."Sales Jnl Line No." := GenJnlLine."Line No.";
@@ -1437,7 +1472,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 If PostedCustRebateDetailLine.FindFirst() THEN begin
                     repeat
                         PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::Created;
-                        PostedCustRebateDetailLine."Rebate Sales Doc Type" := PostedCustRebateDetailLine."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc Line";
+                        PostedCustRebateDetailLine."Rebate Sales Doc Type" := PostedCustRebateDetailLine."Rebate Sales Doc Type"::"Sales Journal";
                         PostedCustRebateDetailLine."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
                         PostedCustRebateDetailLine."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
                         PostedCustRebateDetailLine."Sales Jnl Line No." := GenJnlLine."Line No.";
@@ -1457,7 +1492,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         end;
 
         PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Created;
-        PostedCustRebateHeader."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc";
+        PostedCustRebateHeader."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::"Sales Journal";
         PostedCustRebateHeader."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
         PostedCustRebateHeader."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
         PostedCustRebateHeader."Sales Jnl Line No." := 0;
@@ -1514,9 +1549,9 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 PostedCustRebateLine.SetRange("Line No.", PurchaseLine."AQD Cust Rebate Doc Line No");
                 PostedCustRebateLine.SetRange("Do Not Credit", FALSE);
                 IF PurchaseLine."Document Type" = PurchaseLine."Document Type"::Invoice then
-                    PostedCustRebateLine.SetRange("Rebate Sales Doc Type", PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc")
+                    PostedCustRebateLine.SetRange("Rebate Sales Doc Type", PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Journal")
                 ELSE IF PurchaseLine."Document Type" = PurchaseLine."Document Type"::"Credit Memo" then
-                    PostedCustRebateLine.SetRange("Rebate Sales Doc Type", PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Journal By Rebate Doc");
+                    PostedCustRebateLine.SetRange("Rebate Sales Doc Type", PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Journal");
                 PostedCustRebateLine.SetRange("Credit Document No.", PurchaseLine."Document No.");
                 PostedCustRebateLine.SetRange("Credit Document Line No.", PurchaseLine."Line No.");
                 IF PostedCustRebateLine.FindFirst() THEN BEGIN
@@ -1725,12 +1760,12 @@ codeunit 14301916 "AQD Customer Rebate Post"
         end;
     end;
 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", OnPostItemJnlLineOnAfterCopyDocumentFields, '', false, false)]
-    // local procedure Cod90_PurchPost_OnPostItemJnlLineOnAfterCopyDocumentFields(var ItemJournalLine: Record "Item Journal Line"; PurchaseLine: Record "Purchase Line"; WarehouseReceiptHeader: Record "Warehouse Receipt Header"; WarehouseShipmentHeader: Record "Warehouse Shipment Header"; PurchRcptHeader: Record "Purch. Rcpt. Header"; GenJnlLineExtDocNo: Code[35]; QtyToBeInvoiced: Decimal)
-    // begin
-    //     ItemJournalLine."AQD Customer Rebate Journal" := PurchaseLine."AQD Cust Rebate Document No." <> '';
-    //     ItemJournalLine."AQD Cust Rebate Document No." := PurchaseLine."AQD Cust Rebate Document No.";
-    // end;
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnPostItemJnlLineOnAfterCopyDocumentFields, '', false, false)]
+    local procedure Cod80_Salesost_OnPostItemJnlLineOnAfterCopyDocumentFields(var ItemJournalLine: Record "Item Journal Line"; SalesLine: Record "Sales Line"; WarehouseReceiptHeader: Record "Warehouse Receipt Header"; WarehouseShipmentHeader: Record "Warehouse Shipment Header")
+    begin
+        ItemJournalLine."AQD Customer Rebate Journal" := SalesLine."AQD Cust Rebate Document No." <> '';
+        ItemJournalLine."AQD Cust Rebate Document No." := SalesLine."AQD Cust Rebate Document No.";
+    end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Check Line", OnRunCheckOnBeforeTestFieldAppliesToEntry, '', false, false)]
     local procedure Cod21_ItemJnlCheckLine_OnRunCheckOnBeforeTestFieldAppliesToEntry(var ItemJournalLine: Record "Item Journal Line"; var IsHandled: Boolean)
@@ -1747,7 +1782,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             EXIT;
 
         GenJournalLine."AQD Cust Rebate Journal" := SalesHeader."AQD Customer Rebate";
-        GenJournalLine."AQD CR Sell-To Customer No." := SalesHeader."Sell-To Customer No.";
+        //GenJournalLine."AQD CR Sell-To Customer No." := SalesHeader."Sell-To Customer No.";
         GenJournalLine."AQD CR Bill-To Customer No." := SalesHeader."Bill-to Customer No.";
     END;
 
@@ -1767,7 +1802,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             EXIT;
 
         GlobalGLEntry."AQD Customer Rebate" := GenJournalLine."AQD Cust Rebate Journal";
-        GlobalGLEntry."AQD CR Sell-To Customer No." := GenJournalLine."AQD CR Sell-To Customer No.";
+        //GlobalGLEntry."AQD CR Sell-To Customer No." := GenJournalLine."AQD CR Sell-To Customer No.";
         GlobalGLEntry."AQD CR Bill-To Customer No." := GenJournalLine."AQD CR Bill-To Customer No.";
     END;
 

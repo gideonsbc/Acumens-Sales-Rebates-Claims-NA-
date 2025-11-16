@@ -647,27 +647,27 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     DocumentPostingDate := SalesInvHeaderIn."Posting Date";
 
                     CreatedCustomerRebate.SetRange("Rebate-To Customer No.", RebateCustomerRec."No.");
-                    if SummaryArray[6] then // Bill-To Customer No.
-                        CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesInvHeaderIn."Bill-to Customer No.")
-                    ELSE
-                        CreatedCustomerRebate.SetRange("Bill-To Customer No.", RebateCustomerRec."No.");
+                    // if SummaryArray[6] then // Bill-To Customer No.
+                    //     CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesInvHeaderIn."Bill-to Customer No.")
+                    // ELSE
+                    //     CreatedCustomerRebate.SetRange("Bill-To Customer No.", RebateCustomerRec."No.");
 
-                    if SummaryArray[1] then // Sell-To Customer No.
-                        CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesInvHeaderIn."Sell-To Customer No.")
-                    ELSE BEGIN
-                        if SummaryArray[6] then // Bill-To Customer No.
-                            CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesInvHeaderIn."Bill-to Customer No.")
-                        ELSE
-                            CreatedCustomerRebate.SetRange("Sell-To Customer No.", RebateCustomerRec."No.");
-                    END;
+                    // if SummaryArray[1] then // Sell-To Customer No.
+                    //     CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesInvHeaderIn."Sell-To Customer No.")
+                    // ELSE BEGIN
+                    //     if SummaryArray[6] then // Bill-To Customer No.
+                    //         CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesInvHeaderIn."Bill-to Customer No.")
+                    //     ELSE
+                    //         CreatedCustomerRebate.SetRange("Sell-To Customer No.", RebateCustomerRec."No.");
+                    // END;
 
-                    if SummaryArray[2] then
+                    if SummaryArray[1] then
                         CreatedCustomerRebate.SetRange("Responsibility Center", SalesInvHeaderIn."Responsibility Center");
-                    if SummaryArray[3] then
+                    if SummaryArray[2] then
                         CreatedCustomerRebate.SetRange("Location Code", SalesInvHeaderIn."Location Code");
-                    if SummaryArray[4] then
+                    if SummaryArray[3] then
                         CreatedCustomerRebate.SetRange("Shortcut Dimension 1 Code", SalesInvHeaderIn."Shortcut Dimension 1 Code");
-                    if SummaryArray[5] then
+                    if SummaryArray[4] then
                         CreatedCustomerRebate.SetRange("Shortcut Dimension 2 Code", SalesInvHeaderIn."Shortcut Dimension 2 Code");
                     IF GlobalBatchID <> '' then
                         CreatedCustomerRebate.SetRange(GlobalBatchID, GlobalBatchID);
@@ -708,28 +708,27 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     DocumentPostingDate := SalesCrMemoHeaderIn."Posting Date";
 
                     CreatedCustomerRebate.SetRange("Rebate-To Customer No.", RebateCustomerRec."No.");
-                    if SummaryArray[6] then // Bill-To Customer No.
-                        CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesCrMemoHeaderIn."Bill-to Customer No.")
-                    ELSE
-                        CreatedCustomerRebate.SetRange("Bill-To Customer No.", RebateCustomerRec."No.");
+                    // if SummaryArray[6] then // Bill-To Customer No.
+                    //     CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesCrMemoHeaderIn."Bill-to Customer No.")
+                    // ELSE
+                    //     CreatedCustomerRebate.SetRange("Bill-To Customer No.", RebateCustomerRec."No.");
 
-                    IF SummaryArray[1] then // Sell-To Customer No.
-                        CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesCrMemoHeaderIn."Sell-To Customer No.")
-                    ELSE BEGIN
-                        if SummaryArray[6] then // Bill-To Customer No.
-                            CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesCrMemoHeaderIn."Bill-to Customer No.")
-                        ELSE
-                            CreatedCustomerRebate.SetRange("Sell-To Customer No.", RebateCustomerRec."No.");
-                    END;
+                    // IF SummaryArray[1] then // Sell-To Customer No.
+                    //     CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesCrMemoHeaderIn."Sell-To Customer No.")
+                    // ELSE BEGIN
+                    //     if SummaryArray[6] then // Bill-To Customer No.
+                    //         CreatedCustomerRebate.SetRange("Sell-To Customer No.", SalesCrMemoHeaderIn."Bill-to Customer No.")
+                    //     ELSE
+                    //         CreatedCustomerRebate.SetRange("Sell-To Customer No.", RebateCustomerRec."No.");
+                    // END;
 
-
-                    if SummaryArray[2] then
+                    if SummaryArray[1] then
                         CreatedCustomerRebate.SetRange("Responsibility Center", SalesCrMemoHeaderIn."Responsibility Center");
-                    if SummaryArray[3] then
+                    if SummaryArray[2] then
                         CreatedCustomerRebate.SetRange("Location Code", SalesCrMemoHeaderIn."Location Code");
-                    if SummaryArray[4] then
+                    if SummaryArray[3] then
                         CreatedCustomerRebate.SetRange("Shortcut Dimension 1 Code", SalesCrMemoHeaderIn."Shortcut Dimension 1 Code");
-                    if SummaryArray[5] then
+                    if SummaryArray[4] then
                         CreatedCustomerRebate.SetRange("Shortcut Dimension 2 Code", SalesCrMemoHeaderIn."Shortcut Dimension 2 Code");
                     IF GlobalBatchID <> '' then
                         CreatedCustomerRebate.SetRange(GlobalBatchID, GlobalBatchID);
@@ -764,126 +763,126 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             CASE DocumentType OF
                 DocumentType::Invoice:
                     begin
-                        IF SummaryArray[1] THEN BEGIN
-                            CustomerRebateHeader."Sell-To Customer No." := SalesInvHeaderIn."Sell-to Customer No.";
-                            CustomerRebateHeader."Sell-To Customer Name" := SalesInvHeaderIn."Sell-to Customer Name";
-                            CustomerRebateHeader."Sell-To Customer Name 2" := SalesInvHeaderIn."Sell-to Customer Name 2";
-                            CustomerRebateHeader."Sell-To Address" := SalesInvHeaderIn."Sell-to Address";
-                            CustomerRebateHeader."Sell-To Address 2" := SalesInvHeaderIn."Sell-to Address 2";
-                            CustomerRebateHeader."Sell-To City" := SalesInvHeaderIn."Sell-to City";
-                            CustomerRebateHeader."Sell-To Contact" := SalesInvHeaderIn."Sell-to Contact";
-                            CustomerRebateHeader."Sell-To Post Code" := SalesInvHeaderIn."Sell-to Post Code";
-                            CustomerRebateHeader."Sell-To County" := SalesInvHeaderIn."Sell-to County";
-                            CustomerRebateHeader."Sell-To Country/Region Code" := SalesInvHeaderIn."Sell-to Country/Region Code";
-                        END ELSE BEGIN
-                            CustomerRebateHeader."Sell-To Customer No." := SalesInvHeaderIn."Bill-to Customer No.";
-                            CustomerRebateHeader."Sell-To Customer Name" := SalesInvHeaderIn."Bill-to Name";
-                            CustomerRebateHeader."Sell-To Customer Name 2" := SalesInvHeaderIn."Bill-to Name 2";
-                            CustomerRebateHeader."Sell-To Address" := SalesInvHeaderIn."Bill-to Address";
-                            CustomerRebateHeader."Sell-To Address 2" := SalesInvHeaderIn."Bill-to Address 2";
-                            CustomerRebateHeader."Sell-To City" := SalesInvHeaderIn."Bill-to City";
-                            CustomerRebateHeader."Sell-To Contact" := SalesInvHeaderIn."Bill-to Contact";
-                            CustomerRebateHeader."Sell-To Post Code" := SalesInvHeaderIn."Bill-to Post Code";
-                            CustomerRebateHeader."Sell-To County" := SalesInvHeaderIn."Bill-to County";
-                            CustomerRebateHeader."Sell-To Country/Region Code" := SalesInvHeaderIn."Bill-To Country/Region Code";
-                        END;
+                        // IF SummaryArray[1] THEN BEGIN
+                        //     CustomerRebateHeader."Sell-To Customer No." := SalesInvHeaderIn."Sell-to Customer No.";
+                        //     CustomerRebateHeader."Sell-To Customer Name" := SalesInvHeaderIn."Sell-to Customer Name";
+                        //     CustomerRebateHeader."Sell-To Customer Name 2" := SalesInvHeaderIn."Sell-to Customer Name 2";
+                        //     CustomerRebateHeader."Sell-To Address" := SalesInvHeaderIn."Sell-to Address";
+                        //     CustomerRebateHeader."Sell-To Address 2" := SalesInvHeaderIn."Sell-to Address 2";
+                        //     CustomerRebateHeader."Sell-To City" := SalesInvHeaderIn."Sell-to City";
+                        //     CustomerRebateHeader."Sell-To Contact" := SalesInvHeaderIn."Sell-to Contact";
+                        //     CustomerRebateHeader."Sell-To Post Code" := SalesInvHeaderIn."Sell-to Post Code";
+                        //     CustomerRebateHeader."Sell-To County" := SalesInvHeaderIn."Sell-to County";
+                        //     CustomerRebateHeader."Sell-To Country/Region Code" := SalesInvHeaderIn."Sell-to Country/Region Code";
+                        // END ELSE BEGIN
+                        //     CustomerRebateHeader."Sell-To Customer No." := SalesInvHeaderIn."Bill-to Customer No.";
+                        //     CustomerRebateHeader."Sell-To Customer Name" := SalesInvHeaderIn."Bill-to Name";
+                        //     CustomerRebateHeader."Sell-To Customer Name 2" := SalesInvHeaderIn."Bill-to Name 2";
+                        //     CustomerRebateHeader."Sell-To Address" := SalesInvHeaderIn."Bill-to Address";
+                        //     CustomerRebateHeader."Sell-To Address 2" := SalesInvHeaderIn."Bill-to Address 2";
+                        //     CustomerRebateHeader."Sell-To City" := SalesInvHeaderIn."Bill-to City";
+                        //     CustomerRebateHeader."Sell-To Contact" := SalesInvHeaderIn."Bill-to Contact";
+                        //     CustomerRebateHeader."Sell-To Post Code" := SalesInvHeaderIn."Bill-to Post Code";
+                        //     CustomerRebateHeader."Sell-To County" := SalesInvHeaderIn."Bill-to County";
+                        //     CustomerRebateHeader."Sell-To Country/Region Code" := SalesInvHeaderIn."Bill-To Country/Region Code";
+                        // END;
 
-                        IF SummaryArray[6] THEN BEGIN // Bill-To Customer No.
-                            CustomerRebateHeader."Bill-To Customer No." := SalesInvHeaderIn."Bill-to Customer No.";
-                            CustomerRebateHeader."Bill-To Name" := SalesInvHeaderIn."Bill-to Name";
-                            CustomerRebateHeader."Bill-To Name 2" := SalesInvHeaderIn."Bill-to Name 2";
-                            CustomerRebateHeader."Bill-To Address" := SalesInvHeaderIn."Bill-to Address";
-                            CustomerRebateHeader."Bill-To Address 2" := SalesInvHeaderIn."Bill-to Address 2";
-                            CustomerRebateHeader."Bill-To City" := SalesInvHeaderIn."Bill-to City";
-                            CustomerRebateHeader."Bill-To Contact" := SalesInvHeaderIn."Bill-to Contact";
-                            CustomerRebateHeader."Bill-To Post Code" := SalesInvHeaderIn."Bill-to Post Code";
-                            CustomerRebateHeader."Bill-To County" := SalesInvHeaderIn."Bill-to County";
-                            CustomerRebateHeader."Bill-To Country/Region Code" := SalesInvHeaderIn."Bill-To Country/Region Code";
-                        END ELSE BEGIN
-                            CustomerRebateHeader."Bill-To Customer No." := RebateCustomerRec."No.";
-                            CustomerRebateHeader."Bill-To Name" := RebateCustomerRec.Name;
-                            CustomerRebateHeader."Bill-To Name 2" := RebateCustomerRec."Name 2";
-                            CustomerRebateHeader."Bill-To Address" := RebateCustomerRec.Address;
-                            CustomerRebateHeader."Bill-To Address 2" := RebateCustomerRec."Address 2";
-                            CustomerRebateHeader."Bill-To City" := RebateCustomerRec.City;
-                            CustomerRebateHeader."Bill-To Contact" := RebateCustomerRec.Contact;
-                            CustomerRebateHeader."Bill-To Post Code" := RebateCustomerRec."Post Code";
-                            CustomerRebateHeader."Bill-To County" := RebateCustomerRec.County;
-                            CustomerRebateHeader."Bill-To Country/Region Code" := RebateCustomerRec."Country/Region Code";
-                        END;
+                        // IF SummaryArray[6] THEN BEGIN // Bill-To Customer No.
+                        //     CustomerRebateHeader."Bill-To Customer No." := SalesInvHeaderIn."Bill-to Customer No.";
+                        //     CustomerRebateHeader."Bill-To Name" := SalesInvHeaderIn."Bill-to Name";
+                        //     CustomerRebateHeader."Bill-To Name 2" := SalesInvHeaderIn."Bill-to Name 2";
+                        //     CustomerRebateHeader."Bill-To Address" := SalesInvHeaderIn."Bill-to Address";
+                        //     CustomerRebateHeader."Bill-To Address 2" := SalesInvHeaderIn."Bill-to Address 2";
+                        //     CustomerRebateHeader."Bill-To City" := SalesInvHeaderIn."Bill-to City";
+                        //     CustomerRebateHeader."Bill-To Contact" := SalesInvHeaderIn."Bill-to Contact";
+                        //     CustomerRebateHeader."Bill-To Post Code" := SalesInvHeaderIn."Bill-to Post Code";
+                        //     CustomerRebateHeader."Bill-To County" := SalesInvHeaderIn."Bill-to County";
+                        //     CustomerRebateHeader."Bill-To Country/Region Code" := SalesInvHeaderIn."Bill-To Country/Region Code";
+                        // END ELSE BEGIN
+                        //     CustomerRebateHeader."Bill-To Customer No." := RebateCustomerRec."No.";
+                        //     CustomerRebateHeader."Bill-To Name" := RebateCustomerRec.Name;
+                        //     CustomerRebateHeader."Bill-To Name 2" := RebateCustomerRec."Name 2";
+                        //     CustomerRebateHeader."Bill-To Address" := RebateCustomerRec.Address;
+                        //     CustomerRebateHeader."Bill-To Address 2" := RebateCustomerRec."Address 2";
+                        //     CustomerRebateHeader."Bill-To City" := RebateCustomerRec.City;
+                        //     CustomerRebateHeader."Bill-To Contact" := RebateCustomerRec.Contact;
+                        //     CustomerRebateHeader."Bill-To Post Code" := RebateCustomerRec."Post Code";
+                        //     CustomerRebateHeader."Bill-To County" := RebateCustomerRec.County;
+                        //     CustomerRebateHeader."Bill-To Country/Region Code" := RebateCustomerRec."Country/Region Code";
+                        // END;
 
                         CustomerRebateHeader."Salesperson Code" := SalesInvHeaderIn."Salesperson Code";
                         CustomerRebateHeader."External Document No." := SalesInvHeaderIn."External Document No.";
                         CustomerRebateHeader.State := SalesInvHeaderIn."Ship-to County";
-                        if SummaryArray[2] then
+                        if SummaryArray[1] then
                             CustomerRebateHeader."Responsibility Center" := SalesInvHeaderIn."Responsibility Center";
-                        if SummaryArray[3] then
+                        if SummaryArray[2] then
                             CustomerRebateHeader."Location Code" := SalesInvHeaderIn."Location Code";
-                        if SummaryArray[4] then
+                        if SummaryArray[3] then
                             CustomerRebateHeader."Shortcut Dimension 1 Code" := SalesInvHeaderIn."Shortcut Dimension 1 Code";
-                        if SummaryArray[5] then
+                        if SummaryArray[4] then
                             CustomerRebateHeader."Shortcut Dimension 2 Code" := SalesInvHeaderIn."Shortcut Dimension 2 Code";
                     end;
                 DocumentType::"Credit Memo":
                     begin
-                        IF SummaryArray[1] THEN BEGIN
-                            CustomerRebateHeader."Sell-To Customer No." := SalesCrMemoHeaderIn."Sell-to Customer No.";
-                            CustomerRebateHeader."Sell-To Customer Name" := SalesCrMemoHeaderIn."Sell-to Customer Name";
-                            CustomerRebateHeader."Sell-To Customer Name 2" := SalesCrMemoHeaderIn."Sell-to Customer Name 2";
-                            CustomerRebateHeader."Sell-To Address" := SalesCrMemoHeaderIn."Sell-to Address";
-                            CustomerRebateHeader."Sell-To Address 2" := SalesCrMemoHeaderIn."Sell-to Address 2";
-                            CustomerRebateHeader."Sell-To City" := SalesCrMemoHeaderIn."Sell-to City";
-                            CustomerRebateHeader."Sell-To Contact" := SalesCrMemoHeaderIn."Sell-to Contact";
-                            CustomerRebateHeader."Sell-To Post Code" := SalesCrMemoHeaderIn."Sell-to Post Code";
-                            CustomerRebateHeader."Sell-To County" := SalesCrMemoHeaderIn."Sell-to County";
-                            CustomerRebateHeader."Sell-To Country/Region Code" := SalesCrMemoHeaderIn."Sell-to Country/Region Code";
-                        END ELSE BEGIN
-                            CustomerRebateHeader."Sell-To Customer No." := SalesCrMemoHeaderIn."Bill-to Customer No.";
-                            CustomerRebateHeader."Sell-To Customer Name" := SalesCrMemoHeaderIn."Bill-to Name";
-                            CustomerRebateHeader."Sell-To Customer Name 2" := SalesCrMemoHeaderIn."Bill-to Name 2";
-                            CustomerRebateHeader."Sell-To Address" := SalesCrMemoHeaderIn."Bill-to Address";
-                            CustomerRebateHeader."Sell-To Address 2" := SalesCrMemoHeaderIn."Bill-to Address 2";
-                            CustomerRebateHeader."Sell-To City" := SalesCrMemoHeaderIn."Bill-to City";
-                            CustomerRebateHeader."Sell-To Contact" := SalesCrMemoHeaderIn."Bill-to Contact";
-                            CustomerRebateHeader."Sell-To Post Code" := SalesCrMemoHeaderIn."Bill-to Post Code";
-                            CustomerRebateHeader."Sell-To County" := SalesCrMemoHeaderIn."Bill-to County";
-                            CustomerRebateHeader."Sell-To Country/Region Code" := SalesCrMemoHeaderIn."Bill-To Country/Region Code";
-                        END;
+                        // IF SummaryArray[1] THEN BEGIN
+                        //     CustomerRebateHeader."Sell-To Customer No." := SalesCrMemoHeaderIn."Sell-to Customer No.";
+                        //     CustomerRebateHeader."Sell-To Customer Name" := SalesCrMemoHeaderIn."Sell-to Customer Name";
+                        //     CustomerRebateHeader."Sell-To Customer Name 2" := SalesCrMemoHeaderIn."Sell-to Customer Name 2";
+                        //     CustomerRebateHeader."Sell-To Address" := SalesCrMemoHeaderIn."Sell-to Address";
+                        //     CustomerRebateHeader."Sell-To Address 2" := SalesCrMemoHeaderIn."Sell-to Address 2";
+                        //     CustomerRebateHeader."Sell-To City" := SalesCrMemoHeaderIn."Sell-to City";
+                        //     CustomerRebateHeader."Sell-To Contact" := SalesCrMemoHeaderIn."Sell-to Contact";
+                        //     CustomerRebateHeader."Sell-To Post Code" := SalesCrMemoHeaderIn."Sell-to Post Code";
+                        //     CustomerRebateHeader."Sell-To County" := SalesCrMemoHeaderIn."Sell-to County";
+                        //     CustomerRebateHeader."Sell-To Country/Region Code" := SalesCrMemoHeaderIn."Sell-to Country/Region Code";
+                        // END ELSE BEGIN
+                        //     CustomerRebateHeader."Sell-To Customer No." := SalesCrMemoHeaderIn."Bill-to Customer No.";
+                        //     CustomerRebateHeader."Sell-To Customer Name" := SalesCrMemoHeaderIn."Bill-to Name";
+                        //     CustomerRebateHeader."Sell-To Customer Name 2" := SalesCrMemoHeaderIn."Bill-to Name 2";
+                        //     CustomerRebateHeader."Sell-To Address" := SalesCrMemoHeaderIn."Bill-to Address";
+                        //     CustomerRebateHeader."Sell-To Address 2" := SalesCrMemoHeaderIn."Bill-to Address 2";
+                        //     CustomerRebateHeader."Sell-To City" := SalesCrMemoHeaderIn."Bill-to City";
+                        //     CustomerRebateHeader."Sell-To Contact" := SalesCrMemoHeaderIn."Bill-to Contact";
+                        //     CustomerRebateHeader."Sell-To Post Code" := SalesCrMemoHeaderIn."Bill-to Post Code";
+                        //     CustomerRebateHeader."Sell-To County" := SalesCrMemoHeaderIn."Bill-to County";
+                        //     CustomerRebateHeader."Sell-To Country/Region Code" := SalesCrMemoHeaderIn."Bill-To Country/Region Code";
+                        // END;
 
-                        IF SummaryArray[6] THEN BEGIN // Bill-To Customer No.
-                            CustomerRebateHeader."Bill-To Customer No." := SalesCrMemoHeaderIn."Bill-to Customer No.";
-                            CustomerRebateHeader."Bill-To Name" := SalesCrMemoHeaderIn."Bill-to Name";
-                            CustomerRebateHeader."Bill-To Name 2" := SalesCrMemoHeaderIn."Bill-to Name 2";
-                            CustomerRebateHeader."Bill-To Address" := SalesCrMemoHeaderIn."Bill-to Address";
-                            CustomerRebateHeader."Bill-To Address 2" := SalesCrMemoHeaderIn."Bill-to Address 2";
-                            CustomerRebateHeader."Bill-To City" := SalesCrMemoHeaderIn."Bill-to City";
-                            CustomerRebateHeader."Bill-To Contact" := SalesCrMemoHeaderIn."Bill-to Contact";
-                            CustomerRebateHeader."Bill-To Post Code" := SalesCrMemoHeaderIn."Bill-to Post Code";
-                            CustomerRebateHeader."Bill-To County" := SalesCrMemoHeaderIn."Bill-to County";
-                            CustomerRebateHeader."Bill-To Country/Region Code" := SalesCrMemoHeaderIn."Bill-To Country/Region Code";
-                        END ELSE BEGIN
-                            CustomerRebateHeader."Bill-To Customer No." := RebateCustomerRec."No.";
-                            CustomerRebateHeader."Bill-To Name" := RebateCustomerRec.Name;
-                            CustomerRebateHeader."Bill-To Name 2" := RebateCustomerRec."Name 2";
-                            CustomerRebateHeader."Bill-To Address" := RebateCustomerRec.Address;
-                            CustomerRebateHeader."Bill-To Address 2" := RebateCustomerRec."Address 2";
-                            CustomerRebateHeader."Bill-To City" := RebateCustomerRec.City;
-                            CustomerRebateHeader."Bill-To Contact" := RebateCustomerRec.Contact;
-                            CustomerRebateHeader."Bill-To Post Code" := RebateCustomerRec."Post Code";
-                            CustomerRebateHeader."Bill-To County" := RebateCustomerRec.County;
-                            CustomerRebateHeader."Bill-To Country/Region Code" := RebateCustomerRec."Country/Region Code";
-                        END;
+                        // IF SummaryArray[6] THEN BEGIN // Bill-To Customer No.
+                        //     CustomerRebateHeader."Bill-To Customer No." := SalesCrMemoHeaderIn."Bill-to Customer No.";
+                        //     CustomerRebateHeader."Bill-To Name" := SalesCrMemoHeaderIn."Bill-to Name";
+                        //     CustomerRebateHeader."Bill-To Name 2" := SalesCrMemoHeaderIn."Bill-to Name 2";
+                        //     CustomerRebateHeader."Bill-To Address" := SalesCrMemoHeaderIn."Bill-to Address";
+                        //     CustomerRebateHeader."Bill-To Address 2" := SalesCrMemoHeaderIn."Bill-to Address 2";
+                        //     CustomerRebateHeader."Bill-To City" := SalesCrMemoHeaderIn."Bill-to City";
+                        //     CustomerRebateHeader."Bill-To Contact" := SalesCrMemoHeaderIn."Bill-to Contact";
+                        //     CustomerRebateHeader."Bill-To Post Code" := SalesCrMemoHeaderIn."Bill-to Post Code";
+                        //     CustomerRebateHeader."Bill-To County" := SalesCrMemoHeaderIn."Bill-to County";
+                        //     CustomerRebateHeader."Bill-To Country/Region Code" := SalesCrMemoHeaderIn."Bill-To Country/Region Code";
+                        // END ELSE BEGIN
+                        //     CustomerRebateHeader."Bill-To Customer No." := RebateCustomerRec."No.";
+                        //     CustomerRebateHeader."Bill-To Name" := RebateCustomerRec.Name;
+                        //     CustomerRebateHeader."Bill-To Name 2" := RebateCustomerRec."Name 2";
+                        //     CustomerRebateHeader."Bill-To Address" := RebateCustomerRec.Address;
+                        //     CustomerRebateHeader."Bill-To Address 2" := RebateCustomerRec."Address 2";
+                        //     CustomerRebateHeader."Bill-To City" := RebateCustomerRec.City;
+                        //     CustomerRebateHeader."Bill-To Contact" := RebateCustomerRec.Contact;
+                        //     CustomerRebateHeader."Bill-To Post Code" := RebateCustomerRec."Post Code";
+                        //     CustomerRebateHeader."Bill-To County" := RebateCustomerRec.County;
+                        //     CustomerRebateHeader."Bill-To Country/Region Code" := RebateCustomerRec."Country/Region Code";
+                        // END;
 
                         CustomerRebateHeader."Salesperson Code" := SalesCrMemoHeaderIn."Salesperson Code";
                         CustomerRebateHeader.State := SalesCrMemoHeaderIn."Ship-to County";
-                        if SummaryArray[2] then
+                        if SummaryArray[1] then
                             CustomerRebateHeader."Responsibility Center" := SalesCrMemoHeaderIn."Responsibility Center";
-                        if SummaryArray[3] then
+                        if SummaryArray[2] then
                             CustomerRebateHeader."Location Code" := SalesCrMemoHeaderIn."Location Code";
                         CustomerRebateHeader."External Document No." := SalesCrMemoHeaderIn."External Document No.";
-                        if SummaryArray[4] then
+                        if SummaryArray[3] then
                             CustomerRebateHeader."Shortcut Dimension 1 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 1 Code";
-                        if SummaryArray[5] then
+                        if SummaryArray[4] then
                             CustomerRebateHeader."Shortcut Dimension 2 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 2 Code";
                     end;
             end;
@@ -917,8 +916,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
             CreatedCustomerRebate.Init();
             CreatedCustomerRebate."Rebate No." := CustomerRebateHeader."No.";
-            CreatedCustomerRebate."Sell-To Customer No." := CustomerRebateHeader."Sell-To Customer No.";
-            CreatedCustomerRebate."Bill-To Customer No." := CustomerRebateHeader."Bill-To Customer No.";
+            // CreatedCustomerRebate."Sell-To Customer No." := CustomerRebateHeader."Sell-To Customer No.";
+            // CreatedCustomerRebate."Bill-To Customer No." := CustomerRebateHeader."Bill-To Customer No.";
             CreatedCustomerRebate."Rebate-To Customer No." := CustomerRebateHeader."Rebate-To Customer No.";
             CreatedCustomerRebate."Location Code" := CustomerRebateHeader."Location Code";
             CreatedCustomerRebate."Responsibility Center" := CustomerRebateHeader."Responsibility Center";

@@ -29,22 +29,30 @@ page 14301947 "AQD Posted Cust Rebate Subpage"
                         PostedCustomerRebatePg.Run();
                     end;
                 }
-                field("Sell-To Customer No."; Rec."Sell-To Customer No.")
+                field("Rebate-To Customer No."; Rec."Rebate-To Customer No.")
                 {
-                    ToolTip = 'Specifies the value of the Sell-To Customer No. field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Rebate-To Customer No. field.', Comment = '%';
                 }
-                field("Sell-To Customer Name"; Rec."Sell-To Customer Name")
+                field("Rebate-To Customer Name"; Rec."Rebate-To Name")
                 {
-                    ToolTip = 'Specifies the value of the Sell-To Customer Name field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Rebate-To Customer Name field.', Comment = '%';
                 }
-                field("Bill-To Customer No."; Rec."Bill-To Customer No.")
-                {
-                    ToolTip = 'Specifies the value of the Bill-To Customer No. field.', Comment = '%';
-                }
-                field("Bill-To Name"; Rec."Bill-To Name")
-                {
-                    ToolTip = 'Specifies the value of the Name field.', Comment = '%';
-                }
+                // field("Sell-To Customer No."; Rec."Sell-To Customer No.")
+                // {
+                //     ToolTip = 'Specifies the value of the Sell-To Customer No. field.', Comment = '%';
+                // }
+                // field("Sell-To Customer Name"; Rec."Sell-To Customer Name")
+                // {
+                //     ToolTip = 'Specifies the value of the Sell-To Customer Name field.', Comment = '%';
+                // }
+                // field("Bill-To Customer No."; Rec."Bill-To Customer No.")
+                // {
+                //     ToolTip = 'Specifies the value of the Bill-To Customer No. field.', Comment = '%';
+                // }
+                // field("Bill-To Name"; Rec."Bill-To Name")
+                // {
+                //     ToolTip = 'Specifies the value of the Name field.', Comment = '%';
+                // }
                 field("Sales Amount"; Rec."Sales Amount")
                 {
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';

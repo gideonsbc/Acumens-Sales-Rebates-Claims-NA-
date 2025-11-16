@@ -179,7 +179,7 @@ table 14301929 "AQD Customer Rebate Line"
         }
         field(560; "Customer Rebate Status"; Enum "AQD Customer Rebate Status")
         {
-            Caption = 'Customer Rebate Status';
+            Caption = 'Rebate Status';
             DataClassification = CustomerContent;
         }
         field(600; "Batch Entry No."; Integer)

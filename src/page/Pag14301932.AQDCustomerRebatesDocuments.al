@@ -22,26 +22,36 @@ page 14301932 "AQD Customer Rebates Documents"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
-                field("Buy-from Vendor No."; Rec."Sell-To Customer No.")
+                field("Rebate-To Customer No."; Rec."Rebate-To Customer No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Buy-from Vendor No. field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Rebate-To Customer No. field.', Comment = '%';
                 }
-                field("Buy-from Vendor Name"; Rec."Sell-To Customer Name")
+                field("Rebate-To Name"; Rec."Rebate-To Name")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Buy-from Vendor Name field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Rebate-To Name Name field.', Comment = '%';
                 }
-                field("Pay-to Vendor No."; Rec."Bill-To Customer No.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Pay-to Vendor No. field.', Comment = '%';
-                }
-                field("Pay-to Name"; Rec."Bill-To Name")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Name field.', Comment = '%';
-                }
+                // field("Sell-To Customer No."; Rec."Sell-To Customer No.")
+                // {
+                //     ApplicationArea = All;
+                //     ToolTip = 'Specifies the value of the Sell-To Customer No. field.', Comment = '%';
+                // }
+                // field("Sell-To Customer Name"; Rec."Sell-To Customer Name")
+                // {
+                //     ApplicationArea = All;
+                //     ToolTip = 'Specifies the value of the Sell-To Customer Name field.', Comment = '%';
+                // }
+                // field("Bill-To Customer No."; Rec."Bill-To Customer No.")
+                // {
+                //     ApplicationArea = All;
+                //     ToolTip = 'Specifies the value of the Bill-To Customer No. field.', Comment = '%';
+                // }
+                // field("Bill-To Name"; Rec."Bill-To Name")
+                // {
+                //     ApplicationArea = All;
+                //     ToolTip = 'Specifies the value of the Name field.', Comment = '%';
+                // }
                 field(Approved; Rec.Approved)
                 {
                     ApplicationArea = All;
