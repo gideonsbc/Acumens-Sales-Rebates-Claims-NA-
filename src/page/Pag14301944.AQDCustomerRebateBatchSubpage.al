@@ -37,22 +37,6 @@ page 14301944 "AQD Customer Rebate Subpg"
                 {
                     ToolTip = 'Specifies the value of the Rebate-To Customer Name field.', Comment = '%';
                 }
-                // field("Sell-To Customer No."; Rec."Sell-To Customer No.")
-                // {
-                //     ToolTip = 'Specifies the value of the Buy-from Vendor No. field.', Comment = '%';
-                // }
-                // field("Sell-To Customer Name"; Rec."Sell-To Customer Name")
-                // {
-                //     ToolTip = 'Specifies the value of the Buy-from Vendor Name field.', Comment = '%';
-                // }
-                // field("Bill-To Customer No."; Rec."Bill-To Customer No.")
-                // {
-                //     ToolTip = 'Specifies the value of the Pay-to Vendor No. field.', Comment = '%';
-                // }
-                // field("Bill-To Name"; Rec."Bill-To Name")
-                // {
-                //     ToolTip = 'Specifies the value of the Name field.', Comment = '%';
-                // }
                 field("Sales Amount"; Rec."Sales Amount")
                 {
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';

@@ -33,26 +33,6 @@ page 14301937 "AQD Posted Customer Rebates"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Rebate-To Customer Name field.', Comment = '%';
                 }
-                // field("Sell-To Customer No."; Rec."Sell-To Customer No.")
-                // {
-                //     ApplicationArea = All;
-                //     ToolTip = 'Specifies the value of the Sell-To Customer No. field.', Comment = '%';
-                // }
-                // field("Sell-To Customer Name"; Rec."Sell-To Customer Name")
-                // {
-                //     ApplicationArea = All;
-                //     ToolTip = 'Specifies the value of the Sell-To Customer Name field.', Comment = '%';
-                // }
-                // field("Bill-To Customer No."; Rec."Bill-To Customer No.")
-                // {
-                //     ApplicationArea = All;
-                //     ToolTip = 'Specifies the value of the Bill-To Customer No. field.', Comment = '%';
-                // }
-                // field("Bill-To Name"; Rec."Bill-To Name")
-                // {
-                //     ApplicationArea = All;
-                //     ToolTip = 'Specifies the value of the Name field.', Comment = '%';
-                // }
                 field("Posting Date"; Rec."Posting Date")
                 {
                     ApplicationArea = All;
@@ -134,14 +114,6 @@ page 14301937 "AQD Posted Customer Rebates"
         }
         area(Navigation)
         {
-            // action("AQD Rebate Purchase Journal")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Rebate Purchase Journal';
-            //     Image = OpenJournal;
-            //     RunObject = Page "AQD Rebate Purch. Journal";
-            //     ToolTip = 'Open the Rebate Purchase Journal.';
-            // }
             action("Sales Invoices")
             {
                 ApplicationArea = All;
@@ -184,18 +156,12 @@ page 14301937 "AQD Posted Customer Rebates"
             group(Category_Category4)
             {
                 Caption = 'Rebates';
-                // actionref(CreatePurchaseJournal_Promoted; "Create Purchase Journal")
-                // {
-                // }
                 actionref(CreateSalesDocument_Promoted; "Create Sales Document")
                 {
                 }
                 actionref(Customer_Rebate_Details_Promoted; "Customer Rebate Details")
                 {
                 }
-                // actionref(RebatePurchaseJournal_Promoted; "AQD Rebate Purchase Journal")
-                // {
-                // }
                 actionref(SalesInvoices_Promoted; "Sales Invoices")
                 {
                 }
