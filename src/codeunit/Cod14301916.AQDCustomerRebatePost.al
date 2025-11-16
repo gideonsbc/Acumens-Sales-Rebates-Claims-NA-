@@ -1783,7 +1783,9 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
         GenJournalLine."AQD Cust Rebate Journal" := SalesHeader."AQD Customer Rebate";
         //GenJournalLine."AQD CR Sell-To Customer No." := SalesHeader."Sell-To Customer No.";
-        GenJournalLine."AQD CR Bill-To Customer No." := SalesHeader."Bill-to Customer No.";
+        // Original Document - Bill-To Customer No. will be assigned as Sell-To Customer No. on Rebate Sales Document.
+        // So assigned Sell-To Customer No. to Bill-To Customer No. to flow correct value to GL Entry
+        GenJournalLine."AQD CR Bill-To Customer No." := SalesHeader."Sell-to Customer No.";
     END;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnPostCustOnAfterInitCustLedgEntry, '', FALSE, FALSE)]

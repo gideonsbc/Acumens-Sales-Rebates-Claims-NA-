@@ -22,9 +22,9 @@ page 14301938 "AQD Posted Customer Rebate Doc"
                     Editable = false;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
-                group(RebateToVendor)
+                group(RebateToCustomer)
                 {
-                    Caption = 'Rebate-To Customer';
+                    Caption = 'Rebate-To';
                     field("Rebate-To Customer No."; Rec."Rebate-To Customer No.")
                     {
                         ApplicationArea = All;
