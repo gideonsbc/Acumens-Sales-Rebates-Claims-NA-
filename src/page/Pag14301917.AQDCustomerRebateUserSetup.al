@@ -7,7 +7,7 @@ page 14301917 "AQD Customer Rebate User Setup"
     PageType = List;
     RefreshOnActivate = true;
     SourceTable = "AQD Customer Rebate User Setup";
-    UsageCategory = Administration;
+    //UsageCategory = Administration;
     ObsoleteState = Pending;
     ObsoleteReason = 'Move to Cashflow App';
     ObsoleteTag = '25.1023.0.6';
