@@ -1081,28 +1081,28 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     GLAccount.GET(LocalDocumentLine_No);
                     LocalRebateCategoryCode := GLAccount."AQD Cust Rebate Category Code";
                     UseRebateCostSetupFrom := GLAccount."AQD Use Cust Rebate Setup From";
-                    RebateCostPostingType := RebateCostPostingType::"G/L Account";
+                    RebateCostPostingType := RebateCostPostingType::Expense;
                 END;
             LocalDocumentLine_Type::Resource:
                 BEGIN
                     Resource.GET(LocalDocumentLine_No);
                     LocalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
                     UseRebateCostSetupFrom := Resource."AQD Use Cust Rebate Setup From";
-                    RebateCostPostingType := RebateCostPostingType::"G/L Account";
+                    RebateCostPostingType := RebateCostPostingType::Expense;
                 END;
             LocalDocumentLine_Type::"Charge (Item)":
                 BEGIN
                     ItemCharge.GET(LocalDocumentLine_No);
                     LocalRebateCategoryCode := ItemCharge."AQD Cust Rebate Category Code";
                     UseRebateCostSetupFrom := ItemCharge."AQD Use Cust Rebate Setup From";
-                    RebateCostPostingType := RebateCostPostingType::"G/L Account";
+                    RebateCostPostingType := RebateCostPostingType::Expense;
                 END;
             LocalDocumentLine_Type::"Fixed Asset":
                 BEGIN
                     FixedAsset.GET(LocalDocumentLine_No);
                     LocalRebateCategoryCode := FixedAsset."AQD Cust Rebate Category Code";
                     UseRebateCostSetupFrom := FixedAsset."AQD Use Cust Rebate Setup From";
-                    RebateCostPostingType := RebateCostPostingType::"G/L Account";
+                    RebateCostPostingType := RebateCostPostingType::Expense;
                 END;
         END;
 
@@ -1139,7 +1139,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     end;
 
                     IF TempRebateCategoryLines."AQD Cust Rebate Posting Type" = TempRebateCategoryLines."AQD Cust Rebate Posting Type"::" " THEN
-                        TempRebateCategoryLines."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type"::"G/L Account";
+                        TempRebateCategoryLines."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type"::Expense;
 
                     TempRebateCategoryLines.Insert();
                 until RebateCategoryLines.Next() = 0;
@@ -1154,7 +1154,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 end;
 
                 IF TempRebateCategoryLines."AQD Cust Rebate Posting Type" = TempRebateCategoryLines."AQD Cust Rebate Posting Type"::" " THEN
-                    TempRebateCategoryLines."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type"::"G/L Account";
+                    TempRebateCategoryLines."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type"::Expense;
 
                 TempRebateCategoryLines.INSERT;
             END;

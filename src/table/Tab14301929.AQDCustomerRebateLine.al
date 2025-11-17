@@ -92,7 +92,7 @@ table 14301929 "AQD Customer Rebate Line"
             Caption = 'Customer Rebate Amount (Item Charge)';
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
-                                                                                           "AQD Cust Rebate Posting Type" = const("Item Charge"),
+                                                                                           "AQD Cust Rebate Posting Type" = const(Inventory),
                                                                                            "Do Not Credit" = const(false)));
             FieldClass = FlowField;
             Editable = false;
@@ -102,7 +102,7 @@ table 14301929 "AQD Customer Rebate Line"
             Caption = 'Customer Rebate Amt (GL)';
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
-                                                                                           "AQD Cust Rebate Posting Type" = const("G/L Account"),
+                                                                                           "AQD Cust Rebate Posting Type" = const(Expense),
                                                                                            "Do Not Credit" = const(false)));
             FieldClass = FlowField;
             Editable = false;

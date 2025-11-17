@@ -646,7 +646,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PostedCustomerRebateLineDetails.SetRange("Rebate Line No.", PostedCustomerRebateLine."Line No.");
             PostedCustomerRebateLineDetails.SetRange(Type, PostedCustomerRebateLineDetails.Type::Item);
             PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
-            PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::"Item Charge");
+            PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Inventory);
             PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
             IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                 Repeat
@@ -737,7 +737,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PostedCustomerRebateLineDetails.SetRange("Rebate Line No.", PostedCustomerRebateLine."Line No.");
             //PostedCustomerRebateLineDetails.SetRange(Type, PostedCustomerRebateLineDetails.Type::Item);
             PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
-            PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::"G/L Account");
+            PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Expense);
             PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
             IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                 Repeat
@@ -843,7 +843,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PostedCustomerRebateLineDetails.SetRange("Rebate Line No.", PostedCustomerRebateLine."Line No.");
             PostedCustomerRebateLineDetails.SetRange(Type, PostedCustomerRebateLineDetails.Type::Item);
             PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
-            PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::"Item Charge");
+            PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Inventory);
             PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
             IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                 Repeat
@@ -934,7 +934,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PostedCustomerRebateLineDetails.SetRange("Rebate Line No.", PostedCustomerRebateLine."Line No.");
             //PostedCustomerRebateLineDetails.SetRange(Type, PostedCustomerRebateLineDetails.Type::Item);
             PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
-            PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::"G/L Account");
+            PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Expense);
             PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
             IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                 Repeat

@@ -6,12 +6,12 @@ enum 14301928 "AQD CustRebate CostPostingType"
     {
         Caption = ' ';
     }
-    value(1; "G/L Account")
+    value(1; Expense)
     {
-        Caption = 'G/L Account';
+        Caption = 'Expense';
     }
-    value(2; "Item Charge")
+    value(2; Inventory)
     {
-        Caption = 'Item Charge';
+        Caption = 'Inventory';
     }
 }
