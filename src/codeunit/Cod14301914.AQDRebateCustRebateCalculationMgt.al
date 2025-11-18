@@ -214,11 +214,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 IF NOT IsRebataEnabledLineExist(SourceDocumentType::Invoice, SalesInvoiceHeader, DummySalesCrMemoHeader, CustomerIn) THEN
                     SkipRecord := true;
 
-                IF NOT CheckForCustomerRebateInclude(SourceDocumentType::Invoice, SalesInvoiceHeader, DummySalesCrMemoHeader, CustomerIn) THEN
-                    SkipRecord := true;
+                // IF NOT CheckForCustomerRebateInclude(SourceDocumentType::Invoice, SalesInvoiceHeader, DummySalesCrMemoHeader, CustomerIn) THEN
+                //     SkipRecord := true;
 
-                IF CheckForCustomerRebateExclude(SourceDocumentType::Invoice, SalesInvoiceHeader, DummySalesCrMemoHeader, CustomerIn) THEN
-                    SkipRecord := true;
+                // IF CheckForCustomerRebateExclude(SourceDocumentType::Invoice, SalesInvoiceHeader, DummySalesCrMemoHeader, CustomerIn) THEN
+                //     SkipRecord := true;
 
                 CustomerRebateLine.Reset;
                 CustomerRebateLine.SetRange("Document Type", CustomerRebateLine."Document Type"::Invoice);
@@ -347,11 +347,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 IF SalesCrMemoHeader.Cancelled then
                     SkipRecord := true;
 
-                IF NOT CheckForCustomerRebateInclude(SourceDocumentType::"Credit Memo", LocalSalesInvoiceHeader, SalesCrMemoHeader, CustomerIn) THEN
-                    SkipRecord := true;
+                // IF NOT CheckForCustomerRebateInclude(SourceDocumentType::"Credit Memo", LocalSalesInvoiceHeader, SalesCrMemoHeader, CustomerIn) THEN
+                //     SkipRecord := true;
 
-                IF CheckForCustomerRebateExclude(SourceDocumentType::"Credit Memo", LocalSalesInvoiceHeader, SalesCrMemoHeader, CustomerIn) THEN
-                    SkipRecord := true;
+                // IF CheckForCustomerRebateExclude(SourceDocumentType::"Credit Memo", LocalSalesInvoiceHeader, SalesCrMemoHeader, CustomerIn) THEN
+                //     SkipRecord := true;
 
                 CustomerRebateLine.Reset;
                 CustomerRebateLine.SetRange("Document Type", CustomerRebateLine."Document Type"::"Credit Memo");
@@ -1431,265 +1431,265 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         end;
     end;
 
-    local procedure CheckForCustomerRebateInclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer): Boolean
-    var
-        LocalCustLocationInclude: Record "AQD Cust Rbt Include Cust Loc";
-        LocalIncludeRecord: Boolean;
-        IsHandled: Boolean;
-        ExitLoop: Boolean;
-    begin
-        LocalIncludeRecord := True;
-        IsHandled := FALSE;
-        OnBeforeCheckForCustomerRebateInclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalIncludeRecord, IsHandled);
-        IF IsHandled THEN
-            EXIT;
+    // local procedure CheckForCustomerRebateInclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer): Boolean
+    // var
+    //     LocalCustLocationInclude: Record "AQD Cust Rbt Include Cust Loc";
+    //     LocalIncludeRecord: Boolean;
+    //     IsHandled: Boolean;
+    //     ExitLoop: Boolean;
+    // begin
+    //     LocalIncludeRecord := True;
+    //     IsHandled := FALSE;
+    //     OnBeforeCheckForCustomerRebateInclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalIncludeRecord, IsHandled);
+    //     IF IsHandled THEN
+    //         EXIT;
 
-        Case SourceDocType OF
-            SourceDocType::"Posted Invoice":
-                BEGIN
-                    LocalCustLocationInclude.RESET;
-                    LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::Customer);
-                    LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', SalesInvoiceHeader."Bill-to Customer No.", '');
+    //     Case SourceDocType OF
+    //         SourceDocType::"Posted Invoice":
+    //             BEGIN
+    //                 LocalCustLocationInclude.RESET;
+    //                 LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::Customer);
+    //                 LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', SalesInvoiceHeader."Bill-to Customer No.", '');
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesInvoiceHeader."Location Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesInvoiceHeader."Location Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
 
-                    ExitLoop := FALSE;
-                    LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', SalesInvoiceHeader."Sell-to Customer No.", '');
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::"Ship-To Address");
-                    IF LocalCustLocationInclude.FindFirst() THEN BEGIN
-                        REPEAT
-                            IF LocalCustLocationInclude."Location Code" = SalesInvoiceHeader."Ship-to Code" THEN
-                                ExitLoop := TRUE;
-                        UNTIL (LocalCustLocationInclude.Next() = 0) OR ExitLoop;
-                        IF NOT ExitLoop THEN
-                            LocalIncludeRecord := FALSE;
-                    END;
+    //                 ExitLoop := FALSE;
+    //                 LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', SalesInvoiceHeader."Sell-to Customer No.", '');
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::"Ship-To Address");
+    //                 IF LocalCustLocationInclude.FindFirst() THEN BEGIN
+    //                     REPEAT
+    //                         IF LocalCustLocationInclude."Location Code" = SalesInvoiceHeader."Ship-to Code" THEN
+    //                             ExitLoop := TRUE;
+    //                     UNTIL (LocalCustLocationInclude.Next() = 0) OR ExitLoop;
+    //                     IF NOT ExitLoop THEN
+    //                         LocalIncludeRecord := FALSE;
+    //                 END;
 
-                    // Customer Type
-                    LocalCustLocationInclude.RESET;
-                    LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::"Customer Type");
-                    LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', CustomerIn."AQD Rebate Customer Type", '');
+    //                 // Customer Type
+    //                 LocalCustLocationInclude.RESET;
+    //                 LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::"Customer Type");
+    //                 LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', CustomerIn."AQD Rebate Customer Type", '');
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesInvoiceHeader."Location Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesInvoiceHeader."Location Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
 
-                    // All Customer
-                    LocalCustLocationInclude.RESET;
-                    LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::"All Customers");
-                    LocalCustLocationInclude.SETRANGE("Customer No.");
+    //                 // All Customer
+    //                 LocalCustLocationInclude.RESET;
+    //                 LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::"All Customers");
+    //                 LocalCustLocationInclude.SETRANGE("Customer No.");
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesInvoiceHeader."Location Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesInvoiceHeader."Location Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
-                END;
-            SourceDocType::"Posted Credit Memo":
-                BEGIN
-                    LocalCustLocationInclude.RESET;
-                    LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::Customer);
-                    LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', SalesCrMemoHeader."Bill-to Customer No.", '');
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
+    //             END;
+    //         SourceDocType::"Posted Credit Memo":
+    //             BEGIN
+    //                 LocalCustLocationInclude.RESET;
+    //                 LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::Customer);
+    //                 LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', SalesCrMemoHeader."Bill-to Customer No.", '');
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
 
-                    ExitLoop := FALSE;
-                    LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', SalesCrMemoHeader."Sell-to Customer No.", '');
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::"Ship-To Address");
-                    IF LocalCustLocationInclude.FindFirst() THEN BEGIN
-                        REPEAT
-                            IF LocalCustLocationInclude."Location Code" = SalesCrMemoHeader."Ship-to Code" THEN
-                                ExitLoop := TRUE;
-                        UNTIL (LocalCustLocationInclude.Next() = 0) OR ExitLoop;
-                        IF NOT ExitLoop THEN
-                            LocalIncludeRecord := FALSE;
-                    END;
+    //                 ExitLoop := FALSE;
+    //                 LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', SalesCrMemoHeader."Sell-to Customer No.", '');
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::"Ship-To Address");
+    //                 IF LocalCustLocationInclude.FindFirst() THEN BEGIN
+    //                     REPEAT
+    //                         IF LocalCustLocationInclude."Location Code" = SalesCrMemoHeader."Ship-to Code" THEN
+    //                             ExitLoop := TRUE;
+    //                     UNTIL (LocalCustLocationInclude.Next() = 0) OR ExitLoop;
+    //                     IF NOT ExitLoop THEN
+    //                         LocalIncludeRecord := FALSE;
+    //                 END;
 
-                    //Customer Type
-                    LocalCustLocationInclude.RESET;
-                    LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::"Customer Type");
-                    LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', CustomerIn."AQD Rebate Customer Type", '');
+    //                 //Customer Type
+    //                 LocalCustLocationInclude.RESET;
+    //                 LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::"Customer Type");
+    //                 LocalCustLocationInclude.SETFILTER("Customer No.", '%1|%2', CustomerIn."AQD Rebate Customer Type", '');
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
 
-                    //All Customer
-                    LocalCustLocationInclude.RESET;
-                    LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::"All Customers");
-                    LocalCustLocationInclude.SETRANGE("Customer No.");
+    //                 //All Customer
+    //                 LocalCustLocationInclude.RESET;
+    //                 LocalCustLocationInclude.SETRANGE("Customer Type", LocalCustLocationInclude."Customer Type"::"All Customers");
+    //                 LocalCustLocationInclude.SETRANGE("Customer No.");
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Location);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
 
-                    LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
-                    LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
-                    IF LocalCustLocationInclude.FINDFIRST THEN
-                        LocalIncludeRecord := FALSE;
-                END;
-        END;
-        OnAfterCheckForCustomerRebateInclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalIncludeRecord);
-        EXIT(LocalIncludeRecord);
-    END;
+    //                 LocalCustLocationInclude.SETRANGE("Location Type", LocalCustLocationInclude."Location Type"::Territory);
+    //                 LocalCustLocationInclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
+    //                 IF LocalCustLocationInclude.FINDFIRST THEN
+    //                     LocalIncludeRecord := FALSE;
+    //             END;
+    //     END;
+    //     OnAfterCheckForCustomerRebateInclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalIncludeRecord);
+    //     EXIT(LocalIncludeRecord);
+    // END;
 
-    local procedure CheckForCustomerRebateExclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer): Boolean
-    var
-        LocalCustLocationExclude: Record "AQD Cust Rbt Exclude Cust Loc";
-        LocalExcludeRecord: Boolean;
-        IsHandled: Boolean;
-    begin
-        LocalExcludeRecord := FALSE;
-        IsHandled := FALSE;
-        OnBeforeCheckForCustomerRebateExclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalExcludeRecord, IsHandled);
-        IF IsHandled THEN
-            EXIT;
+    // local procedure CheckForCustomerRebateExclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer): Boolean
+    // var
+    //     LocalCustLocationExclude: Record "AQD Cust Rbt Exclude Cust Loc";
+    //     LocalExcludeRecord: Boolean;
+    //     IsHandled: Boolean;
+    // begin
+    //     LocalExcludeRecord := FALSE;
+    //     IsHandled := FALSE;
+    //     OnBeforeCheckForCustomerRebateExclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalExcludeRecord, IsHandled);
+    //     IF IsHandled THEN
+    //         EXIT;
 
-        Case SourceDocType OF
-            SourceDocType::"Posted Invoice":
-                BEGIN
-                    // Customer
-                    LocalCustLocationExclude.RESET;
-                    LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::Customer);
-                    LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', SalesInvoiceHeader."Bill-to Customer No.", '');
+    //     Case SourceDocType OF
+    //         SourceDocType::"Posted Invoice":
+    //             BEGIN
+    //                 // Customer
+    //                 LocalCustLocationExclude.RESET;
+    //                 LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::Customer);
+    //                 LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', SalesInvoiceHeader."Bill-to Customer No.", '');
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
-                    LocalCustLocationExclude.SETRANGE("Location Code", SalesInvoiceHeader."Location Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
+    //                 LocalCustLocationExclude.SETRANGE("Location Code", SalesInvoiceHeader."Location Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
-                    LocalCustLocationExclude.SETRANGE("Location Code", CustomerIn."Territory Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
+    //                 LocalCustLocationExclude.SETRANGE("Location Code", CustomerIn."Territory Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', SalesInvoiceHeader."Sell-to Customer No.", '');
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::"Ship-To Address");
-                    LocalCustLocationExclude.SETFILTER("Location Code", SalesInvoiceHeader."Ship-to Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', SalesInvoiceHeader."Sell-to Customer No.", '');
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::"Ship-To Address");
+    //                 LocalCustLocationExclude.SETFILTER("Location Code", SalesInvoiceHeader."Ship-to Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    // Customer Type
-                    LocalCustLocationExclude.RESET;
-                    LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::"Customer Type");
-                    LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', CustomerIn."AQD Rebate Customer Type", '');
+    //                 // Customer Type
+    //                 LocalCustLocationExclude.RESET;
+    //                 LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::"Customer Type");
+    //                 LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', CustomerIn."AQD Rebate Customer Type", '');
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
-                    LocalCustLocationExclude.SETRANGE("Location Code", SalesInvoiceHeader."Location Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
+    //                 LocalCustLocationExclude.SETRANGE("Location Code", SalesInvoiceHeader."Location Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
-                    LocalCustLocationExclude.SETRANGE("Location Code", CustomerIn."Territory Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
+    //                 LocalCustLocationExclude.SETRANGE("Location Code", CustomerIn."Territory Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    // All Customers
-                    LocalCustLocationExclude.RESET;
-                    LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::"All Customers");
-                    LocalCustLocationExclude.SETRANGE("Customer No.");
+    //                 // All Customers
+    //                 LocalCustLocationExclude.RESET;
+    //                 LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::"All Customers");
+    //                 LocalCustLocationExclude.SETRANGE("Customer No.");
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
-                    LocalCustLocationExclude.SETRANGE("Location Code", SalesInvoiceHeader."Location Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
+    //                 LocalCustLocationExclude.SETRANGE("Location Code", SalesInvoiceHeader."Location Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
-                    LocalCustLocationExclude.SETRANGE("Location Code", CustomerIn."Territory Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
+    //                 LocalCustLocationExclude.SETRANGE("Location Code", CustomerIn."Territory Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                END;
-            SourceDocType::"Posted Credit Memo":
-                BEGIN
-                    LocalCustLocationExclude.RESET;
-                    LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::Customer);
-                    LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', SalesCrMemoHeader."Bill-to Customer No.", '');
+    //             END;
+    //         SourceDocType::"Posted Credit Memo":
+    //             BEGIN
+    //                 LocalCustLocationExclude.RESET;
+    //                 LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::Customer);
+    //                 LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', SalesCrMemoHeader."Bill-to Customer No.", '');
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
-                    LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
+    //                 LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
-                    LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
+    //                 LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', SalesCrMemoHeader."Sell-to Customer No.", '');
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::"Ship-To Address");
-                    LocalCustLocationExclude.SETFILTER("Location Code", SalesCrMemoHeader."Ship-to Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', SalesCrMemoHeader."Sell-to Customer No.", '');
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::"Ship-To Address");
+    //                 LocalCustLocationExclude.SETFILTER("Location Code", SalesCrMemoHeader."Ship-to Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    // Customer Type
-                    LocalCustLocationExclude.RESET;
-                    LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::"Customer Type");
-                    LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', CustomerIn."AQD Rebate Customer Type", '');
+    //                 // Customer Type
+    //                 LocalCustLocationExclude.RESET;
+    //                 LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::"Customer Type");
+    //                 LocalCustLocationExclude.SETFILTER("Customer No.", '%1|%2', CustomerIn."AQD Rebate Customer Type", '');
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
-                    LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
+    //                 LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
-                    LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
+    //                 LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    // All Customer
-                    LocalCustLocationExclude.RESET;
-                    LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::"All Customers");
-                    LocalCustLocationExclude.SETRANGE("Customer No.");
+    //                 // All Customer
+    //                 LocalCustLocationExclude.RESET;
+    //                 LocalCustLocationExclude.SETRANGE("Customer Type", LocalCustLocationExclude."Customer Type"::"All Customers");
+    //                 LocalCustLocationExclude.SETRANGE("Customer No.");
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
-                    LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Location);
+    //                 LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', SalesCrMemoHeader."Location Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
 
-                    LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
-                    LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
-                    IF LocalCustLocationExclude.FINDFIRST THEN
-                        LocalExcludeRecord := TRUE;
-                END;
-        END;
+    //                 LocalCustLocationExclude.SETRANGE("Location Type", LocalCustLocationExclude."Location Type"::Territory);
+    //                 LocalCustLocationExclude.SETFILTER("Location Code", '<>%1', CustomerIn."Territory Code");
+    //                 IF LocalCustLocationExclude.FINDFIRST THEN
+    //                     LocalExcludeRecord := TRUE;
+    //             END;
+    //     END;
 
-        OnAfterCheckForCustomerRebateExclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalExcludeRecord);
-        EXIT(LocalExcludeRecord);
-    END;
+    //     OnAfterCheckForCustomerRebateExclude(SourceDocumentType, SalesInvoiceHeader, SalesCrMemoHeader, CustomerIn, LocalExcludeRecord);
+    //     EXIT(LocalExcludeRecord);
+    // END;
 
     local procedure GetSalesRebateDetails(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     var
@@ -1948,23 +1948,23 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckForCustomerRebateInclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean; IsHandled: Boolean)
-    begin
-    end;
+    // [IntegrationEvent(false, false)]
+    // local procedure OnBeforeCheckForCustomerRebateInclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean; IsHandled: Boolean)
+    // begin
+    // end;
 
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterCheckForCustomerRebateInclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean)
-    begin
-    end;
+    // [IntegrationEvent(false, false)]
+    // local procedure OnAfterCheckForCustomerRebateInclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean)
+    // begin
+    // end;
 
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckForCustomerRebateExclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean; IsHandled: Boolean)
-    begin
-    end;
+    // [IntegrationEvent(false, false)]
+    // local procedure OnBeforeCheckForCustomerRebateExclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean; IsHandled: Boolean)
+    // begin
+    // end;
 
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterCheckForCustomerRebateExclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean)
-    begin
-    end;
+    // [IntegrationEvent(false, false)]
+    // local procedure OnAfterCheckForCustomerRebateExclude(SourceDocType: Option "Posted Invoice","Posted Credit Memo"; SalesInvoiceHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var CustomerIn: Record Customer; var IncludeRecord: Boolean)
+    // begin
+    // end;
 }

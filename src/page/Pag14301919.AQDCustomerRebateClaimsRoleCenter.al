@@ -80,19 +80,19 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Image = Customer;
                 RunObject = Page "AQD Cust Rbt Include Cust Loc";
             }
-            action(AQDCustRbtExcludeCustomerLocations)
-            {
-                Caption = 'Exclude Customer Locations';
-                ApplicationArea = All;
-                Image = Customer;
-                RunObject = Page "AQD Cust Rbt Exclude Cust Loc";
-            }
-            action("Customer Rebate Program Codes")
-            {
-                ApplicationArea = All;
-                Caption = 'Customer Rebate Program Codes';
-                RunObject = page "AQD Cust Rebate Program Codes";
-            }
+            // action(AQDCustRbtExcludeCustomerLocations)
+            // {
+            //     Caption = 'Exclude Customer Locations';
+            //     ApplicationArea = All;
+            //     Image = Customer;
+            //     RunObject = Page "AQD Cust Rbt Exclude Cust Loc";
+            // }
+            // action("Customer Rebate Program Codes")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Customer Rebate Program Codes';
+            //     RunObject = page "AQD Cust Rebate Program Codes";
+            // }
             action("AQD Customer Rebate Item Categories")
             {
                 Caption = 'Customer Rebate Item Categories';
