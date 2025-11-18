@@ -1034,6 +1034,9 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                 GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                 GenJnlLine."AQD Cust Rebate Journal" := TRUE;
+                //To Flow Source Type and Source No.
+                GenJnlLine."Source Type" := GenJnlLine."Source Type"::Customer;
+                GenJnlLine."Source No." := PostedCustRebateLine."Rebate-To Customer No.";
                 //GenJnlLine."AQD CR Sell-To Customer No." := PostedCustRebateLine."Sell-To Customer No.";
                 GenJnlLine."AQD CR Bill-To Customer No." := PostedCustRebateLine."Bill-To Customer No.";
                 GenJnlLine.Modify(TRUE);

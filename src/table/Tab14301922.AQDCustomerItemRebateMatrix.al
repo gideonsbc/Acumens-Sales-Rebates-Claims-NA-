@@ -69,10 +69,21 @@ table 14301922 "AQD Cust Item Rebate Matrix"
             BlankZero = TRUE;
             Caption = 'Sales Amount Threshold';
         }
+        field(105; "Sales Amount Threshold (YTD)"; Decimal)
+        {
+            BlankZero = TRUE;
+            Caption = 'Sales Amount Threshold (YTD)';
+        }
+
         field(110; "Sales Quantity Threshold"; Decimal)
         {
             BlankZero = TRUE;
             Caption = 'Sales Quantity Threshold';
+        }
+        field(115; "Sales Quantity Threshold (YTD)"; Decimal)
+        {
+            BlankZero = TRUE;
+            Caption = 'Sales Quantity Threshold (YTD)';
         }
         field(120; EligiblePeriodAfterFirstShpt; DateFormula)
         {

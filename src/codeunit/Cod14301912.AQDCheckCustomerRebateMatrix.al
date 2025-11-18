@@ -142,16 +142,25 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
         FirstReceiptDateCriteria: Date;
         LocaltotalRebateCategorySalesQty: Decimal;
         LocaltotalRebateCategorySalesLCY: Decimal;
+        LocaltotalRebateCategorySalesQtyYTD: Decimal;
+        LocaltotalRebateCategorySalesLCYYTD: Decimal;
         LocalEligiblePeriodAfterFirstShpt: Boolean;
+        StartDate: Date;
     begin
         LocaltotalRebateCategorySalesQty := 0;
         LocaltotalRebateCategorySalesLCY := 0;
+        LocaltotalRebateCategorySalesQtyYTD := 0;
+        LocaltotalRebateCategorySalesLCYYTD := 0;
         LocalEligiblePeriodAfterFirstShpt := FALSE;
 
-        IsEligible := FALSE;
+        StartDate := DMY2Date(01, 01, Date2DMY(Today, 3));
+
+        IsEligible := TRUE;
         RebateSetup.GET;
         if not RebateSetup."Use Cust Rebate Criteria" then
             EXIT(TRUE);
+
+        CLEAR(LocalItem);
 
         CASE CustItemRebateMatrix."Line Type" OF
             CustItemRebateMatrix."Line Type"::Item:
@@ -160,15 +169,22 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
                     LocalItem.CalcFields("Sales (Qty.)", "Sales (LCY)");
 
                     //IF (CustItemRebateMatrix."Sales Quantity Threshold" <> 0) AND
-                    IF (CustItemRebateMatrix."Sales Quantity Threshold" < LocalItem."Sales (Qty.)") THEN
-                        IsEligible := true;
+                    IF (CustItemRebateMatrix."Sales Quantity Threshold" > LocalItem."Sales (Qty.)") THEN
+                        IsEligible := FALSE;
 
                     //IF (CustItemRebateMatrix."Sales Amount Threshold" <> 0) AND
-                    IF (CustItemRebateMatrix."Sales Amount Threshold" < LocalItem."Sales (LCY)") THEN
-                        IsEligible := TRUE;
+                    IF (CustItemRebateMatrix."Sales Amount Threshold" > LocalItem."Sales (LCY)") THEN
+                        IsEligible := FALSE;
 
-                    IF (FORMAT(CustItemRebateMatrix.EligiblePeriodAfterFirstShpt) <> '')
-                    THEN BEGIN
+                    LocalItem.SetFilter("Date Filter", '%1..%2', StartDate, Today);
+                    LocalItem.CalcFields("Sales (Qty.)", "Sales (LCY)");
+                    IF (CustItemRebateMatrix."Sales Quantity Threshold (YTD)" > LocalItem."Sales (Qty.)") THEN
+                        IsEligible := FALSE;
+
+                    IF (CustItemRebateMatrix."Sales Amount Threshold (YTD)" > LocalItem."Sales (LCY)") THEN
+                        IsEligible := FALSE;
+
+                    IF (FORMAT(CustItemRebateMatrix.EligiblePeriodAfterFirstShpt) <> '') THEN BEGIN
                         FirstReceiptDateCriteria := CalcDate('-' + FORMAT(CustItemRebateMatrix.EligiblePeriodAfterFirstShpt), PostingDate);
 
                         LocalItemLedgerEntry.RESET;
@@ -180,9 +196,7 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
                         LocalItemLedgerEntry.SETRANGE("Source Type", LocalItemLedgerEntry."Source Type"::Customer);
                         LocalItemLedgerEntry.SETRANGE("Source No.", CustomerNo);
                         LocalItemLedgerEntry.SETFILTER("Posting Date", '<=%1', FirstReceiptDateCriteria);
-                        IF LocalItemLedgerEntry.FindFirst() THEN
-                            IsEligible := TRUE
-                        ELSE
+                        IF NOT LocalItemLedgerEntry.FindFirst() THEN
                             IsEligible := FALSE;
                     END;
                 END;
@@ -196,6 +210,11 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
                             LocalItem.CalcFields("Sales (Qty.)", "Sales (LCY)");
                             LocaltotalRebateCategorySalesQty += LocalItem."Sales (Qty.)";
                             LocaltotalRebateCategorySalesLCY += LocalItem."Sales (LCY)";
+
+                            LocalItem.SetFilter("Date Filter", '%1..%2', StartDate, Today);
+                            LocalItem.CalcFields("Sales (Qty.)", "Sales (LCY)");
+                            LocaltotalRebateCategorySalesQtyYTD += LocalItem."Sales (Qty.)";
+                            LocaltotalRebateCategorySalesLCYYTD += LocalItem."Sales (LCY)";
 
                             IF (FORMAT(CustItemRebateMatrix.EligiblePeriodAfterFirstShpt) <> '') AND
                                (NOT LocalEligiblePeriodAfterFirstShpt)
@@ -216,18 +235,20 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
                             END;
                         UNTIL LocalItem.Next() = 0;
 
-                        IF (CustItemRebateMatrix."Sales Quantity Threshold" <> 0) AND
-                           (CustItemRebateMatrix."Sales Quantity Threshold" < LocaltotalRebateCategorySalesQty)
-                        THEN
-                            IsEligible := true;
-
-                        IF (CustItemRebateMatrix."Sales Amount Threshold" <> 0) AND
-                            (CustItemRebateMatrix."Sales Amount Threshold" < LocaltotalRebateCategorySalesLCY)
-                        THEN
-                            IsEligible := TRUE;
-
                         IF (FORMAT(CustItemRebateMatrix.EligiblePeriodAfterFirstShpt) <> '') THEN
                             IsEligible := LocalEligiblePeriodAfterFirstShpt;
+
+                        IF CustItemRebateMatrix."Sales Quantity Threshold" > LocaltotalRebateCategorySalesQty THEN
+                            IsEligible := FALSE;
+
+                        IF CustItemRebateMatrix."Sales Amount Threshold" > LocaltotalRebateCategorySalesLCY THEN
+                            IsEligible := FALSE;
+
+                        IF CustItemRebateMatrix."Sales Quantity Threshold (YTD)" > LocaltotalRebateCategorySalesQtyYTD THEN
+                            IsEligible := FALSE;
+
+                        IF CustItemRebateMatrix."Sales Amount Threshold (YTD)" > LocaltotalRebateCategorySalesLCYYTD THEN
+                            IsEligible := FALSE;
                     END;
                 END;
         END;

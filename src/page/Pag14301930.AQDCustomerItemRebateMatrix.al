@@ -38,9 +38,17 @@ page 14301930 "AQD Item Cust Rebate Matrix"
                 {
                     ToolTip = 'Specifies the value of the Sales Quantity Threshold field.', Comment = '%';
                 }
+                field("Sales Quantity Threshold (YTD)"; Rec."Sales Quantity Threshold (YTD)")
+                {
+                    ToolTip = 'Specifies the value of the Sales Quantity Threshold (YTD) field.', Comment = '%';
+                }
                 field("Sales Amount Threshold"; Rec."Sales Amount Threshold")
                 {
                     ToolTip = 'Specifies the value of the Sales Amount Threshold field.', Comment = '%';
+                }
+                field("Sales Amount Threshold (YTD)"; Rec."Sales Amount Threshold (YTD)")
+                {
+                    ToolTip = 'Specifies the value of the Sales Amount Threshold (YTD) field.', Comment = '%';
                 }
                 field(EligiblePeriodAfterFirstShpt; Rec.EligiblePeriodAfterFirstShpt)
                 {
