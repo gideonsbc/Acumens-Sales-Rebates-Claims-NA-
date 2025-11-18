@@ -227,6 +227,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the minimum sales quantity required to warrant the sales rebate.';
+                    Visible = FALSE;
                 }
                 field("Starting Date"; Rec."Starting Date")
                 {
