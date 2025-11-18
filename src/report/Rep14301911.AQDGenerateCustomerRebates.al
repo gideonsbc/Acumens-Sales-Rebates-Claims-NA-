@@ -45,6 +45,7 @@ report 14301911 "AQD Generate Customer Rebates"
                 SummaryArray[2] := Location;
                 SummaryArray[3] := ShortDim1;
                 SummaryArray[4] := ShortDim2;
+                SummaryArray[7] := ByTerritoryCode;
 
                 Clear(RebateCalculationMgt);
                 RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false, ShptRcptNo, InvCrMemoNo, LastRecord);
@@ -111,6 +112,11 @@ report 14301911 "AQD Generate Customer Rebates"
                         ApplicationArea = All;
                         Caption = 'Location Code';
                     }
+                    field(ByTerritoryCode; ByTerritoryCode)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Territory Code';
+                    }
                     field(ShortDim1; ShortDim1)
                     {
                         ApplicationArea = All;
@@ -166,7 +172,8 @@ report 14301911 "AQD Generate Customer Rebates"
         // SellToCust: Boolean;
         // BillToCust: Boolean;
         RespCenter: Boolean;
-        SummaryArray: array[6] of Boolean;
+        ByTerritoryCode: Boolean;
+        SummaryArray: array[7] of Boolean;
         StartPostingDate: Date;
         EndPostingDate: Date;
         DateArray: array[2] of Date;

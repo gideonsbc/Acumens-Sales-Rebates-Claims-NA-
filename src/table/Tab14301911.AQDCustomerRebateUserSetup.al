@@ -67,14 +67,20 @@ table 14301911 "AQD Customer Rebate User Setup"
         field(14277009; "Location Filter"; Code[250])
         {
             Caption = 'Location Filter';
+            TableRelation = Location;
+            ValidateTableRelation = false;
         }
         field(14277010; "Salesperson Code Filter"; Code[250])
         {
             Caption = 'Salesperson/Purch. Code Filter';
+            TableRelation = "Salesperson/Purchaser";
+            ValidateTableRelation = false;
         }
         field(14277011; "State Filter"; Text[250])
         {
             Caption = 'State Filter';
+            TableRelation = Territory;
+            ValidateTableRelation = false;
         }
     }
 

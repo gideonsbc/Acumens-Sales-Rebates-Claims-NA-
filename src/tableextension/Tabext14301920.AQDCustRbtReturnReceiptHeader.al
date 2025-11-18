@@ -44,5 +44,12 @@ tableextension 14301920 "AQD CustRbt Return RcptHdr Ext" extends "Return Receipt
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
+        field(14301990; "AQD Comm Territory Code"; Code[10])
+        {
+            Caption = 'Territory Code';
+            TableRelation = Territory;
+            DataClassification = CustomerContent;
+            Editable = FALSE;
+        }
     }
 }

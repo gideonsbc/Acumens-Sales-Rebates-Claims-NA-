@@ -25,14 +25,20 @@ tableextension 14301942 "AQD Cust Rbt User Setup Ext" extends "User Setup"
         field(14301913; "AQD Cust Rbt Location Filter"; Code[250])
         {
             Caption = 'Location Filter';
+            TableRelation = Location;
+            ValidateTableRelation = false;
         }
         field(14301914; "AQD Cust Rbt SP Code Filter"; Code[250])
         {
             Caption = 'Salesperson/Purch. Code Filter';
+            TableRelation = "Salesperson/Purchaser";
+            ValidateTableRelation = false;
         }
         field(14301915; "AQD Cust Rbt State Filter"; Text[250])
         {
-            Caption = 'State Filter';
+            Caption = 'Territory Filter';
+            TableRelation = Territory;
+            ValidateTableRelation = false;
         }
     }
 }

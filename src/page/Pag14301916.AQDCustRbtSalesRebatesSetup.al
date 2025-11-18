@@ -192,6 +192,11 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                     Editable = CustomerNoControlEditable;
                     ToolTip = 'Specifies the Customer No. that belongs to the Customer Type.';
                 }
+                Field("Territory Code"; Rec."Territory Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the Territory Code that belongs to the Customer Type.';
+                }
                 field("Line Type"; Rec."Line Type")
                 {
                     ApplicationArea = All;

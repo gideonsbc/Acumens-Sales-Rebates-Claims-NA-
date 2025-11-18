@@ -9,7 +9,7 @@ pageextension 14301919 "AQD CustRbt Sales Order" extends "Sales Order"
                 ApplicationArea = All;
             }
         }
-        addafter("Invoice Details")
+        addafter("Shipping and Billing")
         {
             group("Acumens Customer Rebate and Claims")
             {

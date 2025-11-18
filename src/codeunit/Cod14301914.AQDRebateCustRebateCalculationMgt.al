@@ -100,7 +100,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 
-    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; LastRecord: Boolean)
+    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; LastRecord: Boolean)
     var
         LocalCustomer: Record Customer;
         //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
@@ -164,7 +164,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         END;
     end;
 
-    local procedure BuildInvoiceRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20])
+    local procedure BuildInvoiceRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20])
     var
         SkipRecord: Boolean;
         DummySalesCrMemoHeader: Record "Sales Cr.Memo Header";
@@ -245,7 +245,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             until SalesInvoiceHeader.Next = 0;
     end;
 
-    local procedure BuildInvoiceRebateDetail(var SalesInvHeaderIn: Record "Sales Invoice Header"; CustomerIn: Record Customer; SummaryArray: array[6] of Boolean)
+    local procedure BuildInvoiceRebateDetail(var SalesInvHeaderIn: Record "Sales Invoice Header"; CustomerIn: Record Customer; SummaryArray: array[7] of Boolean)
     var
         SalesInvLine: Record "Sales Invoice Line";
         CustLdgrEntry: Record "Cust. Ledger Entry";
@@ -297,7 +297,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         end;
     end;
 
-    local procedure BuildCrMemoRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[6] of Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20])
+    local procedure BuildCrMemoRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20])
     var
         RebateToCustomer: Record Customer;
         SkipRecord: Boolean;
@@ -379,7 +379,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         end;
     end;
 
-    local procedure BuildCreditMemoRebateDetail(SalesCrMHeaderIn: Record "Sales Cr.Memo Header"; CustomerIn: Record Customer; SummaryArray: array[6] of Boolean)
+    local procedure BuildCreditMemoRebateDetail(SalesCrMHeaderIn: Record "Sales Cr.Memo Header"; CustomerIn: Record Customer; SummaryArray: array[7] of Boolean)
     var
         Vendor: Record Vendor;
         IsHandled: Boolean;
@@ -589,7 +589,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     end;
     //>>New Functions
 
-    local procedure InsertRebateHeader(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeaderIn: Record "Sales Invoice Header"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; CustomerIn: Record Customer; var RebateNo: code[20]; SummaryArray: array[6] of Boolean)
+    local procedure InsertRebateHeader(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeaderIn: Record "Sales Invoice Header"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; CustomerIn: Record Customer; var RebateNo: code[20]; SummaryArray: array[7] of Boolean)
     var
         CustomerRebateBatch: Record "AQD Customer Rebate Batch";
         SellToCustomerRec: Record Customer;
@@ -671,6 +671,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         CreatedCustomerRebate.SetRange("Shortcut Dimension 1 Code", SalesInvHeaderIn."Shortcut Dimension 1 Code");
                     if SummaryArray[4] then
                         CreatedCustomerRebate.SetRange("Shortcut Dimension 2 Code", SalesInvHeaderIn."Shortcut Dimension 2 Code");
+                    if SummaryArray[7] then
+                        CreatedCustomerRebate.SetRange("Territory Code", SalesInvHeaderIn."AQD Comm Territory Code");
                     IF GlobalBatchID <> '' then
                         CreatedCustomerRebate.SetRange(GlobalBatchID, GlobalBatchID);
                 end;
@@ -733,6 +735,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         CreatedCustomerRebate.SetRange("Shortcut Dimension 1 Code", SalesCrMemoHeaderIn."Shortcut Dimension 1 Code");
                     if SummaryArray[4] then
                         CreatedCustomerRebate.SetRange("Shortcut Dimension 2 Code", SalesCrMemoHeaderIn."Shortcut Dimension 2 Code");
+                    if SummaryArray[7] then
+                        CreatedCustomerRebate.SetRange("Territory Code", SalesCrMemoHeaderIn."AQD Comm Territory Code");
                     IF GlobalBatchID <> '' then
                         CreatedCustomerRebate.SetRange(GlobalBatchID, GlobalBatchID);
                 end;
@@ -825,6 +829,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                             CustomerRebateHeader."Shortcut Dimension 1 Code" := SalesInvHeaderIn."Shortcut Dimension 1 Code";
                         if SummaryArray[4] then
                             CustomerRebateHeader."Shortcut Dimension 2 Code" := SalesInvHeaderIn."Shortcut Dimension 2 Code";
+                        if SummaryArray[7] then
+                            CustomerRebateHeader."Territory Code" := SalesInvHeaderIn."AQD Comm Territory Code";
                     end;
                 DocumentType::"Credit Memo":
                     begin
@@ -887,6 +893,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                             CustomerRebateHeader."Shortcut Dimension 1 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 1 Code";
                         if SummaryArray[4] then
                             CustomerRebateHeader."Shortcut Dimension 2 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 2 Code";
+                        if SummaryArray[7] then
+                            CustomerRebateHeader."Territory Code" := SalesCrMemoHeaderIn."AQD Comm Territory Code";
                     end;
             end;
 
@@ -927,6 +935,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             CreatedCustomerRebate."Responsibility Center" := CustomerRebateHeader."Responsibility Center";
             CreatedCustomerRebate."Shortcut Dimension 1 Code" := CustomerRebateHeader."Shortcut Dimension 1 Code";
             CreatedCustomerRebate."Shortcut Dimension 2 Code" := CustomerRebateHeader."Shortcut Dimension 2 Code";
+            CreatedCustomerRebate."Territory Code" := CustomerRebateHeader."Territory Code";
             CreatedCustomerRebate.GlobalBatchID := GlobalBatchID;
             CreatedCustomerRebate.INSERT;
         end else begin
@@ -974,6 +983,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Salesperson Code" := SalesInvHeaderIn."Salesperson Code";
                     CustomerRebateLine."Responsibility Center" := SalesInvHeaderIn."Responsibility Center";
                     CustomerRebateLine."Location Code" := SalesInvHeaderIn."Location Code";
+                    CustomerRebateLine."Territory Code" := SalesInvHeaderIn."AQD Comm Territory Code";
                     CustomerRebateLine."Currency Code" := SalesInvHeaderIn."Currency Code";
                     CustomerRebateLine."Shortcut Dimension 1 Code" := SalesInvHeaderIn."Shortcut Dimension 1 Code";
                     CustomerRebateLine."Shortcut Dimension 2 Code" := SalesInvHeaderIn."Shortcut Dimension 2 Code";
@@ -998,6 +1008,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Salesperson Code" := SalesCrMemoHeaderIn."Salesperson Code";
                     CustomerRebateLine."Responsibility Center" := SalesCrMemoHeaderIn."Responsibility Center";
                     CustomerRebateLine."Location Code" := SalesCrMemoHeaderIn."Location Code";
+                    CustomerRebateLine."Territory Code" := SalesCrMemoHeaderIn."AQD Comm Territory Code";
                     CustomerRebateLine."Currency Code" := SalesCrMemoHeaderIn."Currency Code";
                     CustomerRebateLine."Shortcut Dimension 1 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 1 Code";
                     CustomerRebateLine."Shortcut Dimension 2 Code" := SalesCrMemoHeaderIn."Shortcut Dimension 2 Code";
@@ -1207,6 +1218,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                     CustomerRebateDetails."Salesperson Code" := SalesInvHeaderIn."Salesperson Code";
                                     CustomerRebateDetails."Responsibility Center" := SalesInvLineIn."Responsibility Center";
                                     CustomerRebateDetails."Location Code" := SalesInvLineIn."Location Code";
+                                    CustomerRebateDetails."Territory Code" := SalesInvHeaderIn."AQD Comm Territory Code";
                                     CustomerRebateDetails."Shortcut Dimension 1 Code" := SalesInvLineIn."Shortcut Dimension 1 Code";
                                     CustomerRebateDetails."Shortcut Dimension 2 Code" := SalesInvLineIn."Shortcut Dimension 2 Code";
                                     CustomerRebateDetails.State := SalesInvHeaderIn."Ship-to County";
@@ -1255,6 +1267,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                     CustomerRebateDetails."Salesperson Code" := SalesCrMemoHeaderIn."Salesperson Code";
                                     CustomerRebateDetails."Responsibility Center" := SalesCrMemoLineIn."Responsibility Center";
                                     CustomerRebateDetails."Location Code" := SalesCrMemoLineIn."Location Code";
+                                    CustomerRebateDetails."Territory Code" := SalesCrMemoHeaderIn."AQD Comm Territory Code";
                                     CustomerRebateDetails."Shortcut Dimension 1 Code" := SalesCrMemoLineIn."Shortcut Dimension 1 Code";
                                     CustomerRebateDetails."Shortcut Dimension 2 Code" := SalesCrMemoLineIn."Shortcut Dimension 2 Code";
                                     CustomerRebateDetails.State := SalesCrMemoHeaderIn."Ship-to County";

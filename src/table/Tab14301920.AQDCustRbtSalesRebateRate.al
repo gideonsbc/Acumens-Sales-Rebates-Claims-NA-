@@ -4,7 +4,23 @@ table 14301920 "AQD Sales Rebates Rate"
 
     fields
     {
-        field(1; "Line Type"; Enum "AQD Customer Rebate Line Type")
+        field(1; "Customer Type"; Enum "AQD Cust Rebate Customer Type")
+        {
+            Caption = 'Customer Type';
+        }
+        field(2; "Customer No."; Code[20])
+        {
+            Caption = 'Customer No.';
+            TableRelation = if ("Customer Type" = const("Customer Type")) "AQD CustRbt RebateCustomerType"
+            else if ("Customer Type" = const(Customer)) Customer;
+        }
+        field(3; "Territory Code"; Code[10])
+        {
+            Caption = 'Territory Code';
+            TableRelation = Territory;
+            DataClassification = CustomerContent;
+        }
+        field(4; "Line Type"; Enum "AQD Customer Rebate Line Type")
         {
             Caption = 'Line Type';
             DataClassification = CustomerContent;
@@ -14,7 +30,7 @@ table 14301920 "AQD Sales Rebates Rate"
                     Rec."No." := '';
             end;
         }
-        field(2; "No."; Code[20])
+        field(5; "No."; Code[20])
         {
             Caption = 'No.';
             TableRelation = if ("Line Type" = const("Rebate Category")) "AQD Cust Rebate Item Category"
@@ -86,22 +102,13 @@ table 14301920 "AQD Sales Rebates Rate"
                 END;
             END;
         }
-        field(3; "Variant Code"; Code[10])
+        field(6; "Variant Code"; Code[10])
         {
             Caption = 'Variant Code';
             TableRelation = "Item Variant".Code where("Item No." = field("No."));
         }
-        field(4; "Customer Type"; Enum "AQD Cust Rebate Customer Type")
-        {
-            Caption = 'Customer Type';
-        }
-        field(5; "Customer No."; Code[20])
-        {
-            Caption = 'Customer No.';
-            TableRelation = if ("Customer Type" = const("Customer Type")) "AQD CustRbt RebateCustomerType"
-            else if ("Customer Type" = const(Customer)) Customer;
-        }
-        field(6; "Rebate Program Code"; Code[20])
+
+        field(7; "Rebate Program Code"; Code[20])
         {
             Caption = 'Rebate Program Code';
             NotBlank = true;
@@ -119,7 +126,7 @@ table 14301920 "AQD Sales Rebates Rate"
                 END;
             end;
         }
-        field(7; "Starting Date"; Date)
+        field(8; "Starting Date"; Date)
         {
             Caption = 'Starting Date';
 
@@ -129,7 +136,12 @@ table 14301920 "AQD Sales Rebates Rate"
                     Error(Text000, FieldCaption("Starting Date"), FieldCaption("Ending Date"));
             end;
         }
-        field(8; "Minimum Quantity"; Decimal)
+        field(9; "Unit of Measure Code"; Code[10])
+        {
+            Caption = 'Unit of Measure Code';
+            TableRelation = if ("Line Type" = const(Item)) "Item Unit of Measure".Code where("Item No." = field("No."));
+        }
+        field(11; "Minimum Quantity"; Decimal)
         {
             Caption = 'Minimum Quantity';
             DecimalPlaces = 0 : 5;
@@ -186,11 +198,6 @@ table 14301920 "AQD Sales Rebates Rate"
                 Rec.Validate("Starting Date");
             end;
         }
-        field(70; "Unit of Measure Code"; Code[10])
-        {
-            Caption = 'Unit of Measure Code';
-            TableRelation = if ("Line Type" = const(Item)) "Item Unit of Measure".Code where("Item No." = field("No."));
-        }
         field(500; "Last Changed DataTime"; DateTime)
         {
             Caption = 'Last Changed DataTime';
@@ -206,13 +213,13 @@ table 14301920 "AQD Sales Rebates Rate"
             AutoFormatType = 2;
             Caption = 'Last Rebate Type';
             Editable = false;
-            OptionCaption = ' ,Per Quantity,Percentage';
-            OptionMembers = " ","Per Quantity",Percentage;
+            OptionCaption = ' ,Per Unit,Percentage';
+            OptionMembers = " ","Per Unit",Percentage;
         }
-        field(530; "Last Rebate Per Quantity"; Decimal)
+        field(530; "Last Rebate Per Unit"; Decimal)
         {
             BlankZero = true;
-            Caption = 'Last Rebate Per Quantity';
+            Caption = 'Last Rebate Per Unit';
             Editable = false;
         }
         field(540; "Last Rebate %"; Decimal)
@@ -252,7 +259,7 @@ table 14301920 "AQD Sales Rebates Rate"
 
     keys
     {
-        key(Key1; "Line Type", "No.", "Variant Code", "Customer Type", "Customer No.", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity")
+        key(Key1; "Customer Type", "Customer No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity")
         {
             Clustered = true;
         }
@@ -275,7 +282,7 @@ table 14301920 "AQD Sales Rebates Rate"
             Rec."Last Changed Changed By" := USERID;
             Rec."Last Changed DataTime" := CURRENTDATETIME;
             Rec."Last Rebate Type" := xRec."Rebate Type";
-            Rec."Last Rebate Per Quantity" := xRec."Rebate Per Unit";
+            Rec."Last Rebate Per Unit" := xRec."Rebate Per Unit";
             Rec."Rebate %" := xRec."Rebate %";
         END;
     end;

@@ -165,6 +165,11 @@ page 14301938 "AQD Posted Customer Rebate Doc"
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                     Importance = Additional;
                 }
+                field("Territory Code"; Rec."Territory Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Territory Code field.', Comment = '%';
+                }
                 field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {
                     ApplicationArea = All;

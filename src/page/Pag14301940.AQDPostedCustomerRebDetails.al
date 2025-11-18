@@ -162,6 +162,11 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                 }
+                field("Territory Code"; Rec."Territory Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Territory Code field.', Comment = '%';
+                }
                 field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {
                     ApplicationArea = All;
@@ -190,7 +195,7 @@ page 14301940 "AQD Posted Cust Rebate Details"
         if CustomerRebateUserSetup."AQD Cust Rbt Location Filter" <> '' then
             Rec.SetFilter("Location Code", CustomerRebateUserSetup."AQD Cust Rbt Location Filter");
         if CustomerRebateUserSetup."AQD Cust Rbt State Filter" <> '' then
-            Rec.SetFilter(State, CustomerRebateUserSetup."AQD Cust Rbt State Filter");
+            Rec.SetFilter("Territory Code", CustomerRebateUserSetup."AQD Cust Rbt State Filter");
         Rec.FilterGroup(0);
     end;
 

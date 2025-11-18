@@ -15,6 +15,12 @@ table 14301941 "AQD Created Customer Rebate"
             Caption = 'Bill-To Customer No.';
             Editable = false;
         }
+        field(25; "Territory Code"; Code[10])
+        {
+            Caption = 'Territory Code';
+            TableRelation = Territory;
+            DataClassification = CustomerContent;
+        }
         field(30; "Sell-To Customer No."; Code[20])
         {
             Caption = 'Sell-To Customer No.';
@@ -63,7 +69,7 @@ table 14301941 "AQD Created Customer Rebate"
     }
     keys
     {
-        key(Key1; "Rebate No.", "Bill-To Customer No.", "Sell-To Customer No.", "Responsibility Center", "Location Code", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code", GlobalBatchID)
+        key(Key1; "Rebate No.", "Bill-To Customer No.", "Territory Code", "Sell-To Customer No.", "Responsibility Center", "Location Code", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code", GlobalBatchID)
         {
             Clustered = true;
         }

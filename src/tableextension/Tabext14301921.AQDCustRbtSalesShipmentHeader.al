@@ -44,5 +44,12 @@ tableextension 14301921 "AQD CustRbt Sales Shpt Hdr Ext" extends "Sales Shipment
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
+        field(14301990; "AQD Comm Territory Code"; Code[10])
+        {
+            Caption = 'Territory Code';
+            TableRelation = Territory;
+            DataClassification = CustomerContent;
+            Editable = FALSE;
+        }
     }
 }

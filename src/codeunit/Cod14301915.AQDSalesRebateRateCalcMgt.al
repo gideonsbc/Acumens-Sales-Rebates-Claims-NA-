@@ -137,6 +137,7 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
         SalesRebatesRate.SetRange("Rebate Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
         SalesRebatesRate.SetRange("Customer Type", SalesRebatesRate."Customer Type"::"All Customers");
         SalesRebatesRate.SetRange("Customer No.");
+        SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');
         CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
 
         SalesRebatesRate.SetRange("Customer Type", SalesRebatesRate."Customer Type"::Customer);

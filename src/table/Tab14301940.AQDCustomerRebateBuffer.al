@@ -5,13 +5,13 @@ table 14301940 "AQD Customer Rebate Buffer"
 
     fields
     {
-        field(1; "Buy-from Vendor No."; Code[20])
+        field(1; "Bill-To Customer No."; Code[20])
         {
-            Caption = 'Vendor No.';
+            Caption = 'Customer No.';
         }
-        field(2; "Buy-from Vendor Name"; Text[80])
+        field(2; "Bill-To Customer Name"; Text[80])
         {
-            Caption = 'Vendor Name';
+            Caption = 'Customer Name';
         }
         field(3; Year; Integer)
         {
@@ -122,22 +122,22 @@ table 14301940 "AQD Customer Rebate Buffer"
         {
             Caption = 'December Rebate';
         }
-        field(130; "Pay-to Vendor No."; Code[20])
+        field(130; "Sell-to Customer No."; Code[20])
         {
-            Caption = 'Vendor No.';
+            Caption = 'Customer No.';
         }
-        field(131; "Pay-to Vendor Name"; Text[80])
+        field(131; "Sell-To Customer Name"; Text[80])
         {
-            Caption = 'Vendor Name';
+            Caption = 'Customer Name';
         }
     }
     keys
     {
-        key(PK; "Buy-from Vendor No.", Year, "Data Type")
+        key(PK; "Bill-To Customer No.", Year, "Data Type")
         {
             Clustered = true;
         }
-        key(SK1; "Buy-from Vendor No.", Year)
+        key(SK1; "Bill-To Customer No.", Year)
         {
 
         }

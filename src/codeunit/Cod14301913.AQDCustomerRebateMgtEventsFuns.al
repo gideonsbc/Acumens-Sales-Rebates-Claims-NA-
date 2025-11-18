@@ -319,6 +319,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         END;
 
         IF InsertSetupRec THEN BEGIN
+            SalesRebateSetup."Territory Code" := SalesShptHeader."AQD Comm Territory Code";
             SalesRebateSetup."Variant Code" := SalesShipmentLine."Variant Code";
             SalesRebateSetup."Customer No." := SalesShipmentLine."Bill-to Customer No.";
             SalesRebateSetup."Minimum Quantity" := 0;
@@ -350,6 +351,42 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
                 END;
             END;
         END;
+    END;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesShptHeaderInsert, '', false, false)]
+    local procedure Cod80_SalesPost_OnBeforeSalesShptHeaderInsert(var SalesShptHeader: Record "Sales Shipment Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; var IsHandled: Boolean; var TempWhseRcptHeader: Record "Warehouse Receipt Header" temporary; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header" temporary; WhseShip: Boolean; InvtPickPutaway: Boolean)
+    var
+        BillToCustomer: Record Customer;
+    BEGIN
+        IF BillToCustomer.GET(SalesShptHeader."Bill-to Customer No.") THEN
+            SalesShptHeader."AQD Comm Territory Code" := BillToCustomer."Territory Code";
+    END;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesInvHeaderInsert, '', false, false)]
+    local procedure Cod80_SalesPost_CommOnBeforeSalesInvHeaderInsert(var SalesInvHeader: Record "Sales Invoice Header"; var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; var IsHandled: Boolean; WhseShip: Boolean; WhseShptHeader: Record "Warehouse Shipment Header"; InvtPickPutaway: Boolean)
+    var
+        BillToCustomer: Record Customer;
+    BEGIN
+        IF BillToCustomer.GET(SalesInvHeader."Bill-to Customer No.") THEN
+            SalesInvHeader."AQD Comm Territory Code" := BillToCustomer."Territory Code";
+    END;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesCrMemoHeaderInsert, '', false, false)]
+    local procedure Cod80_SalesPost_OnBeforeSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; var IsHandled: Boolean; var SalesInvHeader: Record "Sales Invoice Header")
+    var
+        BillToCustomer: Record Customer;
+    BEGIN
+        IF BillToCustomer.GET(SalesInvHeader."Bill-to Customer No.") THEN
+            SalesCrMemoHeader."AQD Comm Territory Code" := BillToCustomer."Territory Code";
+    END;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeReturnRcptHeaderInsert, '', false, false)]
+    local procedure Cod80_SalesPost_OnBeforeReturnRcptHeaderInsert(var ReturnRcptHeader: Record "Return Receipt Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; var TempWhseRcptHeader: Record "Warehouse Receipt Header" temporary; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header" temporary; WhseShip: Boolean)
+    var
+        BillToCustomer: Record Customer;
+    BEGIN
+        IF BillToCustomer.GET(ReturnRcptHeader."Bill-to Customer No.") THEN
+            ReturnRcptHeader."AQD Comm Territory Code" := BillToCustomer."Territory Code";
     END;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnAfterPostSalesDoc, '', false, false)]

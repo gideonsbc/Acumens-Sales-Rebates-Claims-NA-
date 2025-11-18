@@ -50,5 +50,12 @@ tableextension 14301918 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
+        field(14301990; "AQD Comm Territory Code"; Code[10])
+        {
+            Caption = 'Territory Code';
+            TableRelation = Territory;
+            DataClassification = CustomerContent;
+            Editable = FALSE;
+        }
     }
 }

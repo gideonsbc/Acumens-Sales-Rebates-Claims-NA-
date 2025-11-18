@@ -137,6 +137,13 @@ table 14301929 "AQD Customer Rebate Line"
         {
             Caption = 'Location Code';
         }
+        field(325; "Territory Code"; Code[10])
+        {
+            Caption = 'Territory Code';
+            TableRelation = Territory;
+            DataClassification = CustomerContent;
+            Editable = FALSE;
+        }
         field(330; "Shortcut Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,2,1';

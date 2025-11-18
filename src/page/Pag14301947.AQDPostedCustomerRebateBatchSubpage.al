@@ -61,6 +61,11 @@ page 14301947 "AQD Posted Cust Rebate Subpage"
                 {
                     ToolTip = 'Specifies the value of the Responsibility Center field.', Comment = '%';
                 }
+                field("Territory Code"; Rec."Territory Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Territory Code field.', Comment = '%';
+                }
                 field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {
                     ToolTip = 'Specifies the value of the Shortcut Dimension 1 Code field.';

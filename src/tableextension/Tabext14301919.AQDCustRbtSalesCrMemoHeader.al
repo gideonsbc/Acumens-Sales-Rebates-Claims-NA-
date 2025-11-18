@@ -50,5 +50,12 @@ tableextension 14301919 "AQD CustRbt SalesCrMemoHdr Ext" extends "Sales Cr.Memo 
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
+        field(14301990; "AQD Comm Territory Code"; Code[10])
+        {
+            Caption = 'Territory Code';
+            TableRelation = Territory;
+            DataClassification = CustomerContent;
+            Editable = FALSE;
+        }
     }
 }
