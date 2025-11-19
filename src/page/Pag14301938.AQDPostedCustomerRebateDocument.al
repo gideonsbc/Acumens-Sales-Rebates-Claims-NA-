@@ -219,24 +219,24 @@ page 14301938 "AQD Posted Customer Rebate Doc"
                 RunObject = page "AQD Posted Cust Reb Comment";
                 RunPageLink = "Rebate No." = field("No.");
             }
-            action("Customer Rebate Details")
-            {
-                ApplicationArea = All;
-                Caption = 'Customer Rebate Details';
-                Image = Report;
+            // action("Customer Rebate Details")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Customer Rebate Details';
+            //     Image = Report;
 
-                trigger OnAction()
-                var
-                    //VendorRebateDetails: Report "AQD Vendor Rebate Details";
-                    PostedCustRbtHeader: Record "AQD Posted Cust Rebate Header";
-                begin
-                    PostedCustRbtHeader.Reset();
-                    //PostedCustRbtHeader.SetRange("No.", Rec."No.");
-                    //Clear(VendorRebateDetails);
-                    //VendorRebateDetails.SetTableView(PostedVRHeader);
-                    //VendorRebateDetails.Run();
-                end;
-            }
+            //     trigger OnAction()
+            //     var
+            //         //VendorRebateDetails: Report "AQD Vendor Rebate Details";
+            //         PostedCustRbtHeader: Record "AQD Posted Cust Rebate Header";
+            //     begin
+            //         PostedCustRbtHeader.Reset();
+            //         //PostedCustRbtHeader.SetRange("No.", Rec."No.");
+            //         //Clear(VendorRebateDetails);
+            //         //VendorRebateDetails.SetTableView(PostedVRHeader);
+            //         //VendorRebateDetails.Run();
+            //     end;
+            // }
         }
         area(Navigation)
         {
@@ -301,9 +301,9 @@ page 14301938 "AQD Posted Customer Rebate Doc"
                 actionref(Comments_Promoted; Comments)
                 {
                 }
-                actionref(Customer_Rebate_Details_Promoted; "Customer Rebate Details")
-                {
-                }
+                // actionref(Customer_Rebate_Details_Promoted; "Customer Rebate Details")
+                // {
+                // }
                 actionref(CreateSalesDocument_Promoted; "Create Sales Document")
                 {
                 }

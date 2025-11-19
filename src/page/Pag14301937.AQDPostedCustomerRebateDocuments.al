@@ -101,21 +101,21 @@ page 14301937 "AQD Posted Customer Rebates"
                     CurrPage.UPDATE(false);
                 end;
             }
-            action("Customer Rebate Details")
-            {
-                ApplicationArea = All;
-                Caption = 'Customer Rebate Details';
-                Image = Report;
-                trigger OnAction()
-                var
-                //VendorRebateDetails: Report "AQD Customer Rebate Details";
-                begin
-                    //Clear(VendorRebateDetails);
-                    Rec.SetRange("No.", Rec."No.");
-                    //VendorRebateDetails.SetTableView(Rec);
-                    //VendorRebateDetails.Run();
-                end;
-            }
+            // action("Customer Rebate Details")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Customer Rebate Details';
+            //     Image = Report;
+            //     trigger OnAction()
+            //     var
+            //     //VendorRebateDetails: Report "AQD Customer Rebate Details";
+            //     begin
+            //         //Clear(VendorRebateDetails);
+            //         Rec.SetRange("No.", Rec."No.");
+            //         //VendorRebateDetails.SetTableView(Rec);
+            //         //VendorRebateDetails.Run();
+            //     end;
+            // }
         }
         area(Navigation)
         {
@@ -164,9 +164,9 @@ page 14301937 "AQD Posted Customer Rebates"
                 actionref(CreateSalesDocument_Promoted; "Create Sales Document")
                 {
                 }
-                actionref(Customer_Rebate_Details_Promoted; "Customer Rebate Details")
-                {
-                }
+                // actionref(Customer_Rebate_Details_Promoted; "Customer Rebate Details")
+                // {
+                // }
                 actionref(SalesInvoices_Promoted; "Sales Invoices")
                 {
                 }
