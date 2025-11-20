@@ -93,12 +93,12 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Caption = 'Customer Rebate Program Codes';
                 RunObject = page "AQD Cust Rebate Program Codes";
             }
-            action("AQD Customer Rebate Item Categories")
+            action("AQD CR Item Categories")
             {
-                Caption = 'Customer Rebate Item Categories';
+                Caption = 'Item Categories';
                 ApplicationArea = All;
                 Image = Vendor;
-                RunObject = Page "AQD Cust RebateItem Categories";
+                RunObject = Page "Item Categories";
             }
             action("AQD Rebate Customer Types")
             {
@@ -314,12 +314,12 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Caption = 'Customer Rebate Program Codes';
                     RunObject = page "AQD Cust Rebate Program Codes";
                 }
-                action("AQD Customer Rebate Item Categories2")
+                action("AQD CR Item Categories2")
                 {
-                    Caption = 'Customer Rebate Item Categories';
+                    Caption = 'Item Categories';
                     ApplicationArea = All;
                     Image = Vendor;
-                    RunObject = Page "AQD Cust RebateItem Categories";
+                    RunObject = Page "Item Categories";
                 }
                 action("AQD Rebate Customer Types2")
                 {

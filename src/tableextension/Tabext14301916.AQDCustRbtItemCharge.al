@@ -11,7 +11,7 @@ tableextension 14301916 "AQD CustRbt Item Charge Ext" extends "Item Charge"
         {
             Caption = 'Cust Rebate Category Code';
             DataClassification = CustomerContent;
-            TableRelation = "AQD Cust Rebate Item Category";
+            TableRelation = "Item Category".Code where("AQD Customer Rebate" = const(true));
         }
 
         field(14301930; "AQD Customer Rebate"; Boolean)

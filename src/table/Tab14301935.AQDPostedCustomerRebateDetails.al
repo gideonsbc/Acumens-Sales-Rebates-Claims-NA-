@@ -53,7 +53,7 @@ table 14301935 "AQD Posted Cust Reb Details"
         field(65; "Rebate Item Category Code"; Code[20])
         {
             Caption = 'Rebate Item Category Code';
-            TableRelation = "AQD Cust Rebate Item Category";
+            TableRelation = "Item Category".Code where("AQD Customer Rebate" = const(true));
         }
         field(66; "Rebate Program Code"; Code[10])
         {

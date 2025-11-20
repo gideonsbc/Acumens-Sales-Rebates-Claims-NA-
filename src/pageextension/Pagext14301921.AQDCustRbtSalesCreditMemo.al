@@ -15,25 +15,22 @@ pageextension 14301921 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Mem
             group("Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
-                group(CustomerRebate)
+
+                field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
                 {
-                    Caption = 'Rebate';
-                    field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("AQD Customer Rebate Order Date"; Rec."AQD Customer Rebate Order Date")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("AQD Rebate Last Changed By"; Rec."AQD Rebate Last Changed By")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("AQD Rebate LastChangd DateTime"; Rec."AQD Rebate LastChangd DateTime")
-                    {
-                        ApplicationArea = All;
-                    }
+                    ApplicationArea = All;
+                }
+                field("AQD Customer Rebate Order Date"; Rec."AQD Customer Rebate Order Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Rebate Last Changed By"; Rec."AQD Rebate Last Changed By")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Rebate LastChangd DateTime"; Rec."AQD Rebate LastChangd DateTime")
+                {
+                    ApplicationArea = All;
                 }
             }
         }

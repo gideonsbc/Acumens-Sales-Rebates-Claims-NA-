@@ -9,29 +9,25 @@ pageextension 14301925 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                 Caption = 'Acumens Customer Rebates & Claims';
                 Editable = false;
 
-                group(Rebate)
+                field("AQD AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
                 {
-                    Caption = 'Rebate';
-                    field("AQD AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("AQD Rebate Entry Created"; Rec."AQD Cust Rebate Entry Created")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("AQD Rebate Last Changed By"; Rec."AQD Cust Rebate LastChangedBy")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("AQD Rebate LastChangd DateTime"; Rec."AQD CustRbt LastChangdDateTime")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("AQD Customer Rebate Status"; Rec."AQD Customer Rebate Status")
-                    {
-                        ApplicationArea = All;
-                    }
+                    ApplicationArea = All;
+                }
+                field("AQD Rebate Entry Created"; Rec."AQD Cust Rebate Entry Created")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Rebate Last Changed By"; Rec."AQD Cust Rebate LastChangedBy")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Rebate LastChangd DateTime"; Rec."AQD CustRbt LastChangdDateTime")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Customer Rebate Status"; Rec."AQD Customer Rebate Status")
+                {
+                    ApplicationArea = All;
                 }
             }
         }

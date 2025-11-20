@@ -92,7 +92,7 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
         GLAccount: Record "G/L Account";
         ItemCharge: Record "Item Charge";
         FixedAsset: Record "Fixed Asset";
-        CustomerRebateItemCategories: Record "AQD Cust Rebate Item Category";
+        ItemCategories: Record "Item Category";
         RebateCategoryCodeFilter: Code[50];
     begin
         TempSalesRebatesRate.RESET;

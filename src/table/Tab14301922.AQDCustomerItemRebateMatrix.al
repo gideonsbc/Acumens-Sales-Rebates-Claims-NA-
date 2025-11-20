@@ -17,7 +17,7 @@ table 14301922 "AQD Cust Item Rebate Matrix"
         field(2; "No."; Code[20])
         {
             Caption = 'No.';
-            TableRelation = if ("Line Type" = const("Rebate Category")) "AQD Cust Rebate Item Category"
+            TableRelation = if ("Line Type" = const("Rebate Category")) "Item Category".Code where("AQD Customer Rebate" = const(true))
             else if ("Line Type" = const(Item)) Item;
 
             trigger OnValidate()
@@ -33,8 +33,8 @@ table 14301922 "AQD Cust Item Rebate Matrix"
                             end;
                         Rec."Line Type"::"Rebate Category":
                             begin
-                                IF ItemRebateCategory.Get("No.") THEN
-                                    Description := ItemRebateCategory.Description
+                                IF ItemCategory.Get("No.") THEN
+                                    Description := ItemCategory.Description
                                 ELSE
                                     Description := '';
                             end;
@@ -135,5 +135,5 @@ table 14301922 "AQD Cust Item Rebate Matrix"
     }
     var
         Item: Record Item;
-        ItemRebateCategory: Record "AQD Cust Rebate Item Category";
+        ItemCategory: Record "Item Category";
 }

@@ -87,14 +87,14 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        CustItemRebateCategories: Record "AQD Cust Rebate Item Category";
+                        ItemCategories: Record "Item Category";
                         ItemCharge: Record "Item Charge";
                         ItemList: Page "Item List";
                         ResourceList: Page "Resource List";
                         GLAccountList: Page "G/L Account List";
                         FixedAssetList: Page "Fixed Asset List";
                         ItemChargeList: Page "Item Charges";
-                        CustItemRebateCateghoriesPage: Page "AQD Cust RebateItem Categories";
+                        ItemCateghoriesPage: Page "Item Categories";
                     begin
                         Case ItemTypeFilter of
                             ItemTypeFilter::Item:
@@ -140,10 +140,10 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                                 end;
                             ItemTypeFilter::"Rebate Category":
                                 begin
-                                    clear(CustItemRebateCateghoriesPage);
-                                    CustItemRebateCateghoriesPage.LookupMode := true;
-                                    if CustItemRebateCateghoriesPage.RunModal() = ACTION::LookupOK then
-                                        Text := CustItemRebateCateghoriesPage.GetSelectionFilterForItem(CustItemRebateCategories)
+                                    clear(ItemCateghoriesPage);
+                                    ItemCateghoriesPage.LookupMode := true;
+                                    if ItemCateghoriesPage.RunModal() = ACTION::LookupOK then
+                                        Text := ItemCateghoriesPage.GetSelectionFilter()
                                     else
                                         exit(false);
                                 end;
@@ -477,7 +477,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                 END;
             ItemTypeFilter::"Rebate Category":
                 BEGIN
-                    CheckFilters(DATABASE::"AQD Cust Rebate Item Category", ItemNoFilter);
+                    CheckFilters(DATABASE::"Item Category", ItemNoFilter);
                     Rec.SetRange("Line Type", Rec."Line Type"::"Rebate Category");
                 END;
             ItemTypeFilter::" ":

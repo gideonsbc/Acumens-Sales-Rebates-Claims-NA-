@@ -11,7 +11,7 @@ tableextension 14301910 "AQD CustRbt Item Ext" extends Item
         {
             Caption = 'Rebate Category Code';
             DataClassification = CustomerContent;
-            TableRelation = "AQD Cust Rebate Item Category";
+            TableRelation = "Item Category".Code where("AQD Customer Rebate" = const(true));
         }
         field(14301940; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {

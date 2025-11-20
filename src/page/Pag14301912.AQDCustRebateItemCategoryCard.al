@@ -4,6 +4,9 @@
 //     Caption = 'Customer Rebate Category Card';
 //     PageType = Card;
 //     SourceTable = "AQD Cust Rebate Item Category";
+//     ObsoleteState = Pending;
+//     ObsoleteReason = 'Replaced using Standard Item Categories';
+//     ObsoleteTag = '25.1023.0.6';
 
 //     layout
 //     {
@@ -31,13 +34,13 @@
 //                     ToolTip = 'Specifies the value of the Category Type field.', Comment = '%';
 //                 }
 //             }
-//             // part("AQD Item Rebate Category Subpage"; "AQD CustRebateCategory Subpage")
-//             // {
-//             //     ApplicationArea = All;
-//             //     Caption = 'Lines';
-//             //     SubPageLink = "Rebate Category Code" = field(Code);
-//             //     UpdatePropagation = Both;
-//             // }
+//             part("AQD Item Rebate Category Subpage"; "AQD CustRebateCategory Subpage")
+//             {
+//                 ApplicationArea = All;
+//                 Caption = 'Lines';
+//                 SubPageLink = "Rebate Category Code" = field(Code);
+//                 UpdatePropagation = Both;
+//             }
 //         }
 //     }
 // }

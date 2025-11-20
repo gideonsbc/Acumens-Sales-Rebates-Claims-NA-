@@ -33,7 +33,7 @@ table 14301920 "AQD Sales Rebates Rate"
         field(5; "No."; Code[20])
         {
             Caption = 'No.';
-            TableRelation = if ("Line Type" = const("Rebate Category")) "AQD Cust Rebate Item Category"
+            TableRelation = if ("Line Type" = const("Rebate Category")) "Item Category".Code where("AQD Customer Rebate" = const(true))
             else if ("Line Type" = const(Item)) Item
             else if ("Line Type" = const("G/L Account")) "G/L Account"
             else if ("Line Type" = const(Resource)) Resource
@@ -93,8 +93,8 @@ table 14301920 "AQD Sales Rebates Rate"
                             END;
                         Rec."Line Type"::"Rebate Category":
                             BEGIN
-                                IF RebateItemCategory.Get("No.") then
-                                    Description := RebateItemCategory.Description
+                                IF ItemCategory.Get("No.") then
+                                    Description := ItemCategory.Description
                                 ELSE
                                     Description := '';
                             END;
@@ -296,5 +296,5 @@ table 14301920 "AQD Sales Rebates Rate"
         GLAccount: Record "G/L Account";
         ItemCharge: Record "Item Charge";
         FixAsset: Record "Fixed Asset";
-        RebateItemCategory: Record "AQD Cust Rebate Item Category";
+        ItemCategory: Record "Item Category";
 }

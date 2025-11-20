@@ -101,7 +101,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
     var
         SalesRebateSetup: Record "AQD Sales Rebates Rate";
         RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
-        RebateItemCategory: Record "AQD Cust Rebate Item Category";
+        ItemCategory: Record "Item Category";
         //RebateCategoryLine: Record "AQD Cust Rebate Category Lines";
         RebateProgramCodeRec: Record "AQD Cust Rebate Program Code";
         CustItemRebateMatrix: record "AQD Cust Item Rebate Matrix";
@@ -268,8 +268,8 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
                         IF Item.GET(SalesShipmentLine."No.") THEN begin
                             IF Item."AQD Cust Rebate Category Code" <> '' then BEGIN
                                 SalesRebateSetup."No." := Item."AQD Cust Rebate Category Code";
-                                IF RebateItemCategory.GET(Item."AQD Cust Rebate Category Code") then
-                                    SalesRebateSetup.Description := RebateItemCategory.Description;
+                                IF ItemCategory.GET(Item."AQD Cust Rebate Category Code") then
+                                    SalesRebateSetup.Description := ItemCategory.Description;
                                 InsertSetupRec := TRUE;
                             END;
                         end;
@@ -279,8 +279,8 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
                         IF GLAccount.get(SalesShipmentLine."No.") then begin
                             IF GLAccount."AQD Cust Rebate Category Code" <> '' then BEGIN
                                 SalesRebateSetup."No." := GLAccount."AQD Cust Rebate Category Code";
-                                IF RebateItemCategory.GET(GLAccount."AQD Cust Rebate Category Code") then
-                                    SalesRebateSetup.Description := RebateItemCategory.Description;
+                                IF ItemCategory.GET(GLAccount."AQD Cust Rebate Category Code") then
+                                    SalesRebateSetup.Description := ItemCategory.Description;
                                 InsertSetupRec := TRUE;
                             END;
                         end;
@@ -290,8 +290,8 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
                         IF Resource.GET(SalesShipmentLine."No.") then begin
                             IF Resource."AQD Cust Rebate Category Code" <> '' THEN BEGIN
                                 SalesRebateSetup."No." := Resource."AQD Cust Rebate Category Code";
-                                IF RebateItemCategory.GET(Resource."AQD Cust Rebate Category Code") then
-                                    SalesRebateSetup.Description := RebateItemCategory.Description;
+                                IF ItemCategory.GET(Resource."AQD Cust Rebate Category Code") then
+                                    SalesRebateSetup.Description := ItemCategory.Description;
                                 InsertSetupRec := TRUE;
                             END;
                         end;
@@ -301,8 +301,8 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
                         IF FixedAsset.GET(SalesShipmentLine."No.") then begin
                             IF FixedAsset."AQD Cust Rebate Category Code" <> '' then BEGIN
                                 SalesRebateSetup."No." := FixedAsset."AQD Cust Rebate Category Code";
-                                IF RebateItemCategory.GET(FixedAsset."AQD Cust Rebate Category Code") then
-                                    SalesRebateSetup.Description := RebateItemCategory.Description;
+                                IF ItemCategory.GET(FixedAsset."AQD Cust Rebate Category Code") then
+                                    SalesRebateSetup.Description := ItemCategory.Description;
                                 InsertSetupRec := TRUE;
                             END;
                         end;
@@ -312,8 +312,8 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
                         IF ItemCharge.GET(SalesShipmentLine."No.") then begin
                             IF ItemCharge."AQD Cust Rebate Category Code" <> '' THEN BEGIN
                                 SalesRebateSetup."No." := ItemCharge."AQD Cust Rebate Category Code";
-                                IF RebateItemCategory.GET(ItemCharge."AQD Cust Rebate Category Code") then
-                                    SalesRebateSetup.Description := RebateItemCategory.Description;
+                                IF ItemCategory.GET(ItemCharge."AQD Cust Rebate Category Code") then
+                                    SalesRebateSetup.Description := ItemCategory.Description;
                                 InsertSetupRec := TRUE;
                             END;
                         end;

@@ -5,8 +5,11 @@
 //     Caption = 'Lines';
 //     PageType = ListPart;
 //     RefreshOnActivate = true;
-//     UsageCategory = Lists;
+//     //UsageCategory = Lists;
 //     SourceTable = "AQD Cust Rebate Category Lines";
+//     ObsoleteState = Pending;
+//     ObsoleteReason = 'Replaced using Standard Item Categories';
+//     ObsoleteTag = '25.1023.0.6';
 
 //     layout
 //     {

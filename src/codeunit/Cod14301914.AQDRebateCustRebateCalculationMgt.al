@@ -34,7 +34,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         GLAccount: Record "G/L Account";
         ItemCharge: Record "Item Charge";
         FixedAsset: Record "Fixed Asset";
-        ItemRebateCategory: Record "AQD Cust Rebate Item Category";
+        ItemCategory: Record "Item Category";
         NoSeriesMgt: Codeunit "No. Series";
         RebateCheck: Boolean;
         DetailMode: Boolean;
@@ -507,7 +507,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         GLAccount: Record "G/L Account";
         ItemCharge: Record "Item Charge";
         FixedAsset: Record "Fixed Asset";
-        ItemRebateCategory: Record "AQD Cust Rebate Item Category";
+        ItemCategory: Record "Item Category";
         //RebateCategoryLines: Record "AQD Cust Rebate Category Lines";
         ItemVendorRebateMatrix: Record "AQD Cust Item Rebate Matrix";
         ChkCustItemRbtMatrixMgt: Codeunit "AQD ChkCustItemRbt Matrix Mgt";
