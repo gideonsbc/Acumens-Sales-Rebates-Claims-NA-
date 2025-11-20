@@ -149,11 +149,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         ApplicationArea = All;
                         Caption = 'Rebate Program Code';
                     }
-                    field("Purchase Item Charge No."; Rec."Purchase Item Charge No.")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Purchase Item Charge No.';
-                    }
                     field("Sales Item Charge No."; Rec."Sales Item Charge No.")
                     {
                         ApplicationArea = All;
