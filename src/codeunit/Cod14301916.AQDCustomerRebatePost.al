@@ -1028,7 +1028,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 if GenJnlLine."External Document No." = '' then
                     GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
                 GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                GenJnlLine.Validate("Bal. Account No.", LocalBillToCustomerType."Bal. G/ Account No.");
+                GenJnlLine.Validate("Bal. Account No.", LocalBillToCustomerType."Bal. G/L Account No.");
                 GenJnlLine."AQD Cust Rebate Document Type" := PostedCustRebateLine."Document Type";
                 GenJnlLine."AQD Cust Rebate Document No." := PostedCustRebateLine."Rebate No.";
                 GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";

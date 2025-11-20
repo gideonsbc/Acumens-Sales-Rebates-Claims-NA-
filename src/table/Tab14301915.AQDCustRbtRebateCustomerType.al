@@ -41,9 +41,9 @@ table 14301915 "AQD CustRbt RebateCustomerType"
                                                 "Account Type" = CONST(Posting),
                                                 Blocked = CONST(false));
         }
-        field(60; "Bal. G/ Account No."; Code[20])
+        field(60; "Bal. G/L Account No."; Code[20])
         {
-            Caption = 'Bal. G/ Account No.';
+            Caption = 'Bal. G/L Account No.';
             TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
                                                 "Account Type" = CONST(Posting),
                                                 Blocked = CONST(false));

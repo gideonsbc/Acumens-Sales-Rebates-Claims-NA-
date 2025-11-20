@@ -46,22 +46,22 @@ page 14301914 "AQD Cust Rebate Customer Types"
                     trigger OnValidate()
                     BEGIN
                         IF (Rec."G/L Account No." <> '') AND
-                           (Rec."G/L Account No." = Rec."Bal. G/ Account No.")
+                           (Rec."G/L Account No." = Rec."Bal. G/L Account No.")
                         THEN
-                            ERROR(Text0000, Rec."G/L Account No.", Rec."Bal. G/ Account No.");
+                            ERROR(Text0000, Rec."G/L Account No.", Rec."Bal. G/L Account No.");
                     END;
                 }
-                field("Bal. G/L Account No."; Rec."Bal. G/ Account No.")
+                field("Bal. G/L Account No."; Rec."Bal. G/L Account No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies a Customer Rebate Expense Bal. G/L Account No.';
 
                     trigger OnValidate()
                     BEGIN
-                        IF (Rec."Bal. G/ Account No." <> '') AND
-                           (Rec."G/L Account No." = Rec."Bal. G/ Account No.")
+                        IF (Rec."Bal. G/L Account No." <> '') AND
+                           (Rec."G/L Account No." = Rec."Bal. G/L Account No.")
                         THEN
-                            ERROR(Text0000, Rec."G/L Account No.", Rec."Bal. G/ Account No.");
+                            ERROR(Text0000, Rec."G/L Account No.", Rec."Bal. G/L Account No.");
                     END;
                 }
             }
