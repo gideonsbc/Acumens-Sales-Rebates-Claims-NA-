@@ -102,7 +102,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         SalesRebateSetup: Record "AQD Sales Rebates Rate";
         RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         RebateItemCategory: Record "AQD Cust Rebate Item Category";
-        RebateCategoryLine: Record "AQD Cust Rebate Category Lines";
+        //RebateCategoryLine: Record "AQD Cust Rebate Category Lines";
         RebateProgramCodeRec: Record "AQD Cust Rebate Program Code";
         CustItemRebateMatrix: record "AQD Cust Item Rebate Matrix";
         Item: Record Item;
@@ -121,6 +121,9 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
             exit;
 
         IF NOT RebateSetup.GET then
+            EXIT;
+
+        IF RebateSetup."Default Rebate Program Code" = '' THEN
             EXIT;
 
         IF NOT RebateSetup.AutoCreateSaleRebateRateonShpt then
@@ -327,28 +330,11 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
             IF RebateSetup.BlockAutoCreatedSaleRebateRate then
                 SalesRebateSetup.Validate(Blocked, TRUE);
 
-            RebateCategoryLine.RESET;
-            RebateCategoryLine.SetRange("Rebate Category Code", RebateCategoryCode);
-            IF RebateCategoryLine.FindFirst() THEN begin
-                repeat
-                    RebateProgramCodeRec.GET(RebateCategoryLine."Rebate Program Code");
-                    SalesRebateSetup.validatE("Rebate Program Code", RebateCategoryLine."Rebate Program Code");
-                    IF FORMAT(CustItemRebateMatrix.EligiblePeriodAfterFirstShpt) <> '' THEN
-                        SalesRebateSetup."Starting Date" := CalcDate(CustItemRebateMatrix.EligiblePeriodAfterFirstShpt, SalesShipmentLine."Posting Date")
-                    else
-                        SalesRebateSetup."Starting Date" := SalesShipmentLine."Posting Date";
-                    SalesRebateSetup.INSERT;
-                until RebateCategoryLine.Next() = 0;
-            end ELSE begin
-                IF RebateSetup."Default Rebate Program Code" <> '' THEN BEGIN
-                    RebateProgramCodeRec.GET(RebateCategoryLine."Rebate Program Code");
-                    SalesRebateSetup.validate("Rebate Program Code", RebateSetup."Default Rebate Program Code");
-                    // IF FORMAT(RebateCodeRec."Start Date Cal Formula") <> '' THEN
-                    //     SalesRebateSetup."Starting Date" := CalcDate(RebateCodeRec."Start Date Cal Formula", SalesShipmentLine."Posting Date")
-                    // else
-                    SalesRebateSetup."Starting Date" := SalesShipmentLine."Posting Date";
-                    SalesRebateSetup.INSERT;
-                END;
+            IF RebateSetup."Default Rebate Program Code" <> '' THEN BEGIN
+                RebateProgramCodeRec.GET(RebateSetup."Default Rebate Program Code");
+                SalesRebateSetup.validate("Rebate Program Code", RebateSetup."Default Rebate Program Code");
+                SalesRebateSetup."Starting Date" := SalesShipmentLine."Posting Date";
+                SalesRebateSetup.INSERT;
             END;
         END;
     END;

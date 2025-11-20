@@ -58,7 +58,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         PurchaseRebateForText: Label 'Purchase Rebate for ';
         SalesRebateForText: Label 'Sales Rebate For';
 
-    procedure SetVendorRebateBatchParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateBatchIn: Record "AQD Customer Rebate Batch"; CalledFromGenerateCustomerRebateIn: Boolean)
+    procedure SetCustomerRebateBatchParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateBatchIn: Record "AQD Customer Rebate Batch"; CalledFromGenerateCustomerRebateIn: Boolean)
     begin
         RunBy := RunByIn;
         CustomerRebateBatch := CustomerRebateBatchIn;

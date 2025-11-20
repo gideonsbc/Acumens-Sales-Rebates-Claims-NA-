@@ -39,16 +39,16 @@ table 14301913 "AQD Cust Rebate Item Category"
         field(70; "Category Type"; Enum "AQD Cust Rebate Category Type")
         {
             Caption = 'Type';
-            trigger OnValidate()
-            var
-                RebateCategoryLines: Record "AQD Cust Rebate Category Lines";
-            begin
-                IF Rec."Category Type" <> Rec."Category Type" then begin
-                    RebateCategoryLines.RESET;
-                    RebateCategoryLines.SetRange("Rebate Category Code", Rec.Code);
-                    RebateCategoryLines.DeleteAll();
-                end
-            end;
+            // trigger OnValidate()
+            // var
+            //     RebateCategoryLines: Record "AQD Cust Rebate Category Lines";
+            // begin
+            //     IF Rec."Category Type" <> Rec."Category Type" then begin
+            //         RebateCategoryLines.RESET;
+            //         RebateCategoryLines.SetRange("Rebate Category Code", Rec.Code);
+            //         RebateCategoryLines.DeleteAll();
+            //     end
+            // end;
         }
     }
 

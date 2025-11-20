@@ -39,9 +39,9 @@ codeunit 14301917 "AQD Customer Rebate Post Mgt"
                     UpdateRecord := true;
                 end;
 
-                Clear(VendorRebatePost);
-                VendorRebatePost.SetVendorRebateBatchParameters(RunBy, CustomerRebateBatch, CalledFromGenerateCustomerRebate);
-                if VendorRebatePost.Run() then begin
+                Clear(CustomerRebatePost);
+                CustomerRebatePost.SetCustomerRebateBatchParameters(RunBy, CustomerRebateBatch, CalledFromGenerateCustomerRebate);
+                if CustomerRebatePost.Run() then begin
                     SuccessfulCount += 1;
                     UpdateRecord := false;
                 end else begin
@@ -108,7 +108,7 @@ codeunit 14301917 "AQD Customer Rebate Post Mgt"
 
     var
         CustomerRebateBatch: Record "AQD Customer Rebate Batch";
-        VendorRebatePost: Codeunit "AQD Customer Rebate Post";
+        CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
         VendorRebateSingleInstance: Codeunit "AQD Cust Rebate SingleInstance";
         RunBy: Enum "AQD Customer Rebate Posting";
         Window: Dialog;

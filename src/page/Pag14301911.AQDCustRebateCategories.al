@@ -2,14 +2,17 @@ page 14301911 "AQD Cust RebateItem Categories"
 {
     ApplicationArea = All;
     Caption = 'Customer Rebate Item Categories';
-    CardPageId = "AQD CustRebateItemCategoryCard";
-    Editable = false;
-    InsertAllowed = false;
+    //CardPageId = "AQD CustRebateItemCategoryCard";
+    Editable = TRUE;
+    InsertAllowed = TRUE;
+    DelayedInsert = TRUE;
+    DeleteAllowed = TRUE;
     PageType = List;
     RefreshOnActivate = true;
     ShowFilter = false;
     SourceTable = "AQD Cust Rebate Item Category";
     UsageCategory = Administration;
+
     layout
     {
         area(content)
