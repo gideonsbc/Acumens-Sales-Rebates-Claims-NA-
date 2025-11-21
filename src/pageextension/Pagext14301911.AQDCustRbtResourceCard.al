@@ -18,12 +18,6 @@ pageextension 14301911 "AQD CustRbt Resource Card" extends "Resource Card"
                     Editable = Rec."AQD Customer Rebate Enabled";
                     Enabled = Rec."AQD Customer Rebate Enabled";
                 }
-                field("AQD Use Cust Rebate Setup From"; Rec."AQD Use Cust Rebate Setup From")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."AQD Customer Rebate Enabled";
-                    Enabled = Rec."AQD Customer Rebate Enabled";
-                }
             }
         }
     }

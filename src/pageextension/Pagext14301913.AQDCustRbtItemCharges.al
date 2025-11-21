@@ -18,12 +18,6 @@ pageextension 14301913 "AQD CustRbt Item Charges" extends "Item Charges"
                 Editable = Rec."AQD Customer Rebate Enabled";
                 Enabled = Rec."AQD Customer Rebate Enabled";
             }
-            field("AQD Use Cust Rebate Setup From"; Rec."AQD Use Cust Rebate Setup From")
-            {
-                ApplicationArea = All;
-                Editable = Rec."AQD Customer Rebate Enabled";
-                Enabled = Rec."AQD Customer Rebate Enabled";
-            }
         }
     }
 }

@@ -17,12 +17,6 @@ pageextension 14301914 "AQD CustRbt G/L Account Card" extends "G/L Account Card"
                     Editable = Rec."AQD Customer Rebate Enabled";
                     Enabled = Rec."AQD Customer Rebate Enabled";
                 }
-                field("AQD Use Cust Rebate Setup From"; Rec."AQD Use Cust Rebate Setup From")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."AQD Customer Rebate Enabled";
-                    Enabled = Rec."AQD Customer Rebate Enabled";
-                }
             }
         }
     }

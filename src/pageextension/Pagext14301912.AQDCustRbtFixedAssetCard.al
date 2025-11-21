@@ -18,12 +18,6 @@ pageextension 14301912 "AQD CustRbt Fixed Asset Card" extends "Fixed Asset Card"
                     Editable = Rec."AQD Customer Rebate Enabled";
                     Enabled = Rec."AQD Customer Rebate Enabled";
                 }
-                field("AQD Use Cust Rebate Setup From"; Rec."AQD Use Cust Rebate Setup From")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."AQD Customer Rebate Enabled";
-                    Enabled = Rec."AQD Customer Rebate Enabled";
-                }
             }
         }
     }

@@ -19,18 +19,6 @@ pageextension 14301910 "AQD CustRbt Item Card" extends "Item Card"
                     Editable = Rec."AQD Customer Rebate Enabled";
                     Enabled = Rec."AQD Customer Rebate Enabled";
                 }
-                field("AQD Use Cust Rebate Setup From"; Rec."AQD Use Cust Rebate Setup From")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."AQD Customer Rebate Enabled";
-                    Enabled = Rec."AQD Customer Rebate Enabled";
-                }
-                field("AQD Rebate Cost Posting Type"; Rec."AQD Cust Rebate Posting Type")
-                {
-                    ApplicationArea = All;
-                    Editable = (Rec."AQD Customer Rebate Enabled") AND (Rec."AQD Use Cust Rebate Setup From" = Rec."AQD Use Cust Rebate Setup From"::Item);
-                    Enabled = (Rec."AQD Customer Rebate Enabled") AND (Rec."AQD Use Cust Rebate Setup From" = Rec."AQD Use Cust Rebate Setup From"::Item);
-                }
             }
         }
     }

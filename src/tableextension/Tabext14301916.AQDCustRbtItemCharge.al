@@ -19,21 +19,5 @@ tableextension 14301916 "AQD CustRbt Item Charge Ext" extends "Item Charge"
             Caption = 'Customer Rebate';
             DataClassification = CustomerContent;
         }
-        field(14301940; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
-        {
-            Caption = 'Use Cust Rebate Setup From';
-            DataClassification = CustomerContent;
-            trigger OnValidate()
-            var
-                AllowedValueValidationLable: Label 'Item Charge can have Use Cust Rebate Setup From either Item Charge or Rebate Code.';
-            begin
-                IF NOT (Rec."AQD Use Cust Rebate Setup From" IN
-                        [Rec."AQD Use Cust Rebate Setup From"::" ",
-                         Rec."AQD Use Cust Rebate Setup From"::"Rebate Program Code",
-                         Rec."AQD Use Cust Rebate Setup From"::"Charge (Item)"])
-                then
-                    Error(AllowedValueValidationLable);
-            end;
-        }
     }
 }

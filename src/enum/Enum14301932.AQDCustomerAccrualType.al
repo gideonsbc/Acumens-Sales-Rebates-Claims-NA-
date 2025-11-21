@@ -6,8 +6,8 @@ enum 14301932 "AQD Customer Accrual Type"
     {
         Caption = 'Default Customer';
     }
-    value(1; "Customer Card")
+    value(1; "Customer Type")
     {
-        Caption = 'Customer Card';
+        Caption = 'Customer Type';
     }
 }

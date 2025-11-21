@@ -13,22 +13,5 @@ tableextension 14301911 "AQD CustRbt G/L Account Ext" extends "G/L Account"
             DataClassification = CustomerContent;
             TableRelation = "Item Category".Code where("AQD Customer Rebate" = const(true));
         }
-        field(14301930; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
-        {
-            Caption = 'Use Rebate Setup From';
-            DataClassification = CustomerContent;
-
-            trigger OnValidate()
-            var
-                AllowedValueValidationLable: Label 'G/L Account can have Use Cust Rebate Setup From either G/L Account or Rebate Code.';
-            begin
-                IF NOT (Rec."AQD Use Cust Rebate Setup From" IN
-                        [Rec."AQD Use Cust Rebate Setup From"::" ",
-                         Rec."AQD Use Cust Rebate Setup From"::"Rebate Program Code",
-                         Rec."AQD Use Cust Rebate Setup From"::"G/L Account"])
-                then
-                    Error(AllowedValueValidationLable);
-            end;
-        }
     }
 }

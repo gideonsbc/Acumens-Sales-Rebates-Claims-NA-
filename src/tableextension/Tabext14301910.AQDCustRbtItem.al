@@ -13,30 +13,5 @@ tableextension 14301910 "AQD CustRbt Item Ext" extends Item
             DataClassification = CustomerContent;
             TableRelation = "Item Category".Code where("AQD Customer Rebate" = const(true));
         }
-        field(14301940; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
-        {
-            Caption = 'Use Rebate Setup From';
-            DataClassification = CustomerContent;
-
-            trigger OnValidate()
-            var
-                AllowedValueValidationLable: Label 'Item can have Use Rebate Setup From either Item or Rebate Code.';
-            begin
-                IF NOT (Rec."AQD Use Cust Rebate Setup From" IN
-                        [Rec."AQD Use Cust Rebate Setup From"::" ",
-                         Rec."AQD Use Cust Rebate Setup From"::"Rebate Program Code",
-                         Rec."AQD Use Cust Rebate Setup From"::Item])
-                then
-                    Error(AllowedValueValidationLable);
-
-                IF Rec."AQD Use Cust Rebate Setup From" = Rec."AQD Use Cust Rebate Setup From"::"Rebate Program Code" then
-                    Rec."AQD Cust Rebate Posting Type" := Rec."AQD Cust Rebate Posting Type"::" ";
-            end;
-        }
-        field(14301950; "AQD Cust Rebate Posting Type"; enum "AQD CustRebate CostPostingType")
-        {
-            Caption = 'Rebate Cost Posting Type';
-            DataClassification = CustomerContent;
-        }
     }
 }
