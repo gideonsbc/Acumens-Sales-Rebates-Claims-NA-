@@ -9,6 +9,10 @@ pageextension 14301925 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                 Caption = 'Acumens Customer Rebates & Claims';
                 Editable = false;
 
+                field("AQD CR Territory Code"; Rec."AQD CR Territory Code")
+                {
+                    ApplicationArea = All;
+                }
                 field("AQD AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
                 {
                     ApplicationArea = All;

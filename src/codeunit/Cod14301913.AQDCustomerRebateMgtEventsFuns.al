@@ -205,7 +205,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
                     SalesRebateSetup.SetRange("No.", SalesShipmentLine."No.");
                 end;
         END;
-        SalesRebateSetup.SetRange("Customer No.", SalesShipmentLine."Bill-to Customer No.");
+        SalesRebateSetup.SetRange("Entity No.", SalesShipmentLine."Bill-to Customer No.");
         SalesRebateSetup.SetFilter("Starting Date", '%1|<=%2', 0D, SalesShipmentLine."Posting Date");
         SalesRebateSetup.SetFilter("Ending Date", '%1|>=%2', 0D, SalesShipmentLine."Posting Date");
         IF SalesRebateSetup.FindFirst() then
@@ -324,7 +324,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         IF InsertSetupRec THEN BEGIN
             SalesRebateSetup."Territory Code" := SalesShptHeader."AQD Comm Territory Code";
             SalesRebateSetup."Variant Code" := SalesShipmentLine."Variant Code";
-            SalesRebateSetup."Customer No." := SalesShipmentLine."Bill-to Customer No.";
+            SalesRebateSetup."Entity No." := SalesShipmentLine."Bill-to Customer No.";
             SalesRebateSetup."Minimum Quantity" := 0;
             SalesRebateSetup."Unit of Measure Code" := SalesShipmentLine."Unit of Measure Code";
             IF RebateSetup.BlockAutoCreatedSaleRebateRate then
@@ -354,7 +354,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         BillToCustomer: Record Customer;
     BEGIN
         IF BillToCustomer.GET(SalesInvHeader."Bill-to Customer No.") THEN
-            SalesInvHeader."AQD Comm Territory Code" := BillToCustomer."Territory Code";
+            SalesInvHeader."AQD CR Territory Code" := BillToCustomer."Territory Code";
     END;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesCrMemoHeaderInsert, '', false, false)]
@@ -363,7 +363,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         BillToCustomer: Record Customer;
     BEGIN
         IF BillToCustomer.GET(SalesInvHeader."Bill-to Customer No.") THEN
-            SalesCrMemoHeader."AQD Comm Territory Code" := BillToCustomer."Territory Code";
+            SalesCrMemoHeader."AQD CR Territory Code" := BillToCustomer."Territory Code";
     END;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeReturnRcptHeaderInsert, '', false, false)]

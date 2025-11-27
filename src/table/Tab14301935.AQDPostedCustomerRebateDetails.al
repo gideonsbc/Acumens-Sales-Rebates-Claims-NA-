@@ -40,6 +40,11 @@ table 14301935 "AQD Posted Cust Reb Details"
             Caption = 'Document Line No.';
             Editable = false;
         }
+        field(45; "Entity Type"; Enum "AQD CR Rebate Entity Type")
+        {
+            Caption = 'Entity Type';
+            Editable = false;
+        }
         field(50; Type; enum "AQD Cust Rebate Record Type")
         {
             Caption = 'Type';
@@ -134,7 +139,7 @@ table 14301935 "AQD Posted Cust Reb Details"
         }
         field(180; "Customer Rebate Amount"; Decimal)
         {
-            Caption = 'Customer Rebate Amount';
+            Caption = 'Rebate Amount';
             trigger OnValidate()
             var
                 RebateStatusError: Label 'Rebate Status must not be %1.';

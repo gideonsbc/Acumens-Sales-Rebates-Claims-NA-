@@ -41,6 +41,11 @@ page 14301934 "AQD Customer Rebate Details"
                     ToolTip = 'Specifies the value of the Document Line No. field.', Comment = '%';
                     Visible = false;
                 }
+                field("Rebate Entity Type"; Rec."Entity Type")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Rebate Entity Type field.', Comment = '%';
+                }
                 field(Type; Rec."Type")
                 {
                     ApplicationArea = All;

@@ -26,6 +26,11 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ApplicationArea = All;
                     Visible = FALSE;
                 }
+                field("Rebate Entity Type"; Rec."Entity Type")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Rebate Entity Type field.', Comment = '%';
+                }
                 field("Document Type"; Rec."Document Type")
                 {
                     ApplicationArea = All;
@@ -42,6 +47,7 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ToolTip = 'Specifies the value of the Document Line No. field.', Comment = '%';
                     Visible = FALSE;
                 }
+
                 field(Type; Rec."Type")
                 {
                     ApplicationArea = All;

@@ -4,15 +4,17 @@ table 14301920 "AQD Sales Rebates Rate"
 
     fields
     {
-        field(1; "Customer Type"; Enum "AQD Cust Rebate Customer Type")
+        field(1; "Entity Type"; Enum "AQD Cust Rebate Customer Type")
         {
-            Caption = 'Customer Type';
+            Caption = 'Entity Type';
         }
-        field(2; "Customer No."; Code[20])
+        field(2; "Entity No."; Code[20])
         {
-            Caption = 'Customer No.';
-            TableRelation = if ("Customer Type" = const("Customer Type")) "AQD CustRbt RebateCustomerType"
-            else if ("Customer Type" = const(Customer)) Customer;
+            Caption = 'Entity No.';
+            TableRelation = if ("Entity Type" = const("Customer Type")) "AQD CustRbt RebateCustomerType"
+            else if ("Entity Type" = const(Customer)) Customer
+            else if ("Entity Type" = const("Employee Commission")) Employee where(Status = const(Active))
+            else if ("Entity Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
         }
         field(3; "Territory Code"; Code[10])
         {
@@ -259,7 +261,7 @@ table 14301920 "AQD Sales Rebates Rate"
 
     keys
     {
-        key(Key1; "Customer Type", "Customer No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity")
+        key(Key1; "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity")
         {
             Clustered = true;
         }

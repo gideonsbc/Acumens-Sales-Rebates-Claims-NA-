@@ -15,9 +15,9 @@ pageextension 14301918 "AQD CustRbt Customer List" extends "Customer List"
                 Caption = 'Setup Sales Rebates';
                 Image = LineDiscount;
                 RunObject = Page "AQD CustRbt SalesRebates Setup";
-                RunPageLink = "Customer Type" = CONST(Customer),
-                                  "Customer No." = FIELD("No.");
-                RunPageView = SORTING("Customer Type", "Customer No.");
+                RunPageLink = "Entity Type" = CONST(Customer),
+                                  "Entity No." = FIELD("No.");
+                RunPageView = SORTING("Entity Type", "Entity No.");
             }
         }
         addlast(Category_Category9)

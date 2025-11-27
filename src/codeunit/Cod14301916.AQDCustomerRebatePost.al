@@ -648,6 +648,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
             PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Inventory);
             PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
+            PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Customer);
             IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                 Repeat
                     NextLineNo += 10000;
@@ -739,6 +740,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
             PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Expense);
             PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
+            PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Customer);
             IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                 Repeat
                     PostedCustomerRebateLineDetails."Rebate Sales Doc Type" := PostedCustomerRebateLineDetails."Rebate Sales Doc Type"::"Sales Document";
@@ -845,6 +847,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
             PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Inventory);
             PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
+            PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Customer);
             IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                 Repeat
                     NextLineNo += 10000;
@@ -936,6 +939,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
             PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Expense);
             PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
+            PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Customer);
             IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                 Repeat
                     PostedCustomerRebateLineDetails."Rebate Sales Doc Type" := PostedCustomerRebateLineDetails."Rebate Sales Doc Type"::"Sales Document";

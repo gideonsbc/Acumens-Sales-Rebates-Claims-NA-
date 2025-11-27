@@ -40,6 +40,19 @@ table 14301930 "AQD Customer Rebate Details"
             Caption = 'Document Line No.';
             Editable = false;
         }
+        field(45; "Entity Type"; Enum "AQD CR Rebate Entity Type")
+        {
+            Caption = 'Entity Type';
+            Editable = false;
+        }
+        field(46; "Entity No."; Code[20])
+        {
+            Caption = 'Entity Type';
+            Editable = false;
+            TableRelation = if ("Entity Type" = const(Customer)) Customer."No."
+            else if ("Entity Type" = const(Employee)) Employee."No."
+            else if ("Entity Type" = const(Vendor)) Vendor."No.";
+        }
         field(50; Type; enum "AQD Cust Rebate Record Type")
         {
             Caption = 'Type';
@@ -130,6 +143,24 @@ table 14301930 "AQD Customer Rebate Details"
         field(170; "Calculated Line Rebate Amount"; Decimal)
         {
             Caption = 'Calculated Rebate Amount';
+            Editable = false;
+        }
+        field(178; "Vendor Commission"; Decimal)
+        {
+            Caption = 'Vendor Commission';
+            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
+                                                                                           "Rebate Line No." = field("Line No."),
+                                                                                           "Entity Type" = const(Vendor)));
+            FieldClass = FlowField;
+            Editable = false;
+        }
+        field(179; "Employee Commission"; Decimal)
+        {
+            Caption = 'Employee Commission';
+            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
+                                                                                           "Rebate Line No." = field("Line No."),
+                                                                                           "Entity Type" = const(Employee)));
+            FieldClass = FlowField;
             Editable = false;
         }
         field(180; "Customer Rebate Amount"; Decimal)

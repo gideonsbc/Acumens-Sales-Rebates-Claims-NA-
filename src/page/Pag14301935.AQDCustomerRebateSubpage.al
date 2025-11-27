@@ -100,6 +100,16 @@ page 14301935 "AQD Customer Rebate Subpage"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Customer Rebate Amount field.', Comment = '%';
                 }
+                field("Vendor Commission"; Rec."Vendor Commission")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Vendor Commission field.', Comment = '%';
+                }
+                field("Employee Commission"; Rec."Employee Commission")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Employee Commission field.', Comment = '%';
+                }
                 field(Exclude; Rec."Do Not Credit")
                 {
                     ApplicationArea = All;

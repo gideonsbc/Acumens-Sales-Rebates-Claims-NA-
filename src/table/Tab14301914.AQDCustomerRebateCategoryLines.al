@@ -24,6 +24,11 @@ table 14301914 "AQD Cust Rebate Category Lines"
         {
             Caption = 'Description';
         }
+        field(40; "Entity Type"; Enum "AQD CR Rebate Entity Type")
+        {
+            Caption = 'Entity Type';
+            Editable = false;
+        }
         field(7050; "AQD Use Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
             Caption = 'Use Rebate Setup From'; // As Temporary Used

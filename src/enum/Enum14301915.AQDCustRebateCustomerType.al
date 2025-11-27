@@ -14,4 +14,12 @@ enum 14301915 "AQD Cust Rebate Customer Type"
     {
         Caption = 'All Customers';
     }
+    value(3; "Employee Commission")
+    {
+        Caption = 'Employee Commission';
+    }
+    value(4; "Vendor Commission")
+    {
+        Caption = 'Vendor Commission';
+    }
 }

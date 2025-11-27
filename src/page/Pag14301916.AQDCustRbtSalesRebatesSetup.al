@@ -173,7 +173,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
             }
             repeater(Control1)
             {
-                field("Customer Type"; Rec."Customer Type")
+                field("Entity Type"; Rec."Entity Type")
                 {
                     ApplicationArea = Basic, Suite;
                     Editable = SalesTypeControlEditable;
@@ -181,21 +181,21 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
 
                     trigger OnValidate()
                     begin
-                        CustomerNoControlEditable := SetCustomerNoEditable(Rec."Customer Type");
-                        IF Rec."Customer Type" <> xRec."Customer Type" then
-                            Rec."Customer No." := '';
+                        CustomerNoControlEditable := SetCustomerNoEditable(Rec."Entity Type");
+                        IF Rec."Entity Type" <> xRec."Entity Type" then
+                            Rec."Entity No." := '';
                     end;
                 }
-                field("Customer No."; Rec."Customer No.")
+                field("Entity No."; Rec."Entity No.")
                 {
                     ApplicationArea = All;
                     Editable = CustomerNoControlEditable;
-                    ToolTip = 'Specifies the Customer No. that belongs to the Customer Type.';
+                    ToolTip = 'Specifies the Entity No. that belongs to the Entity Type.';
                 }
                 Field("Territory Code"; Rec."Territory Code")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the Territory Code that belongs to the Customer Type.';
+                    ToolTip = 'Specifies the Territory Code that belongs to the Entity Type.';
                 }
                 field("Line Type"; Rec."Line Type")
                 {
@@ -324,7 +324,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
 
     trigger OnAfterGetCurrRecord()
     begin
-        CustomerNoControlEditable := SetCustomerNoEditable(Rec."Customer Type");
+        CustomerNoControlEditable := SetCustomerNoEditable(Rec."Entity Type");
     end;
 
     trigger OnInit()
@@ -398,12 +398,12 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
 
     local procedure UpdateBasicRecFilters()
     begin
-        if Rec.GetFilter("Customer Type") <> '' then
+        if Rec.GetFilter("Entity Type") <> '' then
             CustomerTypeFilter := GetSalesTypeFilter()
         else
             CustomerTypeFilter := CustomerTypeFilter::" ";
 
-        CustomerNoFilter := Rec.GetFilter("Customer No.");
+        CustomerNoFilter := Rec.GetFilter("Entity No.");
         ItemNoFilter := Rec.GetFilter("No.");
     end;
 
@@ -414,25 +414,36 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
         if CustomerTypeFilter <> CustomerTypeFilter::" " then begin
             Case CustomerTypeFilter OF
                 CustomerTypeFilter::" ":
-                    Rec.SetRange("Customer Type");
+                    Rec.SetRange("Entity Type");
                 CustomerTypeFilter::Customer:
                     begin
                         CheckFilters(DATABASE::Customer, CustomerNoFilter);
-                        Rec.SetRange("Customer Type", Rec."Customer Type"::Customer);
+                        Rec.SetRange("Entity Type", Rec."Entity Type"::Customer);
                     end;
                 CustomerTypeFilter::"Customer Type":
                     begin
-                        Rec.SetRange("Customer Type", Rec."Customer Type"::"Customer Type");
                         CheckFilters(DATABASE::"AQD CustRbt RebateCustomerType", CustomerNoFilter);
+                        Rec.SetRange("Entity Type", Rec."Entity Type"::"Customer Type");
                     end;
                 CustomerTypeFilter::"All Customers":
                     begin
                         CustomerNoFilter := '';
-                        Rec.SetRange("Customer Type", Rec."Customer Type"::"All Customers");
+                        Rec.SetRange("Entity Type", Rec."Entity Type"::"All Customers");
+                    end;
+                CustomerTypeFilter::"Employee Commission":
+                    begin
+                        CheckFilters(DATABASE::Employee, CustomerNoFilter);
+                        Rec.SetRange("Entity Type", Rec."Entity Type"::"Employee Commission");
+                    end;
+                CustomerTypeFilter::"Vendor Commission":
+                    begin
+                        CustomerNoFilter := '';
+                        CheckFilters(DATABASE::Vendor, CustomerNoFilter);
+                        Rec.SetRange("Entity Type", Rec."Entity Type"::"Vendor Commission");
                     end;
             End;
         end else
-            Rec.SetRange("Customer Type");
+            Rec.SetRange("Entity Type");
 
         if CustomerTypeFilter in [CustomerTypeFilter::"All Customers", CustomerTypeFilter::" "] then begin
             CustomerNoFilterEnable := false;
@@ -440,9 +451,9 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
         end;
 
         if CustomerNoFilter <> '' then
-            Rec.SetFilter("Customer No.", CustomerNoFilter)
+            Rec.SetFilter("Entity No.", CustomerNoFilter)
         else
-            Rec.SetRange("Customer No.");
+            Rec.SetRange("Entity No.");
 
         if StartingDateFilter <> '' then
             Rec.SetFilter("Starting Date", StartingDateFilter)
@@ -637,13 +648,17 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
 
     local procedure GetSalesTypeFilter(): Integer
     begin
-        case Rec.GetFilter("Customer Type") of
-            Format(Rec."Customer Type"::Customer):
-                exit(CustomerTypeFilter::Customer);
-            Format(Rec."Customer Type"::"Customer Type"):
-                exit(CustomerTypeFilter::"Customer Type");
-            Format(Rec."Customer Type"::"All Customers"):
-                exit(CustomerTypeFilter::"All Customers");
+        case Rec.GetFilter("Entity Type") of
+            Format(Rec."Entity Type"::Customer):
+                exit(CustomerTypeFilter::Customer.AsInteger());
+            Format(Rec."Entity Type"::"Customer Type"):
+                exit(CustomerTypeFilter::"Customer Type".AsInteger());
+            Format(Rec."Entity Type"::"All Customers"):
+                exit(CustomerTypeFilter::"All Customers".AsInteger());
+            Format(Rec."Entity Type"::"Employee Commission"):
+                exit(CustomerTypeFilter::"Employee Commission".AsInteger());
+            Format(Rec."Entity Type"::"Vendor Commission"):
+                exit(CustomerTypeFilter::"Vendor Commission".AsInteger());
         end;
     end;
 
@@ -654,9 +669,9 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
 
     local procedure SetEditableFields()
     begin
-        SalesTypeControlEditable := Rec.GetFilter("Customer Type") = '';
+        SalesTypeControlEditable := Rec.GetFilter("Entity Type") = '';
         CustomerNoControlEditable :=
-          CustomerNoControlEditable and (Rec.GetFilter("Customer No.") = '');
+          CustomerNoControlEditable and (Rec.GetFilter("Entity No.") = '');
     end;
 
     local procedure FilterLines()
@@ -666,10 +681,10 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
         FilterPageBuilder.AddTable(Rec.TableCaption, DATABASE::"Sales Price");
 
         FilterPageBuilder.SetView(Rec.TableCaption, Rec.GetView());
-        if Rec.GetFilter("Customer Type") = '' then
-            FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer Type"));
-        if Rec.GetFilter("Customer No.") = '' then
-            FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer No."));
+        if Rec.GetFilter("Entity Type") = '' then
+            FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Entity Type"));
+        if Rec.GetFilter("Entity No.") = '' then
+            FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Entity No."));
         if Rec.GetFilter("No.") = '' then
             FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("No."));
         if Rec.GetFilter("Starting Date") = '' then
@@ -682,4 +697,3 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
         SetEditableFields();
     end;
 }
-
