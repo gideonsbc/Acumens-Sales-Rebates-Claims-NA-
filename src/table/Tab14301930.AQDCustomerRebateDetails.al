@@ -47,7 +47,7 @@ table 14301930 "AQD Customer Rebate Details"
         }
         field(46; "Entity No."; Code[20])
         {
-            Caption = 'Entity Type';
+            Caption = 'Entity No.';
             Editable = false;
             TableRelation = if ("Entity Type" = const(Customer)) Customer."No."
             else if ("Entity Type" = const(Employee)) Employee."No."

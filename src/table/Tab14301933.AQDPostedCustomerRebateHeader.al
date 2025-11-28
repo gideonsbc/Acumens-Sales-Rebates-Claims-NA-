@@ -248,7 +248,22 @@ table 14301933 "AQD Posted Cust Rebate Header"
             FieldClass = FlowField;
             Editable = false;
         }
-
+        field(531; "Vendor Commission"; Decimal)
+        {
+            Caption = 'Vendor Commission';
+            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
+                                                                                           "Entity Type" = const(Vendor)));
+            FieldClass = FlowField;
+            Editable = false;
+        }
+        field(532; "Employee Commission"; Decimal)
+        {
+            Caption = 'Employee Commission';
+            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
+                                                                                           "Entity Type" = const(Employee)));
+            FieldClass = FlowField;
+            Editable = false;
+        }
         field(540; "Created By"; Code[50])
         {
             Caption = 'Created By';

@@ -111,7 +111,7 @@ table 14301934 "AQD Posted Cust Rebate Line"
         }
         field(180; "Customer Rebate Amount"; Decimal)
         {
-            Caption = 'Rebate Amount';
+            Caption = 'Customer Rebate Amount';
             CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
                                                                                            "Entity Type" = const(Customer)));

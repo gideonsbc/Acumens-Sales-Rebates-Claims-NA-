@@ -112,6 +112,16 @@ page 14301938 "AQD Posted Customer Rebate Doc"
                     Caption = 'Customer Rebate Amount';
                     ToolTip = 'Specifies the value of the Customer Rebate Amount field.';
                 }
+                field("Vendor Commission"; Rec."Vendor Commission")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of theVendor Commission Amount field.';
+                }
+                field("Employee Commission"; Rec."Employee Commission")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Employee Commission field.';
+                }
                 field(Approved; Rec.Approved)
                 {
                     ApplicationArea = All;

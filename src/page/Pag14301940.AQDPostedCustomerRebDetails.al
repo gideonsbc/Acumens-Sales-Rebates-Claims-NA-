@@ -31,6 +31,11 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Rebate Entity Type field.', Comment = '%';
                 }
+                field("Rebate Entity No."; Rec."Entity No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Rebate Entity No. field.', Comment = '%';
+                }
                 field("Document Type"; Rec."Document Type")
                 {
                     ApplicationArea = All;

@@ -45,6 +45,14 @@ table 14301935 "AQD Posted Cust Reb Details"
             Caption = 'Entity Type';
             Editable = false;
         }
+        field(46; "Entity No."; Code[20])
+        {
+            Caption = 'Entity No.';
+            Editable = false;
+            TableRelation = if ("Entity Type" = const(Customer)) Customer."No."
+            else if ("Entity Type" = const(Employee)) Employee."No."
+            else if ("Entity Type" = const(Vendor)) Vendor."No.";
+        }
         field(50; Type; enum "AQD Cust Rebate Record Type")
         {
             Caption = 'Type';
