@@ -312,6 +312,13 @@ codeunit 14301916 "AQD Customer Rebate Post"
                                         END;
                                     UNTIL TmpCrMemoBuffer.Next() = 0;
                                 END;
+
+                                GenJnlLine.RESET;
+                                GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+                                GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                                GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
+                                IF GenJnlLine.FindFirst() THEN
+                                    CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
                             END;
                         RebateSetup."Post Customer Rebate Using"::"Sales Journal":
                             BEGIN
@@ -456,12 +463,20 @@ codeunit 14301916 "AQD Customer Rebate Post"
                                 END;
                             UNTIL TmpCrMemoBuffer.Next() = 0;
                         END;
+
+                        GenJnlLine.RESET;
+                        GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+                        GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                        GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
+                        IF GenJnlLine.FindFirst() THEN
+                            CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
                     END;
                 RebateSetup."Post Customer Rebate Using"::"Sales Journal":
                     BEGIN
                         GenJnlLine.RESET;
                         GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
                         GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                        GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
                         IF GenJnlLine.FindFirst() THEN
                             CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
                     END;
@@ -571,7 +586,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
         DocumentNo: Code[20];
         LineNo: Integer;
     begin
-        PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)");
+        PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)",
+                                            "Vendor Commission", "Employee Commission");
 
         TmpCrMemoBuffer.RESET;
         TmpCrMemoBuffer.SetRange("G/L Account", TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
@@ -904,7 +920,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
         DocumentNo: Code[20];
         LineNo: Integer;
     begin
-        PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)", "Vendor Commission", "Employee Commission");
+        PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)",
+                                            "Vendor Commission", "Employee Commission");
 
         TmpInovoiceBuffer.RESET;
         TmpInovoiceBuffer.SetRange("G/L Account", TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
@@ -1273,7 +1290,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
                 GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
                 if GenJnlLine.FINDLAST() then
-                    LineNo := GenJnlLine."Line No."
+                    LineNo := GenJnlLine."Line No." + 10000
                 ELSE
                     LineNo := 10000;
 
@@ -1362,7 +1379,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     GenJnlLine.INSERT(TRUE);
                 END;
 
-                IF PostedCustomerRebateLine."Employee Commission" <> 0 THEN BEGIN
+                IF PostedCustRebateLine."Employee Commission" <> 0 THEN BEGIN
                     LineNo += 10000;
                     GenJnlLine."Line No." := LineNo;
                     GenJnlLine.Validate(Amount, PostedCustRebateLine."Employee Commission");

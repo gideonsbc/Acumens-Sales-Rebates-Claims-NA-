@@ -21,6 +21,7 @@ table 14301942 "AQD CR Vend Emp Customer Filt"
         {
             Caption = 'Customer No.';
             DataClassification = CustomerContent;
+            TableRelation = Customer."No." where(Blocked = const(" "));
 
             trigger OnValidate()
             begin

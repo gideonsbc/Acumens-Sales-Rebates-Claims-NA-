@@ -244,7 +244,9 @@ table 14301933 "AQD Posted Cust Rebate Header"
         field(530; "Customer Rebate Amount"; Decimal)
         {
             Caption = 'Customer Rebate Amount';
-            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("No.")));
+            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
+                                                                                           "Entity Type" = const(Customer),
+                                                                                           "Do Not Credit" = filter(false)));
             FieldClass = FlowField;
             Editable = false;
         }
@@ -252,7 +254,8 @@ table 14301933 "AQD Posted Cust Rebate Header"
         {
             Caption = 'Vendor Commission';
             CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
-                                                                                           "Entity Type" = const(Vendor)));
+                                                                                           "Entity Type" = const(Vendor),
+                                                                                           "Do Not Credit" = filter(false)));
             FieldClass = FlowField;
             Editable = false;
         }
@@ -260,7 +263,8 @@ table 14301933 "AQD Posted Cust Rebate Header"
         {
             Caption = 'Employee Commission';
             CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
-                                                                                           "Entity Type" = const(Employee)));
+                                                                                           "Entity Type" = const(Employee),
+                                                                                           "Do Not Credit" = filter(false)));
             FieldClass = FlowField;
             Editable = false;
         }

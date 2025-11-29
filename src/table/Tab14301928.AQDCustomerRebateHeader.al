@@ -243,14 +243,17 @@ table 14301928 "AQD Customer Rebate Header"
         field(530; "Customer Rebate Amount"; Decimal)
         {
             Caption = 'Customer Rebate Amount';
-            CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("No."), "Do Not Credit" = filter(false)));
+            CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
+                                                                                           "Do Not Credit" = filter(false),
+                                                                                           "Entity Type" = const(Customer)));
             FieldClass = FlowField;
             Editable = false;
         }
         field(531; "Vendor Commission"; Decimal)
         {
             Caption = 'Vendor Commission';
-            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
+            CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
+                                                                                           "Do Not Credit" = filter(false),
                                                                                            "Entity Type" = const(Vendor)));
             FieldClass = FlowField;
             Editable = false;
@@ -258,7 +261,8 @@ table 14301928 "AQD Customer Rebate Header"
         field(532; "Employee Commission"; Decimal)
         {
             Caption = 'Employee Commission';
-            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
+            CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
+                                                                                           "Do Not Credit" = filter(false),
                                                                                            "Entity Type" = const(Employee)));
             FieldClass = FlowField;
             Editable = false;

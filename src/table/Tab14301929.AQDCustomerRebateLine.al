@@ -82,7 +82,8 @@ table 14301929 "AQD Customer Rebate Line"
         field(178; "Vendor Commission"; Decimal)
         {
             Caption = 'Vendor Commission';
-            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
+            CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
+                                                                                           "Do Not Credit" = filter(false),
                                                                                            "Rebate Line No." = field("Line No."),
                                                                                            "Entity Type" = const(Vendor)));
             FieldClass = FlowField;
@@ -91,7 +92,8 @@ table 14301929 "AQD Customer Rebate Line"
         field(179; "Employee Commission"; Decimal)
         {
             Caption = 'Employee Commission';
-            CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
+            CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
+                                                                                           "Do Not Credit" = filter(false),
                                                                                            "Rebate Line No." = field("Line No."),
                                                                                            "Entity Type" = const(Employee)));
             FieldClass = FlowField;
@@ -101,7 +103,9 @@ table 14301929 "AQD Customer Rebate Line"
         {
             Caption = 'Customer Rebate Amount';
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
-                                                                                           "Rebate Line No." = field("Line No.")));
+                                                                                           "Do Not Credit" = filter(false),
+                                                                                           "Rebate Line No." = field("Line No."),
+                                                                                           "Entity Type" = filter(Customer)));
             FieldClass = FlowField;
             Editable = false;
         }

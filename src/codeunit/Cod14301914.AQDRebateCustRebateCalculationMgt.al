@@ -270,6 +270,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         LocalEmpVenCustomerFilter: Record "AQD CR Vend Emp Customer Filt";
         LocalEmpVenTerritoryFilter: Record "AQD CR Vend Emp Territory Filt";
         LocalVendorRebate: Boolean;
+        LocalEmployeeRebate: Boolean;
         LocalRecordFound: Boolean;
         LocalRebateEntigyType: Enum "AQD CR Rebate Entity Type";
     begin
@@ -340,6 +341,42 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                 IF LocalVendorRebate THEN
                                     InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalVendor."No.");
                             until LocalVendor.Next() = 0;
+                        END;
+
+                        LocalRebateEntigyType := LocalRebateEntigyType::Employee;
+                        LocalEmployee.RESET;
+                        LocalEmployee.SetRange("AQD Customer Rebate", TRUE);
+                        IF LocalEmployee.FINDFIRST THEN BEGIN
+                            REPEAT
+                                LocalEmployeeRebate := FALSE;
+                                LocalRecordFound := FALSE;
+
+                                LocalEmpVenTerritoryFilter.RESET;
+                                LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Employee);
+                                LocalEmpVenTerritoryFilter.SetRange("No.", LocalEmployee."No.");
+                                IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
+                                    LocalRecordFound := TRUE;
+                                    LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesInvHeaderIn."AQD CR Territory Code", '');
+                                    IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                                        LocalEmployeeRebate := TRUE;
+                                END;
+
+                                LocalEmpVenCustomerFilter.RESET;
+                                LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Employee);
+                                LocalEmpVenCustomerFilter.SetRange("No.", LocalEmployee."No.");
+                                IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
+                                    LocalRecordFound := TRUE;
+                                    LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
+                                    IF LocalEmpVenCustomerFilter.FINDFIRST THEN
+                                        LocalEmployeeRebate := TRUE;
+                                END;
+
+                                IF NOT LocalRecordFound THEN
+                                    LocalEmployeeRebate := TRUE;
+
+                                IF LocalEmployeeRebate THEN
+                                    InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalEmployee."No.");
+                            until LocalEmployee.Next() = 0;
                         END;
                     END;
                 until SalesInvLine.Next = 0;
@@ -447,6 +484,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         LocalEmpVenCustomerFilter: Record "AQD CR Vend Emp Customer Filt";
         LocalEmpVenTerritoryFilter: Record "AQD CR Vend Emp Territory Filt";
         LocalVendorRebate: Boolean;
+        LocalEmployeeRebate: Boolean;
         LocalRecordFound: Boolean;
         LocalRebateEntigyType: Enum "AQD CR Rebate Entity Type";
     begin
@@ -496,7 +534,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                 LocalEmpVenTerritoryFilter.SetRange("No.", LocalVendor."No.");
                                 IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
                                     LocalRecordFound := TRUE;
-                                    LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesInvoiceHeader."AQD CR Territory Code", '');
+                                    LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesCrMHeaderIn."AQD CR Territory Code", '');
                                     IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
                                         LocalVendorRebate := TRUE;
                                 END;
@@ -515,8 +553,44 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                     LocalVendorRebate := TRUE;
 
                                 IF LocalVendorRebate THEN
-                                    InsertRebateDetail(DocumentType::Invoice, SalesInvoiceHeader, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalVendor."No.");
+                                    InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalVendor."No.");
                             until LocalVendor.Next() = 0;
+                        END;
+
+                        LocalRebateEntigyType := LocalRebateEntigyType::Employee;
+                        LocalEmployee.RESET;
+                        LocalEmployee.SetRange("AQD Customer Rebate", TRUE);
+                        IF LocalEmployee.FINDFIRST THEN BEGIN
+                            REPEAT
+                                LocalEmployeeRebate := FALSE;
+                                LocalRecordFound := FALSE;
+
+                                LocalEmpVenTerritoryFilter.RESET;
+                                LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Employee);
+                                LocalEmpVenTerritoryFilter.SetRange("No.", LocalEmployee."No.");
+                                IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
+                                    LocalRecordFound := TRUE;
+                                    LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesCrMHeaderIn."AQD CR Territory Code", '');
+                                    IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                                        LocalEmployeeRebate := TRUE;
+                                END;
+
+                                LocalEmpVenCustomerFilter.RESET;
+                                LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Employee);
+                                LocalEmpVenCustomerFilter.SetRange("No.", LocalEmployee."No.");
+                                IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
+                                    LocalRecordFound := TRUE;
+                                    LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
+                                    IF LocalEmpVenCustomerFilter.FINDFIRST THEN
+                                        LocalEmployeeRebate := TRUE;
+                                END;
+
+                                IF NOT LocalRecordFound THEN
+                                    LocalEmployeeRebate := TRUE;
+
+                                IF LocalEmployeeRebate THEN
+                                    InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalEmployee."No.");
+                            until LocalEmployee.Next() = 0;
                         END;
                     end;
                 until SalesCrMemoLine.Next = 0;

@@ -59,6 +59,13 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Image = FixedAssets;
                 RunObject = Page "Fixed Asset List";
             }
+            action(Customers)
+            {
+                Caption = 'Customers';
+                ApplicationArea = All;
+                Image = Customer;
+                RunObject = Page "Customer List";
+            }
             action(Vendors)
             {
                 Caption = 'Vendors';
@@ -66,12 +73,12 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Image = Vendor;
                 RunObject = Page "Vendor List";
             }
-            action(Customers)
+            action(Employees)
             {
-                Caption = 'Customers';
+                Caption = 'Employees';
                 ApplicationArea = All;
-                Image = Customer;
-                RunObject = Page "Customer List";
+                Image = Employee;
+                RunObject = Page "Employee List";
             }
             // action(AQDCustRbtIncludeCustomerLocations)
             // {
