@@ -9,6 +9,8 @@ codeunit 14301918 "AQD Customer Rebate Install"
 
     trigger OnInstallAppPerCompany()
     var
+        SalesSetup: Record "Sales & Receivables Setup";
+        ModifyRecord: Boolean;
         JobQueueEntry: Record "Job Queue Entry";
         GenCustRebateText: Label 'Generate Customer Rebate';
         CustRebateDetails: Record "AQD Customer Rebate Details";
@@ -16,6 +18,22 @@ codeunit 14301918 "AQD Customer Rebate Install"
     begin
         // CustRebateDetails.ModifyAll("Entity Type", CustRebateDetails."Entity Type"::Customer);
         // PostedCustRebateDetails.ModifyAll("Entity Type", PostedCustRebateDetails."Entity Type"::Customer);
+
+        ModifyRecord := false;
+        IF NOT SalesSetup.GET THEN BEGIN
+            SalesSetup.Init();
+            SalesSetup.Insert();
+        END;
+        IF NOT SalesSetup."Return Receipt on Credit Memo" THEN BEGIN
+            SalesSetup."Return Receipt on Credit Memo" := TRUE;
+            ModifyRecord := TRUE;
+        END;
+        IF NOT SalesSetup."Shipment on Invoice" THEN BEGIN
+            SalesSetup."Shipment on Invoice" := TRUE;
+            ModifyRecord := TRUE;
+        END;
+        IF ModifyRecord THEN
+            SalesSetup.Modify();
 
         JobQueueEntry.RESET;
         JobQueueEntry.SetRange("Object Type to Run", JobQueueEntry."Object Type to Run"::Report);
