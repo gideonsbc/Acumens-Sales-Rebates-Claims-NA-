@@ -70,13 +70,15 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         ShortcutDim2CodeFilter: Text[250];
         CountyFilter: Text[250];
         RebateCodeName: Text[100];
-        RebatePeriodText: Label 'Rebate Period: %1..%2';
+        RebatePeriodText: Label 'Rebate Period: %1';
         PostingDescrptionText: Text;
         GlobalBatchID: Code[50];
         GlobalBatchEntryNo: Integer;
         GlobalBatchStartDate: Date;
         GlobalBatchEndDate: Date;
         GlobalRebateBatchFrequency: Enum "AQD CustRebate Batch Frequency";
+        StartPostingDate: Date;
+        EndPostingDate: Date;
 
     procedure UpdateOldDocumentsNonRebateEnable()
     var
@@ -119,6 +121,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     begin
         RebateSetup.Get;
         RebateSetup.TestField("Customer Rebate Nos");
+
+        StartPostingDate := DateArray[1];
+        EndPostingDate := DateArray[2];
+        IF (StartPostingDate = 0D) or (StartPostingDate < RebateSetup."Start Date") then
+            StartPostingDate := RebateSetup."Start Date";
 
         if not CustomerIn."AQD Enroll for Cust Rebate" then
             exit;
@@ -1208,9 +1215,9 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         CASE CustomerIn."AQD CustRbt Calculation Date" OF
                             CustomerIn."AQD CustRbt Calculation Date"::" ",
                             CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
-                                GlobalBatchID := GetBatchID(SalesInvHeaderIn."Posting Date");
+                                GlobalBatchID := GetBatchID(SalesInvHeaderIn."Posting Date", CustomerIn);
                             CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                                GlobalBatchID := GetBatchID(SalesInvHeaderIn."AQD Customer Rebate Order Date");
+                                GlobalBatchID := GetBatchID(SalesInvHeaderIn."AQD Customer Rebate Order Date", CustomerIn);
                         END;
                     END;
 
@@ -1268,9 +1275,9 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         CASE CustomerIn."AQD CustRbt Calculation Date" OF
                             CustomerIn."AQD CustRbt Calculation Date"::" ",
                             CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
-                                GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."Posting Date");
+                                GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."Posting Date", CustomerIn);
                             CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                                GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."AQD Customer Rebate Order Date");
+                                GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."AQD Customer Rebate Order Date", CustomerIn);
                         END;
                     END;
 
@@ -1327,6 +1334,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             IF GlobalBatchID <> '' THEN BEGIN
                 CustomerRebateBatch.RESET;
                 CustomerRebateBatch.SetRange(BatchID, GlobalBatchID);
+                CustomerRebateBatch.SetRange("Bill-To Customer No.", CustomerIn."No.");
                 IF NOT CustomerRebateBatch.FindFirst() THEN BEGIN
                     CustomerRebateBatch.INIT;
                     CustomerRebateBatch.BatchID := GlobalBatchID;
@@ -1339,6 +1347,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateBatch."Start Date" := GlobalBatchStartDate;
                     CustomerRebateBatch."End Date" := GlobalBatchEndDate;
                     CustomerRebateBatch."AQD Rebate Batch Frequency" := GlobalRebateBatchFrequency;
+                    CustomerRebateBatch."Bill-To Customer No." := CustomerIn."No.";
+                    CustomerRebateBatch."Bill-To Customer Name" := CustomerIn.Name;
                     CustomerRebateBatch.INSERT();
                     GlobalBatchEntryNo := CustomerRebateBatch."Entry No.";
                 END ELSE
@@ -1863,90 +1873,99 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         END;
     END;
 
-    local procedure GetBatchID(DocumentPostingDate: Date): Code[50];
+    local procedure GetBatchID(DocumentPostingDate: Date; CustomerIn: Record Customer): Code[50];
     var
         LocalCustomerRebateBatch: Record "AQD Customer Rebate Batch";
         DateRec: Record Date;
         LocalBatchID: Code[50];
     begin
-        IF RebateSetup."AQD Rebate Batch Frequency" = RebateSetup."AQD Rebate Batch Frequency"::" " then
-            exit;
+        // IF RebateSetup."AQD Rebate Batch Frequency" = RebateSetup."AQD Rebate Batch Frequency"::" " then
+        //     exit;
 
-        DateRec.RESET;
-        DateRec.SetFilter("Period Start", '<=%1', DocumentPostingDate);
-        DateRec.SetFilter("Period End", '>=%1', DocumentPostingDate);
-        Case RebateSetup."AQD Rebate Batch Frequency" of
-            RebateSetup."AQD Rebate Batch Frequency"::Day:
-                begin
-                    LocalBatchID := FORMAT(DocumentPostingDate);
-                    LocalBatchID := DelChr(LocalBatchID, '=', '/');
-                    LocalBatchID := DelChr(LocalBatchID, '=', '-');
-                    LocalBatchID := 'DATE ' + LocalBatchID;
-                    GlobalBatchStartDate := DocumentPostingDate;
-                    GlobalBatchEndDate := DocumentPostingDate;
-                    GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
-                    PostingDescrptionText := StrSubstNo(RebatePeriodText,
-                                                        FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' +
-                                                        FORMAT(DocumentPostingDate),
-                                                        FORMAT(DocumentPostingDate));
+        // DateRec.RESET;
+        // DateRec.SetFilter("Period Start", '<=%1', DocumentPostingDate);
+        // DateRec.SetFilter("Period End", '>=%1', DocumentPostingDate);
+        // Case RebateSetup."AQD Rebate Batch Frequency" of
+        //     RebateSetup."AQD Rebate Batch Frequency"::Day:
+        //         begin
+        //             LocalBatchID := FORMAT(DocumentPostingDate);
+        //             LocalBatchID := DelChr(LocalBatchID, '=', '/');
+        //             LocalBatchID := DelChr(LocalBatchID, '=', '-');
+        //             LocalBatchID := 'DATE ' + LocalBatchID;
+        //             GlobalBatchStartDate := DocumentPostingDate;
+        //             GlobalBatchEndDate := DocumentPostingDate;
+        //             GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
+        //             PostingDescrptionText := StrSubstNo(RebatePeriodText,
+        //                                                 FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' +
+        //                                                 FORMAT(DocumentPostingDate),
+        //                                                 FORMAT(DocumentPostingDate));
 
-                    // DateRec.SetRange("Period Type", DateRec."Period Type"::Date);
-                    // IF DateRec.FindFirst() then begin
-                    //     LocalBatchID := FORMAT(DateRec."Period End");
-                    //     LocalBatchID := DelChr(LocalBatchID, '=', '/');
-                    //     LocalBatchID := DelChr(LocalBatchID, '=', '-');
-                    //     LocalBatchID := 'DATE ' + LocalBatchID;
-                    //     GlobalBatchStartDate := DateRec."Period Start";
-                    //     GlobalBatchEndDate := DateRec."Period End";
-                    //     GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
-                    //     PostingDescrptionText := StrSubstNo(RebatePeriodText,
-                    //                                 FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' + FORMAT(DateRec."Period Start"),
-                    //                                 DateRec."Period End");
-                    // end;
-                end;
-            RebateSetup."AQD Rebate Batch Frequency"::Week:
-                begin
-                    DateRec.SetRange("Period Type", DateRec."Period Type"::Week);
-                    IF DateRec.FindFirst() then begin
-                        LocalBatchID := FORMAT(Date2DMY(DateRec."Period End", 3));
-                        LocalBatchID := FORMAT(DateRec."Period Type") + FORMAT(DateRec."Period Name") + ' ' + LocalBatchID;
-                        GlobalBatchStartDate := DateRec."Period Start";
-                        GlobalBatchEndDate := DateRec."Period End";
-                        GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
-                        PostingDescrptionText := StrSubstNo(RebatePeriodText,
-                                                    FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' + FORMAT(DateRec."Period Start"),
-                                                    DateRec."Period End");
-                    end;
-                end;
-            RebateSetup."AQD Rebate Batch Frequency"::Month:
-                begin
-                    DateRec.SetRange("Period Type", DateRec."Period Type"::Month);
-                    IF DateRec.FindFirst() then begin
-                        LocalBatchID := FORMAT(Date2DMY(DateRec."Period End", 3));
-                        LocalBatchID := FORMAT(DateRec."Period Name") + ' ' + LocalBatchID;
-                        GlobalBatchStartDate := DateRec."Period Start";
-                        GlobalBatchEndDate := DateRec."Period End";
-                        GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
-                        PostingDescrptionText := StrSubstNo(RebatePeriodText,
-                                                    FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' + FORMAT(DateRec."Period Start"),
-                                                    DateRec."Period End");
-                    end;
-                end;
-            RebateSetup."AQD Rebate Batch Frequency"::Quarter:
-                begin
-                    DateRec.SetRange("Period Type", DateRec."Period Type"::Quarter);
-                    IF DateRec.FindFirst() then begin
-                        LocalBatchID := FORMAT(Date2DMY(DateRec."Period End", 3));
-                        LocalBatchID := FORMAT(DateRec."Period Type") + FORMAT(DateRec."Period Name") + ' ' + LocalBatchID;
-                        GlobalBatchStartDate := DateRec."Period Start";
-                        GlobalBatchEndDate := DateRec."Period End";
-                        GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
-                        PostingDescrptionText := StrSubstNo(RebatePeriodText,
-                                                    FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' + FORMAT(DateRec."Period Start"),
-                                                    DateRec."Period End");
-                    end;
-                end;
-        End;
+        //             // DateRec.SetRange("Period Type", DateRec."Period Type"::Date);
+        //             // IF DateRec.FindFirst() then begin
+        //             //     LocalBatchID := FORMAT(DateRec."Period End");
+        //             //     LocalBatchID := DelChr(LocalBatchID, '=', '/');
+        //             //     LocalBatchID := DelChr(LocalBatchID, '=', '-');
+        //             //     LocalBatchID := 'DATE ' + LocalBatchID;
+        //             //     GlobalBatchStartDate := DateRec."Period Start";
+        //             //     GlobalBatchEndDate := DateRec."Period End";
+        //             //     GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
+        //             //     PostingDescrptionText := StrSubstNo(RebatePeriodText,
+        //             //                                 FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' + FORMAT(DateRec."Period Start"),
+        //             //                                 DateRec."Period End");
+        //             // end;
+        //         end;
+        //     RebateSetup."AQD Rebate Batch Frequency"::Week:
+        //         begin
+        //             DateRec.SetRange("Period Type", DateRec."Period Type"::Week);
+        //             IF DateRec.FindFirst() then begin
+        //                 LocalBatchID := FORMAT(Date2DMY(DateRec."Period End", 3));
+        //                 LocalBatchID := FORMAT(DateRec."Period Type") + FORMAT(DateRec."Period Name") + ' ' + LocalBatchID;
+        //                 GlobalBatchStartDate := DateRec."Period Start";
+        //                 GlobalBatchEndDate := DateRec."Period End";
+        //                 GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
+        //                 PostingDescrptionText := StrSubstNo(RebatePeriodText,
+        //                                             FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' + FORMAT(DateRec."Period Start"),
+        //                                             DateRec."Period End");
+        //             end;
+        //         end;
+        //     RebateSetup."AQD Rebate Batch Frequency"::Month:
+        //         begin
+        //             DateRec.SetRange("Period Type", DateRec."Period Type"::Month);
+        //             IF DateRec.FindFirst() then begin
+        //                 LocalBatchID := FORMAT(Date2DMY(DateRec."Period End", 3));
+        //                 LocalBatchID := FORMAT(DateRec."Period Name") + ' ' + LocalBatchID;
+        //                 GlobalBatchStartDate := DateRec."Period Start";
+        //                 GlobalBatchEndDate := DateRec."Period End";
+        //                 GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
+        //                 PostingDescrptionText := StrSubstNo(RebatePeriodText,
+        //                                             FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' + FORMAT(DateRec."Period Start"),
+        //                                             DateRec."Period End");
+        //             end;
+        //         end;
+        //     RebateSetup."AQD Rebate Batch Frequency"::Quarter:
+        //         begin
+        //             DateRec.SetRange("Period Type", DateRec."Period Type"::Quarter);
+        //             IF DateRec.FindFirst() then begin
+        //                 LocalBatchID := FORMAT(Date2DMY(DateRec."Period End", 3));
+        //                 LocalBatchID := FORMAT(DateRec."Period Type") + FORMAT(DateRec."Period Name") + ' ' + LocalBatchID;
+        //                 GlobalBatchStartDate := DateRec."Period Start";
+        //                 GlobalBatchEndDate := DateRec."Period End";
+        //                 GlobalRebateBatchFrequency := RebateSetup."AQD Rebate Batch Frequency";
+        //                 PostingDescrptionText := StrSubstNo(RebatePeriodText,
+        //                                             FORMAT(RebateSetup."AQD Rebate Batch Frequency") + ' ' + FORMAT(DateRec."Period Start"),
+        //                                             DateRec."Period End");
+        //             end;
+        //         end;
+        // End;
+
+        LocalBatchID := FORMAT(Date2DMY(EndPostingDate, 3));
+        IF RebateSetup."Create Rebate per Bill-To Cust" THEN
+            LocalBatchID := FORMAT(EndPostingDate, 0, '<Month Text>') + ' ' + LocalBatchID + ' ' + CustomerIn."No."
+        ELSE
+            LocalBatchID := FORMAT(EndPostingDate, 0, '<Month Text>') + ' ' + LocalBatchID;
+        GlobalBatchStartDate := StartPostingDate;
+        GlobalBatchEndDate := EndPostingDate;
+        PostingDescrptionText := StrSubstNo(RebatePeriodText, LocalBatchID);
 
         LocalCustomerRebateBatch.RESET;
         LocalCustomerRebateBatch.SetRange(BatchID, LocalBatchID);

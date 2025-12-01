@@ -25,6 +25,16 @@ page 14301943 "AQD Customer Rebate Batch"
                 {
                     ToolTip = 'Specifies the value of the Rebate Batch Frequency field.', Comment = '%';
                 }
+                field("Bill-To Customer No."; Rec."Bill-To Customer No.")
+                {
+                    ToolTip = 'Specifies the value of the Bill-To Customer No. field.', Comment = '%';
+                    Visible = ShowBillToCustomer;
+                }
+                field("Bill-To Customer Name"; Rec."Bill-To Customer Name")
+                {
+                    ToolTip = 'Specifies the value of the Bill-To Customer Name field.', Comment = '%';
+                    Visible = ShowBillToCustomer;
+                }
                 field("Start Date"; Rec."Start Date")
                 {
                     ToolTip = 'Specifies the value of the Start Date field.', Comment = '%';
@@ -109,6 +119,10 @@ page 14301943 "AQD Customer Rebate Batch"
         PostEnabled := false;
         ApproveEnabled := false;
 
+        IF NOT RebateSetup.GET THEN
+            RebateSetup.INIT;
+        ShowBillToCustomer := RebateSetup."Create Rebate per Bill-To Cust";
+
         if RebateUserSetup."AQD Cust Rbt Rebate Role" in
           [RebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
            RebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
@@ -128,4 +142,6 @@ page 14301943 "AQD Customer Rebate Batch"
         PostEnabled: Boolean;
         ApproveEnabled: Boolean;
         RebateUserSetup: Record "User Setup";
+        RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+        ShowBillToCustomer: Boolean;
 }

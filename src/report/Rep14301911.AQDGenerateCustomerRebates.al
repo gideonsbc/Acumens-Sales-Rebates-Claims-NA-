@@ -27,7 +27,8 @@ report 14301911 "AQD Generate Customer Rebates"
                     EndPostingDate := Customer.GetRangeMax("Date Filter");
                 END ELSE begin
                     StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
-                    EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
+                    //EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
+                    EndPostingDate := Today;
                 end;
                 DateArray[1] := StartPostingDate;
                 DateArray[2] := EndPostingDate;

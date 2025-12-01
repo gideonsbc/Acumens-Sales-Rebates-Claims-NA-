@@ -22,6 +22,16 @@ page 14301945 "AQD Posted Cust Rebate Batches"
                 {
                     ToolTip = 'Specifies the value of the BatchId field.', Comment = '%';
                 }
+                field("Bill-To Customer No."; Rec."Bill-To Customer No.")
+                {
+                    ToolTip = 'Specifies the value of the Bill-To Customer No. field.', Comment = '%';
+                    Visible = ShowBillToCustomer;
+                }
+                field("Bill-To Customer Name"; Rec."Bill-To Customer Name")
+                {
+                    ToolTip = 'Specifies the value of the Bill-To Customer Name field.', Comment = '%';
+                    Visible = ShowBillToCustomer;
+                }
                 field("AQD Rebate Batch Frequency"; Rec."AQD Rebate Batch Frequency")
                 {
                     ToolTip = 'Specifies the value of the Rebate Batch Frequency field.', Comment = '%';
@@ -62,4 +72,15 @@ page 14301945 "AQD Posted Cust Rebate Batches"
             }
         }
     }
+    trigger OnOpenPage()
+    var
+        RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+    begin
+        IF NOT RebateSetup.GET THEN
+            RebateSetup.INIT;
+        ShowBillToCustomer := RebateSetup."Create Rebate per Bill-To Cust";
+    end;
+
+    var
+        ShowBillToCustomer: Boolean;
 }
