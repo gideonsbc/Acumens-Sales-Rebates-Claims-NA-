@@ -44,6 +44,13 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         SalesHeader."AQD Customer Rebate Order Date" := SalesHeader."Order Date";
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, "Order Date", FALSE, FALSE)]
+    local procedure Tab36_SalesHeader_OrderDate_OnAfterValidateEvent(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
+    BEGIN
+        IF Rec."AQD Customer Rebate Order Date" <> Rec."Order Date" THEN
+            Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
+    END;
+
     [EventSubscriber(ObjectType::Table, Database::Resource, 'OnBeforeInsertEvent', '', true, false)]
     local procedure Table156_Resource_OnBeforeInsert(var Rec: Record Resource; RunTrigger: Boolean)
     var
@@ -390,6 +397,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         SourceCode: Code[20];
         BillToCustomerNo: Code[20];
         IsHandled: Boolean;
+        ExitFunction: Boolean;
     begin
         IF PreviewMode THEN
             EXIT;
@@ -404,14 +412,31 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         IF NOT CustRebateSetup."Real Time Customer Rebate" THEN
             EXIT;
 
-        IF SalesShptHdrNo <> '' then begin
+        ExitFunction := FALSE;
+        CASE CustRebateSetup."Calculate Cust Rebate using" OF
+            CustRebateSetup."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo":
+                BEGIN
+                    IF (SalesInvHdrNo = '') AND (SalesCrMemoHdrNo = '') THEN
+                        ExitFunction := TRUE;
+                END;
+            CustRebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":
+                BEGIN
+                    IF (SalesShptHdrNo = '') AND (RetRcpHdrNo = '') THEN
+                        ExitFunction := TRUE;
+                END;
+        END;
+
+        IF ExitFunction THEN
+            EXIT;
+
+        IF SalesShptHdrNo <> '' THEN BEGIN
             ShptRcptNo := SalesShptHdrNo;
             IF SalesShptHdr.GET(SalesShptHdrNo) THEN BEGIN
                 IF SalesShptHdr."Source Code" = SourceCodeSetup."Deleted Document" THEN
                     EXIT;
                 BillToCustomerNo := SalesShptHdr."Bill-to Customer No.";
             END;
-        end;
+        END;
 
         IF RetRcpHdrNo <> '' then BEGIN
             ShptRcptNo := RetRcpHdrNo;
