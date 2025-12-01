@@ -131,20 +131,20 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         // {
         //     Caption = 'Auto Update Rebate Customer Type';
         // }
-        field(290; AutoCreateSaleRebateRateonShpt; Boolean)
-        {
-            Caption = 'Auto Create Sale Rebate Rate on Shipment';
+        // field(290; AutoCreateSaleRebateRateonShpt; Boolean)
+        // {
+        //     Caption = 'Auto Create Sale Rebate Rate on Shipment';
 
-            trigger OnValidate()
-            begin
-                IF Not Rec.AutoCreateSaleRebateRateonShpt then
-                    Rec.BlockAutoCreatedSaleRebateRate := FALSE;
-            end;
-        }
-        field(300; BlockAutoCreatedSaleRebateRate; Boolean)
-        {
-            Caption = 'Block Auto Created Sale Rebate Rate';
-        }
+        //     trigger OnValidate()
+        //     begin
+        //         IF Not Rec.AutoCreateSaleRebateRateonShpt then
+        //             Rec.BlockAutoCreatedSaleRebateRate := FALSE;
+        //     end;
+        // }
+        // field(300; BlockAutoCreatedSaleRebateRate; Boolean)
+        // {
+        //     Caption = 'Block Auto Created Sale Rebate Rate';
+        // }
         field(340; "Default Rebate Program Code"; Code[10])
         {
             Caption = 'Default Cust Rebate Program Code';

@@ -48,15 +48,15 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field(AutoCreateSaleRebateRateonShpt; Rec.AutoCreateSaleRebateRateonShpt)
-                {
-                    ApplicationArea = All;
-                }
-                field(BlockAutoCreatedSaleRebateRate; Rec.BlockAutoCreatedSaleRebateRate)
-                {
-                    ApplicationArea = All;
-                    Enabled = Rec.BlockAutoCreatedSaleRebateRate;
-                }
+                // field(AutoCreateSaleRebateRateonShpt; Rec.AutoCreateSaleRebateRateonShpt)
+                // {
+                //     ApplicationArea = All;
+                // }
+                // field(BlockAutoCreatedSaleRebateRate; Rec.BlockAutoCreatedSaleRebateRate)
+                // {
+                //     ApplicationArea = All;
+                //     Enabled = Rec.BlockAutoCreatedSaleRebateRate;
+                // }
                 // field("Auto Update Rebate Cust Type"; Rec."Auto Update Rebate Cust Type")
                 // {
                 //     ApplicationArea = All;
