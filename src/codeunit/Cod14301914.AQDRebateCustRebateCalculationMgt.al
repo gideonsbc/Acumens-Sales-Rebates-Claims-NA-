@@ -155,7 +155,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     BuildInvoiceRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
 
                     // Calculate Rebate for Posted Sales Credit memos
-                    if not RebateSetup."Prevent Negative Cust Rebate" then
+                    if not RebateSetup."Exclude Credit Memo" then
                         BuildCrMemoRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
                 END;
             RebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":

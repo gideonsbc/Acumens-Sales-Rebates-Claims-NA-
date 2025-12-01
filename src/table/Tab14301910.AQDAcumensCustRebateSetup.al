@@ -36,9 +36,9 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             MaxValue = 100;
             MinValue = 0;
         }
-        field(80; "Prevent Negative Cust Rebate"; Boolean)
+        field(80; "Exclude Credit Memo"; Boolean)
         {
-            Caption = 'Prevent Negative Customer Rebate';
+            Caption = 'Exclude Credit Memo';
         }
         field(90; "Start Date"; Date)
         {

@@ -65,7 +65,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field("Prevent Negative Cust Rebate"; Rec."Prevent Negative Cust Rebate")
+                field("Exclude Credit Memo"; Rec."Exclude Credit Memo")
                 {
                     ApplicationArea = All;
                 }
