@@ -179,10 +179,10 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Post Customer Rebate Using';
         }
-        field(390; "Rebate Cr. Memo Posting"; enum "AQD Cust Rebate CrMemo Posting")
-        {
-            Caption = 'Rebate Cr. Memo Posting';
-        }
+        // field(390; "Rebate Cr. Memo Posting"; enum "AQD Cust Rebate CrMemo Posting")
+        // {
+        //     Caption = 'Rebate Cr. Memo Posting';
+        // }
         field(400; "AutoCreateSalesRbteRateonRcpt"; Boolean)
         {
             Caption = 'Auto Create Sales Rebate Rate on Receipt';

@@ -121,10 +121,10 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     {
                         ApplicationArea = All;
                     }
-                    field("Rebate Cr. Memo Posting"; Rec."Rebate Cr. Memo Posting")
-                    {
-                        ApplicationArea = All;
-                    }
+                    // field("Rebate Cr. Memo Posting"; Rec."Rebate Cr. Memo Posting")
+                    // {
+                    //     ApplicationArea = All;
+                    // }
                 }
                 group(DefaultSetup)
                 {

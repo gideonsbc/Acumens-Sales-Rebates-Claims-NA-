@@ -258,79 +258,79 @@ codeunit 14301916 "AQD Customer Rebate Post"
             MoveCustomerRebateComments(CustomerRebateHeader);
             TmpPostCustomerRebateByBillTo.RESET;
 
-            IF RebateSetup."Rebate Cr. Memo Posting" <> RebateSetup."Rebate Cr. Memo Posting"::Manual THEN BEGIN
-                TmpInovoiceBuffer.RESET;
-                IF TmpInovoiceBuffer.IsTemporary then
-                    TmpInovoiceBuffer.DeleteAll();
+            //IF RebateSetup."Rebate Cr. Memo Posting" <> RebateSetup."Rebate Cr. Memo Posting"::Manual THEN BEGIN
+            TmpInovoiceBuffer.RESET;
+            IF TmpInovoiceBuffer.IsTemporary then
+                TmpInovoiceBuffer.DeleteAll();
 
-                TmpCrMemoBuffer.RESET;
-                IF TmpCrMemoBuffer.IsTemporary then
-                    TmpCrMemoBuffer.DeleteAll();
+            TmpCrMemoBuffer.RESET;
+            IF TmpCrMemoBuffer.IsTemporary then
+                TmpCrMemoBuffer.DeleteAll();
 
-                IF TmpPostCustomerRebateByBillTo.FindFirst() THEN BEGIN
-                    REPEAT
-                        BillToCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
-                        Case RebateSetup."Post Customer Rebate Using" OF
-                            RebateSetup."Post Customer Rebate Using"::"Sales Document":
-                                BEGIN
-                                    CreateSalesDocument(PostedCustRebateHeader, false);
-                                END;
-                            RebateSetup."Post Customer Rebate Using"::"Sales Journal":
-                                BEGIN
-                                    CreateSalesJournal(PostedCustRebateHeader);
-                                END;
-                        END;
-                    UNTIL TmpPostCustomerRebateByBillTo.Next() = 0;
-                END;
-
-                IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Auto Create and Post" THEN BEGIN
+            IF TmpPostCustomerRebateByBillTo.FindFirst() THEN BEGIN
+                REPEAT
+                    BillToCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
                     Case RebateSetup."Post Customer Rebate Using" OF
                         RebateSetup."Post Customer Rebate Using"::"Sales Document":
                             BEGIN
-                                TmpInovoiceBuffer.RESET;
-                                IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
-                                    REPEAT
-                                        IF SalesHeader.GET(TmpInovoiceBuffer."Dimension Set ID", // Document Type
-                                                           TmpInovoiceBuffer."Job No.")          // Cr/Invoice No.
-                                        THEN BEGIN
-                                            SalesHeader.Ship := TRUE;
-                                            SalesHeader.Invoice := TRUE;
-                                            SalesPost.Run(SalesHeader);
-                                        END;
-                                    UNTIL TmpInovoiceBuffer.Next() = 0;
-                                END;
-
-                                TmpCrMemoBuffer.RESET;
-                                IF TmpCrMemoBuffer.FindFirst() THEN BEGIN
-                                    REPEAT
-                                        IF SalesHeader.GET(TmpCrMemoBuffer."Dimension Set ID", // Document Type
-                                                           TmpCrMemoBuffer."Job No.")          // Cr/Invoice No.
-                                        THEN BEGIN
-                                            SalesHeader.Receive := TRUE;
-                                            SalesHeader.Invoice := TRUE;
-                                            SalesPost.Run(SalesHeader);
-                                        END;
-                                    UNTIL TmpCrMemoBuffer.Next() = 0;
-                                END;
-
-                                GenJnlLine.RESET;
-                                GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
-                                GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
-                                GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
-                                IF GenJnlLine.FindFirst() THEN
-                                    CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+                                CreateSalesDocument(PostedCustRebateHeader, false);
                             END;
                         RebateSetup."Post Customer Rebate Using"::"Sales Journal":
                             BEGIN
-                                GenJnlLine.RESET;
-                                GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
-                                GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
-                                IF GenJnlLine.FindFirst() THEN
-                                    CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+                                CreateSalesJournal(PostedCustRebateHeader);
                             END;
                     END;
-                END;
+                UNTIL TmpPostCustomerRebateByBillTo.Next() = 0;
             END;
+
+            //IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Auto Create and Post" THEN BEGIN
+            Case RebateSetup."Post Customer Rebate Using" OF
+                RebateSetup."Post Customer Rebate Using"::"Sales Document":
+                    BEGIN
+                        TmpInovoiceBuffer.RESET;
+                        IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
+                            REPEAT
+                                IF SalesHeader.GET(TmpInovoiceBuffer."Dimension Set ID", // Document Type
+                                                   TmpInovoiceBuffer."Job No.")          // Cr/Invoice No.
+                                THEN BEGIN
+                                    SalesHeader.Ship := TRUE;
+                                    SalesHeader.Invoice := TRUE;
+                                    SalesPost.Run(SalesHeader);
+                                END;
+                            UNTIL TmpInovoiceBuffer.Next() = 0;
+                        END;
+
+                        TmpCrMemoBuffer.RESET;
+                        IF TmpCrMemoBuffer.FindFirst() THEN BEGIN
+                            REPEAT
+                                IF SalesHeader.GET(TmpCrMemoBuffer."Dimension Set ID", // Document Type
+                                                   TmpCrMemoBuffer."Job No.")          // Cr/Invoice No.
+                                THEN BEGIN
+                                    SalesHeader.Receive := TRUE;
+                                    SalesHeader.Invoice := TRUE;
+                                    SalesPost.Run(SalesHeader);
+                                END;
+                            UNTIL TmpCrMemoBuffer.Next() = 0;
+                        END;
+
+                        GenJnlLine.RESET;
+                        GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+                        GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                        GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
+                        IF GenJnlLine.FindFirst() THEN
+                            CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+                    END;
+                RebateSetup."Post Customer Rebate Using"::"Sales Journal":
+                    BEGIN
+                        GenJnlLine.RESET;
+                        GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+                        GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                        IF GenJnlLine.FindFirst() THEN
+                            CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+                    END;
+            END;
+            //END;
+            //END;
 
             CustomerRebateDetails.RESET;
             CustomerRebateDetails.SetRange("Rebate No.", CustomerRebateHeader."No.");
@@ -382,7 +382,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         END;
 
         RebateSetup.GET;
-        RebateSetup.TestField("Rebate Cr. Memo Posting", RebateSetup."Rebate Cr. Memo Posting"::Manual);
+        //RebateSetup.TestField("Rebate Cr. Memo Posting", RebateSetup."Rebate Cr. Memo Posting"::Manual);
 
         GlobalGroupID := 'G00000001';
 
@@ -433,55 +433,55 @@ codeunit 14301916 "AQD Customer Rebate Post"
             UNTIL TmpPostCustomerRebateByBillTo.Next() = 0;
         END;
 
-        IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Auto Create and Post" THEN BEGIN
-            Case RebateSetup."Post Customer Rebate Using" OF
-                RebateSetup."Post Customer Rebate Using"::"Sales Document":
-                    BEGIN
+        //IF RebateSetup."Rebate Cr. Memo Posting" = RebateSetup."Rebate Cr. Memo Posting"::"Auto Create and Post" THEN BEGIN
+        Case RebateSetup."Post Customer Rebate Using" OF
+            RebateSetup."Post Customer Rebate Using"::"Sales Document":
+                BEGIN
 
-                        TmpInovoiceBuffer.RESET;
-                        IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
-                            REPEAT
-                                IF SalesHeader.GET(TmpInovoiceBuffer."Dimension Set ID", // Document Type
-                                                   TmpInovoiceBuffer."Job No.")          // Cr/Invoice No.
-                                THEN BEGIN
-                                    SalesHeader.Ship := TRUE;
-                                    SalesHeader.Invoice := TRUE;
-                                    SalesPost.Run(SalesHeader);
-                                END;
-                            UNTIL TmpInovoiceBuffer.Next() = 0;
-                        END;
-
-                        TmpCrMemoBuffer.RESET;
-                        IF TmpCrMemoBuffer.FindFirst() THEN BEGIN
-                            REPEAT
-                                IF SalesHeader.GET(TmpCrMemoBuffer."Dimension Set ID", // Document Type
-                                                   TmpCrMemoBuffer."Job No.")          // Cr/Invoice No.
-                                THEN BEGIN
-                                    SalesHeader.Receive := TRUE;
-                                    SalesHeader.Invoice := TRUE;
-                                    SalesPost.Run(SalesHeader);
-                                END;
-                            UNTIL TmpCrMemoBuffer.Next() = 0;
-                        END;
-
-                        GenJnlLine.RESET;
-                        GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
-                        GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
-                        GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
-                        IF GenJnlLine.FindFirst() THEN
-                            CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+                    TmpInovoiceBuffer.RESET;
+                    IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
+                        REPEAT
+                            IF SalesHeader.GET(TmpInovoiceBuffer."Dimension Set ID", // Document Type
+                                               TmpInovoiceBuffer."Job No.")          // Cr/Invoice No.
+                            THEN BEGIN
+                                SalesHeader.Ship := TRUE;
+                                SalesHeader.Invoice := TRUE;
+                                SalesPost.Run(SalesHeader);
+                            END;
+                        UNTIL TmpInovoiceBuffer.Next() = 0;
                     END;
-                RebateSetup."Post Customer Rebate Using"::"Sales Journal":
-                    BEGIN
-                        GenJnlLine.RESET;
-                        GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
-                        GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
-                        GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
-                        IF GenJnlLine.FindFirst() THEN
-                            CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+
+                    TmpCrMemoBuffer.RESET;
+                    IF TmpCrMemoBuffer.FindFirst() THEN BEGIN
+                        REPEAT
+                            IF SalesHeader.GET(TmpCrMemoBuffer."Dimension Set ID", // Document Type
+                                               TmpCrMemoBuffer."Job No.")          // Cr/Invoice No.
+                            THEN BEGIN
+                                SalesHeader.Receive := TRUE;
+                                SalesHeader.Invoice := TRUE;
+                                SalesPost.Run(SalesHeader);
+                            END;
+                        UNTIL TmpCrMemoBuffer.Next() = 0;
                     END;
-            END;
+
+                    GenJnlLine.RESET;
+                    GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+                    GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                    GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
+                    IF GenJnlLine.FindFirst() THEN
+                        CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+                END;
+            RebateSetup."Post Customer Rebate Using"::"Sales Journal":
+                BEGIN
+                    GenJnlLine.RESET;
+                    GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+                    GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                    GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
+                    IF GenJnlLine.FindFirst() THEN
+                        CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+                END;
         END;
+        //END;
         IF ShowDialogue then
             Message(StrSubstNo(SuccessfulMsg, PostedCustRebateHeader."No."));
     END;
