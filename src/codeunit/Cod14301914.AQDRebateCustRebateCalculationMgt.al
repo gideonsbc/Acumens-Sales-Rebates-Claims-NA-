@@ -123,11 +123,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         if not CustomerIn."AQD Enroll for Cust Rebate" then
             exit;
 
-        IF RebateSetup."Customer Accrual Type" = RebateSetup."Customer Accrual Type"::"Customer Type" THEN BEGIN
+        IF RebateSetup."Rebate Customer Type" = RebateSetup."Rebate Customer Type"::"Customer Type" THEN BEGIN
             IF LocalCustomerType.GET(CustomerIn."AQD Rebate Customer Type") THEN
                 IF LocalCustomerType."Rebate Customer No" = '' THEN
                     EXIT;
-        END ELSE IF RebateSetup."Customer Accrual Type" = RebateSetup."Customer Accrual Type"::"Default Customer" THEN
+        END ELSE IF RebateSetup."Rebate Customer Type" = RebateSetup."Rebate Customer Type"::"Default Customer" THEN
                 RebateSetup.TestField("Default Rebate Customer No.");
 
         // IF RebateSetup."Auto Update Rebate Cust Type" THEN BEGIN
@@ -1211,13 +1211,13 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     SellToCustomerRec.GET(SalesInvHeaderIn."Sell-to Customer No.");
                     BillToCustomerRec.GET(SalesInvHeaderIn."Bill-to Customer No.");
 
-                    CASE RebateSetup."Customer Accrual Type" OF
-                        RebateSetup."Customer Accrual Type"::"Default Customer":
+                    CASE RebateSetup."Rebate Customer Type" OF
+                        RebateSetup."Rebate Customer Type"::"Default Customer":
                             BEGIN
                                 IF RebateSetup."Default Rebate Customer No." <> '' THEN
                                     RebateCustomerRec.Get(RebateSetup."Default Rebate Customer No.");
                             END;
-                        RebateSetup."Customer Accrual Type"::"Customer Type":
+                        RebateSetup."Rebate Customer Type"::"Customer Type":
                             BEGIN
                                 CustomerRebateType.GET(BillToCustomerRec."AQD Rebate Customer Type");
                                 RebateCustomerRec.GET(CustomerRebateType."Rebate Customer No");
@@ -1271,13 +1271,13 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     BillToCustomerRec.GET(SalesCrMemoHeaderIn."Bill-To Customer No.");
                     SellToCustomerRec.GET(SalesCrMemoHeaderIn."Sell-to Customer No.");
 
-                    CASE RebateSetup."Customer Accrual Type" OF
-                        RebateSetup."Customer Accrual Type"::"Default Customer":
+                    CASE RebateSetup."Rebate Customer Type" OF
+                        RebateSetup."Rebate Customer Type"::"Default Customer":
                             BEGIN
                                 IF RebateSetup."Default Rebate Customer No." <> '' THEN
                                     RebateCustomerRec.Get(RebateSetup."Default Rebate Customer No.");
                             END;
-                        RebateSetup."Customer Accrual Type"::"Customer Type":
+                        RebateSetup."Rebate Customer Type"::"Customer Type":
                             BEGIN
                                 CustomerRebateType.GET(BillToCustomerRec."AQD Rebate Customer Type");
                                 RebateCustomerRec.GET(CustomerRebateType."Rebate Customer No");
@@ -2357,14 +2357,14 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     var
         LocalCustomerRebateType: Record "AQD CustRbt RebateCustomerType";
     begin
-        CASE RebateSetup."Customer Accrual Type" OF
-            RebateSetup."Customer Accrual Type"::"Default Customer":
+        CASE RebateSetup."Rebate Customer Type" OF
+            RebateSetup."Rebate Customer Type"::"Default Customer":
                 BEGIN
                     IF RebateSetup."Default Rebate Customer No." <> '' THEN
                         IF NOT RebateToCUstomer.Get(RebateSetup."Default Rebate Customer No.") then
                             SkipRecordIn := true;
                 END;
-            RebateSetup."Customer Accrual Type"::"Customer Type":
+            RebateSetup."Rebate Customer Type"::"Customer Type":
                 BEGIN
                     IF LocalCustomerRebateType.GET(BillToCustomer."AQD Rebate Customer Type") THEN BEGIN
                         IF LocalCustomerRebateType."Rebate Customer No" <> '' THEN BEGIN

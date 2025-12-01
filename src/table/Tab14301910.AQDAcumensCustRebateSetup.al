@@ -233,14 +233,14 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             TableRelation = Customer;
             DataClassification = CustomerContent;
         }
-        field(490; "Customer Accrual Type"; Enum "AQD Customer Accrual Type")
+        field(490; "Rebate Customer Type"; Enum "AQD Rebate Customer Type")
         {
-            Caption = 'Customer Accrual Type';
+            Caption = 'Rebate Customer Type';
             DataClassification = CustomerContent;
 
             trigger OnValidate()
             BEGIN
-                IF Rec."Customer Accrual Type" <> xRec."Customer Accrual Type" THEN
+                IF Rec."Rebate Customer Type" <> xRec."Rebate Customer Type" THEN
                     Rec."Default Rebate Customer No." := '';
             END;
         }

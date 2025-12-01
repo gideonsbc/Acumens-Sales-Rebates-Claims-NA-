@@ -125,19 +125,19 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     {
                         ApplicationArea = All;
                     }
-                    field("Customer Accrual Type"; Rec."Customer Accrual Type")
-                    {
-                        ApplicationArea = All;
-                    }
                 }
                 group(DefaultSetup)
                 {
                     Caption = 'Default Setup';
+                    field("Rebate CUstomer Typ"; Rec."Rebate Customer Type")
+                    {
+                        ApplicationArea = All;
+                    }
                     field("Default Rebate Customer No."; Rec."Default Rebate Customer No.")
                     {
                         ApplicationArea = All;
                         Caption = 'Rebate Customer No.';
-                        Editable = Rec."Customer Accrual Type" = Rec."Customer Accrual Type"::"Default Customer";
+                        Editable = Rec."Rebate Customer Type" = Rec."Rebate Customer Type"::"Default Customer";
                     }
                     field("Default Setup Rebate Type"; Rec."Default Setup Rebate Type")
                     {
