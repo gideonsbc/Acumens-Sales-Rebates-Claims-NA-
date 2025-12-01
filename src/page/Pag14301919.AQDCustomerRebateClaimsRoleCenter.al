@@ -52,13 +52,13 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Image = ItemCosts;
                 RunObject = Page "Item Charges";
             }
-            action("Fixed Assets")
-            {
-                Caption = 'Fixed Assets';
-                ApplicationArea = All;
-                Image = FixedAssets;
-                RunObject = Page "Fixed Asset List";
-            }
+            // action("Fixed Assets")
+            // {
+            //     Caption = 'Fixed Assets';
+            //     ApplicationArea = All;
+            //     Image = FixedAssets;
+            //     RunObject = Page "Fixed Asset List";
+            // }
             action(Customers)
             {
                 Caption = 'Customers';

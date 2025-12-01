@@ -33,16 +33,16 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         ApplicationArea = All;
                         Caption = 'G/L Account';
                     }
-                    field("Item Charge Rebate Enabled"; Rec."Item Charge Rebate Enabled")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Item Charge';
-                    }
-                    field("Fixed Asset Rebate Enabled"; Rec."Fixed Asset Rebate Enabled")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Fixed Asset';
-                    }
+                    // field("Item Charge Rebate Enabled"; Rec."Item Charge Rebate Enabled")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Item Charge';
+                    // }
+                    // field("Fixed Asset Rebate Enabled"; Rec."Fixed Asset Rebate Enabled")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Fixed Asset';
+                    // }
                 }
                 field("Customer Rebate Source Code"; Rec."Customer Rebate Source Code")
                 {
