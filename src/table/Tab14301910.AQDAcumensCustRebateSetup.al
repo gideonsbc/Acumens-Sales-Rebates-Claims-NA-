@@ -159,10 +159,10 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Default Setup Rebate Type';
         }
-        field(370; "AQD Rebate Batch Frequency"; Enum "AQD CustRebate Batch Frequency")
-        {
-            Caption = 'Rebate Batch Frequency';
-        }
+        // field(370; "AQD Rebate Batch Frequency"; Enum "AQD CustRebate Batch Frequency")
+        // {
+        //     Caption = 'Rebate Batch Frequency';
+        // }
         field(375; "Real Time Customer Rebate"; Boolean)
         {
             Caption = 'Real Time Customer Rebate';

@@ -77,11 +77,11 @@ table 14301932 "AQD Posted Cust Rebate Batch"
             Caption = 'End Date';
             Editable = false;
         }
-        field(140; "AQD Rebate Batch Frequency"; Enum "AQD CustRebate Batch Frequency")
-        {
-            Caption = 'Rebate Batch Frequency';
-            Editable = false;
-        }
+        // field(140; "AQD Rebate Batch Frequency"; Enum "AQD CustRebate Batch Frequency")
+        // {
+        //     Caption = 'Rebate Batch Frequency';
+        //     Editable = false;
+        // }
         field(902; Approved; Boolean)
         {
             Caption = 'Approved';

@@ -76,7 +76,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         GlobalBatchEntryNo: Integer;
         GlobalBatchStartDate: Date;
         GlobalBatchEndDate: Date;
-        GlobalRebateBatchFrequency: Enum "AQD CustRebate Batch Frequency";
+        //GlobalRebateBatchFrequency: Enum "AQD CustRebate Batch Frequency";
         StartPostingDate: Date;
         EndPostingDate: Date;
 
@@ -1211,15 +1211,15 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         case DocumentType of
             DocumentType::Invoice:
                 begin
-                    IF RebateSetup."AQD Rebate Batch Frequency" <> RebateSetup."AQD Rebate Batch Frequency"::" " then BEGIN
-                        CASE CustomerIn."AQD CustRbt Calculation Date" OF
-                            CustomerIn."AQD CustRbt Calculation Date"::" ",
-                            CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
-                                GlobalBatchID := GetBatchID(SalesInvHeaderIn."Posting Date", CustomerIn);
-                            CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                                GlobalBatchID := GetBatchID(SalesInvHeaderIn."AQD Customer Rebate Order Date", CustomerIn);
-                        END;
+                    //IF RebateSetup."AQD Rebate Batch Frequency" <> RebateSetup."AQD Rebate Batch Frequency"::" " then BEGIN
+                    CASE CustomerIn."AQD CustRbt Calculation Date" OF
+                        CustomerIn."AQD CustRbt Calculation Date"::" ",
+                        CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
+                            GlobalBatchID := GetBatchID(SalesInvHeaderIn."Posting Date", CustomerIn);
+                        CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
+                            GlobalBatchID := GetBatchID(SalesInvHeaderIn."AQD Customer Rebate Order Date", CustomerIn);
                     END;
+                    //END;
 
                     SellToCustomerRec.GET(SalesInvHeaderIn."Sell-to Customer No.");
                     BillToCustomerRec.GET(SalesInvHeaderIn."Bill-to Customer No.");
@@ -1271,15 +1271,15 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 end;
             DocumentType::"Credit Memo":
                 begin
-                    IF RebateSetup."AQD Rebate Batch Frequency" <> RebateSetup."AQD Rebate Batch Frequency"::" " then BEGIN
-                        CASE CustomerIn."AQD CustRbt Calculation Date" OF
-                            CustomerIn."AQD CustRbt Calculation Date"::" ",
-                            CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
-                                GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."Posting Date", CustomerIn);
-                            CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                                GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."AQD Customer Rebate Order Date", CustomerIn);
-                        END;
+                    //IF RebateSetup."AQD Rebate Batch Frequency" <> RebateSetup."AQD Rebate Batch Frequency"::" " then BEGIN
+                    CASE CustomerIn."AQD CustRbt Calculation Date" OF
+                        CustomerIn."AQD CustRbt Calculation Date"::" ",
+                        CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
+                            GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."Posting Date", CustomerIn);
+                        CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
+                            GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."AQD Customer Rebate Order Date", CustomerIn);
                     END;
+                    //END;
 
                     BillToCustomerRec.GET(SalesCrMemoHeaderIn."Bill-To Customer No.");
                     SellToCustomerRec.GET(SalesCrMemoHeaderIn."Sell-to Customer No.");
@@ -1338,15 +1338,16 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 IF NOT CustomerRebateBatch.FindFirst() THEN BEGIN
                     CustomerRebateBatch.INIT;
                     CustomerRebateBatch.BatchID := GlobalBatchID;
-                    IF GlobalRebateBatchFrequency = GlobalRebateBatchFrequency::Day THEN
-                        CustomerRebateBatch."Posting Date" := GlobalBatchStartDate
-                    ELSE
-                        CustomerRebateBatch."Posting Date" := TODAY;
+                    //IF GlobalRebateBatchFrequency = GlobalRebateBatchFrequency::Day THEN
+                    //    CustomerRebateBatch."Posting Date" := GlobalBatchStartDate
+                    //ELSE
+                    //    CustomerRebateBatch."Posting Date" := TODAY;
+                    CustomerRebateBatch."Posting Date" := EndPostingDate;
                     CustomerRebateBatch."Created By" := UserId;
                     CustomerRebateBatch."Created Date" := Today;
                     CustomerRebateBatch."Start Date" := GlobalBatchStartDate;
                     CustomerRebateBatch."End Date" := GlobalBatchEndDate;
-                    CustomerRebateBatch."AQD Rebate Batch Frequency" := GlobalRebateBatchFrequency;
+                    //CustomerRebateBatch."AQD Rebate Batch Frequency" := GlobalRebateBatchFrequency;
                     CustomerRebateBatch."Bill-To Customer No." := CustomerIn."No.";
                     CustomerRebateBatch."Bill-To Customer Name" := CustomerIn.Name;
                     CustomerRebateBatch.INSERT();

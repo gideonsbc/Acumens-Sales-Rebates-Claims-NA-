@@ -21,10 +21,10 @@ page 14301943 "AQD Customer Rebate Batch"
                 {
                     ToolTip = 'Specifies the value of the BatchId field.', Comment = '%';
                 }
-                field("AQD Rebate Batch Frequency"; Rec."AQD Rebate Batch Frequency")
-                {
-                    ToolTip = 'Specifies the value of the Rebate Batch Frequency field.', Comment = '%';
-                }
+                // field("AQD Rebate Batch Frequency"; Rec."AQD Rebate Batch Frequency")
+                // {
+                //     ToolTip = 'Specifies the value of the Rebate Batch Frequency field.', Comment = '%';
+                // }
                 field("Bill-To Customer No."; Rec."Bill-To Customer No.")
                 {
                     ToolTip = 'Specifies the value of the Bill-To Customer No. field.', Comment = '%';
