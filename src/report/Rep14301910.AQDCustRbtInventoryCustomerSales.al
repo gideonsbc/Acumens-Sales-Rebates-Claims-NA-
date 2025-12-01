@@ -304,13 +304,13 @@ report 14301910 "AQD Inventory - Customer Sales"
                 ValueEntry.SetFilter("Item Charge No.", '<>%1', '');
                 if ValueEntry.FindFirst() then
                     repeat
-                        if ItemCharge.Get(ValueEntry."Item Charge No.") then
-                            if ItemCharge."AQD Customer Rebate" then begin
-                                if ValueEntry."Valued Quantity" <> 0 then
-                                    CalculatedPurchaseRebate += (ValueEntry."Cost Amount (Actual)" / ValueEntry."Valued Quantity") * ItemLedger_lv.Quantity;
+                        if ItemCharge.Get(ValueEntry."Item Charge No.") then begin
+                            //if ItemCharge."AQD Customer Rebate" then begin
+                            if ValueEntry."Valued Quantity" <> 0 then
+                                CalculatedPurchaseRebate += (ValueEntry."Cost Amount (Actual)" / ValueEntry."Valued Quantity") * ItemLedger_lv.Quantity;
 
-                                AppliedCostAmount += ValueEntry."Cost Amount (Actual)";
-                            end;
+                            AppliedCostAmount += ValueEntry."Cost Amount (Actual)";
+                        end;
                     until ValueEntry.Next() = 0;
             until TempItemLedgerEntry.Next() = 0;
         //    exit(TempPurchRebateAmnt);

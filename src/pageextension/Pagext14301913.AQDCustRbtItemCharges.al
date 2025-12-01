@@ -1,23 +1,23 @@
-pageextension 14301913 "AQD CustRbt Item Charges" extends "Item Charges"
-{
-    layout
-    {
-        addafter("Search Description")
-        {
-            // field("AQD Customer Rebatable"; Rec."AQD Customer Rebate Enabled")
-            // {
-            //     ApplicationArea = All;
-            // }
-            field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
-            {
-                ApplicationArea = All;
-            }
-            // field("AQD Cust Rebate Category Code"; Rec."AQD Cust Rebate Category Code")
-            // {
-            //     ApplicationArea = All;
-            //     Editable = Rec."AQD Customer Rebate Enabled";
-            //     Enabled = Rec."AQD Customer Rebate Enabled";
-            // }
-        }
-    }
-}
+// pageextension 14301913 "AQD CustRbt Item Charges" extends "Item Charges"
+// {
+//     layout
+//     {
+//         addafter("Search Description")
+//         {
+//             field("AQD Customer Rebatable"; Rec."AQD Customer Rebate Enabled")
+//             {
+//                 ApplicationArea = All;
+//             }
+//             field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
+//             {
+//                 ApplicationArea = All;
+//             }
+//             field("AQD Cust Rebate Category Code"; Rec."AQD Cust Rebate Category Code")
+//             {
+//                 ApplicationArea = All;
+//                 Editable = Rec."AQD Customer Rebate Enabled";
+//                 Enabled = Rec."AQD Customer Rebate Enabled";
+//             }
+//         }
+//     }
+// }
