@@ -9,17 +9,17 @@ codeunit 14301916 "AQD Customer Rebate Post"
         CASE RunBy OF
             RunBy::"Customer Rebate Batch":
                 BEGIN
-                    IF RebateSetup."Require Cust Rebate Approval" THEN BEGIN
-                        IF RebateSetup."Job Queue Auto Approve Rebate" AND
-                           NOT GuiAllowed
-                        THEN BEGIN
-                            IF NOT CustomerRebateBatch.Approved THEN BEGIN
-                                CustomerRebateBatch.Validate(Approved, TRUE);
-                                CustomerRebateBatch.Validate("Posting Date", Today);
-                                CustomerRebateBatch.Modify();
-                            END;
-                        END;
-                    END;
+                    // IF RebateSetup."Require Cust Rebate Approval" THEN BEGIN
+                    //     IF RebateSetup."Job Queue Auto Approve Rebate" AND
+                    //        NOT GuiAllowed
+                    //     THEN BEGIN
+                    //         IF NOT CustomerRebateBatch.Approved THEN BEGIN
+                    //             CustomerRebateBatch.Validate(Approved, TRUE);
+                    //             CustomerRebateBatch.Validate("Posting Date", Today);
+                    //             CustomerRebateBatch.Modify();
+                    //         END;
+                    //     END;
+                    // END;
                     PostCustomerRebateBatch(CustomerRebateBatch);
                 END;
         END;
@@ -73,9 +73,9 @@ codeunit 14301916 "AQD Customer Rebate Post"
         SkipRecord: Boolean;
     begin
         RebateSetup.Get();
-        IF RebateSetup."Require Cust Rebate Approval" THEN
-            IF NOT CustomerRebateBatch.Approved THEN
-                Error('Customer Rebate Batch is not approved. Please approve it before posting.');
+        // IF RebateSetup."Require Cust Rebate Approval" THEN
+        //     IF NOT CustomerRebateBatch.Approved THEN
+        //         Error('Customer Rebate Batch is not approved. Please approve it before posting.');
 
         SavedRecords := FALSE;
 

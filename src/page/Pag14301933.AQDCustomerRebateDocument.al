@@ -224,9 +224,9 @@ page 14301933 "AQD Customer Rebate Document"
                     CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
                 begin
                     CustomerRebateSetup.GET;
-                    IF CustomerRebateSetup."Require Cust Rebate Approval" THEN
-                        if not Rec.Approved then
-                            Error('The document is not approved. Please approve it before posting.');
+                    // IF CustomerRebateSetup."Require Cust Rebate Approval" THEN
+                    //     if not Rec.Approved then
+                    //         Error('The document is not approved. Please approve it before posting.');
 
                     CustomerRebatePost.PostCustomerRebate(Rec, true);
 

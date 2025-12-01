@@ -214,19 +214,19 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Auto Post Customer Rebate';
         }
-        field(460; "Require Cust Rebate Approval"; Boolean)
-        {
-            Caption = 'Require Customer Rebate Approval';
+        // field(460; "Require Cust Rebate Approval"; Boolean)
+        // {
+        //     Caption = 'Require Customer Rebate Approval';
 
-            trigger OnValidate()
-            begin
-                Rec."Job Queue Auto Approve Rebate" := FALSE;
-            end;
-        }
-        field(470; "Job Queue Auto Approve Rebate"; Boolean)
-        {
-            Caption = 'Job Queue Auto Approve Rebate';
-        }
+        //     trigger OnValidate()
+        //     begin
+        //         Rec."Job Queue Auto Approve Rebate" := FALSE;
+        //     end;
+        // }
+        // field(470; "Job Queue Auto Approve Rebate"; Boolean)
+        // {
+        //     Caption = 'Job Queue Auto Approve Rebate';
+        // }
         field(480; "Default Rebate Customer No."; Code[20])
         {
             Caption = 'Default Rebate Customer No.';

@@ -104,15 +104,15 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     {
                         ApplicationArea = All;
                     }
-                    field("Require Cust Rebate Approval"; Rec."Require Cust Rebate Approval")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("Job Queue Auto Approve Rebate"; Rec."Job Queue Auto Approve Rebate")
-                    {
-                        ApplicationArea = All;
-                        Editable = Rec."Require Cust Rebate Approval";
-                    }
+                    // field("Require Cust Rebate Approval"; Rec."Require Cust Rebate Approval")
+                    // {
+                    //     ApplicationArea = All;
+                    // }
+                    // field("Job Queue Auto Approve Rebate"; Rec."Job Queue Auto Approve Rebate")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Editable = Rec."Require Cust Rebate Approval";
+                    // }
                     field("Auto Post Cust Rebate"; Rec."Auto Post Customer Rebate")
                     {
                         ApplicationArea = All;
