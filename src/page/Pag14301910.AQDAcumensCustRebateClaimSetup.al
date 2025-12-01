@@ -100,6 +100,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 group(ApprovalAndPosting)
                 {
                     Caption = 'Approval And Posting';
+                    ShowCaption = false;
                     field("Real Time Customer Rebate"; Rec."Real Time Customer Rebate")
                     {
                         ApplicationArea = All;
