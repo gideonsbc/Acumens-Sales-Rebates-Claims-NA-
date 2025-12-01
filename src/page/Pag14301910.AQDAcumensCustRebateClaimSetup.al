@@ -77,10 +77,10 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field("Calculate Cust Rebate using"; Rec."Calculate Cust Rebate using")
-                {
-                    ApplicationArea = All;
-                }
+                // field("Calculate Cust Rebate using"; Rec."Calculate Cust Rebate using")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("AQD Rebate Batch Frequency"; Rec."AQD Rebate Batch Frequency")
                 {
                     ApplicationArea = All;

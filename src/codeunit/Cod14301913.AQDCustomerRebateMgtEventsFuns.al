@@ -413,18 +413,20 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
             EXIT;
 
         ExitFunction := FALSE;
-        CASE CustRebateSetup."Calculate Cust Rebate using" OF
-            CustRebateSetup."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo":
-                BEGIN
-                    IF (SalesInvHdrNo = '') AND (SalesCrMemoHdrNo = '') THEN
-                        ExitFunction := TRUE;
-                END;
-            CustRebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":
-                BEGIN
-                    IF (SalesShptHdrNo = '') AND (RetRcpHdrNo = '') THEN
-                        ExitFunction := TRUE;
-                END;
-        END;
+        // CASE CustRebateSetup."Calculate Cust Rebate using" OF
+        //     CustRebateSetup."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo":
+        //         BEGIN
+        //             IF (SalesInvHdrNo = '') AND (SalesCrMemoHdrNo = '') THEN
+        //                 ExitFunction := TRUE;
+        //         END;
+        //     CustRebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":
+        //         BEGIN
+        //             IF (SalesShptHdrNo = '') AND (RetRcpHdrNo = '') THEN
+        //                 ExitFunction := TRUE;
+        //         END;
+        // END;
+        IF (SalesInvHdrNo = '') AND (SalesCrMemoHdrNo = '') THEN
+            ExitFunction := TRUE;
 
         IF ExitFunction THEN
             EXIT;

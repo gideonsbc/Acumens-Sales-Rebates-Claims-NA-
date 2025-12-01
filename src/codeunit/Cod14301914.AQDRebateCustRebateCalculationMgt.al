@@ -147,23 +147,29 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         PostingDescrptionText := StrSubstNo(RebatePeriodText, DateArray[1], DateArray[2]);
 
         SourceCodeSetup.Get;
+        // Case RebateSetup."Calculate Cust Rebate using" of
+        //     RebateSetup."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo":
+        //         BEGIN
+        //             // Calculate Rebate for Posted Sales Invoices
+        //             BuildInvoiceRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
 
-        Case RebateSetup."Calculate Cust Rebate using" of
-            RebateSetup."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo":
-                BEGIN
-                    // Calculate Rebate for Posted Sales Invoices
-                    BuildInvoiceRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
+        //             // Calculate Rebate for Posted Sales Credit memos
+        //             if not RebateSetup."Exclude Credit Memo" then
+        //                 BuildCrMemoRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
+        //         END;
+        //     RebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":
+        //         BEGIN
+        //             // Calculate Rebate for Posted Purchase Receipt,Invoice,Cr Memo, Return Shipment from ILE
+        //             //BuildShipmentReturnReceiptRebate(CustomerIn, DateArray, SummaryArray);
+        //         END;
+        // END;
 
-                    // Calculate Rebate for Posted Sales Credit memos
-                    if not RebateSetup."Exclude Credit Memo" then
-                        BuildCrMemoRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
-                END;
-            RebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":
-                BEGIN
-                    // Calculate Rebate for Posted Purchase Receipt,Invoice,Cr Memo, Return Shipment from ILE
-                    //BuildShipmentReturnReceiptRebate(CustomerIn, DateArray, SummaryArray);
-                END;
-        END;
+        // Calculate Rebate for Posted Sales Invoices
+        BuildInvoiceRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
+
+        // Calculate Rebate for Posted Sales Credit memos
+        if not RebateSetup."Exclude Credit Memo" then
+            BuildCrMemoRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
 
         IF LastRecord THEN BEGIN
             IF RebateSetup."Auto Post Customer Rebate" THEN BEGIN

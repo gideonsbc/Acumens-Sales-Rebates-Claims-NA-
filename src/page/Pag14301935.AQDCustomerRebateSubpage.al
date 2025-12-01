@@ -131,21 +131,4 @@ page 14301935 "AQD Customer Rebate Subpage"
             }
         }
     }
-
-    local procedure ShowVendorInvoiceCrMemoNo()
-    var
-        RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
-    begin
-        VendorInvoiceCrMemoNo := FALSE;
-        RebateSetup.GET;
-        CASE RebateSetup."Calculate Cust Rebate using" of
-            RebateSetup."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo":
-                VendorInvoiceCrMemoNo := TRUE;
-            RebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":
-                VendorInvoiceCrMemoNo := FALSE;
-        END;
-    end;
-
-    var
-        VendorInvoiceCrMemoNo: Boolean;
 }

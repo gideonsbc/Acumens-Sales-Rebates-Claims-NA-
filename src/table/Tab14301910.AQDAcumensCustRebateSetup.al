@@ -113,20 +113,20 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             Caption = 'Pay Customer Rebate On';
             trigger OnValidate()
             begin
-                IF Rec."Pay Cust Rebate On" <> Rec."Pay Cust Rebate On"::" " THEN
-                    Rec."Calculate Cust Rebate using" := Rec."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo";
+                // IF Rec."Pay Cust Rebate On" <> Rec."Pay Cust Rebate On"::" " THEN
+                //     Rec."Calculate Cust Rebate using" := Rec."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo";
             end;
         }
-        field(275; "Calculate Cust Rebate using"; Enum "AQD Calc Customer Rebate using")
-        {
-            Caption = 'Calculate Customer Rebate using';
+        //field(275; "Calculate Cust Rebate using"; Enum "AQD Calc Customer Rebate using")
+        // {
+        //     Caption = 'Calculate Customer Rebate using';
 
-            trigger OnValidate()
-            begin
-                IF Rec."Calculate Cust Rebate using" <> Rec."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt" then
-                    Rec."Pay Customer Rebate On" := Rec."Pay Customer Rebate On"::"All Invoices";
-            end;
-        }
+        //     trigger OnValidate()
+        //     begin
+        //         IF Rec."Calculate Cust Rebate using" <> Rec."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt" then
+        //             Rec."Pay Customer Rebate On" := Rec."Pay Customer Rebate On"::"All Invoices";
+        //     end;
+        //}
         // field(280; "Auto Update Rebate Cust Type"; Boolean)
         // {
         //     Caption = 'Auto Update Rebate Customer Type';
