@@ -163,9 +163,9 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         // {
         //     Caption = 'Rebate Batch Frequency';
         // }
-        field(375; "Real Time Customer Rebate"; Boolean)
+        field(375; "Auto Process Customer Rebates"; Boolean)
         {
-            Caption = 'Real Time Customer Rebate';
+            Caption = 'Auto Process Customer Rebates';
         }
         field(378; "Create Rebate per Bill-To Cust"; Boolean)
         {
@@ -210,10 +210,10 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         //    Caption = 'Auto Update Rebate Customer Type';
         //    
         //}
-        field(450; "Auto Post Customer Rebate"; Boolean)
-        {
-            Caption = 'Auto Post Customer Rebate';
-        }
+        // field(450; "Auto Post Customer Rebate"; Boolean)
+        // {
+        //     Caption = 'Auto Post Customer Rebate';
+        // }
         // field(460; "Require Cust Rebate Approval"; Boolean)
         // {
         //     Caption = 'Require Customer Rebate Approval';

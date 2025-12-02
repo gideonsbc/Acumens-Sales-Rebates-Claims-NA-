@@ -409,7 +409,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         IF NOT CustRebateSetup.GET THEN
             EXIT;
 
-        IF NOT CustRebateSetup."Real Time Customer Rebate" THEN
+        IF NOT CustRebateSetup."Auto Process Customer Rebates" THEN
             EXIT;
 
         ExitFunction := FALSE;

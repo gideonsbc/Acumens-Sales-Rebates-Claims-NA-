@@ -5,8 +5,10 @@ codeunit 14301917 "AQD Customer Rebate Post Mgt"
         CASE RunBy OF
             RunBy::"Customer Rebate Batch":
                 PostCustomerRebateBatch();
+            RunBy::"Auto Process Customer Rebate":
+                AutoProcesssCustomerRebate();
         END;
-    end;
+    END;
 
     procedure SetCustomerRebateBatchParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateBatchIn: Record "AQD Customer Rebate Batch"; ShowResultIn: Boolean; CalledFromGenerateCustomerRebateIn: Boolean)
     begin
@@ -14,6 +16,13 @@ codeunit 14301917 "AQD Customer Rebate Post Mgt"
         ShowResult := ShowResultIn;
         CalledFromGenerateCustomerRebate := CalledFromGenerateCustomerRebateIn;
         CustomerRebateBatch.CopyFilters(CustomerRebateBatchIn);
+    end;
+
+    procedure SetCustomerRebateParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateHeaderIn: Record "AQD Customer Rebate Header"; CalledFromGenerateCustomerRebateIn: Boolean)
+    begin
+        RunBy := RunByIn;
+        GlobalCustomerRebateHeader.COPYFILTERS(CustomerRebateHeaderIn);
+        CalledFromGenerateCustomerRebate := CalledFromGenerateCustomerRebateIn;
     end;
 
     local procedure PostCustomerRebateBatch()
@@ -58,6 +67,33 @@ codeunit 14301917 "AQD Customer Rebate Post Mgt"
 
         CloseWindow();
         ShowProcessResult(ObjectTypetoRun::Report, REPORT::"AQD Post Cust Rebate Batches");
+    end;
+
+    local procedure AutoProcesssCustomerRebate()
+    var
+        UpdateRecord: Boolean;
+    begin
+        OpenWindow(Text003);
+
+        InitializeVariables();
+
+        TotalCount := GlobalCustomerRebateHeader.Count;
+
+        IF GlobalCustomerRebateHeader.FindFirst() THEN BEGIN
+            COMMIT; // There is nothing to commit except real time transaction
+            ClearLastError();
+
+            Clear(CustomerRebatePost);
+            CustomerRebatePost.SetCustomerRebateParameters(RunBy, GlobalCustomerRebateHeader, CalledFromGenerateCustomerRebate);
+            if CustomerRebatePost.Run() then
+                SuccessfulCount += 1
+            else
+                ErrorCount += 1;
+            Commit();
+        END;
+
+        CloseWindow();
+        ShowProcessResult(ObjectTypetoRun::Report, 0);
     end;
 
     local procedure OpenWindow(Message: Text[80])
@@ -115,10 +151,12 @@ codeunit 14301917 "AQD Customer Rebate Post Mgt"
         ObjectTypetoRun: Option ,,,"Report",,"Codeunit";
         ResultMessage: Text[250];
         Text005: Label 'Total Records: %1  Successful: %2  Errors: %3';
-        Text002: Label 'Processing Vendor Rebate Batch #1##############';
+        Text002: Label 'Processing Customer Rebate Batch #1##############';
+        Text003: Label 'Processing Customer Rebate';
         TotalCount: Integer;
         SuccessfulCount: Integer;
         ErrorCount: Integer;
         ShowResult: Boolean;
         CalledFromGenerateCustomerRebate: Boolean;
+        GlobalCustomerRebateHeader: Record "AQD Customer Rebate Header";
 }

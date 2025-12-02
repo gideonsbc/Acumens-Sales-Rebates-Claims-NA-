@@ -101,7 +101,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     Caption = 'Approval And Posting';
                     ShowCaption = false;
-                    field("Real Time Customer Rebate"; Rec."Real Time Customer Rebate")
+                    field("Auto Process Customer Rebates"; Rec."Auto Process Customer Rebates")
                     {
                         ApplicationArea = All;
                     }
@@ -114,10 +114,10 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     //     ApplicationArea = All;
                     //     Editable = Rec."Require Cust Rebate Approval";
                     // }
-                    field("Auto Post Cust Rebate"; Rec."Auto Post Customer Rebate")
-                    {
-                        ApplicationArea = All;
-                    }
+                    // field("Auto Post Cust Rebate"; Rec."Auto Post Customer Rebate")
+                    // {
+                    //     ApplicationArea = All;
+                    // }
                     field("Post Customer Rebate Using"; Rec."Post Customer Rebate Using")
                     {
                         ApplicationArea = All;

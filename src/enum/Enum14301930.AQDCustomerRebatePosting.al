@@ -10,4 +10,8 @@ enum 14301930 "AQD Customer Rebate Posting"
     {
         Caption = 'Customer Rebate Batch';
     }
+    value(2; "Auto Process Customer Rebate")
+    {
+        Caption = 'Auto Process Customer Rebate';
+    }
 }

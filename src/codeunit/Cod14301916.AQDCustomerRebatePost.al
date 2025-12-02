@@ -22,6 +22,10 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     // END;
                     PostCustomerRebateBatch(CustomerRebateBatch);
                 END;
+            RunBy::"Auto Process Customer Rebate":
+                begin
+                    AutoPostCustomerRebate(GlobalCustomerRebateHeader);
+                end;
         END;
     END;
 
@@ -31,6 +35,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         Customer: Record Customer;
         SalesInvoiceHeader: Record "Sales Invoice Header";
         SalesCrMemoHeader: Record "Sales Cr.Memo Header";
+        GlobalCustomerRebateHeader: Record "AQD Customer Rebate Header";
         CustomerRebateLine: Record "AQD Customer Rebate Line";
         CustomerRebateDetails: Record "AQD Customer Rebate Details";
         CustomerRebatecomments: Record "AQD Customer Rebate Comments";
@@ -64,6 +69,13 @@ codeunit 14301916 "AQD Customer Rebate Post"
         CustomerRebateBatch := CustomerRebateBatchIn;
         CalledFromGenerateCustomerRebate := CalledFromGenerateCustomerRebateIn;
         CustomerRebateBatch.SetRecFilter();
+    end;
+
+    procedure SetCustomerRebateParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateHeaderIn: Record "AQD Customer Rebate Header"; CalledFromGenerateCustomerRebateIn: Boolean)
+    begin
+        RunBy := RunByIn;
+        GlobalCustomerRebateHeader.COPYFILTERS(CustomerRebateHeaderIn);
+        CalledFromGenerateCustomerRebate := CalledFromGenerateCustomerRebateIn;
     end;
 
     procedure PostCustomerRebateBatch(var CustomerRebateBatch: Record "AQD Customer Rebate Batch")
@@ -116,6 +128,40 @@ codeunit 14301916 "AQD Customer Rebate Post"
         END
     end;
 
+    procedure AutoPostCustomerRebate(var CustomerRebateHeader: Record "AQD Customer Rebate Header")
+    var
+        SavedRecords: Boolean;
+        SkipRecord: Boolean;
+    begin
+        RebateSetup.Get();
+        // IF RebateSetup."Require Cust Rebate Approval" THEN
+        //     IF NOT CustomerRebateBatch.Approved THEN
+        //         Error('Customer Rebate Batch is not approved. Please approve it before posting.');
+
+        SavedRecords := FALSE;
+
+        CustomerRebateHeader.RESET;
+        IF CustomerRebateHeader.FindFirst() THEN BEGIN
+            REPEAT
+                SkipRecord := FALSE;
+                IF CalledFromGenerateCustomerRebate THEN begin
+                    CreatedCustomerRebate.RESET;
+                    CreatedCustomerRebate.SETRANGE("Rebate No.", CustomerRebateHeader."No.");
+                    IF NOT CreatedCustomerRebate.FindFirst() THEN
+                        SkipRecord := TRUE;
+                end;
+
+                IF NOT SkipRecord THEN BEGIN
+                    CustomerRebateHeader.TestField("Posting Date");
+
+                    OnBeforePostCustomerRebates(CustomerRebateHeader);
+                    PostCustomerRebate(CustomerRebateHeader, FALSE);
+                    OnAfterPostCustomerRebates(CustomerRebateHeader);
+                END;
+            until CustomerRebateHeader.Next() = 0;
+        END;
+    END;
+
     procedure PostCustomerRebate(var CustomerRebateHeader: Record "AQD Customer Rebate Header"; ShowDialogue: Boolean)
     var
         UserConfirmLabel: Label 'Do you want to post Customer Rebate %1?';
@@ -133,6 +179,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
         GlobalGroupID := 'G00000001';
 
         RebateSetup.Get();
+
+        CustomerRebateHeader.TestField("Posting Date");
 
         CustomerRebateLine.Reset();
         CustomerRebateLine.SetRange("Rebate No.", CustomerRebateHeader."No.");

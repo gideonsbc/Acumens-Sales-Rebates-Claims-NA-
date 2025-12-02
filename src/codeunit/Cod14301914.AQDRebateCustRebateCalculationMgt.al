@@ -77,8 +77,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         GlobalBatchStartDate: Date;
         GlobalBatchEndDate: Date;
         //GlobalRebateBatchFrequency: Enum "AQD CustRebate Batch Frequency";
+        GlobalShptRcptNo: Code[20];
+        GlobalInvCrMemoNo: Code[20];
         StartPostingDate: Date;
         EndPostingDate: Date;
+        RunBy: Enum "AQD Customer Rebate Posting";
 
     procedure UpdateOldDocumentsNonRebateEnable()
     var
@@ -118,6 +121,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
         BatchPostCustomerRebate: Report "AQD Post Cust Rebate Batches";
         LocalCustomerType: Record "AQD CustRbt RebateCustomerType";
+        CustomerRebatePostMgt: Codeunit "AQD Customer Rebate Post Mgt";
     begin
         RebateSetup.Get;
         RebateSetup.TestField("Customer Rebate Nos");
@@ -126,6 +130,9 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         EndPostingDate := DateArray[2];
         IF (StartPostingDate = 0D) or (StartPostingDate < RebateSetup."Start Date") then
             StartPostingDate := RebateSetup."Start Date";
+
+        GlobalShptRcptNo := ShptRcptNo;
+        GlobalInvCrMemoNo := InvCrMemoNo;
 
         if not CustomerIn."AQD Enroll for Cust Rebate" then
             exit;
@@ -151,7 +158,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         // END;
 
         Clear(PostingDescrptionText);
-        PostingDescrptionText := StrSubstNo(RebatePeriodText, DateArray[1], DateArray[2]);
+        //PostingDescrptionText := StrSubstNo(RebatePeriodText, DateArray[1], DateArray[2]);
 
         SourceCodeSetup.Get;
         // Case RebateSetup."Calculate Cust Rebate using" of
@@ -179,12 +186,19 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             BuildCrMemoRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
 
         IF LastRecord THEN BEGIN
-            IF RebateSetup."Auto Post Customer Rebate" THEN BEGIN
+            //IF RebateSetup."Auto Post Customer Rebate" THEN BEGIN // Default Auto Post
+            IF InvCrMemoNo = '' THEN BEGIN
                 CLEAR(BatchPostCustomerRebate);
                 BatchPostCustomerRebate.SetCalledFromGenerateCustomerRebate(TRUE);
                 BatchPostCustomerRebate.UseRequestPage(false);
                 BatchPostCustomerRebate.Run();
+            END ELSE BEGIN
+                RunBy := RunBy::"Auto Process Customer Rebate";
+                CLEAR(CustomerRebatePostMgt);
+                CustomerRebatePostMgt.SetCustomerRebateParameters(RunBy, CustomerRebateHeader, TRUE);
+                CustomerRebatePostMgt.Run();
             END;
+            //END;
         END;
     end;
 
@@ -1212,12 +1226,14 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             DocumentType::Invoice:
                 begin
                     //IF RebateSetup."AQD Rebate Batch Frequency" <> RebateSetup."AQD Rebate Batch Frequency"::" " then BEGIN
-                    CASE CustomerIn."AQD CustRbt Calculation Date" OF
-                        CustomerIn."AQD CustRbt Calculation Date"::" ",
-                        CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
-                            GlobalBatchID := GetBatchID(SalesInvHeaderIn."Posting Date", CustomerIn);
-                        CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                            GlobalBatchID := GetBatchID(SalesInvHeaderIn."AQD Customer Rebate Order Date", CustomerIn);
+                    IF GlobalInvCrMemoNo = '' THEN BEGIN // This means it is called for single document. no batch required.
+                        CASE CustomerIn."AQD CustRbt Calculation Date" OF
+                            CustomerIn."AQD CustRbt Calculation Date"::" ",
+                            CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
+                                GlobalBatchID := GetBatchID(SalesInvHeaderIn."Posting Date", CustomerIn);
+                            CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
+                                GlobalBatchID := GetBatchID(SalesInvHeaderIn."AQD Customer Rebate Order Date", CustomerIn);
+                        END;
                     END;
                     //END;
 
@@ -1272,12 +1288,14 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             DocumentType::"Credit Memo":
                 begin
                     //IF RebateSetup."AQD Rebate Batch Frequency" <> RebateSetup."AQD Rebate Batch Frequency"::" " then BEGIN
-                    CASE CustomerIn."AQD CustRbt Calculation Date" OF
-                        CustomerIn."AQD CustRbt Calculation Date"::" ",
-                        CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
-                            GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."Posting Date", CustomerIn);
-                        CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                            GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."AQD Customer Rebate Order Date", CustomerIn);
+                    IF GlobalInvCrMemoNo = '' THEN BEGIN // This means it is called for single document. no batch required.
+                        CASE CustomerIn."AQD CustRbt Calculation Date" OF
+                            CustomerIn."AQD CustRbt Calculation Date"::" ",
+                            CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
+                                GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."Posting Date", CustomerIn);
+                            CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
+                                GlobalBatchID := GetBatchID(SalesCrMemoHeaderIn."AQD Customer Rebate Order Date", CustomerIn);
+                        END;
                     END;
                     //END;
 
@@ -1500,9 +1518,12 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             CustomerRebateHeader."Rebate-To Post Code" := RebateCustomerRec."Post Code";
             CustomerRebateHeader."Rebate-To County" := RebateCustomerRec.County;
             CustomerRebateHeader."Rebate-To Country/Region Code" := RebateCustomerRec."Country/Region Code";
-
+            PostingDescrptionText := StrSubstNo(RebatePeriodText, format(StartPostingDate) + '..' + FORMAT(EndPostingDate));
             CustomerRebateHeader."Posting Description" := PostingDescrptionText;
-            CustomerRebateHeader."Posting Date" := CustomerRebateBatch."Posting Date";
+            IF GlobalBatchID <> '' THEN
+                CustomerRebateHeader."Posting Date" := CustomerRebateBatch."Posting Date"
+            ELSE
+                CustomerRebateHeader."Posting Date" := DocumentPostingDate;
             CustomerRebateHeader."Document Date" := Today;
             CustomerRebateHeader."Created By" := UserId;
             CustomerRebateHeader."Created Date" := Today;
