@@ -61,21 +61,21 @@ page 14301946 "AQD Posted Cust Rebate Batch"
                 {
                     ToolTip = 'Specifies the value of the Calculated Rebate Amount field.', Comment = '%';
                 }
-                field(Approved; Rec.Approved)
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field("Approved By"; Rec."Approved By")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field("Approved Date Time"; Rec."Approved Date Time")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
+                // field(Approved; Rec.Approved)
+                // {
+                //     ApplicationArea = All;
+                //     Editable = false;
+                // }
+                // field("Approved By"; Rec."Approved By")
+                // {
+                //     ApplicationArea = All;
+                //     Editable = false;
+                // }
+                // field("Approved Date Time"; Rec."Approved Date Time")
+                // {
+                //     ApplicationArea = All;
+                //     Editable = false;
+                // }
             }
             part("AQD Posted Cust Rebate Subpage"; "AQD Posted Cust Rebate Subpage")
             {

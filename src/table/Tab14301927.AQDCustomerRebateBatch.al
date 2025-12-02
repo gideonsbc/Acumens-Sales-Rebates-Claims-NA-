@@ -85,41 +85,41 @@ table 14301927 "AQD Customer Rebate Batch"
         //     Caption = 'Rebate Batch Frequency';
         //     Editable = false;
         // }
-        field(902; Approved; Boolean)
-        {
-            Caption = 'Approved';
-            trigger OnValidate()
-            var
-                LocalCustomerRebateHeader: Record "AQD Customer Rebate Header";
-            begin
-                if Approved then begin
-                    "Approved By" := UserId;
-                    "Approved Date Time" := CurrentDateTime;
-                end else begin
-                    Clear("Approved By");
-                    Clear("Approved Date Time");
-                end;
+        // field(902; Approved; Boolean)
+        // {
+        //     Caption = 'Approved';
+        //     trigger OnValidate()
+        //     var
+        //         LocalCustomerRebateHeader: Record "AQD Customer Rebate Header";
+        //     begin
+        //         if Approved then begin
+        //             "Approved By" := UserId;
+        //             "Approved Date Time" := CurrentDateTime;
+        //         end else begin
+        //             Clear("Approved By");
+        //             Clear("Approved Date Time");
+        //         end;
 
-                LocalCustomerRebateHeader.RESET;
-                LocalCustomerRebateHeader.SetRange("Batch Entry No.", Rec."Entry No.");
-                IF LocalCustomerRebateHeader.FindFirst() THEN begin
-                    repeat
-                        LocalCustomerRebateHeader.Validate(Approved, Rec.Approved);
-                        LocalCustomerRebateHeader.Modify(true);
-                    Until LocalCustomerRebateHeader.Next() = 0;
-                end;
-            end;
-        }
-        field(903; "Approved By"; Code[50])
-        {
-            Caption = 'Approved By';
-            Editable = false;
-        }
-        field(904; "Approved Date Time"; DateTime)
-        {
-            Caption = 'Approved Date Time';
-            Editable = false;
-        }
+        //         LocalCustomerRebateHeader.RESET;
+        //         LocalCustomerRebateHeader.SetRange("Batch Entry No.", Rec."Entry No.");
+        //         IF LocalCustomerRebateHeader.FindFirst() THEN begin
+        //             repeat
+        //                 LocalCustomerRebateHeader.Validate(Approved, Rec.Approved);
+        //                 LocalCustomerRebateHeader.Modify(true);
+        //             Until LocalCustomerRebateHeader.Next() = 0;
+        //         end;
+        //     end;
+        //}
+        // field(903; "Approved By"; Code[50])
+        // {
+        //     Caption = 'Approved By';
+        //     Editable = false;
+        // }
+        // field(904; "Approved Date Time"; DateTime)
+        // {
+        //     Caption = 'Approved Date Time';
+        //     Editable = false;
+        // }
         field(910; "Last Processing Error Message"; Text[250])
         {
             Caption = 'Last Processing Error Message';

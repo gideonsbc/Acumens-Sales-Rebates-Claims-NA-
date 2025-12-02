@@ -307,30 +307,30 @@ table 14301928 "AQD Customer Rebate Header"
         {
             Caption = 'State';
         }
-        field(902; Approved; Boolean)
-        {
-            Caption = 'Approved';
-            trigger OnValidate()
-            begin
-                if Approved then begin
-                    "Approved By" := UserId;
-                    "Approved Date Time" := CurrentDateTime;
-                end else begin
-                    Clear("Approved By");
-                    Clear("Approved Date Time");
-                end;
-            end;
-        }
-        field(903; "Approved By"; Code[50])
-        {
-            Caption = 'Approved By';
-            Editable = false;
-        }
-        field(904; "Approved Date Time"; DateTime)
-        {
-            Caption = 'Approved Date Time';
-            Editable = false;
-        }
+        // field(902; Approved; Boolean)
+        // {
+        //     Caption = 'Approved';
+        //     trigger OnValidate()
+        //     begin
+        //         if Approved then begin
+        //             "Approved By" := UserId;
+        //             "Approved Date Time" := CurrentDateTime;
+        //         end else begin
+        //             Clear("Approved By");
+        //             Clear("Approved Date Time");
+        //         end;
+        //     end;
+        // }
+        // field(903; "Approved By"; Code[50])
+        // {
+        //     Caption = 'Approved By';
+        //     Editable = false;
+        // }
+        // field(904; "Approved Date Time"; DateTime)
+        // {
+        //     Caption = 'Approved Date Time';
+        //     Editable = false;
+        // }
         field(950; BatchID; Code[50])
         {
             Caption = 'BatchId';

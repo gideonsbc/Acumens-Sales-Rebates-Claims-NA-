@@ -32,11 +32,11 @@ page 14301932 "AQD Customer Rebates Documents"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Rebate-To Name Name field.', Comment = '%';
                 }
-                field(Approved; Rec.Approved)
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
+                // field(Approved; Rec.Approved)
+                // {
+                //     ApplicationArea = All;
+                //     Editable = false;
+                // }
                 field("Posting Date"; Rec."Posting Date")
                 {
                     ApplicationArea = All;

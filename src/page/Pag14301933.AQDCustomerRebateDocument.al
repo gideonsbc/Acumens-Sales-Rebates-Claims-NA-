@@ -118,21 +118,21 @@ page 14301933 "AQD Customer Rebate Document"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Employee Commission field.';
                 }
-                field(Approved; Rec.Approved)
-                {
-                    ApplicationArea = All;
-                    Editable = ApproveEnabled;
-                }
-                field("Approved By"; Rec."Approved By")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field("Approved Date Time"; Rec."Approved Date Time")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
+                // field(Approved; Rec.Approved)
+                // {
+                //     ApplicationArea = All;
+                //     Editable = ApproveEnabled;
+                // }
+                // field("Approved By"; Rec."Approved By")
+                // {
+                //     ApplicationArea = All;
+                //     Editable = false;
+                // }
+                // field("Approved Date Time"; Rec."Approved Date Time")
+                // {
+                //     ApplicationArea = All;
+                //     Editable = false;
+                // }
                 field("Salesperson Code"; Rec."Salesperson Code")
                 {
                     ApplicationArea = All;
