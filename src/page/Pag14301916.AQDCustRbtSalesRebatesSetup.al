@@ -228,12 +228,6 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.';
                 }
-                field("Minimum Quantity"; Rec."Minimum Quantity")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the minimum sales quantity required to warrant the sales rebate.';
-                    Visible = FALSE;
-                }
                 field("Starting Date"; Rec."Starting Date")
                 {
                     ApplicationArea = Basic, Suite;
@@ -243,6 +237,22 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the calendar date when the sales rebate agreement ends.';
+                }
+                field("Minimum Quantity"; Rec."Minimum Quantity")
+                {
+                    ApplicationArea = All;
+                    BlankZero = true;
+                    ToolTip = 'Specifies the minimum sales quantity required to warrant the sales rebate.';
+                    Editable = Rec."Entity Type" <> Rec."Entity Type"::"All Customers";
+                    Enabled = Rec."Entity Type" <> Rec."Entity Type"::"All Customers";
+                }
+                field("Minimum Amount"; Rec."Minimum Amount")
+                {
+                    ApplicationArea = All;
+                    BlankZero = true;
+                    ToolTip = 'Specifies the minimum Sales Amount required to warrant the sales rebate.';
+                    Editable = Rec."Entity Type" <> Rec."Entity Type"::"All Customers";
+                    Enabled = Rec."Entity Type" <> Rec."Entity Type"::"All Customers";
                 }
                 field("Rebate Type"; Rec."Rebate Type")
                 {

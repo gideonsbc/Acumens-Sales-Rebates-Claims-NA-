@@ -152,6 +152,14 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Caption = 'Rebate Amount Changed DateTime';
             Editable = false;
         }
+        field(230; "Ineligible"; Boolean)
+        {
+            Caption = 'Ineligible';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = max("AQD Posted Cust Reb Details".Ineligible where("Rebate No." = field("Rebate No."),
+                                                                             "Rebate Line No." = field("Line No.")));
+        }
         field(300; "Salesperson Code"; Code[20])
         {
             Caption = 'Salesperson Code';

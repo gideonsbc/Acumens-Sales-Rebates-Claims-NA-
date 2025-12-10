@@ -59,13 +59,13 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         //     TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Purch Journal Template Name"),
         //                                                      "AQD Customer Rebate" = CONST(true));
         // }
-        field(150; "Rebate Expense Account"; Code[20])
-        {
-            Caption = 'Rebate Expense G/L Account No.';
-            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
-                                                 "Account Type" = CONST(Posting),
-                                                 Blocked = CONST(false));
-        }
+        // field(150; "Rebate Expense Account"; Code[20])
+        // {
+        //     Caption = 'Rebate Expense G/L Account No.';
+        //     TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+        //                                          "Account Type" = CONST(Posting),
+        //                                          Blocked = CONST(false));
+        // }
         // field(160; "Payment Journal Template"; Code[10])
         // {
         //     Caption = 'Payment Journal Template Name';

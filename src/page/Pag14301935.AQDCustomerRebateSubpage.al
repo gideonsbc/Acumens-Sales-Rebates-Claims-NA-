@@ -110,6 +110,12 @@ page 14301935 "AQD Customer Rebate Subpage"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Employee Commission field.', Comment = '%';
                 }
+                field(Ineligible; Rec.Ineligible)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Ineligible';
+                    ToolTip = 'Specifies the value of the Ineligible field.', Comment = '%';
+                }
                 field(Exclude; Rec."Do Not Credit")
                 {
                     ApplicationArea = All;

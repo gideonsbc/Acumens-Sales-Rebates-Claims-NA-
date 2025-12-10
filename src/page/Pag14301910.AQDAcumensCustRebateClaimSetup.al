@@ -69,10 +69,10 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field("Rebate Expense G/L Account No."; Rec."Rebate Expense Account")
-                {
-                    ApplicationArea = All;
-                }
+                // field("Rebate Expense G/L Account No."; Rec."Rebate Expense Account")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("Pay Customer Rebate On"; Rec."Post Customer Rebates for")
                 {
                     ApplicationArea = All;

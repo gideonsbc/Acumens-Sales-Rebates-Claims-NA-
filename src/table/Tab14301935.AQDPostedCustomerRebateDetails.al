@@ -184,6 +184,11 @@ table 14301935 "AQD Posted Cust Reb Details"
         {
             Caption = 'Document Type';
         }
+        field(230; "Ineligible"; Boolean)
+        {
+            Caption = 'Ineligible';
+            Editable = false;
+        }
         field(300; "Salesperson Code"; Code[20])
         {
             Caption = 'Salesperson Code';

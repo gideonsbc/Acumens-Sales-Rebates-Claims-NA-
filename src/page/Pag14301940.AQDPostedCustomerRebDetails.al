@@ -143,6 +143,12 @@ page 14301940 "AQD Posted Cust Rebate Details"
                     ToolTip = 'Specifies the value of the Customer Rebate Posting Type field.', Comment = '%';
                     Visible = false;
                 }
+                field(Ineligible; Rec.Ineligible)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Ineligible';
+                    ToolTip = 'Specifies the value of the Ineligible field.', Comment = '%';
+                }
                 field(Exclude; Rec."Do Not Credit")
                 {
                     ApplicationArea = All;

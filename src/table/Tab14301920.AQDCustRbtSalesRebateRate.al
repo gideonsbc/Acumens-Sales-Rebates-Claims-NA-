@@ -145,8 +145,16 @@ table 14301920 "AQD Sales Rebates Rate"
         }
         field(11; "Minimum Quantity"; Decimal)
         {
+            BlankZero = TRUE;
             Caption = 'Minimum Quantity';
-            DecimalPlaces = 0 : 5;
+            DecimalPlaces = 0 : 0;
+            MinValue = 0;
+        }
+        field(12; "Minimum Amount"; Decimal)
+        {
+            BlankZero = TRUE;
+            Caption = 'Minimum Amount';
+            DecimalPlaces = 0 : 0;
             MinValue = 0;
         }
         field(20; Description; Text[100])
@@ -261,7 +269,7 @@ table 14301920 "AQD Sales Rebates Rate"
 
     keys
     {
-        key(Key1; "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity")
+        key(Key1; "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
             Clustered = true;
         }

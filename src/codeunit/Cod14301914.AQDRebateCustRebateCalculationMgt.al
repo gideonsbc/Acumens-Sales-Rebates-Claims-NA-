@@ -733,6 +733,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             IF NOT TempRebateCategoryLines.FindFirst() THEN begin
                 TempRebateCategoryLines."Line No." := 10000;
                 TempRebateCategoryLines."Rebate Program Code" := RebateSetup."Default Rebate Program Code";
+                TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
                 TempRebateCategoryLines.INSERT;
             END;
 
@@ -2322,6 +2323,13 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         OnBeforeCalculateRebateAmount(CustomerRebateDetailsIn, IsHandled);
         if IsHandled then
             exit;
+
+        IF CustomerRebateDetailsIn.Ineligible THEN BEGIN
+            CustomerRebateDetailsIn."Customer Rebate Amount" := 0;
+            CustomerRebateDetailsIn."Rebate %" := 0;
+            CustomerRebateDetailsIn."Rebate Per Unit" := 0;
+            EXIT; // Exit to avoid calculation
+        END;
 
         if (RebateSetup."Min GP% for Customer Rebate" <> 0) and
            (RebateSetup."Min GP% for Customer Rebate" > Abs(CustomerRebateDetailsIn."Profit %"))

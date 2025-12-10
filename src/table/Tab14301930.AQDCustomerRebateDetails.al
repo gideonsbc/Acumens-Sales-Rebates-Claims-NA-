@@ -197,6 +197,11 @@ table 14301930 "AQD Customer Rebate Details"
         {
             Caption = 'Document Type';
         }
+        field(230; "Ineligible"; Boolean)
+        {
+            Caption = 'Ineligible';
+            Editable = false;
+        }
         field(300; "Salesperson Code"; Code[20])
         {
             Caption = 'Salesperson Code';

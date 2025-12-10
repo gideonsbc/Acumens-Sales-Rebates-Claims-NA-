@@ -185,15 +185,17 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
         CustomerRebateLine.Reset();
         CustomerRebateLine.SetRange("Rebate No.", CustomerRebateHeader."No.");
-        if CustomerRebateLine.FindSet() then begin
-            repeat
-                CustomerRebateLine.CalcFields("Customer Rebate Amount");
-                if CustomerRebateLine."Customer Rebate Amount" = 0 then begin
+        IF CustomerRebateLine.FindSet() THEN BEGIN
+            REPEAT
+                CustomerRebateLine.CalcFields("Customer Rebate Amount", Ineligible);
+                IF (CustomerRebateLine."Customer Rebate Amount" = 0) AND
+                    CustomerRebateLine.Ineligible
+                THEN BEGIN
                     CustomerRebateLine."Do Not Credit" := true;
                     CustomerRebateLine.Modify(true);
-                end;
-            until CustomerRebateLine.Next() = 0;
-        end;
+                END;
+            UNTIL CustomerRebateLine.Next() = 0;
+        END;
         UpdatePosted(CustomerRebateHeader);
         UpdateExcluded(CustomerRebateHeader);
         MoveCustomerRebates(CustomerRebateHeader);
@@ -648,6 +650,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
         LocalBillToCustomerType: Record "AQD Rebate Customer Category";
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlBatch: Record "Gen. Journal Line";
+        LocalCustomer: Record Customer;
+        LocalCustomerCategory: Record "AQD Rebate Customer Category";
         DocumentNo: Code[20];
         LineNo: Integer;
     begin
@@ -791,13 +795,18 @@ codeunit 14301916 "AQD Customer Rebate Post"
             ELSE
                 NextLineNo := 10000;
 
+            LocalCustomer.GET(SalesCredirMemo."Bill-To Customer No.");
+            LocalCustomerCategory.GET(LocalCustomer."AQD Customer Rebate Category");
+            LocalCustomerCategory.TestField("G/L Account No.");
+
             SalesCrMemoLine.INIT;
             SalesCrMemoLine."Document Type" := SalesCrMemoLine."Document Type"::"Credit Memo";
             SalesCrMemoLine."Document No." := TmpCrMemoBuffer."Job No.";
             SalesCrMemoLine."Line No." := NextLineNo;
             SalesCrMemoLine.Insert(TRUE);
             SalesCrMemoLine.Validate(Type, SalesCrMemoLine.Type::"G/L Account");
-            SalesCrMemoLine.Validate("No.", RebateSetup."Rebate Expense Account");
+            //SalesCrMemoLine.Validate("No.", RebateSetup."Rebate Expense Account");
+            SalesCrMemoLine.Validate("No.", LocalCustomerCategory."G/L Account No.");
             SalesCrMemoLine.Description := CopyStr(SalesRebateForText +
                                                       PostedCustomerRebateLine.Description + ' ' +
                                                       PostedCustomerRebateHeader."Posting Description",
@@ -982,6 +991,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
         LocalBillToCustomerType: Record "AQD Rebate Customer Category";
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlBatch: Record "Gen. Journal Line";
+        LocalCustomer: Record Customer;
+        LocalCustomerCategory: Record "AQD Rebate Customer Category";
         DocumentNo: Code[20];
         LineNo: Integer;
     begin
@@ -1129,6 +1140,10 @@ codeunit 14301916 "AQD Customer Rebate Post"
             ELSE
                 NextLineNo := 10000;
 
+            LocalCustomer.GET(SalesCredirMemo."Bill-To Customer No.");
+            LocalCustomerCategory.GET(LocalCustomer."AQD Customer Rebate Category");
+            LocalCustomerCategory.TestField("G/L Account No.");
+
             SalesInvoiceLine.INIT;
             SalesInvoiceLine."Document Type" := SalesInvoiceLine."Document Type"::Invoice;
             SalesInvoiceLine."Document No." := TmpInovoiceBuffer."Job No.";
@@ -1136,7 +1151,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesInvoiceLine.Insert(TRUE);
 
             SalesInvoiceLine.Validate(Type, SalesInvoiceLine.Type::"G/L Account");
-            SalesInvoiceLine.Validate("No.", RebateSetup."Rebate Expense Account");
+            //SalesInvoiceLine.Validate("No.", RebateSetup."Rebate Expense Account");
+            SalesInvoiceLine.Validate("No.", LocalCustomerCategory."G/L Account No.");
             SalesInvoiceLine.Description := CopyStr(PostedCustomerRebateLine.Description + ' ' +
                                                     PostedCustomerRebateHeader."Posting Description",
                                                     1, MaxStrLen(SalesInvoiceLine.Description));
