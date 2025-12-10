@@ -9,11 +9,19 @@ pageextension 14301924 "AQD CustRbt Posted SalesCrMemo" extends "Posted Sales Cr
                 Caption = 'Acumens Customer Rebates & Claims';
                 Editable = false;
 
+                field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
+                {
+                    ApplicationArea = All;
+                }
                 field("AQD CR Territory Code"; Rec."AQD CR Territory Code")
                 {
                     ApplicationArea = All;
                 }
-                field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
+                field("AQD Customer Rebate Status"; Rec."AQD Customer Rebate Status")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Customer Rebate No."; Rec."AQD Customer Rebate No")
                 {
                     ApplicationArea = All;
                 }

@@ -5,7 +5,7 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
     begin
     end;
 
-    procedure IsBillToCustomerEligibleForRebate(var CustItemRebateMatrix: Record "AQD Cust Item Rebate Matrix"; CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date; RebateCode: Code[10]): Boolean
+    procedure IsBillToCustomerEligibleForRebate(var CustItemRebateMatrix: Record "AQD Cust Item Rebate Tiers"; CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date; RebateCode: Code[10]): Boolean
     var
         LocalCustomer: Record Customer;
         ItemCard: Record Item;
@@ -21,7 +21,7 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
         IsCustomerEligible := FALSE;
         RebateSetup.GET;
 
-        IF NOT RebateSetup."Use Cust Rebate Criteria" then
+        IF NOT RebateSetup."Use Cust Rebate Tiers" then
             EXIT(TRUE);
 
         CustItemRebateMatrix.RESET;
@@ -50,9 +50,9 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
         end;
 
         IF LocalCustomer.GET(CustomerNo) THEN BEGIN
-            IF LocalCustomer."AQD Rebate Customer Type" <> '' then begin
-                CustItemRebateMatrix.SetRange("Customer Type", CustItemRebateMatrix."Customer Type"::"Customer Type");
-                CustItemRebateMatrix.SetFilter("Customer No.", '%1|%2', ' ', LocalCustomer."AQD Rebate Customer Type");
+            IF LocalCustomer."AQD Customer Rebate Category" <> '' then begin
+                CustItemRebateMatrix.SetRange("Customer Type", CustItemRebateMatrix."Customer Type"::"Customer Category");
+                CustItemRebateMatrix.SetFilter("Customer No.", '%1|%2', ' ', LocalCustomer."AQD Customer Rebate Category");
                 IF CustItemRebateMatrix.FindFirst() THEN begin
                     IsCustomerEligible := CheckCustomerItemRebateEligibility(CustomerNo,
                                             DocumentLine_Type,
@@ -92,9 +92,9 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
         end;
 
         IF LocalCustomer.GET(CustomerNo) THEN BEGIN
-            IF LocalCustomer."AQD Rebate Customer Type" <> '' then begin
-                CustItemRebateMatrix.SetRange("Customer Type", CustItemRebateMatrix."Customer Type"::"Customer Type");
-                CustItemRebateMatrix.SetFilter("Customer No.", '%1|%2', ' ', LocalCustomer."AQD Rebate Customer Type");
+            IF LocalCustomer."AQD Customer Rebate Category" <> '' then begin
+                CustItemRebateMatrix.SetRange("Customer Type", CustItemRebateMatrix."Customer Type"::"Customer Category");
+                CustItemRebateMatrix.SetFilter("Customer No.", '%1|%2', ' ', LocalCustomer."AQD Customer Rebate Category");
                 IF CustItemRebateMatrix.FindFirst() THEN begin
                     IsCustomerEligible := CheckCustomerItemRebateEligibility(CustomerNo,
                                             DocumentLine_Type,
@@ -124,7 +124,7 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
         EXIT(TRUE);
     END;
 
-    local procedure CopyCustomerSalesRebateToCustomerSalesRebate(var FromCustItemRebateMatrix: Record "AQD Cust Item Rebate Matrix"; var ToCustItemRebateMatrix: Record "AQD Cust Item Rebate Matrix" temporary)
+    local procedure CopyCustomerSalesRebateToCustomerSalesRebate(var FromCustItemRebateMatrix: Record "AQD Cust Item Rebate Tiers"; var ToCustItemRebateMatrix: Record "AQD Cust Item Rebate Tiers" temporary)
     begin
         IF FromCustItemRebateMatrix.FINDSET THEN
             REPEAT
@@ -133,7 +133,7 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
             UNTIL FromCustItemRebateMatrix.NEXT = 0;
     END;
 
-    local procedure CheckCustomerItemRebateEligibility(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; var CustItemRebateMatrix: Record "AQD Cust Item Rebate Matrix"; PostingDate: Date; RebateCode: Code[10]): Boolean
+    local procedure CheckCustomerItemRebateEligibility(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; var CustItemRebateMatrix: Record "AQD Cust Item Rebate Tiers"; PostingDate: Date; RebateCode: Code[10]): Boolean
     var
         LocalItem: Record Item;
         LocalItemLedgerEntry: Record "Item Ledger Entry";
@@ -157,7 +157,7 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
 
         IsEligible := TRUE;
         RebateSetup.GET;
-        if not RebateSetup."Use Cust Rebate Criteria" then
+        if not RebateSetup."Use Cust Rebate Tiers" then
             EXIT(TRUE);
 
         CLEAR(LocalItem);

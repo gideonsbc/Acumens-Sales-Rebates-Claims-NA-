@@ -352,8 +352,8 @@ table 14301928 "AQD Customer Rebate Header"
     begin
         if "No." = '' then begin
             RebateSetup.Get;
-            RebateSetup.TestField("Customer Rebate Nos");
-            "No. Series" := RebateSetup."Customer Rebate Nos";
+            RebateSetup.TestField("Customer Rebate Document Nos");
+            "No. Series" := RebateSetup."Customer Rebate Document Nos";
             "No." := NoSeriesMgt.GetNextNo("No. Series");
         end;
     end;

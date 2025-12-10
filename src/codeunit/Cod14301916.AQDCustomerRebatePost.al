@@ -1,8 +1,7 @@
 codeunit 14301916 "AQD Customer Rebate Post"
 {
-    Permissions = tabledata "Sales Invoice Header" = rm,
-                  tabledata "Sales Cr.Memo Header" = rm;
-
+    Permissions = tabledata "Sales Shipment Header" = rm, tabledata "Sales Invoice Header" = rm,
+                  tabledata "Return Receipt Header" = rm, tabledata "Sales Cr.Memo Header" = rm;
     trigger OnRun()
     begin
         RebateSetup.GET;
@@ -35,6 +34,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
         Customer: Record Customer;
         SalesInvoiceHeader: Record "Sales Invoice Header";
         SalesCrMemoHeader: Record "Sales Cr.Memo Header";
+        SalesShipmentHeader: Record "Sales Shipment Header";
+        ReturnReceiptHeader: Record "Return Receipt Header";
         GlobalCustomerRebateHeader: Record "AQD Customer Rebate Header";
         CustomerRebateLine: Record "AQD Customer Rebate Line";
         CustomerRebateDetails: Record "AQD Customer Rebate Details";
@@ -223,6 +224,22 @@ codeunit 14301916 "AQD Customer Rebate Post"
                                 SalesCrMemoHeader."AQD Customer Rebate Status" := SalesCrMemoHeader."AQD Customer Rebate Status"::Posted;
                                 SalesCrMemoHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
                                 SalesCrMemoHeader.Modify(true);
+                            end;
+                        end;
+                    CustomerRebateLine."Document Type"::Shipment:
+                        begin
+                            if SalesShipmentHeader.Get(CustomerRebateLine."Document No.") then begin
+                                SalesShipmentHeader."AQD Customer Rebate Status" := SalesShipmentHeader."AQD Customer Rebate Status"::Posted;
+                                SalesShipmentHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
+                                SalesShipmentHeader.Modify(true);
+                            end;
+                        end;
+                    CustomerRebateLine."Document Type"::"Return Receipt":
+                        begin
+                            if ReturnReceiptHeader.Get(CustomerRebateLine."Document No.") then begin
+                                ReturnReceiptHeader."AQD Customer Rebate Status" := ReturnReceiptHeader."AQD Customer Rebate Status"::Posted;
+                                ReturnReceiptHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
+                                ReturnReceiptHeader.Modify(true);
                             end;
                         end;
                 end;
@@ -628,7 +645,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         AssignItemChargeSales: Codeunit "Item Charge Assgnt. (Sales)";
         NextLineNo: Integer;
         LocalBillToCustomer: Record Customer;
-        LocalBillToCustomerType: Record "AQD CustRbt RebateCustomerType";
+        LocalBillToCustomerType: Record "AQD Rebate Customer Category";
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlBatch: Record "Gen. Journal Line";
         DocumentNo: Code[20];
@@ -829,7 +846,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 DocumentNo := PostedCustomerRebateHeader."No.";
 
             LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
-            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Rebate Customer Type");
+            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Customer Rebate Category");
 
             GenJnlTemplate.Get(JnlBatch."Journal Template Name");
 
@@ -895,7 +912,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 DocumentNo := PostedCustomerRebateHeader."No.";
 
             LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
-            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Rebate Customer Type");
+            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Customer Rebate Category");
 
             GenJnlTemplate.Get(JnlBatch."Journal Template Name");
 
@@ -962,7 +979,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         AssignItemChargeSales: Codeunit "Item Charge Assgnt. (Sales)";
         NextLineNo: Integer;
         LocalBillToCustomer: Record Customer;
-        LocalBillToCustomerType: Record "AQD CustRbt RebateCustomerType";
+        LocalBillToCustomerType: Record "AQD Rebate Customer Category";
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlBatch: Record "Gen. Journal Line";
         DocumentNo: Code[20];
@@ -1167,7 +1184,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 DocumentNo := PostedCustomerRebateHeader."No.";
 
             LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
-            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Rebate Customer Type");
+            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Customer Rebate Category");
 
             GenJnlTemplate.Get(JnlBatch."Journal Template Name");
 
@@ -1233,7 +1250,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 DocumentNo := PostedCustomerRebateHeader."No.";
 
             LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
-            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Rebate Customer Type");
+            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Customer Rebate Category");
 
             GenJnlTemplate.Get(JnlBatch."Journal Template Name");
 
@@ -1301,7 +1318,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         PostedCustRebateLine: Record "AQD Posted Cust Rebate Line";
         PostedCustRebateDetailLine: Record "AQD Posted Cust Reb Details";
         LocalBillToCustomer: Record Customer;
-        LocalBillToCustomerType: Record "AQD CustRbt RebateCustomerType";
+        LocalBillToCustomerType: Record "AQD Rebate Customer Category";
         DocumentNo: Code[20];
         LineNo: Integer;
         RebateStatusError: Label 'Rebate Status must not be %1.';
@@ -1328,7 +1345,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     DocumentNo := PostedCustRebateHeader."No.";
 
                 LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
-                LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Rebate Customer Type");
+                LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Customer Rebate Category");
 
                 PostedCustRebateLine.CalcFields("Customer Rebate Amount", "Vendor Commission", "Employee Commission");
 

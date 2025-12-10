@@ -1,8 +1,8 @@
-table 14301915 "AQD CustRbt RebateCustomerType"
+table 14301915 "AQD Rebate Customer Category"
 {
-    Caption = 'Rebate Customer Type';
-    LookupPageID = "AQD Cust Rebate Customer Types";
-    DrillDownPageId = "AQD Cust Rebate Customer Types";
+    Caption = 'Rebate Customer Category';
+    LookupPageID = "AQD Rebate Customer Categories";
+    DrillDownPageId = "AQD Rebate Customer Categories";
     DataClassification = CustomerContent;
 
     fields

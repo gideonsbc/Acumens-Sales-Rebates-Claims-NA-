@@ -4,7 +4,7 @@ tableextension 14301921 "AQD CustRbt Sales Shpt Hdr Ext" extends "Sales Shipment
     {
         field(14301910; "AQD No Customer Rebate"; Boolean)
         {
-            Caption = 'No Customer Rebate';
+            Caption = 'Do Not Credit';
             Editable = false;
             DataClassification = CustomerContent;
         }

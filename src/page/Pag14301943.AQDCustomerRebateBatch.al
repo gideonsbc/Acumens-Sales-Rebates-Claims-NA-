@@ -121,7 +121,7 @@ page 14301943 "AQD Customer Rebate Batch"
 
         IF NOT RebateSetup.GET THEN
             RebateSetup.INIT;
-        ShowBillToCustomer := RebateSetup."Create Rebate per Bill-To Cust";
+        ShowBillToCustomer := RebateSetup."Post Rebates by Bill-To Cust";
 
         if RebateUserSetup."AQD Cust Rbt Rebate Role" in
           [RebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",

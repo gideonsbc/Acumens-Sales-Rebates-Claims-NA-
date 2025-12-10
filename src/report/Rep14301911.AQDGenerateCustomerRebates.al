@@ -1,6 +1,6 @@
 report 14301911 "AQD Generate Customer Rebates"
 {
-    Caption = 'Generate Customer Rebates';
+    Caption = 'Generate and Post Customer Rebates';
     ApplicationArea = All;
     UsageCategory = ReportsAndAnalysis;
     ProcessingOnly = true;
@@ -49,7 +49,7 @@ report 14301911 "AQD Generate Customer Rebates"
                 SummaryArray[7] := ByTerritoryCode;
 
                 Clear(RebateCalculationMgt);
-                RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false, ShptRcptNo, InvCrMemoNo, LastRecord);
+                RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebate, LastRecord);
             end;
 
             trigger OnPostDataItem()
@@ -154,11 +154,12 @@ report 14301911 "AQD Generate Customer Rebates"
         end;
     end;
 
-    procedure SetShptRcptNoAndInvCrMemoNo(BillToCustomerNoIn: Code[20]; ShptRcptNoIn: Code[20]; InvCrMemoNoIn: Code[20])
+    procedure SetShptRcptNoAndInvCrMemoNo(BillToCustomerNoIn: Code[20]; ShptRcptNoIn: Code[20]; InvCrMemoNoIn: Code[20]; CalledFromGenerateVendorRebateIn: Boolean)
     begin
         BillToCustomerNo := BillToCustomerNoIn;
         ShptRcptNo := ShptRcptNoIn;
         InvCrMemoNo := InvCrMemoNoIn;
+        CalledFromGenerateCustomerRebate := CalledFromGenerateVendorRebateIn;
     end;
 
     var
@@ -184,4 +185,5 @@ report 14301911 "AQD Generate Customer Rebates"
         TotalCount: Integer;
         CurrentCount: Integer;
         LastRecord: Boolean;
+        CalledFromGenerateCustomerRebate: Boolean;
 }

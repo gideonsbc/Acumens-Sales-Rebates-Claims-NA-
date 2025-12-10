@@ -12,7 +12,7 @@ table 14301937 "AQD Cust Rbt Include Cust Loc"
         field(2; "Customer No."; Code[20])
         {
             Caption = 'Customer No.';
-            TableRelation = if ("Customer Type" = const("Customer Type")) "AQD CustRbt RebateCustomerType"
+            TableRelation = if ("Customer Type" = const("Customer Category")) "AQD Rebate Customer Category"
             else if ("Customer Type" = const(Customer)) Customer;
         }
         field(3; "Location Type"; ENUM "AQD CustRbt Cust Location Type")

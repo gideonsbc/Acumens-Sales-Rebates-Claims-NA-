@@ -1,6 +1,6 @@
-table 14301922 "AQD Cust Item Rebate Matrix"
+table 14301922 "AQD Cust Item Rebate Tiers"
 {
-    Caption = 'Customer Item Rebate Matrix';
+    Caption = 'Customer Item Rebate Tiers';
     DataClassification = CustomerContent;
 
     fields
@@ -49,7 +49,7 @@ table 14301922 "AQD Cust Item Rebate Matrix"
         field(4; "Customer No."; Code[20])
         {
             Caption = 'Customer No.';
-            TableRelation = if ("Customer Type" = const("Customer Type")) "AQD CustRbt RebateCustomerType"
+            TableRelation = if ("Customer Type" = const("Customer Category")) "AQD Rebate Customer Category"
             else if ("Customer Type" = const(Customer)) Customer;
         }
         field(6; "Rebate Program Code"; Code[20])

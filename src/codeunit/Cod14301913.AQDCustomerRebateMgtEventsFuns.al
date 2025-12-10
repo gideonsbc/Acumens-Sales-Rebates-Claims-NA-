@@ -473,7 +473,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
             exit;
 
         CLEAR(GenerateCustomerRebate);
-        GenerateCustomerRebate.SetShptRcptNoAndInvCrMemoNo(BillToCustomerNo, ShptRcptNo, InvCrMemoNo);
+        GenerateCustomerRebate.SetShptRcptNoAndInvCrMemoNo(BillToCustomerNo, ShptRcptNo, InvCrMemoNo, TRUE);
         GenerateCustomerRebate.UseRequestPage(false);
         GenerateCustomerRebate.Run();
     end;

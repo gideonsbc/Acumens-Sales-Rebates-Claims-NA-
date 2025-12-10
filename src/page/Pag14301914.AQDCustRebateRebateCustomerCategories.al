@@ -1,12 +1,12 @@
-page 14301914 "AQD Cust Rebate Customer Types"
+page 14301914 "AQD Rebate Customer Categories"
 {
     ApplicationArea = All;
-    Caption = 'Rebate Customer Types';
+    Caption = 'Rebate Customer Categories';
     DelayedInsert = false;
     PageType = List;
     RefreshOnActivate = true;
     ShowFilter = false;
-    SourceTable = "AQD CustRbt RebateCustomerType";
+    SourceTable = "AQD Rebate Customer Category";
     UsageCategory = Administration;
 
     layout
@@ -68,12 +68,12 @@ page 14301914 "AQD Cust Rebate Customer Types"
         }
     }
 
-    procedure SetSelection(var RebateCustomerType: Record "AQD CustRbt RebateCustomerType")
+    procedure SetSelection(var RebateCustomerType: Record "AQD Rebate Customer Category")
     begin
         CurrPage.SetSelectionFilter(RebateCustomerType);
     end;
 
-    procedure GetSelectionFilterForItem(var RebateCustomerType: Record "AQD CustRbt RebateCustomerType"): Text
+    procedure GetSelectionFilterForItem(var RebateCustomerType: Record "AQD Rebate Customer Category"): Text
     var
         SelectionFilterManagement: Codeunit SelectionFilterManagement;
         RecRef: RecordRef;
@@ -84,7 +84,7 @@ page 14301914 "AQD Cust Rebate Customer Types"
 
     procedure GetSelectionFilter(): Text
     var
-        RebateCustomerType: Record "AQD CustRbt RebateCustomerType";
+        RebateCustomerType: Record "AQD Rebate Customer Category";
         SelectionFilterManagement: Codeunit SelectionFilterManagement;
         RecRef: RecordRef;
     begin

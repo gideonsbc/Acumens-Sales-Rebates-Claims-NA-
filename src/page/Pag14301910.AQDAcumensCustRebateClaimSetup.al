@@ -73,7 +73,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field("Pay Customer Rebate On"; Rec."Pay Customer Rebate On")
+                field("Pay Customer Rebate On"; Rec."Post Customer Rebates for")
                 {
                     ApplicationArea = All;
                 }
@@ -85,11 +85,11 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 // {
                 //     ApplicationArea = All;
                 // }
-                field("Create Rebate per Bill-To Cust"; Rec."Create Rebate per Bill-To Cust")
+                field("Create Rebate per Bill-To Cust"; Rec."Post Rebates by Bill-To Cust")
                 {
                     ApplicationArea = All;
                 }
-                field("Use Cust Rebate Criteria"; Rec."Use Cust Rebate Criteria")
+                field("Use Cust Rebate Criteria"; Rec."Use Cust Rebate Tiers")
                 {
                     ApplicationArea = All;
                 }
@@ -130,7 +130,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 group(DefaultSetup)
                 {
                     Caption = 'Default Setup';
-                    field("Rebate CUstomer Typ"; Rec."Rebate Customer Type")
+                    field("Rebate CUstomer Typ"; Rec."Bill-To Rebate Customer")
                     {
                         ApplicationArea = All;
                     }
@@ -138,7 +138,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     {
                         ApplicationArea = All;
                         Caption = 'Rebate Customer No.';
-                        Editable = Rec."Rebate Customer Type" = Rec."Rebate Customer Type"::"Default Customer";
+                        Editable = Rec."Bill-To Rebate Customer" = Rec."Bill-To Rebate Customer"::"Customer Card";
                     }
                     field("Default Setup Rebate Type"; Rec."Default Setup Rebate Type")
                     {
@@ -219,7 +219,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             group("Number Series")
             {
                 Caption = 'Number Series';
-                field("Customer Rebate Nos"; Rec."Customer Rebate Nos")
+                field("Customer Rebate Nos"; Rec."Customer Rebate Document Nos")
                 {
                     ApplicationArea = All;
                 }
@@ -336,12 +336,12 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
     begin
         if Confirm('Do you want to initialize default setups?') then begin
             ResetNoSeries();
-            Rec.Validate("Item Rebate Enabled", true);
-            Rec.Validate("Resource Rebate Enabled", true);
-            Rec.Validate("G/L Account Rebate Enabled", true);
-            Rec.Validate("Item Charge Rebate Enabled", true);
-            Rec.Validate("Fixed Asset Rebate Enabled", true);
-            Rec."Pay Customer Rebate On" := Rec."Pay Customer Rebate On"::"All Invoices";
+            //Rec.Validate("Item Rebate Enabled", true);
+            //Rec.Validate("Resource Rebate Enabled", true);
+            //Rec.Validate("G/L Account Rebate Enabled", true);
+            //Rec.Validate("Item Charge Rebate Enabled", true);
+            //Rec.Validate("Fixed Asset Rebate Enabled", true);
+            Rec."Post Customer Rebates for" := Rec."Post Customer Rebates for"::"All Invoices";
             //Purchase
             // GenJournalTemplate.Reset();
             // GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::Purchases);
@@ -422,7 +422,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             //         Rec."General Journal Batch Name" := GenJournalBatch.Name;
             //     end;
             // end;
-            Rec."Customer Rebate Nos" := 'CRB';
+            Rec."Customer Rebate Document Nos" := 'CRB';
             Rec.Modify(true);
         end;
     end;

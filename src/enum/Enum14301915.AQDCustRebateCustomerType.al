@@ -6,9 +6,9 @@ enum 14301915 "AQD Cust Rebate Customer Type"
     {
         Caption = 'Customer';
     }
-    value(1; "Customer Type")
+    value(1; "Customer Category")
     {
-        Caption = 'Customer Type';
+        Caption = 'Customer Category';
     }
     value(2; "All Customers")
     {

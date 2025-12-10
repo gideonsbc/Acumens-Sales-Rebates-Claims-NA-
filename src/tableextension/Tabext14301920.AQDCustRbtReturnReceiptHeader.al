@@ -4,7 +4,7 @@ tableextension 14301920 "AQD CustRbt Return RcptHdr Ext" extends "Return Receipt
     {
         field(14301910; "AQD No Customer Rebate"; Boolean)
         {
-            Caption = 'No Customer Rebate';
+            Caption = 'Do Not Credit';
             Editable = false;
             DataClassification = CustomerContent;
         }

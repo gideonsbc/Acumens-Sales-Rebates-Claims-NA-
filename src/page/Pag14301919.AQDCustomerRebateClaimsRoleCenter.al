@@ -107,12 +107,12 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Image = Vendor;
                 RunObject = Page "Item Categories";
             }
-            action("AQD Rebate Customer Types")
+            action("AQD Rebate Customer Categories")
             {
-                Caption = 'Rebate Customer Types';
+                Caption = 'Rebate Customer Categories';
                 ApplicationArea = All;
                 Image = CampaignEntries;
-                RunObject = Page "AQD Cust Rebate Customer Types";
+                RunObject = Page "AQD Rebate Customer Categories";
             }
             // action("AQD Rebate Cust Type Eligib")
             // {
@@ -121,12 +121,12 @@ page 14301919 "AQD Cust Rebate & Claims RC"
             //     Image = CampaignEntries;
             //     RunObject = Page "AQD Rebate Cust Type Eligib";
             // }
-            action("AQD CustItem Rebate Matrix")
+            action("AQD CustItem Rebate Tiers")
             {
-                Caption = 'Customer Item Rebate Matrix';
+                Caption = 'Customer Item Rebate Tiers';
                 ApplicationArea = All;
                 Image = PurchaseCreditMemo;
-                RunObject = Page "AQD Item Cust Rebate Matrix";
+                RunObject = Page "AQD Item Cust Rebate Tiers";
             }
             action("Sales Orders")
             {
@@ -213,7 +213,7 @@ page 14301919 "AQD Cust Rebate & Claims RC"
             action("Generate Customer Rebate")
             {
                 ApplicationArea = All;
-                Caption = 'Generate Customer Rebates';
+                Caption = 'Generate and Post Customer Rebates';
                 Image = CalculateSalesTax;
                 RunObject = Report "AQD Generate Customer Rebates";
             }
@@ -223,6 +223,7 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                 Caption = 'Post Customer Rebate Batches';
                 Image = CalculateSalesTax;
                 RunObject = Report "AQD Post Cust Rebate Batches";
+                Visible = false;
             }
             group(Journals)
             {
@@ -328,19 +329,19 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Image = Vendor;
                     RunObject = Page "Item Categories";
                 }
-                action("AQD Rebate Customer Types2")
+                action("AQD Rebate Customer Categories2")
                 {
-                    Caption = 'Rebate Customer Types';
+                    Caption = 'Rebate Customer Categories';
                     ApplicationArea = All;
                     Image = CampaignEntries;
-                    RunObject = Page "AQD Cust Rebate Customer Types";
+                    RunObject = Page "AQD Rebate Customer Categories";
                 }
                 action("AQD CustItem Rebate Matrix2")
                 {
-                    Caption = 'Customer Item Rebate Matrix';
+                    Caption = 'Customer Item Rebate Tiers';
                     ApplicationArea = All;
                     Image = PurchaseCreditMemo;
-                    RunObject = Page "AQD Item Cust Rebate Matrix";
+                    RunObject = Page "AQD Item Cust Rebate Tiers";
                 }
                 action("Sales Rebates Setup")
                 {

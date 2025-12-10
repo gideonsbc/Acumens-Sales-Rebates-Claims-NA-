@@ -12,7 +12,7 @@ pageextension 14301915 "AQD CustRbt Customer Card" extends "Customer Card"
                 {
                     ApplicationArea = All;
                 }
-                field("AQD Rebate Customer Type"; Rec."AQD Rebate Customer Type")
+                field("AQD Rebate Customer Type"; Rec."AQD Customer Rebate Category")
                 {
                     ApplicationArea = All;
                     Editable = Rec."AQD Enroll for Cust Rebate";

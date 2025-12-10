@@ -92,7 +92,7 @@ page 14301946 "AQD Posted Cust Rebate Batch"
     begin
         IF NOT RebateSetup.GET THEN
             RebateSetup.INIT;
-        ShowBillToCustomer := RebateSetup."Create Rebate per Bill-To Cust";
+        ShowBillToCustomer := RebateSetup."Post Rebates by Bill-To Cust";
     end;
 
     var

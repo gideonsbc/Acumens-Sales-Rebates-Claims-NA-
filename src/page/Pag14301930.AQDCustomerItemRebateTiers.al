@@ -1,11 +1,11 @@
 namespace AcumenseRebatesBC.AcumenseRebatesBC;
 
-page 14301930 "AQD Item Cust Rebate Matrix"
+page 14301930 "AQD Item Cust Rebate Tiers"
 {
     ApplicationArea = All;
-    Caption = 'Item Customer Rebate Matrix';
+    Caption = 'Item Customer Rebate Tiers';
     PageType = List;
-    SourceTable = "AQD Cust Item Rebate Matrix";
+    SourceTable = "AQD Cust Item Rebate Tiers";
     UsageCategory = Lists;
 
     layout

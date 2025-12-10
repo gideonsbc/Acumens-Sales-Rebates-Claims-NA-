@@ -36,7 +36,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                     trigger OnLookup(var Text: Text): Boolean
                     var
                         CustList: Page "Customer List";
-                        RebateCustomerTypeList: Page "AQD Cust Rebate Customer Types";
+                        RebateCustomerTypeList: Page "AQD Rebate Customer Categories";
                     begin
                         IF CustomerTypeFilter = CustomerTypeFilter::"All Customers" THEN
                             EXIT;
@@ -360,7 +360,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
 
     var
         Cust: Record Customer;
-        RebateCustomerType: Record "AQD CustRbt RebateCustomerType";
+        RebateCustomerType: Record "AQD Rebate Customer Category";
         RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         ClientTypeManagement: Codeunit "Client Type Management";
         CustomerTypeFilter: Enum "AQD Rebate Cust Type Filter";
@@ -422,8 +422,8 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                     end;
                 CustomerTypeFilter::"Customer Type":
                     begin
-                        CheckFilters(DATABASE::"AQD CustRbt RebateCustomerType", CustomerNoFilter);
-                        Rec.SetRange("Entity Type", Rec."Entity Type"::"Customer Type");
+                        CheckFilters(DATABASE::"AQD Rebate Customer Category", CustomerNoFilter);
+                        Rec.SetRange("Entity Type", Rec."Entity Type"::"Customer Category");
                     end;
                 CustomerTypeFilter::"All Customers":
                     begin
@@ -651,7 +651,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
         case Rec.GetFilter("Entity Type") of
             Format(Rec."Entity Type"::Customer):
                 exit(CustomerTypeFilter::Customer.AsInteger());
-            Format(Rec."Entity Type"::"Customer Type"):
+            Format(Rec."Entity Type"::"Customer Category"):
                 exit(CustomerTypeFilter::"Customer Type".AsInteger());
             Format(Rec."Entity Type"::"All Customers"):
                 exit(CustomerTypeFilter::"All Customers".AsInteger());

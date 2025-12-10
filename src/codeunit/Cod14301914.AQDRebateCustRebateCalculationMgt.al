@@ -115,16 +115,16 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 
-    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; LastRecord: Boolean)
+    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean)
     var
         LocalCustomer: Record Customer;
         //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
         BatchPostCustomerRebate: Report "AQD Post Cust Rebate Batches";
-        LocalCustomerType: Record "AQD CustRbt RebateCustomerType";
+        LocalCustomerType: Record "AQD Rebate Customer Category";
         CustomerRebatePostMgt: Codeunit "AQD Customer Rebate Post Mgt";
     begin
         RebateSetup.Get;
-        RebateSetup.TestField("Customer Rebate Nos");
+        RebateSetup.TestField("Customer Rebate Document Nos");
 
         StartPostingDate := DateArray[1];
         EndPostingDate := DateArray[2];
@@ -137,11 +137,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         if not CustomerIn."AQD Enroll for Cust Rebate" then
             exit;
 
-        IF RebateSetup."Rebate Customer Type" = RebateSetup."Rebate Customer Type"::"Customer Type" THEN BEGIN
-            IF LocalCustomerType.GET(CustomerIn."AQD Rebate Customer Type") THEN
+        IF RebateSetup."Bill-To Rebate Customer" = RebateSetup."Bill-To Rebate Customer"::"Customer Category" THEN BEGIN
+            IF LocalCustomerType.GET(CustomerIn."AQD Customer Rebate Category") THEN
                 IF LocalCustomerType."Rebate Customer No" = '' THEN
                     EXIT;
-        END ELSE IF RebateSetup."Rebate Customer Type" = RebateSetup."Rebate Customer Type"::"Default Customer" THEN
+        END ELSE IF RebateSetup."Bill-To Rebate Customer" = RebateSetup."Bill-To Rebate Customer"::"Customer Card" THEN
                 RebateSetup.TestField("Default Rebate Customer No.");
 
         // IF RebateSetup."Auto Update Rebate Cust Type" THEN BEGIN
@@ -189,13 +189,13 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             //IF RebateSetup."Auto Post Customer Rebate" THEN BEGIN // Default Auto Post
             IF InvCrMemoNo = '' THEN BEGIN
                 CLEAR(BatchPostCustomerRebate);
-                BatchPostCustomerRebate.SetCalledFromGenerateCustomerRebate(TRUE);
+                BatchPostCustomerRebate.SetCalledFromGenerateCustomerRebate(CalledFromGenerateCustomerRebateIn);
                 BatchPostCustomerRebate.UseRequestPage(false);
                 BatchPostCustomerRebate.Run();
             END ELSE BEGIN
                 RunBy := RunBy::"Auto Process Customer Rebate";
                 CLEAR(CustomerRebatePostMgt);
-                CustomerRebatePostMgt.SetCustomerRebateParameters(RunBy, CustomerRebateHeader, TRUE);
+                CustomerRebatePostMgt.SetCustomerRebateParameters(RunBy, CustomerRebateHeader, CalledFromGenerateCustomerRebateIn);
                 CustomerRebatePostMgt.Run();
             END;
             //END;
@@ -701,7 +701,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         FixedAsset: Record "Fixed Asset";
         ItemCategory: Record "Item Category";
         //RebateCategoryLines: Record "AQD Cust Rebate Category Lines";
-        ItemVendorRebateMatrix: Record "AQD Cust Item Rebate Matrix";
+        ItemVendorRebateMatrix: Record "AQD Cust Item Rebate Tiers";
         ChkCustItemRbtMatrixMgt: Codeunit "AQD ChkCustItemRbt Matrix Mgt";
         LocalRebateCategoryCode: Code[20];
         IsHandled: Boolean;
@@ -856,8 +856,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         BillToCustomer.GET(CustomerNo);
 
         GlobalSalesRebateRate.RESET;
-        GlobalSalesRebateRate.SetRange("Entity Type", GlobalSalesRebateRate."Entity Type"::"Customer Type");
-        GlobalSalesRebateRate.SetFilter("Entity No.", '%1|%2', BillToCustomer."AQD Rebate Customer Type", '');
+        GlobalSalesRebateRate.SetRange("Entity Type", GlobalSalesRebateRate."Entity Type"::"Customer Category");
+        GlobalSalesRebateRate.SetFilter("Entity No.", '%1|%2', BillToCustomer."AQD Customer Rebate Category", '');
         case DocumentLine_Type of
             DocumentLine_Type::Item:
                 begin
@@ -1209,7 +1209,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         PayToVendor: Record Vendor;
         RebateVendorRec: Record Vendor;
         RebateCustomerRec: Record Customer;
-        CustomerRebateType: Record "AQD CustRbt RebateCustomerType";
+        CustomerRebateType: Record "AQD Rebate Customer Category";
         IsHandled: Boolean;
         PayToVendorCode: Code[20];
         DocumentPostingDate: Date;
@@ -1240,15 +1240,15 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     SellToCustomerRec.GET(SalesInvHeaderIn."Sell-to Customer No.");
                     BillToCustomerRec.GET(SalesInvHeaderIn."Bill-to Customer No.");
 
-                    CASE RebateSetup."Rebate Customer Type" OF
-                        RebateSetup."Rebate Customer Type"::"Default Customer":
+                    CASE RebateSetup."Bill-To Rebate Customer" OF
+                        RebateSetup."Bill-To Rebate Customer"::"Customer Card":
                             BEGIN
                                 IF RebateSetup."Default Rebate Customer No." <> '' THEN
                                     RebateCustomerRec.Get(RebateSetup."Default Rebate Customer No.");
                             END;
-                        RebateSetup."Rebate Customer Type"::"Customer Type":
+                        RebateSetup."Bill-To Rebate Customer"::"Customer Category":
                             BEGIN
-                                CustomerRebateType.GET(BillToCustomerRec."AQD Rebate Customer Type");
+                                CustomerRebateType.GET(BillToCustomerRec."AQD Customer Rebate Category");
                                 RebateCustomerRec.GET(CustomerRebateType."Rebate Customer No");
                             END;
                     END;
@@ -1270,7 +1270,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     //         CreatedCustomerRebate.SetRange("Sell-To Customer No.", RebateCustomerRec."No.");
                     // END;
 
-                    IF RebateSetup."Create Rebate per Bill-To Cust" then
+                    IF RebateSetup."Post Rebates by Bill-To Cust" then
                         CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesInvHeaderIn."Bill-to Customer No.");
                     if SummaryArray[1] then
                         CreatedCustomerRebate.SetRange("Responsibility Center", SalesInvHeaderIn."Responsibility Center");
@@ -1302,15 +1302,15 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     BillToCustomerRec.GET(SalesCrMemoHeaderIn."Bill-To Customer No.");
                     SellToCustomerRec.GET(SalesCrMemoHeaderIn."Sell-to Customer No.");
 
-                    CASE RebateSetup."Rebate Customer Type" OF
-                        RebateSetup."Rebate Customer Type"::"Default Customer":
+                    CASE RebateSetup."Bill-To Rebate Customer" OF
+                        RebateSetup."Bill-To Rebate Customer"::"Customer Card":
                             BEGIN
                                 IF RebateSetup."Default Rebate Customer No." <> '' THEN
                                     RebateCustomerRec.Get(RebateSetup."Default Rebate Customer No.");
                             END;
-                        RebateSetup."Rebate Customer Type"::"Customer Type":
+                        RebateSetup."Bill-To Rebate Customer"::"Customer Category":
                             BEGIN
-                                CustomerRebateType.GET(BillToCustomerRec."AQD Rebate Customer Type");
+                                CustomerRebateType.GET(BillToCustomerRec."AQD Customer Rebate Category");
                                 RebateCustomerRec.GET(CustomerRebateType."Rebate Customer No");
                             END;
                     END;
@@ -1331,7 +1331,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     //     ELSE
                     //         CreatedCustomerRebate.SetRange("Sell-To Customer No.", RebateCustomerRec."No.");
                     // END;
-                    IF RebateSetup."Create Rebate per Bill-To Cust" then
+                    IF RebateSetup."Post Rebates by Bill-To Cust" then
                         CreatedCustomerRebate.SetRange("Bill-To Customer No.", SalesCrMemoHeaderIn."Bill-to Customer No.");
                     if SummaryArray[1] then
                         CreatedCustomerRebate.SetRange("Responsibility Center", SalesCrMemoHeaderIn."Responsibility Center");
@@ -1375,7 +1375,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             END;
 
             CustomerRebateHeader.Init;
-            CustomerRebateHeader."No." := NoSeriesMgt.GetNextNo(RebateSetup."Customer Rebate Nos", Today, true);
+            CustomerRebateHeader."No." := NoSeriesMgt.GetNextNo(RebateSetup."Customer Rebate Document Nos", Today, true);
 
             CASE DocumentType OF
                 DocumentType::Invoice:
@@ -1541,7 +1541,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             CreatedCustomerRebate.Init();
             CreatedCustomerRebate."Rebate No." := CustomerRebateHeader."No.";
             // CreatedCustomerRebate."Sell-To Customer No." := CustomerRebateHeader."Sell-To Customer No.";
-            IF RebateSetup."Create Rebate per Bill-To Cust" then
+            IF RebateSetup."Post Rebates by Bill-To Cust" then
                 CreatedCustomerRebate."Bill-To Customer No." := BillToCustomerRec."No.";
             CreatedCustomerRebate."Rebate-To Customer No." := CustomerRebateHeader."Rebate-To Customer No.";
             CreatedCustomerRebate."Location Code" := CustomerRebateHeader."Location Code";
@@ -1659,7 +1659,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         IsHandled: Boolean;
         PostingDate: Date;
         CustomerRebateDetailsLoc: Record "AQD Customer Rebate Details";
-        ItemCustRebateMatrix: Record "AQD Cust Item Rebate Matrix";
+        ItemCustRebateMatrix: Record "AQD Cust Item Rebate Tiers";
         TempSalesShptLine: Record "Sales Shipment Line" temporary;
         TempReturnReceiptLine: Record "Return Receipt Line" temporary;
         RebateProgramCodeRec: Record "AQD Cust Rebate Program Code";
@@ -1981,7 +1981,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         // End;
 
         LocalBatchID := FORMAT(Date2DMY(EndPostingDate, 3));
-        IF RebateSetup."Create Rebate per Bill-To Cust" THEN
+        IF RebateSetup."Post Rebates by Bill-To Cust" THEN
             LocalBatchID := FORMAT(EndPostingDate, 0, '<Month Text>') + ' ' + LocalBatchID + ' ' + CustomerIn."No."
         ELSE
             LocalBatchID := FORMAT(EndPostingDate, 0, '<Month Text>') + ' ' + LocalBatchID;
@@ -2374,10 +2374,10 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
     local procedure IsPayRebateOnlyOnPaidInvoices(): Boolean
     begin
-        if RebateSetup."Pay Customer Rebate On" = RebateSetup."Pay Customer Rebate On"::"All Invoices" then
+        if RebateSetup."Post Customer Rebates for" = RebateSetup."Post Customer Rebates for"::"All Invoices" then
             exit(false)
         else
-            if RebateSetup."Pay Customer Rebate On" = RebateSetup."Pay Customer Rebate On"::"Fully Paid Invoices" then
+            if RebateSetup."Post Customer Rebates for" = RebateSetup."Post Customer Rebates for"::"Fully Paid Invoices" then
                 exit(true);
     end;
 
@@ -2402,18 +2402,18 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
     local procedure GetRebateCustomerDetails(var BillToCustomer: Record Customer; var RebateToCUstomer: Record Customer; var SkipRecordIn: Boolean)
     var
-        LocalCustomerRebateType: Record "AQD CustRbt RebateCustomerType";
+        LocalCustomerRebateType: Record "AQD Rebate Customer Category";
     begin
-        CASE RebateSetup."Rebate Customer Type" OF
-            RebateSetup."Rebate Customer Type"::"Default Customer":
+        CASE RebateSetup."Bill-To Rebate Customer" OF
+            RebateSetup."Bill-To Rebate Customer"::"Customer Card":
                 BEGIN
                     IF RebateSetup."Default Rebate Customer No." <> '' THEN
                         IF NOT RebateToCUstomer.Get(RebateSetup."Default Rebate Customer No.") then
                             SkipRecordIn := true;
                 END;
-            RebateSetup."Rebate Customer Type"::"Customer Type":
+            RebateSetup."Bill-To Rebate Customer"::"Customer Category":
                 BEGIN
-                    IF LocalCustomerRebateType.GET(BillToCustomer."AQD Rebate Customer Type") THEN BEGIN
+                    IF LocalCustomerRebateType.GET(BillToCustomer."AQD Customer Rebate Category") THEN BEGIN
                         IF LocalCustomerRebateType."Rebate Customer No" <> '' THEN BEGIN
                             IF NOT RebateToCUstomer.Get(LocalCustomerRebateType."Rebate Customer No") then
                                 SkipRecordIn := true;

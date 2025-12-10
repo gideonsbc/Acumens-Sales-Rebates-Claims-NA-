@@ -4,7 +4,7 @@ tableextension 14301919 "AQD CustRbt SalesCrMemoHdr Ext" extends "Sales Cr.Memo 
     {
         field(14301910; "AQD No Customer Rebate"; Boolean)
         {
-            Caption = 'No Customer Rebate';
+            Caption = 'Do Not Credit';
             Editable = false;
             DataClassification = CustomerContent;
         }

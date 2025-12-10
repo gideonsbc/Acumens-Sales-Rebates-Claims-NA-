@@ -4,7 +4,7 @@ tableextension 14301917 "AQD CustRbt Sales Header Ext" extends "Sales Header"
     {
         field(14301910; "AQD No Customer Rebate"; Boolean)
         {
-            Caption = 'No Customer Rebate';
+            Caption = 'Do Not Credit';
             //Editable = false; // To Edit By User
             DataClassification = CustomerContent;
 

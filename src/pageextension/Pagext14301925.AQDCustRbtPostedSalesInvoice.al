@@ -8,12 +8,19 @@ pageextension 14301925 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
             {
                 Caption = 'Acumens Customer Rebates & Claims';
                 Editable = false;
-
+                field("AQD AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
+                {
+                    ApplicationArea = All;
+                }
                 field("AQD CR Territory Code"; Rec."AQD CR Territory Code")
                 {
                     ApplicationArea = All;
                 }
-                field("AQD AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
+                field("AQD Customer Rebate No."; Rec."AQD Customer Rebate No")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Customer Rebate Status"; Rec."AQD Customer Rebate Status")
                 {
                     ApplicationArea = All;
                 }
@@ -26,10 +33,6 @@ pageextension 14301925 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                     ApplicationArea = All;
                 }
                 field("AQD Rebate LastChangd DateTime"; Rec."AQD CustRbt LastChangdDateTime")
-                {
-                    ApplicationArea = All;
-                }
-                field("AQD Customer Rebate Status"; Rec."AQD Customer Rebate Status")
                 {
                     ApplicationArea = All;
                 }

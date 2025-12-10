@@ -11,7 +11,7 @@ table 14301920 "AQD Sales Rebates Rate"
         field(2; "Entity No."; Code[20])
         {
             Caption = 'Entity No.';
-            TableRelation = if ("Entity Type" = const("Customer Type")) "AQD CustRbt RebateCustomerType"
+            TableRelation = if ("Entity Type" = const("Customer Category")) "AQD Rebate Customer Category"
             else if ("Entity Type" = const(Customer)) Customer
             else if ("Entity Type" = const("Employee Commission")) Employee where(Status = const(Active))
             else if ("Entity Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));

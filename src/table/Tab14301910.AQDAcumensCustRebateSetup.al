@@ -44,10 +44,10 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Start Date';
         }
-        field(100; "Pay Customer Rebate On"; Enum "AQD Customer Rebate On Type")
-        {
-            Caption = 'Pay Customer Rebate On';
-        }
+        // field(100; "Pay Customer Rebate On"; Enum "AQD Post Customer Rebates for")
+        // {
+        //     Caption = 'Pay Customer Rebate On';
+        // }
         // field(130; "Purch Journal Template Name"; Code[10])
         // {
         //     Caption = 'Rebate Purchase Jnl Template Name';
@@ -93,9 +93,9 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             Caption = 'Old Documents Updated';
             Editable = false;
         }
-        field(240; "Customer Rebate Nos"; Code[20])
+        field(240; "Customer Rebate Document Nos"; Code[20])
         {
-            Caption = 'Customer Rebate Nos';
+            Caption = 'Customer Rebate Document Nos';
             TableRelation = "No. Series";
         }
         // field(250; "General Journal Template Name"; Code[10])
@@ -108,9 +108,9 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         //     Caption = 'Rebate General Jnl Batch Name';
         //     TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("General Journal Template Name"));
         // }
-        field(270; "Pay Cust Rebate On"; Enum "AQD Customer Rebate On Type")
+        field(270; "Post Customer Rebates for"; Enum "AQD Post Customer Rebates for")
         {
-            Caption = 'Pay Customer Rebate On';
+            Caption = 'Post Customer Rebates for';
             trigger OnValidate()
             begin
                 // IF Rec."Pay Cust Rebate On" <> Rec."Pay Cust Rebate On"::" " THEN
@@ -166,10 +166,11 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         field(375; "Auto Process Customer Rebates"; Boolean)
         {
             Caption = 'Auto Process Customer Rebates';
+            InitValue = true;
         }
-        field(378; "Create Rebate per Bill-To Cust"; Boolean)
+        field(378; "Post Rebates by Bill-To Cust"; Boolean)
         {
-            Caption = 'Create Rebate per Bill-To Customer';
+            Caption = 'Post Rebates by Bill-To Customer';
         }
         field(380; "Customer Rebate Start Date"; Date)
         {
@@ -183,27 +184,27 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         // {
         //     Caption = 'Rebate Cr. Memo Posting';
         // }
-        field(400; "AutoCreateSalesRbteRateonRcpt"; Boolean)
-        {
-            Caption = 'Auto Create Sales Rebate Rate on Receipt';
-            trigger OnValidate()
-            begin
-                IF Not Rec.AutoCreateSalesRbteRateonRcpt then
-                    Rec.BlockAutoCreatedSalesRbtRate := FALSE;
-            end;
-        }
-        field(410; BlockAutoCreatedSalesRbtRate; Boolean)
-        {
-            Caption = 'Block Auto Created Sales Rebate Rate';
-        }
+        // field(400; "AutoCreateSalesRbteRateonRcpt"; Boolean)
+        // {
+        //     Caption = 'Auto Create Sales Rebate Rate on Receipt';
+        //     trigger OnValidate()
+        //     begin
+        //         IF Not Rec.AutoCreateSalesRbteRateonRcpt then
+        //             Rec.BlockAutoCreatedSalesRbtRate := FALSE;
+        //     end;
+        // }
+        // field(410; BlockAutoCreatedSalesRbtRate; Boolean)
+        // {
+        //     Caption = 'Block Auto Created Sales Rebate Rate';
+        // }
         field(420; "Customer Rebate Source Code"; Code[10])
         {
             Caption = 'Customer Rebate Source Code';
             TableRelation = "Source Code";
         }
-        field(430; "Use Cust Rebate Criteria"; Boolean)
+        field(430; "Use Cust Rebate Tiers"; Boolean)
         {
-            Caption = 'Use Customer Rebate Criteria';
+            Caption = 'Use Customer Rebate Tiers';
         }
         //field(440; "Auto Update Rbt Cust Type"; Boolean)
         //{
@@ -233,14 +234,14 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             TableRelation = Customer;
             DataClassification = CustomerContent;
         }
-        field(490; "Rebate Customer Type"; Enum "AQD Rebate Customer Type")
+        field(490; "Bill-To Rebate Customer"; Enum "AQD Bill-To Rebate Customer")
         {
-            Caption = 'Rebate Customer Type';
+            Caption = 'Bill-To Rebate Customer';
             DataClassification = CustomerContent;
 
             trigger OnValidate()
             BEGIN
-                IF Rec."Rebate Customer Type" <> xRec."Rebate Customer Type" THEN
+                IF Rec."Bill-To Rebate Customer" <> xRec."Bill-To Rebate Customer" THEN
                     Rec."Default Rebate Customer No." := '';
             END;
         }
