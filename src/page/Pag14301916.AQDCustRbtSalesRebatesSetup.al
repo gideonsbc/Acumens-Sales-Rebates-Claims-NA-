@@ -50,7 +50,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                                     ELSE
                                         EXIT(FALSE);
                                 END;
-                            CustomerTypeFilter::"Customer Type":
+                            CustomerTypeFilter::"Customer Category":
                                 BEGIN
                                     RebateCustomerTypeList.LOOKUPMODE := TRUE;
                                     IF RebateCustomerTypeList.RUNMODAL = ACTION::LookupOK THEN
@@ -420,7 +420,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                         CheckFilters(DATABASE::Customer, CustomerNoFilter);
                         Rec.SetRange("Entity Type", Rec."Entity Type"::Customer);
                     end;
-                CustomerTypeFilter::"Customer Type":
+                CustomerTypeFilter::"Customer Category":
                     begin
                         CheckFilters(DATABASE::"AQD Rebate Customer Category", CustomerNoFilter);
                         Rec.SetRange("Entity Type", Rec."Entity Type"::"Customer Category");
@@ -652,7 +652,7 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
             Format(Rec."Entity Type"::Customer):
                 exit(CustomerTypeFilter::Customer.AsInteger());
             Format(Rec."Entity Type"::"Customer Category"):
-                exit(CustomerTypeFilter::"Customer Type".AsInteger());
+                exit(CustomerTypeFilter::"Customer Category".AsInteger());
             Format(Rec."Entity Type"::"All Customers"):
                 exit(CustomerTypeFilter::"All Customers".AsInteger());
             Format(Rec."Entity Type"::"Employee Commission"):

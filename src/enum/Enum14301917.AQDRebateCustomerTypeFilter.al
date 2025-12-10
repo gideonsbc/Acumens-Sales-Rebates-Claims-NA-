@@ -10,9 +10,9 @@ enum 14301917 "AQD Rebate Cust Type Filter"
     {
         Caption = 'Customer';
     }
-    value(2; "Customer Type")
+    value(2; "Customer Category")
     {
-        Caption = 'Customer Type';
+        Caption = 'Customer Category';
     }
     value(3; "All Customers")
     {
