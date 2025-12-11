@@ -12,7 +12,7 @@ pageextension 14301915 "AQD CustRbt Customer Card" extends "Customer Card"
                 {
                     ApplicationArea = All;
                 }
-                field("AQD Rebate Customer No."; Rec."AQD Cust Rebate Customer No.")
+                field("AQD Cust Rebate Customer No."; Rec."AQD Cust Rebate Customer No.")
                 {
                     ApplicationArea = All;
                 }

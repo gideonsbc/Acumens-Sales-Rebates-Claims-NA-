@@ -6,6 +6,11 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
         {
             Caption = 'Enroll for Rebate';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                Rec."AQD Cust Rebate Customer No." := Rec."No.";
+            end;
         }
         field(14301920; "AQD Cust Rebate Customer No."; Code[20])
         {
