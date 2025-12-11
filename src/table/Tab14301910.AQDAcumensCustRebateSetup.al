@@ -228,22 +228,22 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         // {
         //     Caption = 'Job Queue Auto Approve Rebate';
         // }
-        field(480; "Default Rebate Customer No."; Code[20])
-        {
-            Caption = 'Default Rebate Customer No.';
-            TableRelation = Customer;
-            DataClassification = CustomerContent;
-        }
+        // field(480; "Default Rebate Customer No."; Code[20])
+        // {
+        //     Caption = 'Default Rebate Customer No.';
+        //     TableRelation = Customer;
+        //     DataClassification = CustomerContent;
+        // }
         field(490; "Bill-To Rebate Customer"; Enum "AQD Bill-To Rebate Customer")
         {
             Caption = 'Bill-To Rebate Customer';
             DataClassification = CustomerContent;
 
-            trigger OnValidate()
-            BEGIN
-                IF Rec."Bill-To Rebate Customer" <> xRec."Bill-To Rebate Customer" THEN
-                    Rec."Default Rebate Customer No." := '';
-            END;
+            // trigger OnValidate()
+            // BEGIN
+            //     IF Rec."Bill-To Rebate Customer" <> xRec."Bill-To Rebate Customer" THEN
+            //         Rec."Default Rebate Customer No." := '';
+            // END;
         }
     }
     keys

@@ -134,12 +134,12 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     {
                         ApplicationArea = All;
                     }
-                    field("Default Rebate Customer No."; Rec."Default Rebate Customer No.")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Rebate Customer No.';
-                        Editable = Rec."Bill-To Rebate Customer" = Rec."Bill-To Rebate Customer"::"Customer Card";
-                    }
+                    // field("Default Rebate Customer No."; Rec."Default Rebate Customer No.")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Rebate Customer No.';
+                    //     Editable = Rec."Bill-To Rebate Customer" = Rec."Bill-To Rebate Customer"::"Customer Card";
+                    // }
                     field("Default Setup Rebate Type"; Rec."Default Setup Rebate Type")
                     {
                         ApplicationArea = All;
