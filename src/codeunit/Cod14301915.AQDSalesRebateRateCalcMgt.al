@@ -230,7 +230,9 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
                 //     END;
                 // END;
                 CASE CustomerSalesRebateRate."Entity Type" OF
-                    CustomerSalesRebateRate."Entity Type"::Customer:
+                    CustomerSalesRebateRate."Entity Type"::Customer,
+                    CustomerSalesRebateRate."Entity Type"::"Employee Commission",
+                    CustomerSalesRebateRate."Entity Type"::"Vendor Commission":
                         BEGIN
                             ItemRec.GET(CustomerRebateDetailsLocIn."No.");
                             ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");

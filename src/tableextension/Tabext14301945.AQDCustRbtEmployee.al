@@ -11,7 +11,7 @@ tableextension 14301945 "AQD CR Employee Ext" extends "Employee"
         {
             Caption = 'Territory Filter';
             FieldClass = FlowField;
-            CalcFormula = exist("AQD CR Vend Emp Territory Filt" WHERE(Type = Const(employee), "No." = FIELD("No.")));
+            CalcFormula = exist("AQD CR Vend Emp Territory Filt" WHERE(Type = Const(Employee), "No." = FIELD("No.")));
             Editable = false;
         }
 
@@ -19,7 +19,7 @@ tableextension 14301945 "AQD CR Employee Ext" extends "Employee"
         {
             Caption = 'Customer Filter';
             FieldClass = FlowField;
-            CalcFormula = exist("AQD CR Vend Emp Customer Filt" WHERE(Type = Const(employee), "No." = FIELD("No.")));
+            CalcFormula = exist("AQD CR Vend Emp Customer Filt" WHERE(Type = Const(Employee), "No." = FIELD("No.")));
             Editable = false;
         }
     }

@@ -11,14 +11,14 @@ tableextension 14301946 "AQD CR Vendor Ext" extends Vendor
         {
             Caption = 'Territory Filter';
             FieldClass = FlowField;
-            CalcFormula = exist("AQD CR Vend Emp Territory Filt" WHERE(Type = Const(employee), "No." = FIELD("No.")));
+            CalcFormula = exist("AQD CR Vend Emp Territory Filt" WHERE(Type = Const(Vendor), "No." = FIELD("No.")));
             Editable = false;
         }
         field(14301930; "AQD Customer Filter"; Boolean)
         {
             Caption = 'Customer Filter';
             FieldClass = FlowField;
-            CalcFormula = exist("AQD CR Vend Emp Customer Filt" WHERE(Type = Const(employee), "No." = FIELD("No.")));
+            CalcFormula = exist("AQD CR Vend Emp Customer Filt" WHERE(Type = Const(Vendor), "No." = FIELD("No.")));
             Editable = false;
         }
     }
