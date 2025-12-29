@@ -328,6 +328,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             Rec."Customer Rebate Source Code" := 'RBTSALES';
             Rec."Post Customer Rebates for" := Rec."Post Customer Rebates for"::"All Invoices";
             Rec."Post Customer Rebate Using" := Rec."Post Customer Rebate Using"::"Sales Document";
+            Rec."Auto Process Customer Rebates" := TRUE;
             Rec.Insert();
             InitializeDefaultSetups();
         end;
