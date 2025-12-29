@@ -4,7 +4,7 @@ enum 14301934 "AQD Post Cust Rebate Using"
 
     value(0; " ")
     {
-        Caption = ' ';
+        Caption = '';
     }
     value(1; "Sales Document")
     {

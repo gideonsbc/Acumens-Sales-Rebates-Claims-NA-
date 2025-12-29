@@ -138,7 +138,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             exit;
 
         IF RebateSetup."Bill-To Rebate Customer" = RebateSetup."Bill-To Rebate Customer"::"Customer Category" THEN BEGIN
-            IF LocalCustomerType.GET(CustomerIn."AQD Customer Rebate Category") THEN
+            IF LocalCustomerType.GET(CustomerIn."AQD Cust Rebate Category Code") THEN
                 IF LocalCustomerType."Rebate Customer No" = '' THEN
                     EXIT;
         END ELSE IF RebateSetup."Bill-To Rebate Customer" = RebateSetup."Bill-To Rebate Customer"::"Customer Card" THEN
@@ -861,7 +861,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
         GlobalSalesRebateRate.RESET;
         GlobalSalesRebateRate.SetRange("Entity Type", GlobalSalesRebateRate."Entity Type"::"Customer Category");
-        GlobalSalesRebateRate.SetFilter("Entity No.", '%1|%2', BillToCustomer."AQD Customer Rebate Category", '');
+        GlobalSalesRebateRate.SetFilter("Entity No.", '%1|%2', BillToCustomer."AQD Cust Rebate Category Code", '');
         case DocumentLine_Type of
             DocumentLine_Type::Item:
                 begin
@@ -1262,7 +1262,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                             END;
                         RebateSetup."Bill-To Rebate Customer"::"Customer Category":
                             BEGIN
-                                CustomerRebateType.GET(BillToCustomerRec."AQD Customer Rebate Category");
+                                CustomerRebateType.GET(BillToCustomerRec."AQD Cust Rebate Category Code");
                                 RebateCustomerRec.GET(CustomerRebateType."Rebate Customer No");
                             END;
                     END;
@@ -1326,7 +1326,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                             END;
                         RebateSetup."Bill-To Rebate Customer"::"Customer Category":
                             BEGIN
-                                CustomerRebateType.GET(BillToCustomerRec."AQD Customer Rebate Category");
+                                CustomerRebateType.GET(BillToCustomerRec."AQD Cust Rebate Category Code");
                                 RebateCustomerRec.GET(CustomerRebateType."Rebate Customer No");
                             END;
                     END;
@@ -2439,7 +2439,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 END;
             RebateSetup."Bill-To Rebate Customer"::"Customer Category":
                 BEGIN
-                    IF LocalCustomerRebateType.GET(BillToCustomer."AQD Customer Rebate Category") THEN BEGIN
+                    IF LocalCustomerRebateType.GET(BillToCustomer."AQD Cust Rebate Category Code") THEN BEGIN
                         IF LocalCustomerRebateType."Rebate Customer No" <> '' THEN BEGIN
                             IF NOT RebateToCUstomer.Get(LocalCustomerRebateType."Rebate Customer No") then
                                 SkipRecordIn := true;

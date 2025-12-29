@@ -50,9 +50,9 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
         end;
 
         IF LocalCustomer.GET(CustomerNo) THEN BEGIN
-            IF LocalCustomer."AQD Customer Rebate Category" <> '' then begin
+            IF LocalCustomer."AQD Cust Rebate Category Code" <> '' then begin
                 CustItemRebateMatrix.SetRange("Customer Type", CustItemRebateMatrix."Customer Type"::"Customer Category");
-                CustItemRebateMatrix.SetFilter("Customer No.", '%1|%2', ' ', LocalCustomer."AQD Customer Rebate Category");
+                CustItemRebateMatrix.SetFilter("Customer No.", '%1|%2', ' ', LocalCustomer."AQD Cust Rebate Category Code");
                 IF CustItemRebateMatrix.FindFirst() THEN begin
                     IsCustomerEligible := CheckCustomerItemRebateEligibility(CustomerNo,
                                             DocumentLine_Type,
@@ -92,9 +92,9 @@ codeunit 14301912 "AQD ChkCustItemRbt Matrix Mgt"
         end;
 
         IF LocalCustomer.GET(CustomerNo) THEN BEGIN
-            IF LocalCustomer."AQD Customer Rebate Category" <> '' then begin
+            IF LocalCustomer."AQD Cust Rebate Category Code" <> '' then begin
                 CustItemRebateMatrix.SetRange("Customer Type", CustItemRebateMatrix."Customer Type"::"Customer Category");
-                CustItemRebateMatrix.SetFilter("Customer No.", '%1|%2', ' ', LocalCustomer."AQD Customer Rebate Category");
+                CustItemRebateMatrix.SetFilter("Customer No.", '%1|%2', ' ', LocalCustomer."AQD Cust Rebate Category Code");
                 IF CustItemRebateMatrix.FindFirst() THEN begin
                     IsCustomerEligible := CheckCustomerItemRebateEligibility(CustomerNo,
                                             DocumentLine_Type,

@@ -76,6 +76,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 field("Pay Customer Rebate On"; Rec."Post Customer Rebates for")
                 {
                     ApplicationArea = All;
+                    Visible = FALSE;
                 }
                 // field("Calculate Cust Rebate using"; Rec."Calculate Cust Rebate using")
                 // {
@@ -325,6 +326,8 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
         if not Rec.Get then begin
             Rec.Init();
             Rec."Customer Rebate Source Code" := 'RBTSALES';
+            Rec."Post Customer Rebates for" := Rec."Post Customer Rebates for"::"All Invoices";
+            Rec."Post Customer Rebate Using" := Rec."Post Customer Rebate Using"::"Sales Document";
             Rec.Insert();
             InitializeDefaultSetups();
         end;

@@ -796,7 +796,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 NextLineNo := 10000;
 
             LocalCustomer.GET(SalesCredirMemo."Bill-To Customer No.");
-            LocalCustomerCategory.GET(LocalCustomer."AQD Customer Rebate Category");
+            LocalCustomerCategory.GET(LocalCustomer."AQD Cust Rebate Category Code");
             LocalCustomerCategory.TestField("G/L Account No.");
 
             SalesCrMemoLine.INIT;
@@ -855,7 +855,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 DocumentNo := PostedCustomerRebateHeader."No.";
 
             LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
-            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Customer Rebate Category");
+            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Cust Rebate Category Code");
 
             GenJnlTemplate.Get(JnlBatch."Journal Template Name");
 
@@ -921,7 +921,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 DocumentNo := PostedCustomerRebateHeader."No.";
 
             LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
-            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Customer Rebate Category");
+            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Cust Rebate Category Code");
 
             GenJnlTemplate.Get(JnlBatch."Journal Template Name");
 
@@ -1141,7 +1141,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 NextLineNo := 10000;
 
             LocalCustomer.GET(SalesCredirMemo."Bill-To Customer No.");
-            LocalCustomerCategory.GET(LocalCustomer."AQD Customer Rebate Category");
+            LocalCustomerCategory.GET(LocalCustomer."AQD Cust Rebate Category Code");
             LocalCustomerCategory.TestField("G/L Account No.");
 
             SalesInvoiceLine.INIT;
@@ -1200,7 +1200,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 DocumentNo := PostedCustomerRebateHeader."No.";
 
             LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
-            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Customer Rebate Category");
+            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Cust Rebate Category Code");
 
             GenJnlTemplate.Get(JnlBatch."Journal Template Name");
 
@@ -1266,7 +1266,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 DocumentNo := PostedCustomerRebateHeader."No.";
 
             LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
-            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Customer Rebate Category");
+            LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Cust Rebate Category Code");
 
             GenJnlTemplate.Get(JnlBatch."Journal Template Name");
 
@@ -1361,7 +1361,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     DocumentNo := PostedCustRebateHeader."No.";
 
                 LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
-                LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Customer Rebate Category");
+                LocalBillToCustomerType.GET(LocalBillToCustomer."AQD Cust Rebate Category Code");
 
                 PostedCustRebateLine.CalcFields("Customer Rebate Amount", "Vendor Commission", "Employee Commission");
 
