@@ -90,10 +90,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field("Use Cust Rebate Criteria"; Rec."Use Cust Rebate Tiers")
-                {
-                    ApplicationArea = All;
-                }
                 field("Min GP% for Customer Rebate"; Rec."Min GP% for Customer Rebate")
                 {
                     ApplicationArea = All;

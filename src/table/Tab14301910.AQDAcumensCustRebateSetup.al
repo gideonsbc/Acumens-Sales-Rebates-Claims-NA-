@@ -202,10 +202,6 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             Caption = 'Customer Rebate Source Code';
             TableRelation = "Source Code";
         }
-        field(430; "Use Cust Rebate Tiers"; Boolean)
-        {
-            Caption = 'Use Customer Rebate Tiers';
-        }
         //field(440; "Auto Update Rbt Cust Type"; Boolean)
         //{
         //    Caption = 'Auto Update Rebate Customer Type';
