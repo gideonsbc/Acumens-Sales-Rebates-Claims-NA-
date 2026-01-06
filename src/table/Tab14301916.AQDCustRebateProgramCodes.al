@@ -11,6 +11,14 @@ table 14301916 "AQD Cust Rebate Program Code"
         {
             Caption = 'Code';
             NotBlank = true;
+            trigger OnValidate()
+            var
+                CustomerRebateSetupRec: Record "AQD Acumens CustRbtClaim Setup";
+            begin
+                IF Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::" " THEN
+                    IF CustomerRebateSetupRec.GET THEN
+                        Rec."Customer Rebate Posting Type" := CustomerRebateSetupRec."Default Rebate Posting Type";
+            end;
         }
         field(2; Description; Text[100])
         {
@@ -75,4 +83,12 @@ table 14301916 "AQD Cust Rebate Program Code"
         {
         }
     }
+    trigger OnInsert()
+    var
+        CustomerRebateSetupRec: Record "AQD Acumens CustRbtClaim Setup";
+    begin
+        IF Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::" " THEN
+            IF CustomerRebateSetupRec.GET THEN
+                Rec."Customer Rebate Posting Type" := CustomerRebateSetupRec."Default Rebate Posting Type";
+    end;
 }

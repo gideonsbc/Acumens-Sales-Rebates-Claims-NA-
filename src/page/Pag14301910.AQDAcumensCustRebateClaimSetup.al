@@ -90,6 +90,14 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
+                field("Auto Process Customer Rebates"; Rec."Auto Process Customer Rebates")
+                {
+                    ApplicationArea = All;
+                }
+                // field("Post Customer Rebate Using"; Rec."Post Customer Rebate Using")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("Min GP% for Customer Rebate"; Rec."Min GP% for Customer Rebate")
                 {
                     ApplicationArea = All;
@@ -98,10 +106,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     Caption = 'Approval And Posting';
                     ShowCaption = false;
-                    field("Auto Process Customer Rebates"; Rec."Auto Process Customer Rebates")
-                    {
-                        ApplicationArea = All;
-                    }
                     // field("Require Cust Rebate Approval"; Rec."Require Cust Rebate Approval")
                     // {
                     //     ApplicationArea = All;
@@ -115,10 +119,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     // {
                     //     ApplicationArea = All;
                     // }
-                    field("Post Customer Rebate Using"; Rec."Post Customer Rebate Using")
-                    {
-                        ApplicationArea = All;
-                    }
+
                     // field("Rebate Cr. Memo Posting"; Rec."Rebate Cr. Memo Posting")
                     // {
                     //     ApplicationArea = All;
@@ -127,6 +128,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 group(DefaultSetup)
                 {
                     Caption = 'Default Setup';
+
                     field("Rebate CUstomer Typ"; Rec."Bill-To Rebate Customer")
                     {
                         ApplicationArea = All;
@@ -277,6 +279,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 ApplicationArea = All;
                 Caption = 'Old Invoice & Credit Memo Non-Rebatable';
                 Image = OrderList;
+                Visible = FALSE;
                 trigger OnAction()
                 var
                     RebateCalculationMgt: Codeunit "AQD Cust Rebate Calc Mgt";
@@ -325,6 +328,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             Rec."Post Customer Rebates for" := Rec."Post Customer Rebates for"::"All Invoices";
             Rec."Post Customer Rebate Using" := Rec."Post Customer Rebate Using"::"Sales Document";
             Rec."Auto Process Customer Rebates" := TRUE;
+            Rec."Default Rebate Posting Type" := Rec."Default Rebate Posting Type"::Inventory;
             Rec.Insert();
             InitializeDefaultSetups();
         end;

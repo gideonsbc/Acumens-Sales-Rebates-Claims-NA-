@@ -241,6 +241,11 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             //         Rec."Default Rebate Customer No." := '';
             // END;
         }
+        field(500; "Default Rebate Posting Type"; enum "AQD CustRebate CostPostingType")
+        {
+            Caption = 'Rebate Posting Type';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {
