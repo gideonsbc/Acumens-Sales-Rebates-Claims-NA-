@@ -116,16 +116,6 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
                     GLAccount.GET(CustomerRebateDetailsLocIn."No.");
                     SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"G/L Account");
                 END;
-            CustomerRebateDetailsLocIn.Type::"Charge (Item)":
-                BEGIN
-                    ItemCharge.GET(CustomerRebateDetailsLocIn."No.");
-                    SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Charge (Item)");
-                END;
-            CustomerRebateDetailsLocIn.TYPE::"Fixed Asset":
-                BEGIN
-                    FixedAsset.GET(CustomerRebateDetailsLocIn."No.");
-                    SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Fixed Asset");
-                END;
         END;
         SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."No.");
         SalesRebatesRate.SETFILTER("Variant Code", '%1|%2', '', '');

@@ -38,9 +38,7 @@ table 14301920 "AQD Sales Rebates Rate"
             TableRelation = if ("Line Type" = const("Rebate Category")) "Item Category".Code where("AQD Customer Rebate" = const(true))
             else if ("Line Type" = const(Item)) Item
             else if ("Line Type" = const("G/L Account")) "G/L Account"
-            else if ("Line Type" = const(Resource)) Resource
-            else if ("Line Type" = const("Fixed Asset")) "Fixed Asset"
-            else if ("Line Type" = const("Charge (Item)")) "Item Charge";
+            else if ("Line Type" = const(Resource)) Resource;
             trigger OnValidate()
             begin
                 if Rec."No." <> xRec."No." then begin
@@ -77,22 +75,6 @@ table 14301920 "AQD Sales Rebates Rate"
                                 Rec."Unit of Measure Code" := '';
                                 Rec."Variant Code" := '';
                             end;
-                        Rec."Line Type"::"Fixed Asset":
-                            begin
-                                IF FixAsset.Get("No.") THEN
-                                    Description := FixAsset.Description
-                                ELSE
-                                    Description := '';
-                                Rec."Unit of Measure Code" := '';
-                                Rec."Variant Code" := '';
-                            end;
-                        Rec."Line Type"::"Charge (Item)":
-                            BEGIN
-                                IF ItemCharge.Get("No.") THEN
-                                    Description := ItemCharge.Description;
-                                Rec."Unit of Measure Code" := '';
-                                Rec."Variant Code" := '';
-                            END;
                         Rec."Line Type"::"Rebate Category":
                             BEGIN
                                 IF ItemCategory.Get("No.") then

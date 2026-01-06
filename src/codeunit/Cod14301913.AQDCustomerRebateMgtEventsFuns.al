@@ -65,34 +65,6 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         Rec."AQD Customer Rebate Enabled" := RebateSetup."Resource Rebate Enabled";
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Fixed Asset", 'OnBeforeInsertEvent', '', true, false)]
-    local procedure Table5600_FixedAsset_OnBeforeInsert(var Rec: Record "Fixed Asset"; RunTrigger: Boolean)
-    var
-        RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
-    begin
-        IF Rec.ISTEMPORARY THEN
-            EXIT;
-
-        IF NOT RebateSetup.GET THEN
-            EXIT;
-
-        Rec."AQD Customer Rebate Enabled" := RebateSetup."Fixed Asset Rebate Enabled";
-    end;
-
-    [EventSubscriber(ObjectType::Table, Database::"Item Charge", 'OnBeforeInsertEvent', '', true, false)]
-    local procedure Table5800_ItemCharge_OnBeforeInsert(var Rec: Record "Item Charge"; RunTrigger: Boolean)
-    var
-        RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
-    begin
-        IF Rec.ISTEMPORARY THEN
-            EXIT;
-
-        IF NOT RebateSetup.GET THEN
-            EXIT;
-
-        Rec."AQD Customer Rebate Enabled" := RebateSetup."G/L Account Rebate Enabled";
-    end;
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::GenJnlManagement, 'OnBeforeLookupName', '', true, false)]
     local procedure Cod230_GenJnlManagement_OnBeforeLookupName(var GenJnlBatch: Record "Gen. Journal Batch")
     begin

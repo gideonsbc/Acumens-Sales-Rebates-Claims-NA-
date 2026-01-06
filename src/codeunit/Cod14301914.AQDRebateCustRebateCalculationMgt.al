@@ -790,22 +790,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
                     GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
                 end;
-            DocumentLine_Type::"Charge (Item)":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Charge (Item)");
-
-                    ItemCharge.GET(DocumentLine_No);
-                    IsRebateEnabled := ItemCharge."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := ItemCharge."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"Fixed Asset":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Fixed Asset");
-
-                    FixedAsset.GET(DocumentLine_No);
-                    IsRebateEnabled := FixedAsset."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := FixedAsset."AQD Cust Rebate Category Code";
-                end;
             else begin
                 IsHandled := FALSE;
                 OnBeforeGetRebateRateForOtherTypes(DocumentLine_Type, DocumentLine_No, IsRebateEnabled, IsHandled);
@@ -883,20 +867,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     Resource.GET(DocumentLine_No);
                     GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
                 end;
-            DocumentLine_Type::"Charge (Item)":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Charge (Item)");
-
-                    ItemCharge.GET(DocumentLine_No);
-                    GlobalRebateCategoryCode := ItemCharge."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"Fixed Asset":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Fixed Asset");
-
-                    FixedAsset.GET(DocumentLine_No);
-                    GlobalRebateCategoryCode := FixedAsset."AQD Cust Rebate Category Code";
-                end;
         END;
 
         GlobalSalesRebateRate.SetFilter("No.", '%1|%2', DocumentLine_No, '');
@@ -963,20 +933,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
                     Resource.GET(DocumentLine_No);
                     GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"Charge (Item)":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Charge (Item)");
-
-                    ItemCharge.GET(DocumentLine_No);
-                    GlobalRebateCategoryCode := ItemCharge."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"Fixed Asset":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Fixed Asset");
-
-                    FixedAsset.GET(DocumentLine_No);
-                    GlobalRebateCategoryCode := FixedAsset."AQD Cust Rebate Category Code";
                 end;
         END;
 
@@ -1052,22 +1008,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     Resource.GET(DocumentLine_No);
                     IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
                     GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"Charge (Item)":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Charge (Item)");
-
-                    ItemCharge.GET(DocumentLine_No);
-                    IsRebateEnabled := ItemCharge."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := ItemCharge."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"Fixed Asset":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Fixed Asset");
-
-                    FixedAsset.GET(DocumentLine_No);
-                    IsRebateEnabled := FixedAsset."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := FixedAsset."AQD Cust Rebate Category Code";
                 end;
             else begin
                 IsHandled := FALSE;
@@ -1149,22 +1089,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     Resource.GET(DocumentLine_No);
                     IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
                     GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"Charge (Item)":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Charge (Item)");
-
-                    ItemCharge.GET(DocumentLine_No);
-                    IsRebateEnabled := ItemCharge."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := ItemCharge."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"Fixed Asset":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Fixed Asset");
-
-                    FixedAsset.GET(DocumentLine_No);
-                    IsRebateEnabled := FixedAsset."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := FixedAsset."AQD Cust Rebate Category Code";
                 end;
             else begin
                 IsHandled := FALSE;
@@ -1723,18 +1647,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
                     LocalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
                 END;
-            LocalDocumentLine_Type::"Charge (Item)":
-                BEGIN
-                    ItemCharge.GET(LocalDocumentLine_No);
-                    IsRebateEnabled := ItemCharge."AQD Customer Rebate Enabled";
-                    LocalRebateCategoryCode := ItemCharge."AQD Cust Rebate Category Code";
-                END;
-            LocalDocumentLine_Type::"Fixed Asset":
-                BEGIN
-                    FixedAsset.GET(LocalDocumentLine_No);
-                    IsRebateEnabled := FixedAsset."AQD Customer Rebate Enabled";
-                    LocalRebateCategoryCode := FixedAsset."AQD Cust Rebate Category Code";
-                END;
         END;
 
         CustomerRebateDetailsLoc.Reset();
@@ -1777,10 +1689,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                 CustomerRebateDetails."Entity Type" := TempRebateCategoryLines."Entity Type";
                                 CustomerRebateDetails."Entity No." := EntityNo;
                                 case SalesInvLineIn.Type of
-                                    SalesInvLineIn.Type::"Charge (Item)":
-                                        CustomerRebateDetails.Type := CustomerRebateDetails.Type::"Charge (Item)";
-                                    SalesInvLineIn.Type::"Fixed Asset":
-                                        CustomerRebateDetails.Type := CustomerRebateDetails.Type::"Fixed Asset";
                                     SalesInvLineIn.Type::"G/L Account":
                                         CustomerRebateDetails.Type := CustomerRebateDetails.Type::"G/L Account";
                                     SalesInvLineIn.Type::Item:
@@ -1828,10 +1736,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                 CustomerRebateDetails."Entity Type" := TempRebateCategoryLines."Entity Type";
                                 CustomerRebateDetails."Entity No." := EntityNo;
                                 case SalesCrMemoLineIn.Type of
-                                    SalesCrMemoLineIn.Type::"Charge (Item)":
-                                        CustomerRebateDetails.Type := CustomerRebateDetails.Type::"Charge (Item)";
-                                    SalesCrMemoLineIn.Type::"Fixed Asset":
-                                        CustomerRebateDetails.Type := CustomerRebateDetails.Type::"Fixed Asset";
                                     SalesCrMemoLineIn.Type::"G/L Account":
                                         CustomerRebateDetails.Type := CustomerRebateDetails.Type::"G/L Account";
                                     SalesCrMemoLineIn.Type::Item:
@@ -2023,16 +1927,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 begin
                     IF LocalGLAccount.GET(CustomerRebateDetailsLocIn."No.") then
                         CustomerRebateDetailsLocIn."Rebate Item Category Code" := LocalGLAccount."AQD Cust Rebate Category Code";
-                end;
-            CustomerRebateDetailsLocIn.Type::"Fixed Asset":
-                begin
-                    IF LocalFixesAsset.GET(CustomerRebateDetailsLocIn."No.") then
-                        CustomerRebateDetailsLocIn."Rebate Item Category Code" := LocalFixesAsset."AQD Cust Rebate Category Code";
-                end;
-            CustomerRebateDetailsLocIn.Type::"Charge (Item)":
-                begin
-                    IF LocalItemCharge.GET(CustomerRebateDetailsLocIn."No.") then
-                        CustomerRebateDetailsLocIn."Rebate Item Category Code" := LocalItemCharge."AQD Cust Rebate Category Code";
                 end;
         end;
     end;

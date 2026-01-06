@@ -121,23 +121,6 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                                     else
                                         exit(false);
                                 end;
-                            ItemTypeFilter::"Fixed Asset":
-                                begin
-                                    FixedAssetList.LookupMode := true;
-                                    if FixedAssetList.RunModal() = ACTION::LookupOK then
-                                        Text := FixedAssetList.GetSelectionFilter()
-                                    else
-                                        exit(false);
-                                end;
-                            ItemTypeFilter::"Charge (Item)":
-                                begin
-                                    ItemChargeList.LookupMode := true;
-                                    if ItemChargeList.RunModal() = ACTION::LookupOK then begin
-                                        ItemChargeList.GetRecord(ItemCharge);
-                                        Text := ItemCharge."No.";
-                                    end else
-                                        exit(false);
-                                end;
                             ItemTypeFilter::"Rebate Category":
                                 begin
                                     clear(ItemCateghoriesPage);
@@ -481,20 +464,10 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                     CheckFilters(DATABASE::Resource, ItemNoFilter);
                     Rec.SetRange("Line Type", Rec."Line Type"::Resource);
                 end;
-            ItemTypeFilter::"Fixed Asset":
-                BEGIN
-                    CheckFilters(DATABASE::"Fixed Asset", ItemNoFilter);
-                    Rec.SetRange("Line Type", Rec."Line Type"::"Fixed Asset");
-                END;
             ItemTypeFilter::"G/L Account":
                 BEGIN
                     CheckFilters(DATABASE::"G/L Account", ItemNoFilter);
                     Rec.SetRange("Line Type", Rec."Line Type"::"G/L Account");
-                END;
-            ItemTypeFilter::"Charge (Item)":
-                BEGIN
-                    CheckFilters(DATABASE::"Item Charge", ItemNoFilter);
-                    Rec.SetRange("Line Type", Rec."Line Type"::"Charge (Item)");
                 END;
             ItemTypeFilter::"Rebate Category":
                 BEGIN
@@ -573,26 +546,6 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                     LocalGLAccount."No." := CopyStr(ItemNoFilter, 1, MaxStrLen(LocalGLAccount."No."));
                     if LocalGLAccount.FindFIRST then begin
                         Description := LocalGLAccount.Name;
-                        exit(StrSubstNo('%1 %2 %3 %4 ', SourceTableName, FORMAT(ItemTypeFilter), ItemNoFilter, Description));
-                    end else
-                        EXIT('');
-                end;
-            ItemTypeFilter::"Charge (Item)":
-                begin
-                    SourceTableName := ObjTranslation.TranslateObject(ObjTranslation."Object Type"::Table, Database::"Item Charge");
-                    LocalItemCharge."No." := CopyStr(ItemNoFilter, 1, MaxStrLen(LocalItemCharge."No."));
-                    if LocalItemCharge.FindFIRST then begin
-                        Description := LocalItemCharge.Description;
-                        exit(StrSubstNo('%1 %2 %3 %4 ', SourceTableName, FORMAT(ItemTypeFilter), ItemNoFilter, Description));
-                    end else
-                        EXIT('');
-                end;
-            ItemTypeFilter::"Fixed Asset":
-                begin
-                    SourceTableName := ObjTranslation.TranslateObject(ObjTranslation."Object Type"::Table, Database::"Fixed Asset");
-                    LocalFixedAsset."No." := CopyStr(ItemNoFilter, 1, MaxStrLen(LocalFixedAsset."No."));
-                    if LocalFixedAsset.FindFIRST then begin
-                        Description := LocalFixedAsset.Description;
                         exit(StrSubstNo('%1 %2 %3 %4 ', SourceTableName, FORMAT(ItemTypeFilter), ItemNoFilter, Description));
                     end else
                         EXIT('');

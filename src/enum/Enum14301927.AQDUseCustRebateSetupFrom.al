@@ -18,14 +18,9 @@ enum 14301927 "AQD Use Cust Rebate Setup From"
     {
         Caption = 'Resource';
     }
-    value(4; "Fixed Asset")
-    {
-        Caption = 'Fixed Asset';
-    }
-    value(5; "Charge (Item)")
-    {
-        Caption = 'Charge (Item)';
-    }
+    //Deleted Values
+    //value(4; "Fixed Asset")
+    //value(5; "Charge (Item)")
     value(6; "Rebate Program Code")
     {
         Caption = 'Rebate Program Code';

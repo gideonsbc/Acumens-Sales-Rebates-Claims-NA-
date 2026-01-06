@@ -22,14 +22,6 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'G/L Account Rebate Enabled';
         }
-        field(50; "Item Charge Rebate Enabled"; Boolean)
-        {
-            Caption = 'Item Charge Rebate Enabled';
-        }
-        field(60; "Fixed Asset Rebate Enabled"; Boolean)
-        {
-            Caption = 'Fixed Asset Rebate Enabled';
-        }
         field(70; "Min GP% for Customer Rebate"; Decimal)
         {
             Caption = 'Minimum Gross Profit % for Customer Rebate';

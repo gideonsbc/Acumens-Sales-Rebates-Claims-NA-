@@ -18,12 +18,7 @@ enum 14301910 "AQD Cust Rebate Record Type"
     {
         Caption = 'Resource';
     }
-    value(4; "Fixed Asset")
-    {
-        Caption = 'Fixed Asset';
-    }
-    value(5; "Charge (Item)")
-    {
-        Caption = 'Charge (Item)';
-    }
+    // Deleted Values
+    //value(4; "Fixed Asset")
+    //value(5; "Charge (Item)")
 }

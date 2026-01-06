@@ -34,23 +34,4 @@ codeunit 14301910 "AQD Acumens CustRbt Setup Mgt"
             Resource.ModifyAll("AQD Customer Rebate Enabled", Rec."Resource Rebate Enabled");
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"AQD Acumens CustRbtClaim Setup", 'OnAfterValidateEvent', 'Item Charge Rebate Enabled', true, false)]
-    local procedure Table70900_RebateSetup_ItemChargeRebateEnabled_OnAfterValidate(var Rec: Record "AQD Acumens CustRbtClaim Setup"; var xRec: Record "AQD Acumens CustRbtClaim Setup"; CurrFieldNo: Integer)
-    var
-        ItemCharge: Record "Item Charge";
-        UserConfirmMsg: Label 'Do you want to update all existing Item Charges?';
-    begin
-        IF CONFIRM(UserConfirmMsg) then
-            ItemCharge.ModifyAll("AQD Customer Rebate Enabled", Rec."Item Charge Rebate Enabled");
-    end;
-
-    [EventSubscriber(ObjectType::Table, Database::"AQD Acumens CustRbtClaim Setup", 'OnAfterValidateEvent', 'Fixed Asset Rebate Enabled', true, false)]
-    local procedure Table70900_RebateSetup_FixedAssetRebatable_OnAfterValidate(var Rec: Record "AQD Acumens CustRbtClaim Setup"; var xRec: Record "AQD Acumens CustRbtClaim Setup"; CurrFieldNo: Integer)
-    var
-        FixedAsset: Record "Fixed Asset";
-        UserConfirmMsg: Label 'Do you want to update all existing Fixed Assets?';
-    begin
-        IF CONFIRM(UserConfirmMsg) then
-            FixedAsset.ModifyAll("AQD Customer Rebate Enabled", Rec."Fixed Asset Rebate Enabled");
-    end;
 }
