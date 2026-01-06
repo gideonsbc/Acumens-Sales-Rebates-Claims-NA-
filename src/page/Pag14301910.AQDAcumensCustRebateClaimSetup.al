@@ -295,7 +295,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 ApplicationArea = All;
                 Caption = 'User Setup';
                 Image = UserSetup;
-                RunObject = Page "AQD Customer Rebate User Setup";
+                RunObject = Page "User Setup";
             }
         }
         area(Promoted)
