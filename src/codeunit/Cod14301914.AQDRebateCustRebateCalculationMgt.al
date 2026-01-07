@@ -195,9 +195,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 BatchPostCustomerRebate.Run();
             END ELSE BEGIN
                 RunBy := RunBy::"Auto Process Customer Rebate";
-                CLEAR(CustomerRebatePostMgt);
-                CustomerRebatePostMgt.SetCustomerRebateParameters(RunBy, CustomerRebateHeader, CalledFromGenerateCustomerRebateIn);
-                CustomerRebatePostMgt.Run();
+                IF CustomerRebateHeader."No." <> '' THEN BEGIN
+                    CLEAR(CustomerRebatePostMgt);
+                    CustomerRebatePostMgt.SetCustomerRebateParameters(RunBy, CustomerRebateHeader, CalledFromGenerateCustomerRebateIn);
+                    CustomerRebatePostMgt.Run();
+                END;
             END;
             //END;
         END;

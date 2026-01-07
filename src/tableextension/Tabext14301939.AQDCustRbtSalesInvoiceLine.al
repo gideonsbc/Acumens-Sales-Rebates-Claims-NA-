@@ -14,5 +14,11 @@ tableextension 14301939 "AQD CustRbt Sales Inv Line Ext" extends "Sales Invoice 
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(14301930; "AQD Customer Rebate"; Boolean)
+        {
+            Caption = 'Customer Rebate';
+            Editable = false;
+            DataClassification = CustomerContent;
+        }
     }
 }

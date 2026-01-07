@@ -28,7 +28,7 @@ report 14301911 "AQD Generate Customer Rebates"
                 END ELSE begin
                     StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
                     //EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
-                    EndPostingDate := Today;
+                    //EndPostingDate := Today;
                 end;
                 DateArray[1] := StartPostingDate;
                 DateArray[2] := EndPostingDate;
@@ -62,14 +62,14 @@ report 14301911 "AQD Generate Customer Rebates"
 
             trigger OnPreDataItem()
             begin
-                if GuiAllowed then
-                    Window.Open(Text50001);
-
                 IF BillToCustomerNo <> '' THEN
                     Customer.SetRange("No.", BillToCustomerNo);
 
                 TotalCount := Customer.COUNT;
                 CurrentCount := 0;
+
+                if GuiAllowed then
+                    Window.Open(Text50001);
 
                 CreatedCustomerRebate.RESET;
                 CreatedCustomerRebate.DeleteAll();

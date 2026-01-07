@@ -14,5 +14,11 @@ tableextension 14301938 "AQD CustRbt Sales Line Ext" extends "Sales Line"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(14301930; "AQD Customer Rebate"; Boolean)
+        {
+            Caption = 'Customer Rebate';
+            Editable = false;
+            DataClassification = CustomerContent;
+        }
     }
 }

@@ -450,6 +450,76 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         GenerateCustomerRebate.Run();
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnAfterInitValueEntry, '', FALSE, FALSE)]
+    local procedure Cod22_ItemJnlPostLine_OnAfterInitValueEntry(var ValueEntry: Record "Value Entry"; var ItemJournalLine: Record "Item Journal Line"; var ValueEntryNo: Integer; var ItemLedgEntry: Record "Item Ledger Entry")
+    begin
+        ValueEntry."AQD Customer Rebate" := ItemJournalLine."AQD Customer Rebate Journal";
+        IF NOT ItemJournalLine."AQD Customer Rebate Journal" THEN
+            EXIT;
+
+        IF ItemLedgEntry."Entry Type" <> ItemLedgEntry."Entry Type"::Purchase THEN
+            EXIT;
+
+        IF ValueEntry."Item Charge No." = '' THEN
+            EXIT;
+
+        IF ItemLedgEntry.Quantity >= 0 THEN
+            EXIT;
+
+        // Clear Document Type for Purchase Invoice to avoid Vendor Rebate Posting Issues
+        //IF ValueEntry."Document Type" = ValueEntry."Document Type"::"Purchase Invoice" THEN
+        //    ValueEntry."Document Type" := ValueEntry."Document Type"::" ";
+    END;
+
+    [EventSubscriber(ObjectType::Table, Database::"Cost Element Buffer", OnAfterExcludeEntryFromAvgCostCalc, '', false, false)]
+    local procedure Tab5820_CostElementBuffer_OnAfterExcludeEntryFromAvgCostCalc(var CostElementBuffer: Record "Cost Element Buffer"; ValueEntry: Record "Value Entry")
+    begin
+        IF ValueEntry."Item Charge No." = '' THEN
+            EXIT;
+
+        IF NOT ValueEntry."AQD Customer Rebate" THEN
+            EXIT;
+
+        IF ValueEntry."Valued Quantity" >= 0 THEN
+            EXIT;
+
+        CostElementBuffer."Remaining Quantity" := CostElementBuffer."Remaining Quantity" +
+                                                  ValueEntry."Item Ledger Entry Quantity";
+        CostElementBuffer."Actual Cost" := CostElementBuffer."Actual Cost" +
+                                           ValueEntry."Cost Amount (Actual)" +
+                                           ValueEntry."Cost Amount (Expected)";
+        CostElementBuffer."Actual Cost (ACY)" := CostElementBuffer."Actual Cost (ACY)" +
+                                                 ValueEntry."Cost Amount (Actual) (ACY)" +
+                                                 ValueEntry."Cost Amount (Expected) (ACY)";
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Cost Element Buffer", OnAfterExcludeBufFromAvgCostCalc, '', false, false)]
+    local procedure Tab5820_CostElementBuffer_OnAfterExcludeBufFromAvgCostCalc(var CostElementBuffer: Record "Cost Element Buffer"; InvtAdjmtBuffer: Record "Inventory Adjustment Buffer")
+    var
+        ExcludedValueEntry: Record "Value Entry";
+    begin
+        IF NOT ExcludedValueEntry.GET(InvtAdjmtBuffer."Entry No.") THEN
+            EXIT;
+
+        IF ExcludedValueEntry."Item Charge No." = '' THEN
+            EXIT;
+
+        IF NOT ExcludedValueEntry."AQD Customer Rebate" THEN
+            EXIT;
+
+        IF ExcludedValueEntry."Valued Quantity" >= 0 THEN // To allow only Sales Return Entries
+            EXIT;
+
+        CostElementBuffer."Remaining Quantity" := CostElementBuffer."Remaining Quantity" +
+                                                  InvtAdjmtBuffer."Item Ledger Entry Quantity";
+        CostElementBuffer."Actual Cost" := CostElementBuffer."Actual Cost" +
+                                           InvtAdjmtBuffer."Cost Amount (Actual)" +
+                                           InvtAdjmtBuffer."Cost Amount (Expected)";
+        CostElementBuffer."Actual Cost (ACY)" := CostElementBuffer."Actual Cost (ACY)" +
+                                                 InvtAdjmtBuffer."Cost Amount (Actual) (ACY)" +
+                                                 InvtAdjmtBuffer."Cost Amount (Expected) (ACY)";
+    end;
+
     procedure ShowPostedDocument(DocumentType: Enum "AQD Cust Rebate Document Type"; DocumentNo: COde[20])
     var
         PostedSalesInvoice: Record "Sales Invoice Header";

@@ -208,11 +208,11 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Caption = 'Credit Document No.';
             Editable = false;
         }
-        field(362; "Credit Document Line No."; Integer)
-        {
-            Caption = 'Credit Document Line No.';
-            Editable = false;
-        }
+        // field(362; "Credit Document Line No."; Integer)
+        // {
+        //     Caption = 'Credit Document Line No.';
+        //     Editable = false;
+        // }
         field(400; Posted; Boolean)
         {
             Caption = 'Posted';
