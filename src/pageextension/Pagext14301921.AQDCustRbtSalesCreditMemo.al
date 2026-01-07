@@ -35,4 +35,40 @@ pageextension 14301921 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Mem
             }
         }
     }
+    actions
+    {
+        addafter("Credit Memo")
+        {
+            group("AQD Customer Rebate Group")
+            {
+                Caption = 'Acumens Customer Rebate';
+                action("AQD Customer Rebate Info")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Preview Customer Rebate';
+                    Image = SalesInvoice;
+
+                    trigger OnAction()
+                    var
+                    //VendorRebateCalcPreview: Codeunit "AQD Vendor Rebate Calc Preview";
+                    begin
+                        //clear(VendorRebateCalcPreview);
+                        //VendorRebateCalcPreview.VendorRebateCalcPreview(Rec);
+                        //CurrPage.Update(false);
+                    end;
+                }
+            }
+        }
+
+        addafter(Category_Category8)
+        {
+            group("AQD Customer Rebate GroupRef")
+            {
+                Caption = 'Acumens Customer Rebate';
+                actionref("AQD Customer Rebate Info_Promoted"; "AQD Customer Rebate Info")
+                {
+                }
+            }
+        }
+    }
 }

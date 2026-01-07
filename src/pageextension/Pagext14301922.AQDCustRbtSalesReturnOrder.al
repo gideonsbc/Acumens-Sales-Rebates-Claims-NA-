@@ -34,5 +34,41 @@ pageextension 14301922 "AQD CustRbt Sales Return Order" extends "Sales Return Or
             }
         }
     }
+    actions
+    {
+        addafter("&Return Order")
+        {
+            group("AQD Customer Rebate Group")
+            {
+                Caption = 'Acumens Customer Rebate';
+                action("AQD Customer Rebate Info")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Preview Customer Rebate';
+                    Image = SalesInvoice;
+
+                    trigger OnAction()
+                    var
+                    //VendorRebateCalcPreview: Codeunit "AQD Vendor Rebate Calc Preview";
+                    begin
+                        //clear(VendorRebateCalcPreview);
+                        //VendorRebateCalcPreview.VendorRebateCalcPreview(Rec);
+                        //CurrPage.Update(false);
+                    end;
+                }
+            }
+        }
+
+        addafter(Category_Category11)
+        {
+            group("AQD Customer Rebate GroupRef")
+            {
+                Caption = 'Acumens Customer Rebate';
+                actionref("AQD Customer Rebate Info_Promoted"; "AQD Customer Rebate Info")
+                {
+                }
+            }
+        }
+    }
 }
 
