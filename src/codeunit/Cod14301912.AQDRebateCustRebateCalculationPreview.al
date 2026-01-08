@@ -285,7 +285,6 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         ItemCharge: Record "Item Charge";
         FixedAsset: Record "Fixed Asset";
         ItemCategory: Record "Item Category";
-        ItemVendorRebateMatrix: Record "AQD Cust Item Rebate Tiers";
         LocalRebateCategoryCode: Code[20];
         IsHandled: Boolean;
         IsRebateEnabled: Boolean;
@@ -836,7 +835,6 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         IsHandled: Boolean;
         PostingDate: Date;
         CustomerRebateDetailsLoc: Record "AQD Customer Rebate Details";
-        ItemCustRebateMatrix: Record "AQD Cust Item Rebate Tiers";
         TempSalesShptLine: Record "Sales Shipment Line" temporary;
         TempReturnReceiptLine: Record "Return Receipt Line" temporary;
         RebateProgramCodeRec: Record "AQD Cust Rebate Program Code";

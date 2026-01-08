@@ -32,8 +32,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         Item: Record Item;
         Resource: Record Resource;
         GLAccount: Record "G/L Account";
-        ItemCharge: Record "Item Charge";
-        FixedAsset: Record "Fixed Asset";
         ItemCategory: Record "Item Category";
         NoSeriesMgt: Codeunit "No. Series";
         RebateCheck: Boolean;
@@ -704,7 +702,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         FixedAsset: Record "Fixed Asset";
         ItemCategory: Record "Item Category";
         //RebateCategoryLines: Record "AQD Cust Rebate Category Lines";
-        ItemVendorRebateMatrix: Record "AQD Cust Item Rebate Tiers";
         LocalRebateCategoryCode: Code[20];
         IsHandled: Boolean;
         IsRebateEnabled: Boolean;
@@ -738,19 +735,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                 TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
                 TempRebateCategoryLines.INSERT;
             END;
-
-            // TempRebateCategoryLines.RESET;
-            // IF TempRebateCategoryLines.FindFirst() THEN BEGIN
-            //     Repeat
-            //         IsRebateEnabled := ChkCustItemRbtMatrixMgt.IsBillToCustomerEligibleForRebate(
-            //                                                     ItemVendorRebateMatrix,
-            //                                                     CustomerNo,
-            //                                                     DocumentLine_Type,
-            //                                                     DocumentLine_No,
-            //                                                     PostingDate,
-            //                                                     TempRebateCategoryLines."Rebate Program Code");
-            //     Until (TempRebateCategoryLines.Next() = 0) OR IsRebateEnabled;
-            // END;
         end;
         OnAfterCheckLineRebateEnabled(CustomerNo, DocumentLine_Type, DocumentLine_No, PostingDate, IsRebateEnabled);
         EXIT(IsRebateEnabled);
@@ -1592,15 +1576,12 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         ItemCharge: Record "Item Charge";
         FixedAsset: Record "Fixed Asset";
         Location: Record Location;
-        //RebateCategoryLines: Record "AQD Cust Rebate Category Lines";
-        //TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary;
         LocalDocumentLine_Type: Enum "Purchase Line Type";
         LocalDocumentLine_No: Code[20];
         LineNo: Integer;
         IsHandled: Boolean;
         PostingDate: Date;
         CustomerRebateDetailsLoc: Record "AQD Customer Rebate Details";
-        ItemCustRebateMatrix: Record "AQD Cust Item Rebate Tiers";
         TempSalesShptLine: Record "Sales Shipment Line" temporary;
         TempReturnReceiptLine: Record "Return Receipt Line" temporary;
         RebateProgramCodeRec: Record "AQD Cust Rebate Program Code";

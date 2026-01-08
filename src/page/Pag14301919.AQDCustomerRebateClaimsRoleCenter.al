@@ -121,13 +121,6 @@ page 14301919 "AQD Cust Rebate & Claims RC"
             //     Image = CampaignEntries;
             //     RunObject = Page "AQD Rebate Cust Type Eligib";
             // }
-            action("AQD CustItem Rebate Tiers")
-            {
-                Caption = 'Customer Item Rebate Tiers';
-                ApplicationArea = All;
-                Image = PurchaseCreditMemo;
-                RunObject = Page "AQD Item Cust Rebate Tiers";
-            }
             action("Sales Orders")
             {
                 Caption = 'Sales Orders';
@@ -335,13 +328,6 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     ApplicationArea = All;
                     Image = CampaignEntries;
                     RunObject = Page "AQD Rebate Customer Categories";
-                }
-                action("AQD CustItem Rebate Matrix2")
-                {
-                    Caption = 'Customer Item Rebate Tiers';
-                    ApplicationArea = All;
-                    Image = PurchaseCreditMemo;
-                    RunObject = Page "AQD Item Cust Rebate Tiers";
                 }
                 action("Sales Rebates Setup")
                 {
