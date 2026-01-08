@@ -2,12 +2,12 @@ enum 14301932 "AQD Bill-To Rebate Customer"
 {
     Extensible = true;
 
-    value(0; "Customer Card")
+    value(0; "Customer Card Setup")
     {
-        Caption = 'Customer Card';
+        Caption = 'Customer Card Setup';
     }
-    value(1; "Customer Category")
+    value(1; "Customer Rebate Category Setup")
     {
-        Caption = 'Customer Category';
+        Caption = 'Customer Rebate Category Setup';
     }
 }

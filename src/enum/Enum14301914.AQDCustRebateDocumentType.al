@@ -22,4 +22,20 @@ enum 14301914 "AQD Cust Rebate Document Type"
     {
         Caption = 'Return Receipt';
     }
+    value(6; "Unposted Order")
+    {
+        Caption = 'Unposted Order';
+    }
+    value(7; "Unposted Invoice")
+    {
+        Caption = 'Unposted Invoice';
+    }
+    value(8; "Unposted Return Order")
+    {
+        Caption = 'Unposted Return Order';
+    }
+    value(9; "Unposted Credit Memo")
+    {
+        Caption = 'Unposted Credit Memo';
+    }
 }

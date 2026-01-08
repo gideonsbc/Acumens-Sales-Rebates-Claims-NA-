@@ -7,11 +7,12 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
 
     procedure FindSalesLineRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     var
-        IsHandled: Boolean;
+        SalesLine: Record "Sales Line";
         SalesInvLine: Record "Sales Invoice Line";
         SalesCrMemoLine: Record "Sales Cr.Memo Line";
         SalesShptLine: Record "Sales Shipment Line";
         ReturnReceiptLine: Record "Return Receipt Line";
+        IsHandled: Boolean;
     begin
         TempSalesRebatesRate.RESET;
         IF TempSalesRebatesRate.IsTemporary THEN
@@ -27,6 +28,36 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
         END;
 
         Case CustomerRebateDetailsLocIn."Document Type" OF
+            CustomerRebateDetailsLocIn."Document Type"::"Unposted Order",
+            CustomerRebateDetailsLocIn."Document Type"::"Unposted Invoice",
+            CustomerRebateDetailsLocIn."Document Type"::"Unposted Return Order",
+            CustomerRebateDetailsLocIn."Document Type"::"Unposted Credit Memo":
+                begin
+                    Case CustomerRebateDetailsLocIn."Document Type" of
+                        CustomerRebateDetailsLocIn."Document Type"::"Unposted Order":
+                            SalesLine.GET(SalesLine."Document Type"::Order,
+                                          CustomerRebateDetailsLocIn."Document No.",
+                                          CustomerRebateDetailsLocIn."Document Line No.");
+                        CustomerRebateDetailsLocIn."Document Type"::"Unposted Invoice":
+                            SalesLine.GET(SalesLine."Document Type"::Invoice,
+                                          CustomerRebateDetailsLocIn."Document No.",
+                                          CustomerRebateDetailsLocIn."Document Line No.");
+                        CustomerRebateDetailsLocIn."Document Type"::"Unposted Return Order":
+                            SalesLine.GET(SalesLine."Document Type"::"Return Order",
+                                          CustomerRebateDetailsLocIn."Document No.",
+                                          CustomerRebateDetailsLocIn."Document Line No.");
+                        CustomerRebateDetailsLocIn."Document Type"::"Unposted Credit Memo":
+                            SalesLine.GET(SalesLine."Document Type"::"Credit Memo",
+                                          CustomerRebateDetailsLocIn."Document No.",
+                                          CustomerRebateDetailsLocIn."Document Line No.");
+
+                    End;
+                    SalesLine.TESTFIELD("Qty. per Unit of Measure");
+                    SetUoM(SalesLine."Unit of Measure Code",
+                       ABS(CustomerRebateDetailsLocIn.Quantity),
+                       SalesLine."Qty. per Unit of Measure");
+                    UOM := SalesLine."Unit of Measure Code";
+                end;
             CustomerRebateDetailsLocIn."Document Type"::Invoice:
                 begin
                     SalesInvLine.GET(CustomerRebateDetailsLocIn."Document No.", CustomerRebateDetailsLocIn."Document Line No.");
@@ -326,10 +357,18 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
                         END;
                 END;
             UNTIL CustomerSalesRebateRate.NEXT = 0;
-            CustomerRebateDetailsLocIn.Ineligible := NOT BestSalesRebateFound;
-            // Below assignment is to allow to insert record
-            IF CustomerRebateDetailsLocIn.Ineligible THEN
-                BestCustomerSalesRebate."Rebate Type" := BestCustomerSalesRebate."Rebate Type"::"Per Quantity";
+        END;
+        CustomerRebateDetailsLocIn.Ineligible := NOT BestSalesRebateFound;
+        // Below assignment is to allow to insert record
+        IF CustomerRebateDetailsLocIn.Ineligible THEN BEGIN
+            BestCustomerSalesRebate."Rebate Type" := BestCustomerSalesRebate."Rebate Type"::"Per Quantity";
+            IF CustomerRebateDetailsLocIn."Document Type" IN
+                          [CustomerRebateDetailsLocIn."Document Type"::"Unposted Order",
+                           CustomerRebateDetailsLocIn."Document Type"::"Unposted Invoice",
+                           CustomerRebateDetailsLocIn."Document Type"::"Unposted Return Order",
+                           CustomerRebateDetailsLocIn."Document Type"::"Unposted Credit Memo"]
+                        THEN
+                CustomerRebateDetailsLocIn.Description := 'No Rebate Rate Found';
         END;
         TempSalesRebatesRate := BestCustomerSalesRebate;
     end;

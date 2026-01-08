@@ -332,25 +332,6 @@ table 14301930 "AQD Customer Rebate Details"
             Clustered = true;
         }
     }
-    trigger OnDelete()
-    var
-    //RebateItemLdgrEntry: Record "AQD Rebate Item Ledger Entry";
-    begin
-        // RebateItemLdgrEntry.RESET;
-        // RebateItemLdgrEntry.SetRange("AQD Rebate No", Rec."Rebate No.");
-        // RebateItemLdgrEntry.SetRange("AQD Rebate Line No", Rec."Rebate Line No.");
-        // RebateItemLdgrEntry.SetRange("AQD Rebate Detail Line No.", Rec."Line No.");
-        // IF RebateItemLdgrEntry.FindFirst() THEN begin
-        //     RebateItemLdgrEntry."AQD Rebate Entry Created" := FALSE;
-        //     RebateItemLdgrEntry."AQD Rebate Last Changed By" := '';
-        //     RebateItemLdgrEntry."AQD Rebate LastChangd DateTime" := 0DT;
-        //     RebateItemLdgrEntry."AQD Rebate No" := '';
-        //     RebateItemLdgrEntry."AQD Rebate Line No" := 0;
-        //     RebateItemLdgrEntry."AQD Rebate Detail Line No." := 0;
-        //     RebateItemLdgrEntry."AQD Rebate Status" := RebateItemLdgrEntry."AQD Rebate Status"::" ";
-        //     RebateItemLdgrEntry.Modify();
-        // end;
-    end;
 
     local procedure UpdateChangedBy()
     begin
