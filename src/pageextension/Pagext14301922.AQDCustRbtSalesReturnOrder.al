@@ -45,15 +45,15 @@ pageextension 14301922 "AQD CustRbt Sales Return Order" extends "Sales Return Or
                 {
                     ApplicationArea = All;
                     Caption = 'Preview Customer Rebate';
-                    Image = SalesInvoice;
+                    Image = Statistics;
 
                     trigger OnAction()
                     var
-                    //VendorRebateCalcPreview: Codeunit "AQD Vendor Rebate Calc Preview";
+                        CustomerRebateCalcPreview: Codeunit "AQD Cust Rebate Calc Preview";
                     begin
-                        //clear(VendorRebateCalcPreview);
-                        //VendorRebateCalcPreview.VendorRebateCalcPreview(Rec);
-                        //CurrPage.Update(false);
+                        clear(CustomerRebateCalcPreview);
+                        CustomerRebateCalcPreview.CustomerRebateCalcPreview(Rec);
+                        CurrPage.Update(false);
                     end;
                 }
             }
