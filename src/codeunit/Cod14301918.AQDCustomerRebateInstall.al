@@ -16,9 +16,6 @@ codeunit 14301918 "AQD Customer Rebate Install"
         CustRebateDetails: Record "AQD Customer Rebate Details";
         PostedCustRebateDetails: Record "AQD Posted Cust Reb Details";
     begin
-        // CustRebateDetails.ModifyAll("Entity Type", CustRebateDetails."Entity Type"::Customer);
-        // PostedCustRebateDetails.ModifyAll("Entity Type", PostedCustRebateDetails."Entity Type"::Customer);
-
         ModifyRecord := false;
         IF NOT SalesSetup.GET THEN BEGIN
             SalesSetup.Init();

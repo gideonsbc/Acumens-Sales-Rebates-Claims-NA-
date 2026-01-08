@@ -118,21 +118,6 @@ page 14301933 "AQD Customer Rebate Document"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Employee Commission field.';
                 }
-                // field(Approved; Rec.Approved)
-                // {
-                //     ApplicationArea = All;
-                //     Editable = ApproveEnabled;
-                // }
-                // field("Approved By"; Rec."Approved By")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                // }
-                // field("Approved Date Time"; Rec."Approved Date Time")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                // }
                 field("Salesperson Code"; Rec."Salesperson Code")
                 {
                     ApplicationArea = All;
@@ -224,10 +209,6 @@ page 14301933 "AQD Customer Rebate Document"
                     CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
                 begin
                     CustomerRebateSetup.GET;
-                    // IF CustomerRebateSetup."Require Cust Rebate Approval" THEN
-                    //     if not Rec.Approved then
-                    //         Error('The document is not approved. Please approve it before posting.');
-
                     CustomerRebatePost.PostCustomerRebate(Rec, true);
 
                     CurrPage.Update(false);

@@ -32,11 +32,6 @@ page 14301932 "AQD Customer Rebates Documents"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Rebate-To Name Name field.', Comment = '%';
                 }
-                // field(Approved; Rec.Approved)
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                // }
                 field("Posting Date"; Rec."Posting Date")
                 {
                     ApplicationArea = All;
@@ -115,28 +110,6 @@ page 14301932 "AQD Customer Rebates Documents"
                 Image = CreateDocuments;
                 RunObject = report "AQD Generate Customer Rebates";
             }
-            action(Post)
-            {
-                ApplicationArea = All;
-                Caption = 'Post Batch';
-                Image = PostBatch;
-                Visible = PostEnabled;
-
-                trigger OnAction()
-                var
-                //VendorRebateHeader: Record "AQD AER Vendor Rebate Header";
-                //BatchPostVendorRebate: Report "AQD Batch Post Vendor Rebates";
-                begin
-                    //VendorRebateHeader.Reset();
-                    //VendorRebateHeader.SetRange("No.", Rec."No.");
-                    //Clear(BatchPostVendorRebate);
-                    //BatchPostVendorRebate.SetTableView(VendorRebateHeader);
-                    //BatchPostVendorRebate.Run();
-                    IF Rec.FindFirst() THEN;
-
-                    CurrPage.Update(false);
-                end;
-            }
         }
 
         area(Promoted)
@@ -146,9 +119,6 @@ page 14301932 "AQD Customer Rebates Documents"
                 Caption = 'Rebates';
 
                 actionref(Generate_Customer_Rebates_Promoted; "Generate Customer Rebates")
-                {
-                }
-                actionref(Post_Promoted; Post)
                 {
                 }
             }
@@ -171,69 +141,8 @@ page 14301932 "AQD Customer Rebates Documents"
         if CustomerRebateUserSetup."AQD Cust Rbt State Filter" <> '' then
             Rec.SetFilter("Territory Code", CustomerRebateUserSetup."AQD Cust Rbt State Filter");
         Rec.FilterGroup(0);
-
-        PostEnabled := false;
-        ApproveEnabled := false;
-
-        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
-           [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
-            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
-        then
-            PostEnabled := true;
-
-        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
-          [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson,
-           CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
-           CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
-        then
-            ApproveEnabled := true;
-    end;
-
-    trigger OnAfterGetCurrRecord()
-    begin
-        //GetVendorRebateAmount();
-    end;
-
-    trigger OnAfterGetRecord()
-    begin
-        //GetVendorRebateAmount();
-
-        CustomerRebateUserSetup.Get(UserId);
-        PostEnabled := false;
-        ApproveEnabled := false;
-        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
-           [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
-            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
-        then
-            PostEnabled := true;
-
-        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
-           [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson,
-            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
-            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
-        then
-            ApproveEnabled := true;
-    end;
-
-    local procedure GetVendorRebateAmount()
-    var
-        CustomerRebateLines: Record "AQD Customer Rebate Line";
-    begin
-        VendorRebateAmount := 0;
-
-        CustomerRebateLines.RESET;
-        CustomerRebateLines.SetRange("Rebate No.", Rec."No.");
-        IF CustomerRebateLines.FindFirst() THEN begin
-            repeat
-                CustomerRebateLines.CalcFields("Customer Rebate Amount");
-                VendorRebateAmount += CustomerRebateLines."Customer Rebate Amount";
-            until CustomerRebateLines.Next() = 0;
-        end;
     end;
 
     var
-        //VendorRebatePost: Codeunit "AQD Vendor Rebate Post";
         CustomerRebateUserSetup: Record "User Setup";
-        VendorRebateAmount: Decimal;
-        PostEnabled, ApproveEnabled : Boolean;
 }

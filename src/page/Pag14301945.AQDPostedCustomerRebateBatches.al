@@ -32,10 +32,6 @@ page 14301945 "AQD Posted Cust Rebate Batches"
                     ToolTip = 'Specifies the value of the Bill-To Customer Name field.', Comment = '%';
                     Visible = ShowBillToCustomer;
                 }
-                // field("AQD Rebate Batch Frequency"; Rec."AQD Rebate Batch Frequency")
-                // {
-                //     ToolTip = 'Specifies the value of the Rebate Batch Frequency field.', Comment = '%';
-                // }
                 field("Start Date"; Rec."Start Date")
                 {
                     ToolTip = 'Specifies the value of the Start Date field.', Comment = '%';

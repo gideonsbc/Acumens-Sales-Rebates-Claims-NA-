@@ -119,24 +119,6 @@ page 14301937 "AQD Posted Customer Rebates"
         }
         area(Navigation)
         {
-            // action("Sales Invoices")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Sales Invoices';
-            //     Image = SalesInvoice;
-            //     RunObject = Page "Sales Invoice List";
-            //     RunPageLink = "AQD Customer Rebate No" = field("No.");
-            //     ToolTip = 'Open the list of Sales Invoices.';
-            // }
-            // action("Sales Credit Memos")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Sales Credit Memos';
-            //     Image = PurchaseCreditMemo;
-            //     RunObject = Page "Sales Credit Memos";
-            //     RunPageLink = "AQD Customer Rebate No" = field("No.");
-            //     ToolTip = 'Open the list of Sales Credit Memos.';
-            // }
             action("Posted Sales Invoices")
             {
                 ApplicationArea = All;
@@ -161,18 +143,6 @@ page 14301937 "AQD Posted Customer Rebates"
             group(Category_Category4)
             {
                 Caption = 'Rebates';
-                // actionref(CreateSalesDocument_Promoted; "Create Sales Document")
-                // {
-                // }
-                // actionref(Customer_Rebate_Details_Promoted; "Customer Rebate Details")
-                // {
-                // }
-                // actionref(SalesInvoices_Promoted; "Sales Invoices")
-                // {
-                // }
-                // actionref(SalesCreditMemos_Promoted; "Sales Credit Memos")
-                // {
-                // }
                 actionref(PostedSalesInvoices_Promoted; "Posted Sales Invoices")
                 {
                 }

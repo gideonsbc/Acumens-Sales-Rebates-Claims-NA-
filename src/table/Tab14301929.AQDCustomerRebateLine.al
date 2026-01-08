@@ -272,29 +272,6 @@ table 14301929 "AQD Customer Rebate Line"
         "Rebate Amount Changed By" := UserId;
         "Rebate Amount Changed DateTime" := CurrentDateTime;
 
-        // CASE RebateSetup."Calculate Cust Rebate using" OF
-        //     RebateSetup."Calculate Cust Rebate using"::"Posted Invoice and Cr Memo":
-        //         BEGIN
-        //             IF Rec."Document Type" = Rec."Document Type"::Invoice THEN BEGIN
-        //                 IF SalesInvHdr.GET(Rec."Document No.") THEN begin
-        //                     SalesInvHdr."AQD No Customer Rebate" := Rec."Do Not Credit";
-        //                     SalesInvHdr.Modify();
-        //                 end;
-        //             END ELSE IF Rec."Document Type" = Rec."Document Type"::"Credit Memo" THEN BEGIN
-        //                 IF SalesCrMemoHdr.GET(Rec."Document No.") THEN begin
-        //                     SalesCrMemoHdr."AQD No Customer Rebate" := Rec."Do Not Credit";
-        //                     SalesCrMemoHdr.Modify();
-        //                 end;
-        //             END;
-        //         END;
-        //     RebateSetup."Calculate Cust Rebate using"::"Posted Shipment and Return Receipt":
-        //         BEGIN
-        //             // RebateItemLdgrEntry.RESET;
-        //             // RebateItemLdgrEntry.SetRange("Document Type", Rec."Original Document Type");
-        //             // RebateItemLdgrEntry.SetRange("Document No.", Rec."Document No.");
-        //             // RebateItemLdgrEntry.ModifyAll("AQD Do Not Pay Rebate", Rec.Exclude);
-        //         END;
-        // END;
         IF Rec."Document Type" = Rec."Document Type"::Invoice THEN BEGIN
             IF SalesInvHdr.GET(Rec."Document No.") THEN begin
                 SalesInvHdr."AQD No Customer Rebate" := Rec."Do Not Credit";

@@ -241,15 +241,6 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
         FoundSalesRebate := CustomerSalesRebateRate.FindFirst();
         IF FoundSalesRebate THEN BEGIN
             REPEAT
-                // IF IsInMinQty(CustomerSalesRebateRate."Minimum Quantity") THEN BEGIN
-                //     CASE TRUE OF
-                //         ((BestCustomerSalesRebate."Variant Code" = '') OR (CustomerSalesRebateRate."Variant Code" <> '')):
-                //             BEGIN
-                //                 BestCustomerSalesRebate := CustomerSalesRebateRate;
-                //                 BestSalesRebateFound := TRUE;
-                //             END;
-                //     END;
-                // END;
                 CASE CustomerSalesRebateRate."Entity Type" OF
                     CustomerSalesRebateRate."Entity Type"::Customer,
                     CustomerSalesRebateRate."Entity Type"::"Employee Commission",
@@ -398,7 +389,6 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
 
     var
         TempSalesRebatesRate: Record "AQD Sales Rebates Rate" temporary;
-        //Item: Record Item;
         Cust: Record Customer;
         BillToCustomer: Record Customer;
         UnitofMeasureCode: Code[10];

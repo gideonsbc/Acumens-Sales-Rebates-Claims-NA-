@@ -23,10 +23,6 @@ page 14301946 "AQD Posted Cust Rebate Batch"
                 {
                     ToolTip = 'Specifies the value of the BatchId field.', Comment = '%';
                 }
-                // field("AQD Rebate Batch Frequency"; Rec."AQD Rebate Batch Frequency")
-                // {
-                //     ToolTip = 'Specifies the value of the Rebate Batch Frequency field.', Comment = '%';
-                // }
                 field("Bill-To Customer No."; Rec."Bill-To Customer No.")
                 {
                     ToolTip = 'Specifies the value of the Bill-To Customer No. field.', Comment = '%';
@@ -61,21 +57,6 @@ page 14301946 "AQD Posted Cust Rebate Batch"
                 {
                     ToolTip = 'Specifies the value of the Calculated Rebate Amount field.', Comment = '%';
                 }
-                // field(Approved; Rec.Approved)
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                // }
-                // field("Approved By"; Rec."Approved By")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                // }
-                // field("Approved Date Time"; Rec."Approved Date Time")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                // }
             }
             part("AQD Posted Cust Rebate Subpage"; "AQD Posted Cust Rebate Subpage")
             {

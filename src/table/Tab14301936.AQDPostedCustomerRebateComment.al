@@ -2,8 +2,6 @@ table 14301936 "AQD Posted Cust Reb Comment"
 {
     Caption = 'Posted Customer Rebate Comments';
     DataClassification = CustomerContent;
-    //DrillDownPageId = "AQD Posted Cust Reb Comment";
-    //LookupPageId = "AQD Posted Cust Reb Comment";
 
     fields
     {

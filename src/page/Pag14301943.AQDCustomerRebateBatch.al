@@ -21,10 +21,6 @@ page 14301943 "AQD Customer Rebate Batch"
                 {
                     ToolTip = 'Specifies the value of the BatchId field.', Comment = '%';
                 }
-                // field("AQD Rebate Batch Frequency"; Rec."AQD Rebate Batch Frequency")
-                // {
-                //     ToolTip = 'Specifies the value of the Rebate Batch Frequency field.', Comment = '%';
-                // }
                 field("Bill-To Customer No."; Rec."Bill-To Customer No.")
                 {
                     ToolTip = 'Specifies the value of the Bill-To Customer No. field.', Comment = '%';
@@ -59,21 +55,6 @@ page 14301943 "AQD Customer Rebate Batch"
                 {
                     ToolTip = 'Specifies the value of the Calculated Rebate Amount field.', Comment = '%';
                 }
-                // field(Approved; Rec.Approved)
-                // {
-                //     ApplicationArea = All;
-                //     Editable = ApproveEnabled;
-                // }
-                // field("Approved By"; Rec."Approved By")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                // }
-                // field("Approved Date Time"; Rec."Approved Date Time")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                // }
             }
             part("AQD Customer Rebate Subpg"; "AQD Customer Rebate Subpg")
             {
@@ -101,10 +82,6 @@ page 14301943 "AQD Customer Rebate Batch"
                     CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
                 begin
                     CustomerRebateSetup.GET;
-                    // IF CustomerRebateSetup."Require Cust Rebate Approval" THEN
-                    //     if not Rec.Approved then
-                    //         Error('Customer Rebate Batch is not approved. Please approve it before posting.');
-
                     if Confirm(StrSubstNo(UserConfirmLabel, Rec.BatchID)) then
                         CustomerRebatePost.PostCustomerRebateBatch(Rec);
 

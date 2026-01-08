@@ -31,7 +31,6 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
 
     procedure CustomerRebateCalcPreview(var SalesHeaderIn: Record "Sales Header")
     var
-        //VendorRebatePreview: Page "AQD Vendor Rebate Preview";
         CustomerRebatePreview: Page "AQD CustRebate Details Preview";
     begin
         // Clear Vendor Rebate Tables
