@@ -21,18 +21,17 @@ page 14301954 "AQD Customer Rebate Preview"
                     Editable = false;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
-
                 field("Rebate-To Customer No."; Rec."Rebate-To Customer No.")
                 {
                     ApplicationArea = All;
-                    Caption = 'Vendor No.';
+                    Caption = 'Rebate-To Customer No.';
                     ToolTip = 'Specifies the value of the Rebate-To Customer No. field.', Comment = '%';
                 }
                 field("Rebate-to Name"; Rec."Rebate-to Name")
                 {
                     ApplicationArea = All;
-                    Caption = 'Name';
-                    ToolTip = 'Specifies the value of the Name field.', Comment = '%';
+                    Caption = 'Rebate-to Name';
+                    ToolTip = 'Specifies the value of the Rebate-to Name field.', Comment = '%';
                 }
                 field("Sales Amount"; Rec."Sales Amount")
                 {
@@ -45,6 +44,7 @@ page 14301954 "AQD Customer Rebate Preview"
                     ApplicationArea = All;
                     Caption = 'Calculated Rebate Amount';
                     ToolTip = 'Specifies the value of the Calculated Rebate Amount field.';
+                    Visible = false;
                 }
                 field("Customer Rebate Amount"; Rec."Customer Rebate Amount")
                 {

@@ -86,6 +86,7 @@ page 14301955 "AQD CustRebate Details Preview"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Calculated Rebate Amount field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Customer Rebate Amount"; Rec."Customer Rebate Amount")
                 {
@@ -104,23 +105,6 @@ page 14301955 "AQD CustRebate Details Preview"
                     ApplicationArea = All;
                     Caption = 'Ineligible';
                     ToolTip = 'Specifies the value of the Ineligible field.', Comment = '%';
-                }
-                field(Exclude; Rec."Do Not Credit")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Exclude field.', Comment = '%';
-                }
-                field("Rebate Amount Changed By"; Rec."Rebate Amount Changed By")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Changed By';
-                    ToolTip = 'Specifies the value of the Rebate Amount Changed By field.', Comment = '%';
-                }
-                field("Rebate Amount Changed DateTime"; Rec."Rebate Amount Changed DateTime")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Changed Date Time';
-                    ToolTip = 'Specifies the value of the Rebate Amount Changed DateTime field.', Comment = '%';
                 }
             }
         }
