@@ -129,6 +129,10 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     Caption = 'Default Setup';
 
+                    field("Default Rebate Posting Type"; Rec."Default Rebate Posting Type")
+                    {
+                        ApplicationArea = All;
+                    }
                     field("Rebate CUstomer Typ"; Rec."Bill-To Rebate Customer")
                     {
                         ApplicationArea = All;

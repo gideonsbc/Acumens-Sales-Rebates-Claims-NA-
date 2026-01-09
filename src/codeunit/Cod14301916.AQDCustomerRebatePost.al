@@ -698,6 +698,14 @@ codeunit 14301916 "AQD Customer Rebate Post"
                                                            PostedCustomerRebateLine.Description + ' ' +
                                                            PostedCustomerRebateHeader."Posting Description",
                                                            1, MaxStrLen(SalesCrMemoLine.Description));
+
+                    SalesCrMemoLine."Description 2" := CopyStr(FORMAT(PostedCustomerRebateLineDetails."Entity Type") + ' ' +
+                                                                PostedCustomerRebateLineDetails."Entity No." + ' ' +
+                                                                FORMAT(PostedCustomerRebateLineDetails.Type) + ' ' +
+                                                                PostedCustomerRebateLineDetails."No." + ' ' +
+                                                                PostedCustomerRebateLineDetails.Description,
+                                                                1, MaxStrLen(SalesCrMemoLine."Description 2"));
+
                     SalesCrMemoLine.Validate("Location Code", PostedCustomerRebateLine."Location Code");
                     SalesCrMemoLine.Validate(Quantity, 1);
                     SalesCrMemoLine.Validate("Unit Price", PostedCustomerRebateLine."Cust Rebate Amt(Item Charge)");
@@ -784,6 +792,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                                                       PostedCustomerRebateLine.Description + ' ' +
                                                       PostedCustomerRebateHeader."Posting Description",
                                                       1, MaxStrLen(SalesCrMemoLine.Description));
+
             SalesCrMemoLine.Validate("Location Code", PostedCustomerRebateLine."Location Code");
             SalesCrMemoLine.Validate(Quantity, 1);
             SalesCrMemoLine.Validate("Unit Price", PostedCustomerRebateLine."customer Rebate Amt (GL)");
@@ -1041,6 +1050,15 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     SalesInvoiceLine.Description := CopyStr(PostedCustomerRebateLine.Description + ' ' +
                                                             PostedCustomerRebateHeader."Posting Description",
                                                             1, MaxStrLen(SalesInvoiceLine.Description));
+
+                    SalesInvoiceLine."Description 2" := CopyStr(FORMAT(PostedCustomerRebateLineDetails."Entity Type") + ' ' +
+                                                                PostedCustomerRebateLineDetails."Entity No." + ' ' +
+                                                                FORMAT(PostedCustomerRebateLineDetails.Type) + ' ' +
+                                                                PostedCustomerRebateLineDetails."No." + ' ' +
+                                                                PostedCustomerRebateLineDetails.Description,
+                                                                1, MaxStrLen(SalesInvoiceLine."Description 2"));
+
+
                     SalesInvoiceLine.Validate("Location Code", PostedCustomerRebateLine."Location Code");
                     SalesInvoiceLine.Validate(Quantity, 1);
                     SalesInvoiceLine.Validate("Unit Price", ABS(PostedCustomerRebateLineDetails."Customer Rebate Amount"));
