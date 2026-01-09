@@ -34,11 +34,6 @@ page 14301954 "AQD Customer Rebate Preview"
                     Caption = 'Name';
                     ToolTip = 'Specifies the value of the Name field.', Comment = '%';
                 }
-                field("AQD Calculation Date"; Rec."AQD Calculation Date")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Calculation Date';
-                }
                 field("Sales Amount"; Rec."Sales Amount")
                 {
                     ApplicationArea = All;
@@ -66,6 +61,11 @@ page 14301954 "AQD Customer Rebate Preview"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Employee Commission field.';
                 }
+                field("AQD Calculation Date"; Rec."AQD Calculation Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Calculation Date';
+                }
                 field("Posting Date"; Rec."Posting Date")
                 {
                     ApplicationArea = All;
@@ -77,7 +77,7 @@ page 14301954 "AQD Customer Rebate Preview"
                     ToolTip = 'Specifies the value of the External Document No. field.', Comment = '%';
                 }
             }
-            part("AQD Customer Rebate Details"; "AQD Customer Rebate Details")
+            part("AQD CustRebate Details Preview"; "AQD CustRebate Details Preview")
             {
                 Caption = 'Document Lines';
                 ApplicationArea = All;

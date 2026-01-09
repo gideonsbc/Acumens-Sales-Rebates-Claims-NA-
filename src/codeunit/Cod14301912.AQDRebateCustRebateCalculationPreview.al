@@ -16,7 +16,6 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         BillToCustomer: Record Customer;
         RebateToCUstomer: Record Customer;
         SalesPerson: Record "Salesperson/Purchaser";
-        SaleseHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
         CustomerRebateHeader: Record "AQD Customer Rebate Header";
         CustomerRebateLine: Record "AQD Customer Rebate Line";
@@ -31,7 +30,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
 
     procedure CustomerRebateCalcPreview(var SalesHeaderIn: Record "Sales Header")
     var
-        CustomerRebatePreview: Page "AQD CustRebate Details Preview";
+        CustomerRebatePreview: Page "AQD Customer Rebate Preview";
     begin
         // Clear Vendor Rebate Tables
         CustomerRebateDetails.RESET;
@@ -98,7 +97,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         THEN
             RebateSetup.TestField("Exclude Credit Memo", false);
 
-        BuildCustomerRebatePreview(SaleseHeader);
+        BuildCustomerRebatePreview(SalesHeaderIn);
     End;
 
     local procedure BuildCustomerRebatePreview(var SalesHeaderIn: Record "Sales Header")
@@ -159,10 +158,9 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         IF SalesLine.FindFirst then begin
             REPEAT
                 IsLineRebateEnabled(
-                    BillToCustomer."No.",
+                    SalesHeaderIn,
                     SalesLine.Type,
-                    SalesLine."No.",
-                    SalesHeaderIn."Posting Date");
+                    SalesLine."No.");
 
                 LocalRebateEntigyType := LocalRebateEntigyType::Customer;
                 InsertCustomerRebateDetail(SalesHeaderIn, SalesLine, LocalRebateEntigyType, SalesHeaderIn."Bill-to Customer No.");
@@ -242,7 +240,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         END;
     END;
 
-    local procedure IsRebataEnabledLineExist(SalesHeader: Record "Sales Header"): Boolean
+    local procedure IsRebataEnabledLineExist(SalesHeaderIn: Record "Sales Header"): Boolean
     var
         LocalSalesLine: Record "Sales Line";
         IsHandled: Boolean;
@@ -251,31 +249,30 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         LineRebatable := false;
 
         LocalSalesLine.Reset;
-        LocalSalesLine.SetRange("Document Type", SaleseHeader."Document Type");
-        LocalSalesLine.SetRange("Document No.", SaleseHeader."No.");
+        LocalSalesLine.SetRange("Document Type", SalesHeaderIn."Document Type");
+        LocalSalesLine.SetRange("Document No.", SalesHeaderIn."No.");
         LocalSalesLine.SetFilter(Type, '%1|%2|%3',
           LocalSalesLine.Type::Item,
           LocalSalesLine.Type::Resource,
           LocalSalesLine.Type::"G/L Account");
         LocalSalesLine.SetFilter("No.", '<>%1', '');
         LocalSalesLine.SetFilter(Quantity, '<>%1', 0);
-        OnAfterApplySalesLineFilter(SaleseHeader, LocalSalesLine);
+        OnAfterApplySalesLineFilter(SalesHeaderIn, LocalSalesLine);
         if LocalSalesLine.FindFirst then begin
             Repeat
                 IsHandled := false;
-                OnBeforeFindRebateRate(SalesHeader, SalesLine, IsHandled);
+                OnBeforeFindRebateRate(SalesHeaderIn, SalesLine, IsHandled);
                 if not IsHandled then
-                    LineRebatable := IsLineRebateEnabled(BillToCustomer."No.",
+                    LineRebatable := IsLineRebateEnabled(SalesHeaderIn,
                                                          LocalSalesLine.Type,
-                                                         LocalSalesLine."No.",
-                                                         SalesHeader."Posting Date");
+                                                         LocalSalesLine."No.");
             Until (LocalSalesLine.Next = 0) OR LineRebatable;
             EXIT(LineRebatable);
         end;
         exit(false);
     end;
 
-    local procedure IsLineRebateEnabled(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date): Boolean
+    local procedure IsLineRebateEnabled(SalesHeaderIn: Record "Sales Header"; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]): Boolean
     var
         Item: Record Item;
         Location: Record Location;
@@ -290,7 +287,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
     begin
         IsRebateEnabled := FALSE;
         IsHandled := false;
-        OnBeforeCheckLineRebateEnabled(SaleseHeader, IsRebateEnabled, IsHandled);
+        OnBeforeCheckLineRebateEnabled(SalesHeaderIn, IsRebateEnabled, IsHandled);
         IF IsHandled THEN
             EXIT;
 
@@ -302,12 +299,12 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
 
         IsRebateEnabled := FALSE;
 
-        GetCustomerRebateCategoryLines(CustomerNo, DocumentLine_Type, DocumentLine_No, PostingDate, IsRebateEnabled);
-        GetCustomerTypeRebateCategoryLines(CustomerNo, DocumentLine_Type, DocumentLine_No, PostingDate, IsRebateEnabled);
-        GetAllCustomersRebateCategoryLines(CustomerNo, DocumentLine_Type, DocumentLine_No, PostingDate, IsRebateEnabled);
+        GetCustomerRebateCategoryLines(BillToCustomer."No.", DocumentLine_Type, DocumentLine_No, SalesHeaderIn."Posting Date", IsRebateEnabled);
+        GetCustomerTypeRebateCategoryLines(BillToCustomer."No.", DocumentLine_Type, DocumentLine_No, SalesHeaderIn."Posting Date", IsRebateEnabled);
+        GetAllCustomersRebateCategoryLines(BillToCustomer."No.", DocumentLine_Type, DocumentLine_No, SalesHeaderIn."Posting Date", IsRebateEnabled);
 
-        GetEmployeeRebateCategoryLines(CustomerNo, DocumentLine_Type, DocumentLine_No, PostingDate, IsRebateEnabled);
-        GetVendorRebateCategoryLines(CustomerNo, DocumentLine_Type, DocumentLine_No, PostingDate, IsRebateEnabled);
+        GetEmployeeRebateCategoryLines(BillToCustomer."No.", DocumentLine_Type, DocumentLine_No, SalesHeaderIn."Posting Date", IsRebateEnabled);
+        GetVendorRebateCategoryLines(BillToCustomer."No.", DocumentLine_Type, DocumentLine_No, SalesHeaderIn."Posting Date", IsRebateEnabled);
 
         IF IsRebateEnabled then begin
             TempRebateCategoryLines.RESET;
@@ -318,7 +315,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
                 TempRebateCategoryLines.INSERT;
             END;
         end;
-        OnAfterCheckLineRebateEnabled(SaleseHeader, IsRebateEnabled);
+        OnAfterCheckLineRebateEnabled(SalesHeaderIn, IsRebateEnabled);
         EXIT(IsRebateEnabled);
     end;
 
