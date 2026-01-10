@@ -313,6 +313,11 @@ table 14301930 "AQD Customer Rebate Details"
         {
             Caption = 'BatchId';
         }
+        field(960; Preview; Boolean)
+        {
+            Caption = 'Preview';
+            Editable = FALSE;
+        }
         field(7050; "AQD Use Cust Rebate Setup From"; enum "AQD Use Cust Rebate Setup From")
         {
             Caption = 'Use Cust Rebate Setup From';

@@ -240,6 +240,11 @@ table 14301929 "AQD Customer Rebate Line"
         {
             Caption = 'BatchId';
         }
+        field(960; Preview; Boolean)
+        {
+            Caption = 'Preview';
+            Editable = FALSE;
+        }
     }
     keys
     {

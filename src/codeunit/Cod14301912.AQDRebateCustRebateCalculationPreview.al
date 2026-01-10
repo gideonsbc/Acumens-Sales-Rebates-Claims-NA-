@@ -752,6 +752,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         CustomerRebateHeader."Created By" := UserId;
         CustomerRebateHeader."Created Date" := Today;
         CustomerRebateHeader."AQD Calculation Date" := BillToCustomer."AQD CustRbt Calculation Date";
+        CustomerRebateHeader.Preview := true;
         IsHandled := FALSE;
         OnBeforeInsertRebateHeader(CustomerRebateHeader, IsHandled);
         IF NOT IsHandled THEN
@@ -812,6 +813,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         CustomerRebateLine."Bill-To Customer No." := SalesHeaderIn."Bill-To Customer No.";
         CustomerRebateLine."Bill-To Customer Name" := SalesHeaderIn."Bill-To Name";
         CustomerRebateLine."Rebate-To Customer No." := CustomerRebateHeader."Rebate-To Customer No.";
+        CustomerRebateLine.Preview := TRUE;
         IsHandled := FALSE;
         OnBeforeInsertRebateLine(CustomerRebateLine, IsHandled);
         IF NOT IsHandled THEN
@@ -953,6 +955,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
                 CustomerRebateDetails."Rebate Program Code" := TempRebateCategoryLines."Rebate Program Code";
                 CustomerRebateDetails."Posting Date" := CustomerRebateLine."Posting Date";
                 CustomerRebateDetails."Rebate Order Date" := CustomerRebateLine."Rebate Order Date";
+                CustomerRebateDetails.Preview := TRUE;
 
                 GetRebateCategoryCode(CustomerRebateDetails);
                 GetSalesRebateDetails(CustomerRebateDetails);

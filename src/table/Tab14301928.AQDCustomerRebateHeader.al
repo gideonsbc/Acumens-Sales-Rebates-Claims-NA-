@@ -209,6 +209,11 @@ table 14301928 "AQD Customer Rebate Header"
         {
             Caption = 'BatchId';
         }
+        field(960; Preview; Boolean)
+        {
+            Caption = 'Preview';
+            Editable = FALSE;
+        }
     }
 
     keys

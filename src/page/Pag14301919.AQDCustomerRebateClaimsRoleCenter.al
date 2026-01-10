@@ -295,25 +295,12 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Image = UserSetup;
                     RunObject = Page "User Setup";
                 }
-                // action(AQDCustRbtIncludeCustomerLocations2)
-                // {
-                //     ApplicationArea = All;
-                //     Caption = 'Include Customer Locations';
-                //     Image = Customer;
-                //     RunObject = Page "AQD Cust Rbt Include Cust Loc";
-                // }
-                // action(AQDCustRbtExcludeCustomerLocations2)
-                // {
-                //     Caption = 'Exclude Customer Locations';
-                //     ApplicationArea = All;
-                //     Image = Customer;
-                //     RunObject = Page "AQD Cust Rbt Exclude Cust Loc";
-                // }
                 action("Customer Rebate Program Codes2")
                 {
                     ApplicationArea = All;
                     Caption = 'Customer Rebate Program Codes';
                     RunObject = page "AQD Cust Rebate Program Codes";
+                    Image = Customer;
                 }
                 action("AQD CR Item Categories2")
                 {
@@ -329,10 +316,10 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Image = CampaignEntries;
                     RunObject = Page "AQD Rebate Customer Categories";
                 }
-                action("Sales Rebates Setup")
+                action("Sales Rebates Rates")
                 {
                     ApplicationArea = All;
-                    Caption = 'Sales Rebates Setup';
+                    Caption = 'Sales Rebates Rates';
                     Image = Setup;
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
                 }
@@ -340,17 +327,27 @@ page 14301919 "AQD Cust Rebate & Claims RC"
             group(History)
             {
                 Caption = 'History';
+
+                action("Item Ledger Entries")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Item Ledger Entries';
+                    RunObject = page "Item Ledger Entries";
+                    Image = ItemLedger;
+                }
                 action("Posted Customer Rebate Batches")
                 {
                     ApplicationArea = All;
                     Caption = 'Posted Customer Rebate Batches';
                     RunObject = page "AQD Posted Cust Rebate Batches";
+                    Image = PostedCreditMemo;
                 }
                 action("Posted Customer Rebates")
                 {
                     ApplicationArea = All;
                     Caption = 'Posted Customer Rebates';
                     RunObject = page "AQD Posted Customer Rebates";
+                    Image = PostedCreditMemo;
                 }
             }
         }
