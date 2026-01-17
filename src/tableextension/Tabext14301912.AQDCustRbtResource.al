@@ -11,7 +11,7 @@ tableextension 14301912 "AQD CustRbt Resource Ext" extends Resource
         {
             Caption = 'Rebate Category Code';
             DataClassification = CustomerContent;
-            TableRelation = "Item Category".Code where("AQD Customer Rebate" = const(true));
+            TableRelation = "Item Category".Code;
         }
     }
 }

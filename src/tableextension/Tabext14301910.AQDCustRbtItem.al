@@ -11,7 +11,7 @@ tableextension 14301910 "AQD CustRbt Item Ext" extends Item
         {
             Caption = 'Rebate Category Code';
             DataClassification = CustomerContent;
-            TableRelation = "Item Category".Code where("AQD Customer Rebate" = const(true));
+            TableRelation = "Item Category".Code;
         }
         field(14301930; "AQD CustRbt Source No. Filter"; Code[20])
         {

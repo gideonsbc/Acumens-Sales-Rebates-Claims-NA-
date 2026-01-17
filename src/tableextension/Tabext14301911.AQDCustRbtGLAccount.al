@@ -11,7 +11,7 @@ tableextension 14301911 "AQD CustRbt G/L Account Ext" extends "G/L Account"
         {
             Caption = 'Rebate Category Code';
             DataClassification = CustomerContent;
-            TableRelation = "Item Category".Code where("AQD Customer Rebate" = const(true));
+            TableRelation = "Item Category".Code;
         }
     }
 }

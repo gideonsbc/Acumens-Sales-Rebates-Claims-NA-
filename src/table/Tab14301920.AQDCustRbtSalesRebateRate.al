@@ -35,7 +35,7 @@ table 14301920 "AQD Sales Rebates Rate"
         field(5; "No."; Code[20])
         {
             Caption = 'No.';
-            TableRelation = if ("Line Type" = const("Rebate Category")) "Item Category".Code where("AQD Customer Rebate" = const(true))
+            TableRelation = if ("Line Type" = const("Rebate Category")) "Item Category".Code
             else if ("Line Type" = const(Item)) Item
             else if ("Line Type" = const("G/L Account")) "G/L Account"
             else if ("Line Type" = const(Resource)) Resource;
