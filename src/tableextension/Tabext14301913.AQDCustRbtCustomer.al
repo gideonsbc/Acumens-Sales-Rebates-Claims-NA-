@@ -8,9 +8,14 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
             DataClassification = CustomerContent;
 
             trigger OnValidate()
-            begin
-                Rec."AQD Cust Rebate Customer No." := Rec."No.";
-            end;
+            var
+                CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+            BEGIN
+                IF CustomerRebateSetup.GET and
+                   Rec."AQD Enroll for Cust Rebate"
+                THEN
+                    Rec."AQD Cust Rebate Customer No." := CustomerRebateSetup."Default Rebate Customer No";
+            END;
         }
         field(14301920; "AQD Cust Rebate Customer No."; Code[20])
         {

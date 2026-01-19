@@ -187,6 +187,34 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 Image = UserSetup;
                 RunObject = Page "User Setup";
             }
+            action("Customer Rebate Program Codes")
+            {
+                ApplicationArea = All;
+                Caption = 'Customer Rebate Program Codes';
+                RunObject = page "AQD Cust Rebate Program Codes";
+                Image = Customer;
+            }
+            action("Item Categories")
+            {
+                Caption = 'Item Categories';
+                ApplicationArea = All;
+                Image = Vendor;
+                RunObject = Page "Item Categories";
+            }
+            action("Rebate Customer Categories")
+            {
+                Caption = 'Rebate Customer Categories';
+                ApplicationArea = All;
+                Image = CampaignEntries;
+                RunObject = Page "AQD Rebate Customer Categories";
+            }
+            action("Sales Rebates Rates")
+            {
+                ApplicationArea = All;
+                Caption = 'Sales Rebates Rates';
+                Image = Setup;
+                RunObject = Page "AQD CustRbt SalesRebates Setup";
+            }
         }
         area(Promoted)
         {
@@ -197,6 +225,10 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 actionref(ResetNoSeriesAction_Home; ResetNoSeriesAction) { }
                 actionref(OldInvoice_Home; "Old Invoice & Credit Memo Non-Rebatable") { }
                 actionref(UserSetup_Home; "User Setup") { }
+                actionref(CustomerRebateProgramCodes_Home; "Customer Rebate Program Codes") { }
+                actionref(ItemCategories_Home; "Item Categories") { }
+                actionref(RebateCustomerCategories_Home; "Rebate Customer Categories") { }
+                actionref(SalesRebatesRates_Home; "Sales Rebates Rates") { }
             }
         }
     }

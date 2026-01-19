@@ -101,11 +101,27 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Bill-To Rebate Customer';
             DataClassification = CustomerContent;
+            trigger OnValidate()
+            begin
+                IF Rec."Bill-To Rebate Customer" <> Rec."Bill-To Rebate Customer"::"Customer Card Setup" THEN
+                    Rec."Default Rebate Customer No" := '';
+            end;
         }
         field(500; "Default Rebate Posting Type"; enum "AQD CustRebate CostPostingType")
         {
             Caption = 'Rebate Posting Type';
             DataClassification = CustomerContent;
+        }
+        field(510; "Default Rebate Customer No"; Code[20])
+        {
+            Caption = 'Default Rebate Customer No.';
+            TableRelation = Customer;
+            DataClassification = CustomerContent;
+        }
+        field(520; "Def. Rebate Pymnt Method Code"; Code[10])
+        {
+            Caption = 'Default Rebate Payment Method Code';
+            TableRelation = "Payment Method";
         }
     }
     keys

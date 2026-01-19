@@ -6,7 +6,7 @@ pageextension 14301935 "AQD Cust Rbt User Setup Ext" extends "AQD CF User Setup 
         {
             Group(AQDCustomerRebate)
             {
-                Caption = 'Customer Rebate';
+                Caption = 'Acumens Customer Rebate';
 
                 field("AQD Cust Rbt Rebate Role"; Rec."AQD Cust Rbt Rebate Role")
                 {

@@ -102,8 +102,7 @@ table 14301920 "AQD Sales Rebates Rate"
             var
                 RebateProgramCode: Record "AQD Cust Rebate Program Code";
             begin
-                IF Rec."Rebate Program Code" <> '' THEN BEGIN
-                    RebateProgramCode.GET(rEC."Rebate Program Code");
+                IF RebateProgramCode.GET(rEC."Rebate Program Code") THEN BEGIN
                     Rec."Rebate Type" := RebateProgramCode."Customer Default Rebate Type";
                     Rec."Rebate %" := RebateProgramCode."Customer Default Rebate %";
                     Rec."Rebate Per Unit" := RebateProgramCode."Customer Def Rebate Per Unit";
