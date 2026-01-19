@@ -62,7 +62,32 @@ table 14301916 "AQD Cust Rebate Program Code"
                 TestField("Customer Default Rebate Type");
             end;
         }
-
+        field(20; "Rebate Expense AC"; Code[20])
+        {
+            Caption = 'Rebate Expense A/C';
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        field(30; "Rebate Payable AC"; Code[20])
+        {
+            Caption = 'Rebate Payable A/C';
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        field(40; "Entity Type"; Enum "AQD Cust Rebate Customer Type")
+        {
+            Caption = 'Entity Type';
+        }
+        field(50; "Entity No."; Code[20])
+        {
+            Caption = 'Entity No.';
+            TableRelation = if ("Entity Type" = const("Customer Category")) "AQD Rebate Customer Category"
+            else if ("Entity Type" = const(Customer)) Customer
+            else if ("Entity Type" = const("Employee Commission")) Employee where(Status = const(Active))
+            else if ("Entity Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
+        }
     }
 
     keys

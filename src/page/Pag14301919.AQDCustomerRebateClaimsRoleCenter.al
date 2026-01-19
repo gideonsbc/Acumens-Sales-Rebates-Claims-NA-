@@ -316,10 +316,10 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Image = CampaignEntries;
                     RunObject = Page "AQD Rebate Customer Categories";
                 }
-                action("Sales Rebates Rates")
+                action("Customer Rebates Rates")
                 {
                     ApplicationArea = All;
-                    Caption = 'Sales Rebates Rates';
+                    Caption = 'Customer Rebates Rates';
                     Image = Setup;
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
                 }

@@ -22,6 +22,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         CustomerRebateDetails: Record "AQD Customer Rebate Details";
         TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary;
         GlobalSalesRebateRate: Record "AQD Sales Rebates Rate";
+        LineRebatable: Boolean;
         GlobalRebateCategoryCode: Code[20];
         GlobalNextRebateProgramLineNo: Integer;
         RebateLineNo: Integer;
@@ -86,6 +87,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
             ERROR(BillToNotRebatableError, BillToCustomer."No.");
 
         IF (RebateSetup."Bill-To Rebate Customer" = RebateSetup."Bill-To Rebate Customer"::"Customer Rebate Category Setup") THEN BEGIN
+            BillToCustomer.TESTFIELD("AQD Cust Rebate Category Code");
             LocalCustomerType.GET(BillToCustomer."AQD Cust Rebate Category Code");
             LocalCustomerType.TESTFIELD("Rebate Customer No");
         END ELSE IF RebateSetup."Bill-To Rebate Customer" = RebateSetup."Bill-To Rebate Customer"::"Customer Card Setup" THEN
@@ -157,10 +159,10 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         OnAfterApplySalesLineFilter(SalesHeaderIn, SalesLine);
         IF SalesLine.FindFirst then begin
             REPEAT
-                IsLineRebateEnabled(
-                    SalesHeaderIn,
-                    SalesLine.Type,
-                    SalesLine."No.");
+                LineRebatable := IsLineRebateEnabled(
+                                    SalesHeaderIn,
+                                    SalesLine.Type,
+                                    SalesLine."No.");
 
                 LocalRebateEntigyType := LocalRebateEntigyType::Customer;
                 InsertCustomerRebateDetail(SalesHeaderIn, SalesLine, LocalRebateEntigyType, SalesHeaderIn."Bill-to Customer No.");
@@ -1029,6 +1031,14 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         if IsHandled then
             exit;
 
+        IF NOT LineRebatable THEN BEGIN
+            CustomerRebateDetailsIn."Customer Rebate Amount" := 0;
+            CustomerRebateDetailsIn."Rebate %" := 0;
+            CustomerRebateDetailsIn."Rebate Per Unit" := 0;
+            CustomerRebateDetailsIn.Ineligible := TRUE;
+            EXIT; // Exit to avoid calculation
+        END;
+
         IF CustomerRebateDetailsIn.Ineligible THEN BEGIN
             CustomerRebateDetailsIn."Customer Rebate Amount" := 0;
             CustomerRebateDetailsIn."Rebate %" := 0;
@@ -1097,6 +1107,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
                 END;
             RebateSetup."Bill-To Rebate Customer"::"Customer Rebate Category Setup":
                 BEGIN
+                    BillToCustomer.TestField("AQD Cust Rebate Category Code");
                     LocalCustomerRebateType.GET(BillToCustomer."AQD Cust Rebate Category Code");
                     RebateToCUstomer.Get(LocalCustomerRebateType."Rebate Customer No");
                 END;

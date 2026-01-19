@@ -13,13 +13,21 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
             BEGIN
                 IF CustomerRebateSetup.GET and
                    Rec."AQD Enroll for Cust Rebate"
-                THEN
+                THEN BEGIN
                     Rec."AQD Cust Rebate Customer No." := CustomerRebateSetup."Default Rebate Customer No";
+                    Rec."AQD Cust Rebate Vendor No." := CustomerRebateSetup."Default Rebate Vendor No";
+                END;
             END;
         }
         field(14301920; "AQD Cust Rebate Customer No."; Code[20])
         {
             Caption = 'Rebate Customer No.';
+            TableRelation = Customer."No.";
+            DataClassification = CustomerContent;
+        }
+        field(14301930; "AQD Cust Rebate Vendor No."; Code[20])
+        {
+            Caption = 'Rebate Vendor No.';
             TableRelation = Customer."No.";
             DataClassification = CustomerContent;
         }

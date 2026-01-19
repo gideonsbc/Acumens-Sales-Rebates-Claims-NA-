@@ -118,10 +118,11 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
             TableRelation = Customer;
             DataClassification = CustomerContent;
         }
-        field(520; "Def. Rebate Pymnt Method Code"; Code[10])
+        field(520; "Default Rebate Vendor No"; Code[20])
         {
-            Caption = 'Default Rebate Payment Method Code';
-            TableRelation = "Payment Method";
+            Caption = 'Default Rebate Vendor No.';
+            TableRelation = Vendor;
+            DataClassification = CustomerContent;
         }
     }
     keys

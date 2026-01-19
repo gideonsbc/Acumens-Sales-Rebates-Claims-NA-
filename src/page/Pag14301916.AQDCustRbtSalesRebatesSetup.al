@@ -156,6 +156,13 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
             }
             repeater(Control1)
             {
+                field("Rebate Program Code"; Rec."Rebate Program Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the the Sales Rebate Program Code applies to Line Item.';
+                    ShowMandatory = TRUE;
+                    QuickEntry = TRUE;
+                }
                 field("Entity Type"; Rec."Entity Type")
                 {
                     ApplicationArea = Basic, Suite;
@@ -195,12 +202,6 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the variant of the item on the line.';
                     Visible = false;
-                }
-                field("Rebate Program Code"; Rec."Rebate Program Code")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the the Sales Rebate Program Code applies to Line Item.';
-                    ShowMandatory = TRUE;
                 }
                 field(Description; Rec.Description)
                 {

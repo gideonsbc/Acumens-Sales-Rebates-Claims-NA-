@@ -48,6 +48,28 @@ page 14301915 "AQD Cust Rebate Program Codes"
                     Editable = Rec."Customer Default Rebate Type" = Rec."Customer Default Rebate Type"::"Per Quantity";
                     Enabled = Rec."Customer Default Rebate Type" = Rec."Customer Default Rebate Type"::"Per Quantity";
                 }
+                field("Rebate Expense AC"; Rec."Rebate Expense AC")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Rebate Expense A/C';
+                    ShowMandatory = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
+                }
+                field("Rebate Payable AC"; Rec."Rebate Payable AC")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Default Rebate Per Unit';
+                    ShowMandatory = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
+                }
+                field("Entity Type"; Rec."Entity Type")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Entity Type';
+                }
+                field("Entity No."; Rec."Entity No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Entity No.';
+                }
             }
         }
         area(factboxes)

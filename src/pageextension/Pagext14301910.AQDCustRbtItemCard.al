@@ -24,22 +24,31 @@ pageextension 14301910 "AQD CustRbt Item Card" extends "Item Card"
     }
     actions
     {
-        addafter("Set Special Discounts")
+        addafter(PricesandDiscounts)
         {
-            action("AQD Setup Sales Rebates")
+            group("AQD Customer Rebate Group")
             {
-                ApplicationArea = All;
-                Caption = 'Setup Sales Rebates';
-                Image = LineDiscount;
-                RunObject = Page "AQD CustRbt SalesRebates Setup";
-                RunPageLink = "Line Type" = filter(Item), "No." = FIELD("No.");
+                Caption = 'Acumens Customer Rebate';
+
+                action("AQD Customer Rebate Rates")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Customer Rebate Rates';
+                    Image = Setup;
+                    RunObject = Page "AQD CustRbt SalesRebates Setup";
+                    RunPageLink = "Line Type" = CONST(Item),
+                                  "No." = FIELD("No.");
+                    RunPageView = sorting("No.");
+                }
             }
         }
-        addlast(Category_Category6)
+        addafter(Category_Category6)
         {
-            actionref("AQD SetSalesRebates"; "AQD Setup Sales Rebates") { }
+            group("AQD Customer Rebate GroupRef")
+            {
+                Caption = 'Acumens Customer Rebate';
+                actionref(AQDCustomerRebateRatesRef; "AQD Customer Rebate Rates") { }
+            }
         }
     }
 }
-
-

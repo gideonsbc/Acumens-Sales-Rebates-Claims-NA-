@@ -51,7 +51,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     ApplicationArea = All;
                     Visible = FALSE;
                 }
-                field("Create Rebate per Bill-To Cust"; Rec."Post Rebates by Bill-To Cust")
+                field("Post Rebates by Bill-To Cust"; Rec."Post Rebates by Bill-To Cust")
                 {
                     ApplicationArea = All;
                 }
@@ -71,9 +71,21 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     {
                         ApplicationArea = All;
                     }
-                    field("Rebate CUstomer Typ"; Rec."Bill-To Rebate Customer")
+                    field("Bill-To Rebate Customer"; Rec."Bill-To Rebate Customer")
                     {
                         ApplicationArea = All;
+                    }
+                    FIELD("Default Rebate Customer No"; Rec."Default Rebate Customer No")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Rebate Customer No.';
+                        Editable = Rec."Bill-To Rebate Customer" = Rec."Bill-To Rebate Customer"::"Customer Card Setup";
+                        Enabled = Rec."Bill-To Rebate Customer" = Rec."Bill-To Rebate Customer"::"Customer Card Setup";
+                    }
+                    FIELD("Default Rebate Vendor No"; Rec."Default Rebate Vendor No")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Rebate Vendor No.';
                     }
                     field("Default Setup Rebate Type"; Rec."Default Setup Rebate Type")
                     {
@@ -236,6 +248,8 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
     trigger OnOpenPage()
     var
         SourceCodeRec: Record "Source Code";
+        GenJournalTemplate: Record "Gen. Journal Template";
+        GenJournalBatch: Record "Gen. Journal Batch";
     begin
         IF NOT SourceCodeRec.GET('CREBTGNLJL') THEN BEGIN
             SourceCodeRec.Init();
@@ -252,6 +266,26 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             Rec."Post Customer Rebate Using" := Rec."Post Customer Rebate Using"::"Sales Document";
             Rec."Auto Process Customer Rebates" := TRUE;
             Rec."Default Rebate Posting Type" := Rec."Default Rebate Posting Type"::Inventory;
+
+            GenJournalTemplate.Reset();
+            GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::Sales);
+            if GenJournalTemplate.FindFirst() then begin
+                Rec."Sales Journal Template Name" := GenJournalTemplate.Name;
+                GenJournalBatch.Reset();
+                GenJournalBatch.SetRange("Journal Template Name", GenJournalTemplate.Name);
+                GenJournalBatch.SetRange("AQD Customer Rebate", true);
+                if GenJournalBatch.FindFirst() then
+                    Rec."Sales Journal Batch Name" := GenJournalBatch.Name
+                ELSE begin
+                    GenJournalBatch.Init();
+                    GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
+                    GenJournalBatch.Name := 'CUSTREBATE';
+                    GenJournalBatch.Description := 'Sales Rebate Batch';
+                    GenJournalBatch."AQD Customer Rebate" := TRUE;
+                    GenJournalBatch.Insert();
+                    Rec."Sales Journal Batch Name" := GenJournalBatch.Name;
+                end;
+            end;
             Rec.Insert();
             InitializeDefaultSetups();
         end;

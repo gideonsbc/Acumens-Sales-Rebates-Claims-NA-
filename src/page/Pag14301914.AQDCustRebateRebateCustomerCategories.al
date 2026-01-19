@@ -38,10 +38,24 @@ page 14301914 "AQD Rebate Customer Categories"
                     ApplicationArea = All;
                     ToolTip = 'Specifies a Customer Name for Rebate.';
                 }
+                field("Rebate Vendor No."; Rec."Rebate Vendor No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies a Vendor No. for Rebate.';
+                }
+                field("Rebate Vendor Name"; Rec."Rebate Vendor Name")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies a Vendor Name for Rebate.';
+                }
                 field("G/L Account No."; Rec."G/L Account No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies a Customer Rebate Expense G/L Account No.';
+                    ObsoleteReason = 'Removed';
+                    ObsoleteState = Pending;
+                    ObsoleteTag = 'Discontinued from 25.1023.0.3';
+                    Visible = false;
 
                     trigger OnValidate()
                     BEGIN
@@ -55,6 +69,10 @@ page 14301914 "AQD Rebate Customer Categories"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies a Customer Rebate Expense Bal. G/L Account No.';
+                    ObsoleteReason = 'Removed';
+                    ObsoleteState = Pending;
+                    ObsoleteTag = 'Discontinued from 25.1023.0.3';
+                    Visible = false;
 
                     trigger OnValidate()
                     BEGIN

@@ -1263,7 +1263,10 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             CustomerRebateHeader."Rebate-To Post Code" := RebateCustomerRec."Post Code";
             CustomerRebateHeader."Rebate-To County" := RebateCustomerRec.County;
             CustomerRebateHeader."Rebate-To Country/Region Code" := RebateCustomerRec."Country/Region Code";
-            PostingDescrptionText := StrSubstNo(RebatePeriodText, format(StartPostingDate) + '..' + FORMAT(EndPostingDate));
+            IF EndPostingDate = 0D THEN
+                PostingDescrptionText := StrSubstNo(RebatePeriodText, format(StartPostingDate))
+            ELSE
+                PostingDescrptionText := StrSubstNo(RebatePeriodText, format(StartPostingDate) + '..' + FORMAT(EndPostingDate));
             CustomerRebateHeader."Posting Description" := PostingDescrptionText;
             IF GlobalBatchID <> '' THEN
                 CustomerRebateHeader."Posting Date" := CustomerRebateBatch."Posting Date"

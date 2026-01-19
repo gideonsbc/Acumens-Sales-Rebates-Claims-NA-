@@ -7,22 +7,31 @@ pageextension 14301918 "AQD CustRbt Customer List" extends "Customer List"
 
     actions
     {
-        addafter(Sales_LineDiscounts)
+        addafter(ActionGroupCRM)
         {
-            action("AQD Setup Sales Rebates")
+            group("AQD Customer Rebate Group")
             {
-                ApplicationArea = All;
-                Caption = 'Setup Sales Rebates';
-                Image = LineDiscount;
-                RunObject = Page "AQD CustRbt SalesRebates Setup";
-                RunPageLink = "Entity Type" = CONST(Customer),
+                Caption = 'Acumens Customer Rebate';
+
+                action("AQD Customer Rebate Setup")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Customer Rebates Rates';
+                    Image = LineDiscount;
+                    RunObject = Page "AQD CustRbt SalesRebates Setup";
+                    RunPageLink = "Entity Type" = CONST(Customer),
                                   "Entity No." = FIELD("No.");
-                RunPageView = SORTING("Entity Type", "Entity No.");
+                    RunPageView = SORTING("Entity Type", "Entity No.");
+                }
             }
         }
-        addlast(Category_Category9)
+        addafter(Category_Synchronize)
         {
-            actionref(Rebates_Promoted; "AQD Setup Sales Rebates") { }
+            group("AQD Customer Rebate GroupRef")
+            {
+                Caption = 'Acumens Customer Rebate';
+                actionref(CustomerRebateSetup_Promoted; "AQD Customer Rebate Setup") { }
+            }
         }
     }
 }
