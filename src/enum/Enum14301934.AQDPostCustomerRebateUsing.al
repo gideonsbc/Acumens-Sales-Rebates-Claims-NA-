@@ -1,4 +1,4 @@
-enum 14301934 "AQD Post Cust Rebate Using"
+enum 14301934 "AQD Rebate Payable AC"
 {
     Extensible = true;
 
@@ -6,12 +6,12 @@ enum 14301934 "AQD Post Cust Rebate Using"
     {
         Caption = '';
     }
-    value(1; "Sales Document")
+    value(1; Customer)
     {
-        Caption = 'Sales Document';
+        Caption = 'Customer';
     }
-    value(2; "Sales Journal")
+    value(2; "Rebate Payable AC")
     {
-        Caption = 'Sales Journal';
+        Caption = 'Rebate Payable A/C';
     }
 }

@@ -34,23 +34,6 @@ table 14301915 "AQD Rebate Customer Category"
             FieldClass = FlowField;
             CalcFormula = lookup(Customer.Name where("No." = Field("Rebate Customer No")));
         }
-        field(45; "Rebate Vendor No."; Code[20])
-        {
-            Caption = 'Rebate Vendor No.';
-            TableRelation = Vendor."No.";
-            DataClassification = CustomerContent;
-            trigger OnValidate()
-            begin
-                Rec.CalcFields("Rebate Vendor Name");
-            end;
-        }
-        field(46; "Rebate Vendor Name"; Text[100])
-        {
-            Caption = 'Rebate Vendor Name';
-            Editable = false;
-            FieldClass = FlowField;
-            CalcFormula = lookup(Vendor.Name where("No." = Field("Rebate Vendor No.")));
-        }
     }
 
     keys

@@ -24,8 +24,8 @@ page 14301938 "AQD Posted Customer Rebate Doc"
                 }
                 group(RebateToCustomer)
                 {
-                    Caption = 'Rebate-To';
-                    field("Rebate-To Customer No."; Rec."Rebate-To Customer No.")
+                    Caption = 'Rebate Pay-To';
+                    field("Rebate-To Customer No."; Rec."Rebate Pay-To Customer No.")
                     {
                         ApplicationArea = All;
                         Caption = 'Customer No.';

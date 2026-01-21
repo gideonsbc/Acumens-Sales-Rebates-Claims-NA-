@@ -18,12 +18,6 @@ pageextension 14301915 "AQD CustRbt Customer Card" extends "Customer Card"
                     Editable = Rec."AQD Enroll for Cust Rebate";
                     Enabled = Rec."AQD Enroll for Cust Rebate";
                 }
-                field("AQD Cust Rebate Vendor No."; Rec."AQD Cust Rebate Vendor No.")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."AQD Enroll for Cust Rebate";
-                    Enabled = Rec."AQD Enroll for Cust Rebate";
-                }
                 field("AQD Customer Rebate Category"; Rec."AQD Cust Rebate Category Code")
                 {
                     ApplicationArea = All;

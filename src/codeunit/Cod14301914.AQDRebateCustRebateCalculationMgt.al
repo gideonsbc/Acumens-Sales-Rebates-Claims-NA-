@@ -1253,7 +1253,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     end;
             end;
 
-            CustomerRebateHeader."Rebate-To Customer No." := RebateCustomerRec."No.";
+            CustomerRebateHeader."Rebate Pay-To Customer No." := RebateCustomerRec."No.";
             CustomerRebateHeader."Rebate-to Name" := RebateCustomerRec.Name;
             CustomerRebateHeader."Rebate-To Name 2" := RebateCustomerRec."Name 2";
             CustomerRebateHeader."Rebate-To Address" := RebateCustomerRec.Address;
@@ -1290,7 +1290,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             CreatedCustomerRebate."Rebate No." := CustomerRebateHeader."No.";
             IF RebateSetup."Post Rebates by Bill-To Cust" then
                 CreatedCustomerRebate."Bill-To Customer No." := BillToCustomerRec."No.";
-            CreatedCustomerRebate."Rebate-To Customer No." := CustomerRebateHeader."Rebate-To Customer No.";
+            CreatedCustomerRebate."Rebate-To Customer No." := CustomerRebateHeader."Rebate Pay-To Customer No.";
             CreatedCustomerRebate."Location Code" := CustomerRebateHeader."Location Code";
             CreatedCustomerRebate."Responsibility Center" := CustomerRebateHeader."Responsibility Center";
             CreatedCustomerRebate."Shortcut Dimension 1 Code" := CustomerRebateHeader."Shortcut Dimension 1 Code";
@@ -1378,7 +1378,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Bill-To Customer Name" := SalesCrMemoHeaderIn."Bill-To Name";
                 end;
         end;
-        CustomerRebateLine."Rebate-To Customer No." := CustomerRebateHeader."Rebate-To Customer No.";
+        CustomerRebateLine."Rebate Pay-To Customer No." := CustomerRebateHeader."Rebate Pay-To Customer No.";
         CustomerRebateLine.BatchID := GlobalBatchID;
         CustomerRebateLine."Batch Entry No." := GlobalBatchEntryNo;
 
@@ -1578,7 +1578,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     END;
                     CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Sell-To Customer No.";
                     CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Bill-To Customer No.";
-                    CustomerRebateDetails."Rebate-To Customer No." := CustomerRebateLine."Rebate-To Customer No.";
+                    CustomerRebateDetails."Rebate Pay-To Customer No." := CustomerRebateLine."Rebate Pay-To Customer No.";
 
                     // Calculate and Vendor Rebate Amount
                     CustomerRebateDetails."Rebate Item Category Code" := TempRebateCategoryLines."Rebate Category Code";

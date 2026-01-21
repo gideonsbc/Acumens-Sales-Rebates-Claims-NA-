@@ -254,9 +254,9 @@ table 14301930 "AQD Customer Rebate Details"
             Editable = false;
             TableRelation = Customer;
         }
-        field(510; "Rebate-To Customer No."; Code[20])
+        field(510; "Rebate Pay-To Customer No."; Code[20])
         {
-            Caption = 'Rebate-To Customer No.';
+            Caption = 'Rebate Pay-To Customer No.';
             Editable = false;
             TableRelation = Vendor;
         }

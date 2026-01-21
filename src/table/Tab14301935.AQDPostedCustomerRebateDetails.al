@@ -226,9 +226,9 @@ table 14301935 "AQD Posted Cust Reb Details"
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2),
                                                           Blocked = CONST(false));
         }
-        field(360; "Rebate Sales Doc Type"; Enum "AQD Post Cust Rebate Using")
+        field(360; "Rebate Payable A/C"; Enum "AQD Rebate Payable AC")
         {
-            Caption = 'Rebate Sales Doc Type';
+            Caption = 'Rebate Payable A/C';
             Editable = false;
         }
         field(361; "Rebate Sales Document No."; Code[20])
@@ -264,9 +264,9 @@ table 14301935 "AQD Posted Cust Reb Details"
             Editable = false;
             TableRelation = Customer;
         }
-        field(510; "Rebate-To Customer No."; Code[20])
+        field(510; "Rebate Pay-To Customer No."; Code[20])
         {
-            Caption = 'Rebate-To Customer No.';
+            Caption = 'Rebate Pay-To Customer No.';
             Editable = false;
             TableRelation = Vendor;
         }

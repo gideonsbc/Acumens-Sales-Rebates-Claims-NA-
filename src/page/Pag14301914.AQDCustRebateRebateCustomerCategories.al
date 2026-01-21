@@ -38,16 +38,6 @@ page 14301914 "AQD Rebate Customer Categories"
                     ApplicationArea = All;
                     ToolTip = 'Specifies a Customer Name for Rebate.';
                 }
-                field("Rebate Vendor No."; Rec."Rebate Vendor No.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies a Vendor No. for Rebate.';
-                }
-                field("Rebate Vendor Name"; Rec."Rebate Vendor Name")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies a Vendor Name for Rebate.';
-                }
             }
         }
     }

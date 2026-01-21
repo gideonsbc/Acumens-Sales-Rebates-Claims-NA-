@@ -88,9 +88,9 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Start Date';
         }
-        FIELD(385; "Post Customer Rebate Using"; Enum "AQD Post Cust Rebate Using")
+        field(385; "Rebate Payable Ac"; Enum "AQD Rebate Payable AC")
         {
-            Caption = 'Post Customer Rebate Using';
+            Caption = 'Rebate Payable A/C';
         }
         field(420; "Customer Rebate Source Code"; Code[10])
         {
@@ -116,12 +116,6 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Default Rebate Customer No.';
             TableRelation = Customer;
-            DataClassification = CustomerContent;
-        }
-        field(520; "Default Rebate Vendor No"; Code[20])
-        {
-            Caption = 'Default Rebate Vendor No.';
-            TableRelation = Vendor;
             DataClassification = CustomerContent;
         }
     }

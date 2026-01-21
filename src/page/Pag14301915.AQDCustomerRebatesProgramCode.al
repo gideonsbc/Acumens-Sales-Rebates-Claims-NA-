@@ -23,11 +23,11 @@ page 14301915 "AQD Cust Rebate Program Codes"
                     ApplicationArea = All;
                     ToolTip = 'Specifies a description of what the code stands for.';
                 }
-                field("Customer Rebate Posting Type"; Rec."Customer Rebate Posting Type")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies a Customer Rebate Posting Type.';
-                }
+                // field("Customer Rebate Posting Type"; Rec."Customer Rebate Posting Type")
+                // {
+                //     ApplicationArea = All;
+                //     ToolTip = 'Specifies a Customer Rebate Posting Type.';
+                // }
                 field("Customer Default Rebate Type"; Rec."Customer Default Rebate Type")
                 {
                     ApplicationArea = All;

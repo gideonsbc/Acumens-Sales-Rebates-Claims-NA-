@@ -23,7 +23,7 @@ page 14301937 "AQD Posted Customer Rebates"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
-                field("Rebate-To Customer No."; Rec."Rebate-To Customer No.")
+                field("Rebate-To Customer No."; Rec."Rebate Pay-To Customer No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Rebate-To Customer No. field.', Comment = '%';

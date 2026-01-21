@@ -29,7 +29,7 @@ page 14301947 "AQD Posted Cust Rebate Subpage"
                         PostedCustomerRebatePg.Run();
                     end;
                 }
-                field("Rebate-To Customer No."; Rec."Rebate-To Customer No.")
+                field("Rebate-To Customer No."; Rec."Rebate Pay-To Customer No.")
                 {
                     ToolTip = 'Specifies the value of the Rebate-To Customer No. field.', Comment = '%';
                 }

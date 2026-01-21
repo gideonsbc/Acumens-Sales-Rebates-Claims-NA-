@@ -12,9 +12,9 @@ table 14301928 "AQD Customer Rebate Header"
             Caption = 'No.';
             Editable = false;
         }
-        field(260; "Rebate-To Customer No."; Code[20])
+        field(260; "Rebate Pay-To Customer No."; Code[20])
         {
-            Caption = 'Rebate-To Customer No.';
+            Caption = 'Rebate Pay-To Customer No.';
             Editable = false;
             TableRelation = Customer;
         }

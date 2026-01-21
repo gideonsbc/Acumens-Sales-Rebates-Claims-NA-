@@ -53,10 +53,13 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     ApplicationArea = All;
                     Visible = FALSE;
                 }
+                field("Rebate Payable AC"; Rec."Rebate Payable AC")
+                {
+                    ApplicationArea = All;
+                }
                 field("Post Rebates by Bill-To Cust"; Rec."Post Rebates by Bill-To Cust")
                 {
                     ApplicationArea = All;
-                    Visible = FALSE;
                 }
                 field("Auto Process Customer Rebates"; Rec."Auto Process Customer Rebates")
                 {
@@ -70,10 +73,10 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 {
                     Caption = 'Default Setup';
 
-                    field("Default Rebate Posting Type"; Rec."Default Rebate Posting Type")
-                    {
-                        ApplicationArea = All;
-                    }
+                    // field("Default Rebate Posting Type"; Rec."Default Rebate Posting Type")
+                    // {
+                    //     ApplicationArea = All;
+                    // }
                     field("Bill-To Rebate Customer"; Rec."Bill-To Rebate Customer")
                     {
                         ApplicationArea = All;
@@ -84,11 +87,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         Caption = 'Rebate Customer No.';
                         Editable = Rec."Bill-To Rebate Customer" = Rec."Bill-To Rebate Customer"::"Customer Card Setup";
                         Enabled = Rec."Bill-To Rebate Customer" = Rec."Bill-To Rebate Customer"::"Customer Card Setup";
-                    }
-                    FIELD("Default Rebate Vendor No"; Rec."Default Rebate Vendor No")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Rebate Vendor No.';
                     }
                     field("Default Setup Rebate Type"; Rec."Default Setup Rebate Type")
                     {
@@ -280,10 +278,9 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             Rec.Init();
             Rec."Customer Rebate Source Code" := 'RBTSALES';
             Rec."Post Customer Rebates for" := Rec."Post Customer Rebates for"::"All Invoices";
-            Rec."Post Customer Rebate Using" := Rec."Post Customer Rebate Using"::"Sales Document";
-            Rec."Post Rebates by Bill-To Cust" := TRUE;
+            Rec."Rebate Payable Ac" := Rec."Rebate Payable Ac"::Customer;
             Rec."Auto Process Customer Rebates" := TRUE;
-            Rec."Default Rebate Posting Type" := Rec."Default Rebate Posting Type"::Inventory;
+            Rec."Default Rebate Posting Type" := Rec."Default Rebate Posting Type"::Expense;
 
             GenJournalTemplate.Reset();
             GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::Sales);

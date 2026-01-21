@@ -315,12 +315,12 @@ codeunit 14301916 "AQD Customer Rebate Post"
             IF TmpPostCustomerRebateByBillTo.FindFirst() THEN BEGIN
                 REPEAT
                     BillToCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
-                    Case RebateSetup."Post Customer Rebate Using" OF
-                        RebateSetup."Post Customer Rebate Using"::"Sales Document":
+                    Case RebateSetup."Rebate Payable Ac" OF
+                        RebateSetup."Rebate Payable Ac"::Customer:
                             BEGIN
                                 CreateSalesDocument(PostedCustRebateHeader, false);
                             END;
-                        RebateSetup."Post Customer Rebate Using"::"Sales Journal":
+                        RebateSetup."Rebate Payable Ac"::"Rebate Payable AC":
                             BEGIN
                                 CreateSalesJournal(PostedCustRebateHeader);
                             END;
@@ -328,8 +328,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 UNTIL TmpPostCustomerRebateByBillTo.Next() = 0;
             END;
 
-            Case RebateSetup."Post Customer Rebate Using" OF
-                RebateSetup."Post Customer Rebate Using"::"Sales Document":
+            Case RebateSetup."Rebate Payable Ac" OF
+                RebateSetup."Rebate Payable Ac"::Customer:
                     BEGIN
                         TmpInovoiceBuffer.RESET;
                         IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
@@ -364,7 +364,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                         IF GenJnlLine.FindFirst() THEN
                             CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
                     END;
-                RebateSetup."Post Customer Rebate Using"::"Sales Journal":
+                RebateSetup."Rebate Payable Ac"::"Rebate Payable AC":
                     BEGIN
                         GenJnlLine.RESET;
                         GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
@@ -462,12 +462,12 @@ codeunit 14301916 "AQD Customer Rebate Post"
         IF TmpPostCustomerRebateByBillTo.FindFirst() THEN BEGIN
             REPEAT
                 BillToCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
-                Case RebateSetup."Post Customer Rebate Using" OF
-                    RebateSetup."Post Customer Rebate Using"::"Sales Document":
+                Case RebateSetup."Rebate Payable Ac" OF
+                    RebateSetup."Rebate Payable Ac"::Customer:
                         BEGIN
                             CreateSalesDocument(PostedCustRebateHeader, false);
                         END;
-                    RebateSetup."Post Customer Rebate Using"::"Sales Journal":
+                    RebateSetup."Rebate Payable Ac"::"Rebate Payable AC":
                         BEGIN
                             CreateSalesJournal(PostedCustRebateHeader);
                         END;
@@ -475,8 +475,8 @@ codeunit 14301916 "AQD Customer Rebate Post"
             UNTIL TmpPostCustomerRebateByBillTo.Next() = 0;
         END;
 
-        Case RebateSetup."Post Customer Rebate Using" OF
-            RebateSetup."Post Customer Rebate Using"::"Sales Document":
+        Case RebateSetup."Rebate Payable Ac" OF
+            RebateSetup."Rebate Payable Ac"::Customer:
                 BEGIN
 
                     TmpInovoiceBuffer.RESET;
@@ -512,7 +512,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     IF GenJnlLine.FindFirst() THEN
                         CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
                 END;
-            RebateSetup."Post Customer Rebate Using"::"Sales Journal":
+            RebateSetup."Rebate Payable Ac"::"Rebate Payable AC":
                 BEGIN
                     GenJnlLine.RESET;
                     GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
@@ -641,7 +641,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             SalesCredirMemo."No." := '';
             SalesCredirMemo.Insert(TRUE);
             SalesCredirMemo.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
-            SalesCredirMemo.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Rebate-To Customer No.");
+            SalesCredirMemo.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Rebate Pay-To Customer No.");
             SalesCredirMemo.validate("Location Code", PostedCustomerRebateHeader."Location Code");
             SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
             SalesCredirMemo."Posting Description" := PostedCustomerRebateHeader."Posting Description";
@@ -719,7 +719,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     SalesCrMemoLine.Modify(TRUE);
 
                     PostedCustomerRebateLine."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
-                    PostedCustomerRebateLine."Rebate Sales Doc Type" := PostedCustomerRebateLine."Rebate Sales Doc Type"::"Sales Document";
+                    PostedCustomerRebateLine."Rebate Payable A/C" := PostedCustomerRebateLine."Rebate Payable A/C"::Customer;
                     PostedCustomerRebateLine."Credit Document No." := SalesCrMemoLine."Document No.";
                     PostedCustomerRebateLine.Modify();
 
@@ -755,7 +755,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentSales."AQD Cust Rebate Line No" := PostedCustomerRebateLineDetails."Line No.";
                     ItemChargeAssignmentSales.Insert(TRUE);
 
-                    PostedCustomerRebateLineDetails."Rebate Sales Doc Type" := PostedCustomerRebateLineDetails."Rebate Sales Doc Type"::"Sales Document";
+                    PostedCustomerRebateLineDetails."Rebate Payable A/C" := PostedCustomerRebateLineDetails."Rebate Payable A/C"::Customer;
                     PostedCustomerRebateLineDetails."Rebate Sales Document No." := ItemChargeAssignmentSales."Document No.";
                     PostedCustomerRebateLineDetails."Rebate Sales Document Line No." := ItemChargeAssignmentSales."Document Line No.";
                     PostedCustomerRebateLineDetails."Rebate Sales Line No." := ItemChargeAssignmentSales."Line No.";
@@ -812,7 +812,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     SalesCrMemoLine.Modify(TRUE);
 
                     PostedCustomerRebateLine."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
-                    PostedCustomerRebateLine."Rebate Sales Doc Type" := PostedCustomerRebateLine."Rebate Sales Doc Type"::"Sales Document";
+                    PostedCustomerRebateLine."Rebate Payable A/C" := PostedCustomerRebateLine."Rebate Payable A/C"::Customer;
                     PostedCustomerRebateLine."Credit Document No." := SalesCrMemoLine."Document No.";
                     PostedCustomerRebateLine.Modify();
 
@@ -825,7 +825,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Customer);
                     IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                         Repeat
-                            PostedCustomerRebateLineDetails."Rebate Sales Doc Type" := PostedCustomerRebateLineDetails."Rebate Sales Doc Type"::"Sales Document";
+                            PostedCustomerRebateLineDetails."Rebate Payable A/C" := PostedCustomerRebateLineDetails."Rebate Payable A/C"::Customer;
                             PostedCustomerRebateLineDetails."Rebate Sales Document No." := SalesCrMemoLine."Document No.";
                             PostedCustomerRebateLineDetails."Rebate Sales Document Line No." := SalesCrMemoLine."Line No.";
                             PostedCustomerRebateLineDetails."Rebate Sales Line No." := 0;
@@ -902,7 +902,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
                     //To Flow Source Type and Source No.
                     GenJnlLine."Source Type" := GenJnlLine."Source Type"::Customer;
-                    GenJnlLine."Source No." := PostedCustomerRebateLine."Rebate-To Customer No.";
+                    GenJnlLine."Source No." := PostedCustomerRebateLine."Rebate Pay-To Customer No.";
                     GenJnlLine."AQD CR Bill-To Customer No." := PostedCustomerRebateLine."Bill-To Customer No.";
                     GenJnlLine.Modify(TRUE);
                     if GenJnlLine.Amount = 0 then
@@ -977,7 +977,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
                     //To Flow Source Type and Source No.
                     GenJnlLine."Source Type" := GenJnlLine."Source Type"::Customer;
-                    GenJnlLine."Source No." := PostedCustomerRebateLine."Rebate-To Customer No.";
+                    GenJnlLine."Source No." := PostedCustomerRebateLine."Rebate Pay-To Customer No.";
                     GenJnlLine."AQD CR Bill-To Customer No." := PostedCustomerRebateLine."Bill-To Customer No.";
                     GenJnlLine.Modify(TRUE);
                     if GenJnlLine.Amount = 0 then
@@ -1015,7 +1015,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
             SalesInvoice.SetHideValidationDialog(TRUE);
             SalesInvoice.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
-            SalesInvoice.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Rebate-To Customer No.");
+            SalesInvoice.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Rebate Pay-To Customer No.");
             SalesInvoice.validate("Location Code", PostedCustomerRebateHeader."Location Code");
             SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
             SalesInvoice."Posting Description" := PostedCustomerRebateHeader."Posting Description";
@@ -1097,7 +1097,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     SalesInvoiceLine.Modify(TRUE);
 
                     PostedCustomerRebateLine."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
-                    PostedCustomerRebateLine."Rebate Sales Doc Type" := PostedCustomerRebateLine."Rebate Sales Doc Type"::"Sales Document";
+                    PostedCustomerRebateLine."Rebate Payable A/C" := PostedCustomerRebateLine."Rebate Payable A/C"::Customer;
                     PostedCustomerRebateLine."Credit Document No." := SalesInvoiceLine."Document No.";
                     //PostedCustomerRebateLine."Credit Document Line No." := SalesInvoiceLine."Line No.";
                     PostedCustomerRebateLine.Modify();
@@ -1134,7 +1134,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ItemChargeAssignmentSales."AQD Cust Rebate Line No" := PostedCustomerRebateLineDetails."Line No.";
                     ItemChargeAssignmentSales.Insert(TRUE);
 
-                    PostedCustomerRebateLineDetails."Rebate Sales Doc Type" := PostedCustomerRebateLineDetails."Rebate Sales Doc Type"::"Sales Document";
+                    PostedCustomerRebateLineDetails."Rebate Payable A/C" := PostedCustomerRebateLineDetails."Rebate Payable A/C"::Customer;
                     PostedCustomerRebateLineDetails."Rebate Sales Document No." := ItemChargeAssignmentSales."Document No.";
                     PostedCustomerRebateLineDetails."Rebate Sales Document Line No." := ItemChargeAssignmentSales."Document Line No.";
                     PostedCustomerRebateLineDetails."Rebate Sales Line No." := ItemChargeAssignmentSales."Line No.";
@@ -1188,7 +1188,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     SalesInvoiceLine.Modify(TRUE);
 
                     PostedCustomerRebateLine."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
-                    PostedCustomerRebateLine."Rebate Sales Doc Type" := PostedCustomerRebateLine."Rebate Sales Doc Type"::"Sales Document";
+                    PostedCustomerRebateLine."Rebate Payable A/C" := PostedCustomerRebateLine."Rebate Payable A/C"::Customer;
                     PostedCustomerRebateLine."Credit Document No." := SalesInvoiceLine."Document No.";
                     PostedCustomerRebateLine.Modify();
 
@@ -1201,7 +1201,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Customer);
                     IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                         Repeat
-                            PostedCustomerRebateLineDetails."Rebate Sales Doc Type" := PostedCustomerRebateLineDetails."Rebate Sales Doc Type"::"Sales Document";
+                            PostedCustomerRebateLineDetails."Rebate Payable A/C" := PostedCustomerRebateLineDetails."Rebate Payable A/C"::Customer;
                             PostedCustomerRebateLineDetails."Rebate Sales Document No." := SalesInvoiceLine."Document No.";
                             PostedCustomerRebateLineDetails."Rebate Sales Document Line No." := SalesInvoiceLine."Line No.";
                             PostedCustomerRebateLineDetails."Rebate Sales Line No." := 0;
@@ -1278,7 +1278,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
                     //To Flow Source Type and Source No.
                     GenJnlLine."Source Type" := GenJnlLine."Source Type"::Customer;
-                    GenJnlLine."Source No." := PostedCustomerRebateLine."Rebate-To Customer No.";
+                    GenJnlLine."Source No." := PostedCustomerRebateLine."Rebate Pay-To Customer No.";
                     GenJnlLine."AQD CR Bill-To Customer No." := PostedCustomerRebateLine."Bill-To Customer No.";
                     GenJnlLine.Modify(TRUE);
                     if GenJnlLine.Amount = 0 then
@@ -1349,7 +1349,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
                     //To Flow Source Type and Source No.
                     GenJnlLine."Source Type" := GenJnlLine."Source Type"::Customer;
-                    GenJnlLine."Source No." := PostedCustomerRebateLine."Rebate-To Customer No.";
+                    GenJnlLine."Source No." := PostedCustomerRebateLine."Rebate Pay-To Customer No.";
                     GenJnlLine."AQD CR Bill-To Customer No." := PostedCustomerRebateLine."Bill-To Customer No.";
                     GenJnlLine.Modify(TRUE);
                     if GenJnlLine.Amount = 0 then
@@ -1395,10 +1395,9 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 LocalBillToCustomer.Get(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group"); // Bill-To Customer No.
 
                 PostedCustRebateLine.CalcFields("Customer Rebate Amount", "Vendor Commission", "Employee Commission");
-
                 GenJnlTemplate.Get(JnlBatch."Journal Template Name");
 
-                GetCustomerRebateAmountByGLAccount(PostedCustomerRebateLine, GlobalEntityType, TRUE);
+                GetCustomerRebateAmountByGLAccount(PostedCustRebateLine, GlobalEntityType, TRUE);
 
                 InvoicePostingBuffer.RESET;
                 IF InvoicePostingBuffer.FINDFIRST THEN BEGIN
@@ -1454,13 +1453,13 @@ codeunit 14301916 "AQD Customer Rebate Post"
                         GenJnlLine."AQD Cust Rebate Journal" := TRUE;
                         //To Flow Source Type and Source No.
                         GenJnlLine."Source Type" := GenJnlLine."Source Type"::Customer;
-                        GenJnlLine."Source No." := PostedCustRebateLine."Rebate-To Customer No.";
+                        GenJnlLine."Source No." := PostedCustRebateLine."Rebate Pay-To Customer No.";
                         GenJnlLine."AQD CR Bill-To Customer No." := PostedCustRebateLine."Bill-To Customer No.";
                         GenJnlLine.Modify(TRUE);
                         if GenJnlLine.Amount = 0 then
                             GenJnlLine.Delete();
                         PostedCustRebateLine."Customer Rebate Status" := PostedCustRebateLine."Customer Rebate Status"::Created;
-                        PostedCustRebateLine."Rebate Sales Doc Type" := PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Journal";
+                        PostedCustRebateLine."Rebate Payable A/C" := PostedCustRebateLine."Rebate Payable A/C"::"Rebate Payable AC";
                         PostedCustRebateLine."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
                         PostedCustRebateLine."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
                         PostedCustRebateLine."Sales Jnl Line No." := GenJnlLine."Line No.";
@@ -1474,7 +1473,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                         If PostedCustRebateDetailLine.FindFirst() THEN begin
                             repeat
                                 PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::Created;
-                                PostedCustRebateDetailLine."Rebate Sales Doc Type" := PostedCustRebateDetailLine."Rebate Sales Doc Type"::"Sales Journal";
+                                PostedCustRebateDetailLine."Rebate Payable A/C" := PostedCustRebateDetailLine."Rebate Payable A/C"::"Rebate Payable AC";
                                 PostedCustRebateDetailLine."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
                                 PostedCustRebateDetailLine."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
                                 PostedCustRebateDetailLine."Sales Jnl Line No." := GenJnlLine."Line No.";
@@ -1496,7 +1495,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         END;
 
         PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Created;
-        PostedCustRebateHeader."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::"Sales Journal";
+        PostedCustRebateHeader."Rebate Payable AC" := PostedCustRebateHeader."Rebate Payable AC"::"Rebate Payable AC";
         PostedCustRebateHeader."Sales Jnl Template Name" := GenJnlLine."Journal Template Name";
         PostedCustRebateHeader."Sales Jnl Batch Name" := GenJnlLine."Journal Batch Name";
         PostedCustRebateHeader."Sales Jnl Line No." := 0;
@@ -1526,18 +1525,22 @@ codeunit 14301916 "AQD Customer Rebate Post"
             REPEAT
                 IF LocalRebateProgramCode.GET(LocalPostedCustRebateLineDetail."Rebate Program Code") THEN BEGIN
                     LocalRebateProgramCode.TestField("Rebate Expense AC");
-                    LocalRebateProgramCode.TestField("Rebate Payable AC");
+                    IF CalledFromSalesJournal THEN
+                        LocalRebateProgramCode.TestField("Rebate Payable AC");
 
                     InvoicePostingBuffer.RESET;
                     InvoicePostingBuffer.SetRange("G/L Account", LocalRebateProgramCode."Rebate Expense AC");
-                    InvoicePostingBuffer.SetRange("Job No.", LocalRebateProgramCode."Rebate Payable AC");
-                    IF InvoicePostingBuffer.FindFirst() then
-                        InvoicePostingBuffer.Amount += LocalPostedCustRebateLineDetail."Customer Rebate Amount"
-                    ELSE BEGIN
+                    IF CalledFromSalesJournal THEN
+                        InvoicePostingBuffer.SetRange("Job No.", LocalRebateProgramCode."Rebate Payable AC");
+                    IF InvoicePostingBuffer.FindFirst() THEN BEGIN
+                        InvoicePostingBuffer.Amount += LocalPostedCustRebateLineDetail."Customer Rebate Amount";
+                        InvoicePostingBuffer.Modify();
+                    END ELSE BEGIN
                         InvoicePostingBuffer.INIT;
                         InvoicePostingBuffer."Group ID" := LocalGroupID;
                         InvoicePostingBuffer."G/L Account" := LocalRebateProgramCode."Rebate Expense AC";
-                        InvoicePostingBuffer."Job No." := LocalRebateProgramCode."Rebate Payable AC";
+                        IF CalledFromSalesJournal THEN
+                            InvoicePostingBuffer."Job No." := LocalRebateProgramCode."Rebate Payable AC";
                         InvoicePostingBuffer.Amount := LocalPostedCustRebateLineDetail."Customer Rebate Amount";
                         InvoicePostingBuffer.Insert();
                         LocalGroupID := IncStr(LocalGroupID);
@@ -1582,7 +1585,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
         IF PostedCustRebateHeader.GET(Rec."AQD Customer Rebate No") THEN begin
             PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::" ";
-            PostedCustRebateHeader."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::" ";
+            PostedCustRebateHeader."Rebate Payable AC" := PostedCustRebateHeader."Rebate Payable AC"::" ";
             PostedCustRebateHeader.Modify();
         end;
 
@@ -1602,7 +1605,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 IF PostedCustRebateLine.FindFirst() THEN BEGIN
                     REPEAT
                         PostedCustRebateLine."Customer Rebate Status" := PostedCustRebateLine."Customer Rebate Status"::" ";
-                        PostedCustRebateLine."Rebate Sales Doc Type" := PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Document";
+                        PostedCustRebateLine."Rebate Payable A/C" := PostedCustRebateLine."Rebate Payable A/C"::Customer;
                         PostedCustRebateLine."Credit Document No." := '';
                         //PostedCustRebateLine."Credit Document Line No." := 0;
                         PostedCustRebateLine.Modify();
@@ -1614,7 +1617,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                         If PostedCustRebateDetailLine.FindFirst() THEN begin
                             REPEAT
                                 PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::" ";
-                                PostedCustRebateDetailLine."Rebate Sales Doc Type" := PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Document";
+                                PostedCustRebateDetailLine."Rebate Payable A/C" := PostedCustRebateLine."Rebate Payable A/C"::Customer;
                                 PostedCustRebateDetailLine."Rebate Sales Document No." := '';
                                 PostedCustRebateDetailLine."Rebate Sales Document Line No." := 0;
                                 PostedCustRebateDetailLine.Modify();
@@ -1697,12 +1700,12 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
                             IF PostedCustRebateHeader.GET(SalesInvLine."AQD Cust Rebate Document No.") THEN begin
                                 PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Posted;
-                                PostedCustRebateHeader."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::" ";
+                                PostedCustRebateHeader."Rebate Payable AC" := PostedCustRebateHeader."Rebate Payable AC"::" ";
                                 PostedCustRebateHeader.Modify();
                             end;
 
                             PostedCustRebateLine."Customer Rebate Status" := PostedCustRebateLine."Customer Rebate Status"::Posted;
-                            PostedCustRebateLine."Rebate Sales Doc Type" := PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Document";
+                            PostedCustRebateLine."Rebate Payable A/C" := PostedCustRebateLine."Rebate Payable A/C"::Customer;
                             PostedCustRebateLine."Credit Document No." := SalesInvLine."Document No.";
                             //PostedCustRebateLine."Credit Document Line No." := SalesInvLine."Line No.";
                             PostedCustRebateLine.Modify();
@@ -1714,7 +1717,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                             If PostedCustRebateDetailLine.FindFirst() THEN begin
                                 repeat
                                     PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::Posted;
-                                    PostedCustRebateDetailLine."Rebate Sales Doc Type" := PostedCustRebateDetailLine."Rebate Sales Doc Type"::"Sales Document";
+                                    PostedCustRebateDetailLine."Rebate Payable A/C" := PostedCustRebateDetailLine."Rebate Payable A/C"::Customer;
                                     PostedCustRebateDetailLine."Rebate Sales Document No." := SalesInvLine."Document No.";
                                     PostedCustRebateDetailLine."Rebate Sales Document Line No." := SalesInvLine."Line No.";
                                     PostedCustRebateDetailLine.Modify();
@@ -1746,12 +1749,12 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
                             IF PostedCustRebateHeader.GET(SalesCrMemoLine."AQD Cust Rebate Document No.") THEN begin
                                 PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Posted;
-                                PostedCustRebateHeader."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::" ";
+                                PostedCustRebateHeader."Rebate Payable AC" := PostedCustRebateHeader."Rebate Payable AC"::" ";
                                 PostedCustRebateHeader.Modify();
                             end;
 
                             PostedCustRebateLine."Customer Rebate Status" := PostedCustRebateLine."Customer Rebate Status"::Posted;
-                            PostedCustRebateLine."Rebate Sales Doc Type" := PostedCustRebateLine."Rebate Sales Doc Type"::"Sales Document";
+                            PostedCustRebateLine."Rebate Payable A/C" := PostedCustRebateLine."Rebate Payable A/C"::Customer;
                             PostedCustRebateLine."Credit Document No." := SalesCrMemoLine."Document No.";
                             //PostedCustRebateLine."Credit Document Line No." := SalesCrMemoLine."Line No.";
                             PostedCustRebateLine.Modify();
@@ -1763,7 +1766,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                             If PostedCustRebateDetailLine.FindFirst() THEN begin
                                 repeat
                                     PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::Posted;
-                                    PostedCustRebateDetailLine."Rebate Sales Doc Type" := PostedCustRebateDetailLine."Rebate Sales Doc Type"::"Sales Document";
+                                    PostedCustRebateDetailLine."Rebate Payable A/C" := PostedCustRebateDetailLine."Rebate Payable A/C"::Customer;
                                     PostedCustRebateDetailLine."Rebate Sales Document No." := SalesCrMemoLine."Document No.";
                                     PostedCustRebateDetailLine."Rebate Sales Document Line No." := SalesCrMemoLine."Line No.";
                                     PostedCustRebateDetailLine.Modify();
@@ -1865,7 +1868,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
         IF PostedRebateHeader.GET(GenJournalLine."AQD Cust Rebate Document No.") THEN begin
             PostedRebateHeader."Customer Rebate Status" := PostedRebateHeader."Customer Rebate Status"::Posted;
-            PostedRebateHeader."Rebate Sales Doc Type" := PostedRebateHeader."Rebate Sales Doc Type"::" ";
+            PostedRebateHeader."Rebate Payable AC" := PostedRebateHeader."Rebate Payable AC"::" ";
             PostedRebateHeader."Sales Jnl Template Name" := '';
             PostedRebateHeader."Sales Jnl Batch Name" := '';
             PostedRebateHeader."Sales Jnl Line No." := 0;
@@ -1880,7 +1883,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         IF PostedCustRebateLine.FINDFIRST THEN begin
             Repeat
                 PostedCustRebateLine."Customer Rebate Status" := PostedCustRebateLine."Customer Rebate Status"::Posted;
-                PostedCustRebateLine."Rebate Sales Doc Type" := PostedCustRebateLine."Rebate Sales Doc Type"::" ";
+                PostedCustRebateLine."Rebate Payable A/C" := PostedCustRebateLine."Rebate Payable A/C"::" ";
                 PostedCustRebateLine."Sales Jnl Template Name" := '';
                 PostedCustRebateLine."Sales Jnl Batch Name" := '';
                 PostedCustRebateLine."Sales Jnl Line No." := 0;
@@ -1893,7 +1896,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 If PostedCustRebateDetailLine.FindFirst() THEN begin
                     repeat
                         PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::Posted;
-                        PostedCustRebateDetailLine."Rebate Sales Doc Type" := PostedCustRebateDetailLine."Rebate Sales Doc Type"::" ";
+                        PostedCustRebateDetailLine."Rebate Payable A/C" := PostedCustRebateDetailLine."Rebate Payable A/C"::" ";
                         PostedCustRebateDetailLine."Sales Jnl Template Name" := '';
                         PostedCustRebateDetailLine."Sales Jnl Batch Name" := '';
                         PostedCustRebateDetailLine."Sales Jnl Line No." := 0;
@@ -1931,7 +1934,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
         IF PostedCustRebateHeader.GET(Rec."AQD Cust Rebate Document No.") THEN begin
             PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::" ";
-            PostedCustRebateHeader."Rebate Sales Doc Type" := PostedCustRebateHeader."Rebate Sales Doc Type"::" ";
+            PostedCustRebateHeader."Rebate Payable AC" := PostedCustRebateHeader."Rebate Payable AC"::" ";
             PostedCustRebateHeader."Sales Jnl Template Name" := '';
             PostedCustRebateHeader."Sales Jnl Batch Name" := '';
             PostedCustRebateHeader."Sales Jnl Line No." := 0;
@@ -1943,7 +1946,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         IF PostedCustRebateLine.FINDFIRST THEN begin
             Repeat
                 PostedCustRebateLine."Customer Rebate Status" := PostedCustRebateLine."Customer Rebate Status"::" ";
-                PostedCustRebateLine."Rebate Sales Doc Type" := PostedCustRebateLine."Rebate Sales Doc Type"::" ";
+                PostedCustRebateLine."Rebate Payable A/C" := PostedCustRebateLine."Rebate Payable A/C"::" ";
                 PostedCustRebateLine."Sales Jnl Template Name" := '';
                 PostedCustRebateLine."Sales Jnl Batch Name" := '';
                 PostedCustRebateLine."Sales Jnl Line No." := 0;
@@ -1956,7 +1959,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                 If PostedCustRebateDetailLine.FindFirst() THEN begin
                     repeat
                         PostedCustRebateDetailLine."Customer Rebate Status" := PostedCustRebateDetailLine."Customer Rebate Status"::" ";
-                        PostedCustRebateDetailLine."Rebate Sales Doc Type" := PostedCustRebateDetailLine."Rebate Sales Doc Type"::" ";
+                        PostedCustRebateDetailLine."Rebate Payable A/C" := PostedCustRebateDetailLine."Rebate Payable A/C"::" ";
                         PostedCustRebateDetailLine."Sales Jnl Template Name" := '';
                         PostedCustRebateDetailLine."Sales Jnl Batch Name" := '';
                         PostedCustRebateDetailLine."Sales Jnl Line No." := 0;

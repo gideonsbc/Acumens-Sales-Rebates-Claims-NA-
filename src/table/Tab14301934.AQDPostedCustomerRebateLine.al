@@ -198,9 +198,9 @@ table 14301934 "AQD Posted Cust Rebate Line"
             Caption = 'Currency Code';
             Editable = false;
         }
-        field(360; "Rebate Sales Doc Type"; Enum "AQD Post Cust Rebate Using")
+        field(360; "Rebate Payable A/C"; Enum "AQD Rebate Payable AC")
         {
-            Caption = 'Rebate Sales Doc Type';
+            Caption = 'Rebate Payable A/C"';
             Editable = false;
         }
         field(361; "Credit Document No."; Code[20])
@@ -225,17 +225,17 @@ table 14301934 "AQD Posted Cust Rebate Line"
         }
         field(501; "Bill-To Customer No."; Code[20])
         {
-            Caption = 'Bill-To Customer No.';
+            Caption = 'Invoice Bill-To Customer No.';
             Editable = false;
         }
         field(502; "Bill-To Customer Name"; Text[100])
         {
-            Caption = 'Bill-To Customer Name';
+            Caption = 'Invoice Bill-To Customer Name';
             Editable = false;
         }
-        field(510; "Rebate-To Customer No."; Code[20])
+        field(510; "Rebate Pay-To Customer No."; Code[20])
         {
-            Caption = 'Rebate-To Customer No.';
+            Caption = 'Rebate Pay-To Customer No.';
             Editable = false;
             TableRelation = Vendor;
         }

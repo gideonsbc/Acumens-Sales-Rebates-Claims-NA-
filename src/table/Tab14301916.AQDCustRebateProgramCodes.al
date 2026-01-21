@@ -79,6 +79,12 @@ table 14301916 "AQD Cust Rebate Program Code"
         field(40; "Entity Type"; Enum "AQD Cust Rebate Customer Type")
         {
             Caption = 'Entity Type';
+
+            trigger OnValidate()
+            begin
+                IF Rec."Entity Type" <> xRec."Entity Type" THEN
+                    Rec."Entity No." := '';
+            end;
         }
         field(50; "Entity No."; Code[20])
         {

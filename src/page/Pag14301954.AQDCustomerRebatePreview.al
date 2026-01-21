@@ -21,16 +21,16 @@ page 14301954 "AQD Customer Rebate Preview"
                     Editable = false;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
-                field("Rebate-To Customer No."; Rec."Rebate-To Customer No.")
+                field("Rebate Pay-To Customer No."; Rec."Rebate Pay-To Customer No.")
                 {
                     ApplicationArea = All;
-                    Caption = 'Rebate-To Customer No.';
+                    Caption = 'Rebate Pay-To Customer No.';
                     ToolTip = 'Specifies the value of the Rebate-To Customer No. field.', Comment = '%';
                 }
-                field("Rebate-to Name"; Rec."Rebate-to Name")
+                field("Rebate Pay-to Name"; Rec."Rebate-to Name")
                 {
                     ApplicationArea = All;
-                    Caption = 'Rebate-to Name';
+                    Caption = 'Rebate Pay-to Name';
                     ToolTip = 'Specifies the value of the Rebate-to Name field.', Comment = '%';
                 }
                 field("Sales Amount"; Rec."Sales Amount")

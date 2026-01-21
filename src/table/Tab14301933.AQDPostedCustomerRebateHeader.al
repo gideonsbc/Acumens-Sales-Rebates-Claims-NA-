@@ -11,9 +11,9 @@ table 14301933 "AQD Posted Cust Rebate Header"
             Caption = 'No.';
             Editable = false;
         }
-        field(260; "Rebate-To Customer No."; Code[20])
+        field(260; "Rebate Pay-To Customer No."; Code[20])
         {
-            Caption = 'Rebate-To Customer No.';
+            Caption = 'Rebate Pay-To Customer No.';
             Editable = false;
         }
         field(261; "Rebate-to Name"; Text[100])
@@ -99,9 +99,9 @@ table 14301933 "AQD Posted Cust Rebate Header"
                                                           Blocked = CONST(false));
             Editable = false;
         }
-        field(360; "Rebate Sales Doc Type"; Enum "AQD Post Cust Rebate Using")
+        field(360; "Rebate Payable AC"; Enum "AQD Rebate Payable AC")
         {
-            Caption = 'Rebate Sales Doc Type';
+            Caption = 'Rebate Payable A/C';
             Editable = false;
         }
         field(400; "External Document No."; Code[35])

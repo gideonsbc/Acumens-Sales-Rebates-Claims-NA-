@@ -21,12 +21,12 @@ table 14301932 "AQD Posted Cust Rebate Batch"
         }
         field(55; "Bill-To Customer No."; Code[20])
         {
-            Caption = 'Bill-To Customer No.';
+            Caption = 'Invoice Bill-To Customer No.';
             Editable = false;
         }
         field(56; "Bill-To Customer Name"; Text[100])
         {
-            Caption = 'Bill-To Customer Name';
+            Caption = 'Invoice Bill-To Customer Name';
             Editable = false;
         }
         field(60; "Sales Amount"; Decimal)

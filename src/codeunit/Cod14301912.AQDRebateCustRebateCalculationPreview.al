@@ -731,7 +731,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
 
         CustomerRebateHeader.Init;
         CustomerRebateHeader."No." := SalesHeaderIn."No.";
-        CustomerRebateHeader."Rebate-To Customer No." := RebateCustomerRec."No.";
+        CustomerRebateHeader."Rebate Pay-To Customer No." := RebateCustomerRec."No.";
         CustomerRebateHeader."Rebate-to Name" := RebateCustomerRec.Name;
         CustomerRebateHeader."Rebate-To Name 2" := RebateCustomerRec."Name 2";
         CustomerRebateHeader."Rebate-To Address" := RebateCustomerRec.Address;
@@ -814,7 +814,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
         CustomerRebateLine."Sell-To Customer Name" := SalesHeaderIn."Sell-To Customer Name";
         CustomerRebateLine."Bill-To Customer No." := SalesHeaderIn."Bill-To Customer No.";
         CustomerRebateLine."Bill-To Customer Name" := SalesHeaderIn."Bill-To Name";
-        CustomerRebateLine."Rebate-To Customer No." := CustomerRebateHeader."Rebate-To Customer No.";
+        CustomerRebateLine."Rebate Pay-To Customer No." := CustomerRebateHeader."Rebate Pay-To Customer No.";
         CustomerRebateLine.Preview := TRUE;
         IsHandled := FALSE;
         OnBeforeInsertRebateLine(CustomerRebateLine, IsHandled);
@@ -950,7 +950,7 @@ codeunit 14301912 "AQD Cust Rebate Calc Preview"
                 CustomerRebateDetails.State := SalesHeaderIn."Ship-to County";
                 CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Sell-To Customer No.";
                 CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Bill-To Customer No.";
-                CustomerRebateDetails."Rebate-To Customer No." := CustomerRebateLine."Rebate-To Customer No.";
+                CustomerRebateDetails."Rebate Pay-To Customer No." := CustomerRebateLine."Rebate Pay-To Customer No.";
 
                 // Calculate and Vendor Rebate Amount
                 CustomerRebateDetails."Rebate Item Category Code" := TempRebateCategoryLines."Rebate Category Code";

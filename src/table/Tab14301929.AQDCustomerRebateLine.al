@@ -212,17 +212,17 @@ table 14301929 "AQD Customer Rebate Line"
         }
         field(501; "Bill-To Customer No."; Code[20])
         {
-            Caption = 'Bill-To Customer No.';
+            Caption = 'Invoice Bill-To Customer No.';
             Editable = false;
         }
         field(502; "Bill-To Customer Name"; Text[100])
         {
-            Caption = 'Bill-To Customer Name';
+            Caption = 'Invoice Bill-To Customer Name';
             Editable = false;
         }
-        field(510; "Rebate-To Customer No."; Code[20])
+        field(510; "Rebate Pay-To Customer No."; Code[20])
         {
-            Caption = 'Rebate-To Customer No.';
+            Caption = 'Rebate Pay-To Customer No.';
             Editable = false;
             TableRelation = Customer;
         }
