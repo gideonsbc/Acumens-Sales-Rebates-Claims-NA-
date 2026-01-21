@@ -15,6 +15,8 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             group("Customer Rebate")
             {
                 Caption = 'General';
+                Editable = AllowToEdit;
+
                 group(RebateEnabled)
                 {
                     Caption = 'Rebate Enabled';
@@ -54,6 +56,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 field("Post Rebates by Bill-To Cust"; Rec."Post Rebates by Bill-To Cust")
                 {
                     ApplicationArea = All;
+                    Visible = FALSE;
                 }
                 field("Auto Process Customer Rebates"; Rec."Auto Process Customer Rebates")
                 {
@@ -121,6 +124,8 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             group("Number Series")
             {
                 Caption = 'Number Series';
+                Editable = AllowToEdit;
+
                 field("Customer Rebate Nos"; Rec."Customer Rebate Document Nos")
                 {
                     ApplicationArea = All;
@@ -144,6 +149,17 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
     {
         area(navigation)
         {
+            action(EditAction)
+            {
+                ApplicationArea = All;
+                Caption = 'Edit';
+                Image = Edit;
+                trigger OnAction()
+                begin
+                    AllowToEdit := TRUE;
+                    CurrPage.Update(false);
+                end;
+            }
             action("Get Default Setups")
             {
                 ApplicationArea = All;
@@ -233,6 +249,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             group(Home)
             {
                 Caption = 'HOME';
+                actionref(Edit_Home; EditAction) { }
                 actionref(DeleteDefaultSetupsAction_Home; DeleteDefaultSetupsAction) { }
                 actionref(ResetNoSeriesAction_Home; ResetNoSeriesAction) { }
                 actionref(OldInvoice_Home; "Old Invoice & Credit Memo Non-Rebatable") { }
@@ -251,7 +268,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
         GenJournalTemplate: Record "Gen. Journal Template";
         GenJournalBatch: Record "Gen. Journal Batch";
     begin
-        IF NOT SourceCodeRec.GET('CREBTGNLJL') THEN BEGIN
+        IF NOT SourceCodeRec.GET('RBTSALES') THEN BEGIN
             SourceCodeRec.Init();
             SourceCodeRec.Code := 'RBTSALES';
             SourceCodeRec.Description := 'Customer Rebate';
@@ -264,6 +281,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             Rec."Customer Rebate Source Code" := 'RBTSALES';
             Rec."Post Customer Rebates for" := Rec."Post Customer Rebates for"::"All Invoices";
             Rec."Post Customer Rebate Using" := Rec."Post Customer Rebate Using"::"Sales Document";
+            Rec."Post Rebates by Bill-To Cust" := TRUE;
             Rec."Auto Process Customer Rebates" := TRUE;
             Rec."Default Rebate Posting Type" := Rec."Default Rebate Posting Type"::Inventory;
 
@@ -288,6 +306,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
             end;
             Rec.Insert();
             InitializeDefaultSetups();
+            AllowToEdit := FALSE;
         end;
     end;
 
@@ -355,4 +374,5 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
     var
         GenJournalTemplate: Record "Gen. Journal Template";
         GenJournalBatch: Record "Gen. Journal Batch";
+        AllowToEdit: Boolean;
 }

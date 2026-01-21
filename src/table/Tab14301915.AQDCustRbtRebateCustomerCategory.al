@@ -51,26 +51,6 @@ table 14301915 "AQD Rebate Customer Category"
             FieldClass = FlowField;
             CalcFormula = lookup(Vendor.Name where("No." = Field("Rebate Vendor No.")));
         }
-        field(50; "G/L Account No."; Code[20])
-        {
-            Caption = 'G/L Account No.';
-            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
-                                                "Account Type" = CONST(Posting),
-                                                Blocked = CONST(false));
-            ObsoleteReason = 'Removed';
-            ObsoleteState = Pending;
-            ObsoleteTag = 'Discontinued from 25.1023.0.3';
-        }
-        field(60; "Bal. G/L Account No."; Code[20])
-        {
-            Caption = 'Bal. G/L Account No.';
-            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
-                                                "Account Type" = CONST(Posting),
-                                                Blocked = CONST(false));
-            ObsoleteReason = 'Removed';
-            ObsoleteState = Pending;
-            ObsoleteTag = 'Discontinued from 25.1023.0.3';
-        }
     }
 
     keys

@@ -48,40 +48,6 @@ page 14301914 "AQD Rebate Customer Categories"
                     ApplicationArea = All;
                     ToolTip = 'Specifies a Vendor Name for Rebate.';
                 }
-                field("G/L Account No."; Rec."G/L Account No.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies a Customer Rebate Expense G/L Account No.';
-                    ObsoleteReason = 'Removed';
-                    ObsoleteState = Pending;
-                    ObsoleteTag = 'Discontinued from 25.1023.0.3';
-                    Visible = false;
-
-                    trigger OnValidate()
-                    BEGIN
-                        IF (Rec."G/L Account No." <> '') AND
-                           (Rec."G/L Account No." = Rec."Bal. G/L Account No.")
-                        THEN
-                            ERROR(Text0000, Rec."G/L Account No.", Rec."Bal. G/L Account No.");
-                    END;
-                }
-                field("Bal. G/L Account No."; Rec."Bal. G/L Account No.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies a Customer Rebate Expense Bal. G/L Account No.';
-                    ObsoleteReason = 'Removed';
-                    ObsoleteState = Pending;
-                    ObsoleteTag = 'Discontinued from 25.1023.0.3';
-                    Visible = false;
-
-                    trigger OnValidate()
-                    BEGIN
-                        IF (Rec."Bal. G/L Account No." <> '') AND
-                           (Rec."G/L Account No." = Rec."Bal. G/L Account No.")
-                        THEN
-                            ERROR(Text0000, Rec."G/L Account No.", Rec."Bal. G/L Account No.");
-                    END;
-                }
             }
         }
     }

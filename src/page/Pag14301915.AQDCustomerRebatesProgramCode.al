@@ -57,7 +57,7 @@ page 14301915 "AQD Cust Rebate Program Codes"
                 field("Rebate Payable AC"; Rec."Rebate Payable AC")
                 {
                     ApplicationArea = All;
-                    Caption = 'Default Rebate Per Unit';
+                    Caption = 'Rebate Payable A/C';
                     ShowMandatory = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
                 }
                 field("Entity Type"; Rec."Entity Type")
