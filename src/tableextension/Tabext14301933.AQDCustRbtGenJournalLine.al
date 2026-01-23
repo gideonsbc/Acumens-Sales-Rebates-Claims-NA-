@@ -12,6 +12,7 @@ tableextension 14301933 "AQD CustRbt Gen. Jnl Line Ext" extends "Gen. Journal Li
         {
             Caption = 'Customer Rebate Bill-To Customer No.';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(14301940; "AQD Cust Rebate Document Type"; Enum "AQD Cust Rebate Document Type")
         {

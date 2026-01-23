@@ -12,6 +12,7 @@ tableextension 14301943 "AQD CR G/L Entry Ext" extends "G/L Entry"
         {
             Caption = 'Customer Rebate Bill-To Customer No.';
             Editable = false;
+            DataClassification = CustomerContent;
         }
     }
 }

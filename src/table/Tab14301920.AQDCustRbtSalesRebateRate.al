@@ -1,6 +1,7 @@
 table 14301920 "AQD Sales Rebates Rate"
 {
     Caption = 'Sales Rebates Setup';
+    DataClassification = CustomerContent;
 
     fields
     {

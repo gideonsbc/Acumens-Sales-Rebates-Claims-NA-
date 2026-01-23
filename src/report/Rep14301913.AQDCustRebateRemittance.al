@@ -1,5 +1,6 @@
 report 14301915 "AQD Cust Rebate Remittance"
 {
+    ApplicationArea = All;
     //     DefaultLayout = RDLC;
     //     RDLCLayout = './src/Layout/Rep14277010.AQDRebateRemittance.rdl';
     //     Caption = 'Rebate Remittance Report';
