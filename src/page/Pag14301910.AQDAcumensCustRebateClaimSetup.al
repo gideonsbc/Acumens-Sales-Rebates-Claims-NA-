@@ -102,6 +102,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                     {
                         ApplicationArea = All;
                         Caption = 'Sales Item Charge No.';
+                        Visible = false;
                     }
                 }
                 group("Rebate Sales Journal")
