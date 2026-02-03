@@ -10,7 +10,7 @@ pageextension 14301921 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Mem
             }
         }
 
-        addafter(Billing)
+        addafter(SalesLines)
         {
             group("Acumens Customer Rebate and Claims")
             {

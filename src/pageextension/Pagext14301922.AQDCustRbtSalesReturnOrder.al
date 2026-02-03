@@ -10,7 +10,7 @@ pageextension 14301922 "AQD CustRbt Sales Return Order" extends "Sales Return Or
             }
         }
 
-        addafter("Shipping and Billing")
+        addafter(SalesLines)
         {
             group("Acumens Customer Rebate and Claims")
             {

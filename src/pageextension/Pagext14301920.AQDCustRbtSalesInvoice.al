@@ -9,7 +9,7 @@ pageextension 14301920 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
                 ApplicationArea = All;
             }
         }
-        addafter("Invoice Details")
+        addafter(SalesLines)
         {
             group("Acumens Customer Rebate and Claims")
             {
