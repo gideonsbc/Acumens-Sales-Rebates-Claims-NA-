@@ -4,7 +4,7 @@ pageextension 14301939 "AQD CustRbt Employee Card" extends "Employee Card"
     {
         addbefore(Payments)
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
 

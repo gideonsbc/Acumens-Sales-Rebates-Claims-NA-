@@ -13,7 +13,7 @@ pageextension 14301926 "AQDCustRbt PostedSalesInvoices" extends "Posted Sales In
         }
         addlast(Promoted)
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
                 actionref("AQD DoNotPayRebate_AER"; "AQD DoNotPayRebate") { }

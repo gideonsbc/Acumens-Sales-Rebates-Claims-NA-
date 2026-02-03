@@ -4,7 +4,7 @@ pageextension 14301924 "AQD CustRbt Posted SalesCrMemo" extends "Posted Sales Cr
     {
         addafter("Invoice Details")
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
                 Editable = false;
