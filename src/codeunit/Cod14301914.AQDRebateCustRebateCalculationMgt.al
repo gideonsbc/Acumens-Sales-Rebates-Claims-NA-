@@ -598,12 +598,10 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         if SourceDocType = SourceDocType::"Posted Invoice" then begin
             SalesInvoiceLine.Reset;
             SalesInvoiceLine.SetRange("Document No.", SalesInvoiceHeader."No.");
-            SalesInvoiceLine.SetFilter(Type, '%1|%2|%3|%4|%5',
+            SalesInvoiceLine.SetFilter(Type, '%1|%2|%3',
               SalesInvoiceLine.Type::Item,
               SalesInvoiceLine.Type::Resource,
-              SalesInvoiceLine.Type::"G/L Account",
-              SalesInvoiceLine.Type::"Fixed Asset",
-              SalesInvoiceLine.Type::"Charge (Item)");
+              SalesInvoiceLine.Type::"G/L Account");
             SalesInvoiceLine.SetFilter("No.", '<>%1', '');
             SalesInvoiceLine.SetFilter(Quantity, '<>%1', 0);
             OnAfterApplyInvoiceLineFilter(SalesInvoiceHeader, SalesInvoiceLine);
@@ -650,14 +648,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
     local procedure IsLineRebateEnabled(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date): Boolean
     var
-        Item: Record Item;
-        Location: Record Location;
-        Resource: Record Resource;
-        GLAccount: Record "G/L Account";
-        ItemCharge: Record "Item Charge";
-        FixedAsset: Record "Fixed Asset";
-        ItemCategory: Record "Item Category";
-        LocalRebateCategoryCode: Code[20];
         IsHandled: Boolean;
         IsRebateEnabled: Boolean;
     begin
@@ -704,7 +694,6 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         GlobalSalesRebateRate.RESET;
         GlobalSalesRebateRate.SetRange("Entity Type", GlobalSalesRebateRate."Entity Type"::Customer);
         GlobalSalesRebateRate.SetFilter("Entity No.", '%1|%2', CustomerNo, '');
-
         case DocumentLine_Type of
             DocumentLine_Type::Item:
                 begin

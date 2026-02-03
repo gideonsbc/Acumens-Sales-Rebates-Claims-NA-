@@ -1,6 +1,5 @@
 codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
 {
-
     trigger OnRun()
     begin
     end;
@@ -342,7 +341,7 @@ codeunit 14301915 "AQD Sales Rebate Rate Calc Mgt"
                                                 ItemRec.GET(CustomerRebateDetailsLocIn."No.");
                                                 ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
                                                 IF (CustomerRebateDetailsLocIn."Posting Date" < CustomerSalesRebateRate."Ending Date")
-                                                                                                then
+                                                then
                                                     ItemRec.SetFilter("Date Filter", '%1..%2',
                                                         CustomerSalesRebateRate."Starting Date",
                                                         CustomerRebateDetailsLocIn."Posting Date")
