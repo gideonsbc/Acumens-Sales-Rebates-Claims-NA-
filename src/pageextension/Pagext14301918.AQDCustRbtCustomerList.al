@@ -30,7 +30,7 @@ pageextension 14301918 "AQD CustRbt Customer List" extends "Customer List"
             group("AQD Customer Rebate GroupRef")
             {
                 Caption = 'Acumens Customer Rebate';
-                actionref(CustomerRebateSetup_Promoted; "AQD Customer Rebate Setup") { }
+                actionref("AQD CustomerRebateSetup_Promoted"; "AQD Customer Rebate Setup") { }
             }
         }
     }

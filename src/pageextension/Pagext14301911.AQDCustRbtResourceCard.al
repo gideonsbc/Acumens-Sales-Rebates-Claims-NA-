@@ -4,7 +4,7 @@ pageextension 14301911 "AQD CustRbt Resource Card" extends "Resource Card"
     {
         addafter("Personal Data")
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
 

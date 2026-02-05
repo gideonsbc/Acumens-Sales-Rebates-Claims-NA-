@@ -11,7 +11,7 @@ pageextension 14301919 "AQD CustRbt Sales Order" extends "Sales Order"
         }
         addafter(SalesLines)
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
 

@@ -4,7 +4,7 @@ pageextension 14301938 "AQD CustRbt Vendor Card" extends "Vendor Card"
     {
         addbefore(Payments)
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
 
@@ -74,7 +74,7 @@ pageextension 14301938 "AQD CustRbt Vendor Card" extends "Vendor Card"
         }
         addlast("Category_Prices & Discounts")
         {
-            actionref(Rebates_Promoted; "AQD Sales Rebates") { }
+            actionref("AQD Rebates_Promoted"; "AQD Sales Rebates") { }
         }
     }
 }

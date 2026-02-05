@@ -12,7 +12,7 @@ pageextension 14301922 "AQD CustRbt Sales Return Order" extends "Sales Return Or
 
         addafter(SalesLines)
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
                 field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")

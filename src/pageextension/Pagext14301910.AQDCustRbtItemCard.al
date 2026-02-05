@@ -4,7 +4,7 @@ pageextension 14301910 "AQD CustRbt Item Card" extends "Item Card"
     {
         addafter(Replenishment)
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
 

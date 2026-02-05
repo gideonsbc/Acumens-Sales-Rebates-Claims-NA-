@@ -32,7 +32,7 @@
     "allowDownloadingSource": true,
     "includeSourceInSymbolFile": true
   },
-  "runtime": "16.0",
+  "runtime": "14.0",
   "features": [
     "NoImplicitWith",
     "TranslationFile"

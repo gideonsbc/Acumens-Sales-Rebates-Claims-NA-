@@ -4,7 +4,7 @@ pageextension 14301925 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
     {
         addafter("Shipping and Billing")
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
                 Editable = false;

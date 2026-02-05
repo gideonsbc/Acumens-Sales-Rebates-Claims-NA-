@@ -4,7 +4,7 @@ pageextension 14301915 "AQD CustRbt Customer Card" extends "Customer Card"
     {
         addafter(Invoicing)
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
 
@@ -30,7 +30,7 @@ pageextension 14301915 "AQD CustRbt Customer Card" extends "Customer Card"
                     Editable = Rec."AQD Enroll for Cust Rebate";
                     Enabled = Rec."AQD Enroll for Cust Rebate";
                 }
-                field("Territory Code"; Rec."Territory Code")
+                field("AQD Territory Code"; Rec."Territory Code")
                 {
                     ApplicationArea = All;
                 }
@@ -63,7 +63,7 @@ pageextension 14301915 "AQD CustRbt Customer Card" extends "Customer Card"
             group("AQD Customer Rebate GroupRef")
             {
                 Caption = 'Acumens Customer Rebate';
-                actionref(CustomerRebateSetup_Promoted; "AQD Customer Rebate Setup") { }
+                actionref("AQD CustomerRebateSetup_Promoted"; "AQD Customer Rebate Setup") { }
             }
         }
     }

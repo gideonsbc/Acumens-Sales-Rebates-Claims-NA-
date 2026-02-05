@@ -4,7 +4,7 @@ pageextension 14301914 "AQD CustRbt G/L Account Card" extends "G/L Account Card"
     {
         addafter("Cost Accounting")
         {
-            group("Acumens Customer Rebate and Claims")
+            group("AQD Acumens Customer Rebate and Claims")
             {
                 Caption = 'Acumens Customer Rebates & Claims';
                 field("AQD Customer Rebate Enable"; Rec."AQD Customer Rebate Enabled")
