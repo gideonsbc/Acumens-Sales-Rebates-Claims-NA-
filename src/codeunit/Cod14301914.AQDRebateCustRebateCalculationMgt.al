@@ -241,12 +241,10 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
                 SalesInvLine.Reset;
                 SalesInvLine.SetRange("Document No.", SalesInvoiceHeader."No.");
-                SalesInvLine.SetFilter(Type, '%1|%2|%3|%4|%5',
+                SalesInvLine.SetFilter(Type, '%1|%2|%3',
                   SalesInvLine.Type::Item,
                   SalesInvLine.Type::"G/L Account",
-                  SalesInvLine.Type::Resource,
-                  SalesInvLine.Type::"Fixed Asset",
-                  SalesInvLine.Type::"Charge (Item)");
+                  SalesInvLine.Type::Resource);
                 SalesInvLine.SetFilter("No.", '<>%1', '');
                 SalesInvLine.SetFilter(Quantity, '<>0');
                 OnAfterApplyInvoiceLineFilter(SalesInvoiceHeader, SalesInvLine);
@@ -289,12 +287,10 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
             SalesInvLine.Reset;
             SalesInvLine.SetRange("Document No.", SalesInvHeaderIn."No.");
-            SalesInvLine.SetFilter(Type, '%1|%2|%3|%4|%5',
+            SalesInvLine.SetFilter(Type, '%1|%2|%3',
               SalesInvLine.Type::Item,
               SalesInvLine.Type::"G/L Account",
-              SalesInvLine.Type::Resource,
-              SalesInvLine.Type::"Fixed Asset",
-              SalesInvLine.Type::"Charge (Item)");
+              SalesInvLine.Type::Resource);
             SalesInvLine.SetFilter("No.", '<>%1', '');
             SalesInvLine.SetFilter(Quantity, '<>0');
             OnAfterApplyInvoiceLineFilter(SalesInvHeaderIn, SalesInvLine);
