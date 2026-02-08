@@ -1391,6 +1391,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         TempSalesShptLine: Record "Sales Shipment Line" temporary;
         TempReturnReceiptLine: Record "Return Receipt Line" temporary;
         RebateProgramCodeRec: Record "AQD Cust Rebate Program Code";
+        TempItemLedgEntry: Record "Item Ledger Entry" temporary;
+        ItemLedgEntry: Record "Item Ledger Entry";
         LocalRebateCategoryCode: Code[20];
         IsRebateEnabled: Boolean;
     begin
@@ -1408,13 +1410,22 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                     PostingDate := SalesInvHeaderIn."Posting Date";
                     LocalDocumentLine_Type := SalesInvLineIn.Type;
                     LocalDocumentLine_No := SalesInvLineIn."No.";
+                    SalesInvLineIn.GetItemLedgEntries(TempItemLedgEntry, false);
                 end;
             DocumentTypeIn::"Credit Memo":
                 begin
                     PostingDate := SalesCrMemoHeaderIn."Posting Date";
                     LocalDocumentLine_Type := SalesCrMemoLineIn.Type;
                     LocalDocumentLine_No := SalesCrMemoLineIn."No.";
+                    SalesCrMemoLineIn.GetItemLedgEntries(TempItemLedgEntry, FALSE);
                 end;
+        END;
+
+        IF TempItemLedgEntry.FindFirst() THEN begin
+            REPEAT
+                TempItemLedgEntry."AQD Cust Rebate Amount" := 0;
+                TempItemLedgEntry.Modify();
+            UNTIL TempItemLedgEntry.Next() = 0;
         END;
 
         CASE LocalDocumentLine_Type OF
@@ -1586,10 +1597,36 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                         IF NOT IsHandled then begin
                             CustomerRebateDetails.Insert();
                             LineNo += 10000;
+
+                            TempItemLedgEntry.RESET;
+                            IF TempItemLedgEntry.FindFirst() THEN BEGIN
+                                REPEAT
+                                    IF CustomerRebateDetails."Quantity" <> 0 THEN BEGIN
+                                        TempItemLedgEntry."AQD Cust Rebate Amount" += ROUND(CustomerRebateDetails."Customer Rebate Amount" * ABS(TempItemLedgEntry.Quantity) / CustomerRebateDetails.Quantity, 0.01);
+                                        TempItemLedgEntry.Modify();
+                                    END;
+                                UNTIL TempItemLedgEntry.Next() = 0;
+                            END;
                         end;
                         OnAfterInsertRebateDetail(CustomerRebateDetails);
                     end;
                 Until (TempRebateCategoryLines.Next() = 0);
+                TempItemLedgEntry.RESET;
+                IF TempItemLedgEntry.FindFirst() THEN BEGIN
+                    REPEAT
+                        IF ItemLedgEntry.GET(TempItemLedgEntry."Entry No.") THEN BEGIN
+                            IF ItemLedgEntry."AQD Cust Rebate Amount" <> TempItemLedgEntry."AQD Cust Rebate Amount" THEN BEGIN
+                                CASE DocumentTypeIn OF
+                                    DocumentTypeIn::Invoice:
+                                        ItemLedgEntry."AQD Cust Rebate Amount" += -1 * TempItemLedgEntry."AQD Cust Rebate Amount";
+                                    DocumentTypeIn::"Credit Memo":
+                                        ItemLedgEntry."AQD Cust Rebate Amount" += TempItemLedgEntry."AQD Cust Rebate Amount";
+                                END;
+                                ItemLedgEntry.Modify();
+                            END;
+                        END;
+                    UNTIL TempItemLedgEntry.Next() = 0;
+                END;
             END;
         END;
     END;
