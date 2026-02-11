@@ -204,8 +204,8 @@ report 14301910 "AQD Inventory - Customer Sales"
         CurrItemLedgerEntry.CalcFields("Sales Amount (Actual)", "Cost Amount (Actual)", "Cost Amount (Non-Invtbl.)");
         Profit := CurrItemLedgerEntry."Sales Amount (Actual)" +
                   CurrItemLedgerEntry."Cost Amount (Actual)" +
-                  CurrItemLedgerEntry."Cost Amount (Non-Invtbl.)";// +
-                                                                  //CurrItemLedgerEntry."AQD Customer Rebate Amount";
+                  CurrItemLedgerEntry."Cost Amount (Non-Invtbl.)" +
+                  CurrItemLedgerEntry."AQD Cust Rebate Amount";
         DiscountAmount := CalcDiscountAmount(CurrItemLedgerEntry."Entry No.");
         CalcAppliedPurchaseAmounts(CurrItemLedgerEntry."Entry No.", CalculatedPurchaseRebate, AppliedCostAmount);
 
@@ -218,12 +218,11 @@ report 14301910 "AQD Inventory - Customer Sales"
         ValueEntryBuf2."Sales Amount (Actual)" += CurrItemLedgerEntry."Sales Amount (Actual)";
         ValueEntryBuf2."Sales Amount (Expected)" += Profit;
         ValueEntryBuf2."Purchase Amount (Expected)" += DiscountAmount;
-        //ValueEntryBuf2."Cost Posted to G/L" += CurrItemLedgerEntry."AQD Customer Rebate Amount";
+        ValueEntryBuf2."Cost Posted to G/L" += CurrItemLedgerEntry."AQD Cust Rebate Amount";
         ValueEntryBuf2."Expected Cost Posted to G/L" += CalculatedPurchaseRebate;
         //ValueEntryBuf2."Cost Amount (Actual)" := AppliedCostAmount;
         ValueEntryBuf2."Cost Amount (Actual)" := CurrItemLedgerEntry."Cost Amount (Actual)" +
-                                                 CurrItemLedgerEntry."Cost Amount (Non-Invtbl.)" - CalculatedPurchaseRebate;
-        //CurrItemLedgerEntry."AQD Customer Rebate Amount";
+                                                 CurrItemLedgerEntry."Cost Amount (Non-Invtbl.)"; // - CalculatedPurchaseRebate;
     end;
 
     local procedure AddReportLine(var ValueEntryBuf2: Record "Value Entry")
