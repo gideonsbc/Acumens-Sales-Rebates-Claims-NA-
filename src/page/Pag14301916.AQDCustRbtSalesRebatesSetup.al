@@ -285,8 +285,6 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                 ApplicationArea = Basic, Suite;
                 Caption = 'Filter';
                 Image = "Filter";
-                Promoted = true;
-                PromotedCategory = Process;
                 ToolTip = 'Apply the filter.';
                 Visible = IsOnMobile;
 
@@ -300,8 +298,6 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                 ApplicationArea = Basic, Suite;
                 Caption = 'Clear Filter';
                 Image = ClearFilter;
-                Promoted = true;
-                PromotedCategory = Process;
                 ToolTip = 'Clear filter.';
                 Visible = IsOnMobile;
 
@@ -313,6 +309,50 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                     SetEditableFields;
                 end;
             }
+            action(CopySalesRebateRates)
+            {
+                Caption = 'Copy Rebate Rates';
+                trigger OnAction()
+                var
+                    FromSalesRebateSetup: Record "AQD Sales Rebates Rate";
+                    ToSalesRebateSetup: Record "AQD Sales Rebates Rate";
+                    StartDate: Date;
+                    EndDate: Date;
+                    CopiedRow: Integer;
+                    UserConfirmMsg: Label 'Do you want to copy Sales Rebate Rates?';
+                    UserCancelMsg: Label 'The process is cancelled.';
+                    CompletionMsg: Label '%1 Sales Rebate Rates are copied. ';
+                    CustRbtUserInputPeriodPage: Page "AQD CustRbt User Input Period";
+                BEGIN
+                    CLEAR(CustRbtUserInputPeriodPage);
+                    CustRbtUserInputPeriodPage.LookupMode(TRUE);
+                    IF CustRbtUserInputPeriodPage.RUNMODAL = Action::LookupOK THEN
+                        CustRbtUserInputPeriodPage.GetInputDate(StartDate, EndDate)
+                    ELSE BEGIN
+                        Message(UserCancelMsg);
+                        EXIT;
+                    END;
+
+                    FromSalesRebateSetup.Copy(Rec, FALSE);
+                    IF FromSalesRebateSetup.FindFirst() THEN BEGIN
+                        REPEAT
+                            ToSalesRebateSetup.INIT;
+                            ToSalesRebateSetup := FromSalesRebateSetup;
+                            ToSalesRebateSetup."Starting Date" := StartDate;
+                            ToSalesRebateSetup."Ending Date" := EndDate;
+                            IF ToSalesRebateSetup.Insert THEN
+                                CopiedRow += 1;
+                        UNTIL FromSalesRebateSetup.Next() = 0;
+                    END;
+                    Message(StrSubstNo(CompletionMsg, CopiedRow));
+                END;
+            }
+        }
+        area(Promoted)
+        {
+            actionref(SalesPricesFilterRef; SalesPricesFilter) { }
+            actionref(ClearFilterRef; ClearFilter) { }
+            actionref(CopySalesRebateRatesRef; CopySalesRebateRates) { }
         }
     }
 
