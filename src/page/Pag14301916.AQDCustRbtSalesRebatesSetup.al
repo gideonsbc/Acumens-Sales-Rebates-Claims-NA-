@@ -315,19 +315,23 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                 trigger OnAction()
                 var
                     FromSalesRebateSetup: Record "AQD Sales Rebates Rate";
+                    DeleteSalesRebateSetup: Record "AQD Sales Rebates Rate";
                     ToSalesRebateSetup: Record "AQD Sales Rebates Rate";
+                    DeleteOldRates: Boolean;
                     StartDate: Date;
                     EndDate: Date;
                     CopiedRow: Integer;
+                    DeletedRows: Integer;
                     UserConfirmMsg: Label 'Do you want to copy Sales Rebate Rates?';
                     UserCancelMsg: Label 'The process is cancelled.';
-                    CompletionMsg: Label '%1 Sales Rebate Rates are copied. ';
+                    CompletionMsg: Label '%1 Sales Rebate Rates are copied.';
+                    CompletionWithDeleteMsg: Label '%1 Sales Rebate Rates are copied.\\%2 Old Sales Rebate Rates are deleted.';
                     CustRbtUserInputPeriodPage: Page "AQD CustRbt User Input Period";
                 BEGIN
                     CLEAR(CustRbtUserInputPeriodPage);
                     CustRbtUserInputPeriodPage.LookupMode(TRUE);
                     IF CustRbtUserInputPeriodPage.RUNMODAL = Action::LookupOK THEN
-                        CustRbtUserInputPeriodPage.GetInputDate(StartDate, EndDate)
+                        CustRbtUserInputPeriodPage.GetInputDate(StartDate, EndDate, DeleteOldRates)
                     ELSE BEGIN
                         Message(UserCancelMsg);
                         EXIT;
@@ -340,11 +344,32 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
                             ToSalesRebateSetup := FromSalesRebateSetup;
                             ToSalesRebateSetup."Starting Date" := StartDate;
                             ToSalesRebateSetup."Ending Date" := EndDate;
-                            IF ToSalesRebateSetup.Insert THEN
+                            IF ToSalesRebateSetup.Insert THEN BEGIN
                                 CopiedRow += 1;
+                                IF DeleteOldRates THEN BEGIN
+                                    IF DeleteSalesRebateSetup.GET(FromSalesRebateSetup."Entity Type",
+                                                                  FromSalesRebateSetup."Entity No.",
+                                                                  FromSalesRebateSetup."Territory Code",
+                                                                  FromSalesRebateSetup."Line Type",
+                                                                  FromSalesRebateSetup."No.",
+                                                                  FromSalesRebateSetup."Variant Code",
+                                                                  FromSalesRebateSetup."Rebate Program Code",
+                                                                  FromSalesRebateSetup."Starting Date",
+                                                                  FromSalesRebateSetup."Unit of Measure Code",
+                                                                  FromSalesRebateSetup."Minimum Quantity",
+                                                                  FromSalesRebateSetup."Minimum Amount")
+                                    THEN BEGIN
+                                        DeletedRows += 1;
+                                        DeleteSalesRebateSetup.Delete();
+                                    END;
+                                END;
+                            END;
                         UNTIL FromSalesRebateSetup.Next() = 0;
                     END;
-                    Message(StrSubstNo(CompletionMsg, CopiedRow));
+                    IF DeleteOldRates THEN
+                        Message(StrSubstNo(CompletionWithDeleteMsg, CopiedRow, DeletedRows))
+                    ELSE
+                        Message(StrSubstNo(CompletionMsg, CopiedRow));
                 END;
             }
         }

@@ -40,18 +40,25 @@ page 14301957 "AQD CustRbt User Input Period"
                     END;
                 END;
             }
+            field(DeleteOldRates; DeleteOldRates)
+            {
+                ApplicationArea = All;
+                Caption = 'Delete Old Rates';
+            }
         }
     }
 
-    procedure GetInputDate(var StartDateIn: Date; var EndDateIn: Date)
+    procedure GetInputDate(var StartDateIn: Date; var EndDateIn: Date; var DeleteOldRatesIn: Boolean)
     BEGIN
         StartDateIn := StartDate;
         EndDateIn := EndDate;
+        DeleteOldRatesIn := DeleteOldRates;
     END;
 
     VAR
         StartDate: Date;
         EndDate: Date;
+        DeleteOldRates: Boolean;
         StartDateLbl: Label 'Start Date %1 must be less than End Date %2.';
         EndDateLbl: Label 'End Date %1 must be greater than Start Date %2.';
 }
