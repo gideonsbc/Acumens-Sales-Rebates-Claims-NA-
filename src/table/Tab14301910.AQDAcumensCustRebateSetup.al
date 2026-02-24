@@ -114,7 +114,7 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         }
         field(510; "Default Rebate Customer No"; Code[20])
         {
-            Caption = 'Default Rebate Customer No.';
+            Caption = 'Rebate Bill-To Customer No.';
             TableRelation = Customer;
             DataClassification = CustomerContent;
         }

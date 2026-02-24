@@ -15,6 +15,7 @@ pageextension 14301915 "AQD CustRbt Customer Card" extends "Customer Card"
                 field("AQD Cust Rebate Customer No."; Rec."AQD Cust Rebate Customer No.")
                 {
                     ApplicationArea = All;
+                    Caption = 'Rebate Bill-To Customer No.';
                     Editable = Rec."AQD Enroll for Cust Rebate";
                     Enabled = Rec."AQD Enroll for Cust Rebate";
                 }
