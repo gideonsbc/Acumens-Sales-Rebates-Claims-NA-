@@ -375,8 +375,8 @@ page 14301916 "AQD CustRbt SalesRebates Setup"
         }
         area(Promoted)
         {
-            actionref(SalesPricesFilterRef; SalesPricesFilter) { }
-            actionref(ClearFilterRef; ClearFilter) { }
+            actionref(SalesPricesFilter_Promoted; SalesPricesFilter) { }
+            actionref(ClearFilter_Promoted; ClearFilter) { }
             actionref(CopySalesRebateRatesRef; CopySalesRebateRates) { }
         }
     }
