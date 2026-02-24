@@ -6,6 +6,7 @@ tableextension 14301948 "AQD Cust Rbt ItemLdgrEntry Ext" extends "Item Ledger En
         {
             BlankZero = TRUE;
             Caption = 'Customer Rebate Amount';
+            DataClassification = CustomerContent;
         }
     }
 }
