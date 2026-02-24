@@ -41,14 +41,52 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterInitRecord, '', FALSE, FALSE)]
     local procedure Tab36_SalesHeader_OnAfterInitRecord(var SalesHeader: Record "Sales Header")
     begin
-        SalesHeader."AQD Customer Rebate Order Date" := SalesHeader."Order Date";
+        //SalesHeader."AQD Customer Rebate Order Date" := SalesHeader."Order Date";
     end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, "Bill-to Customer No.", FALSE, FALSE)]
+    local procedure Tab36_SalesHeader_BillToCustomerNo_OnAfterValidate(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
+    var
+        Customer: Record Customer;
+    begin
+        IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
+            CASE Customer."AQD CustRbt Calculation Date" OF
+                Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
+                    Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
+                Customer."AQD CustRbt Calculation Date"::"Shipment Date":
+                    Rec."AQD Customer Rebate Order Date" := Rec."Posting Date";
+            END;
+        END;
+    END;
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, "Order Date", FALSE, FALSE)]
     local procedure Tab36_SalesHeader_OrderDate_OnAfterValidateEvent(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
+    var
+        Customer: Record Customer;
     BEGIN
-        IF Rec."AQD Customer Rebate Order Date" <> Rec."Order Date" THEN
-            Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
+        IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
+            CASE Customer."AQD CustRbt Calculation Date" OF
+                Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
+                    Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
+                Customer."AQD CustRbt Calculation Date"::"Shipment Date":
+                    Rec."AQD Customer Rebate Order Date" := Rec."Posting Date";
+            END;
+        END;
+    END;
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, "Posting Date", FALSE, FALSE)]
+    local procedure Tab36_SalesHeader_PostingDate_OnAfterValidateEvent(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
+    var
+        Customer: Record Customer;
+    BEGIN
+        IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
+            CASE Customer."AQD CustRbt Calculation Date" OF
+                Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
+                    Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
+                Customer."AQD CustRbt Calculation Date"::"Shipment Date":
+                    Rec."AQD Customer Rebate Order Date" := Rec."Posting Date";
+            END;
+        END;
     END;
 
     [EventSubscriber(ObjectType::Table, Database::Resource, 'OnBeforeInsertEvent', '', true, false)]
@@ -74,6 +112,70 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         GenJnlBatch.SetRange(GenJnlBatch."AQD Customer Rebate", CalledFromRebate);
         GenJnlBatch.FilterGroup(0);
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforePostSalesDoc, '', false, false)]
+    local procedure Cod80_SalesPost_OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; var HideProgressWindow: Boolean; var IsHandled: Boolean; var CalledBy: Integer)
+    var
+        CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+        BillToCustomer: Record Customer;
+        Item: Record Item;
+        GLAccount: Record "G/L Account";
+        Resource: Record Resource;
+        SalesLine: Record "Sales Line";
+        RebateEnabled: Boolean;
+        CustomerRebateSetupDoesNotExist: Label 'Customer Rebate Setup does not exist. Please set up and try again.';
+        CustomerRebateDefaultValuesMissing: Label 'Customer Rebate Setup default values are missing. Please update the setup and try again.';
+    BEGIN
+        IF SalesHeader.IsTemporary THEN
+            EXIT;
+
+        IF BillToCustomer.GET(SalesHeader."Bill-To Customer No.") THEN
+            IF NOT BillToCustomer."AQD Enroll for Cust Rebate" THEN
+                EXIT;
+
+        SalesLine.RESET;
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SETRANGE("Document No.", SalesHeader."No.");
+        SalesLine.SETFILTER(Type, '%1|%2|%3',
+            SalesLine.Type::Item,
+            SalesLine.Type::"G/L Account",
+            SalesLine.Type::Resource);
+        SalesLine.SETFILTER("No.", '<>%1', '');
+        SalesLine.SetFilter(Quantity, '<>%1', 0);
+        IF NOT SalesLine.FINDFIRST THEN
+            EXIT;
+
+        REPEAT
+            CASE SalesLine.Type OF
+                SalesLine.Type::Item:
+                    BEGIN
+                        IF Item.GET(SalesLine."No.") THEN
+                            RebateEnabled := Item."AQD Customer Rebate Enabled";
+                    END;
+                SalesLine.Type::Resource:
+                    BEGIN
+                        IF Resource.GET(SalesLine."No.") THEN
+                            RebateEnabled := Resource."AQD Customer Rebate Enabled";
+                    END;
+                SalesLine.Type::"G/L Account":
+                    BEGIN
+                        IF GLAccount.GET(SalesLine."No.") THEN
+                            RebateEnabled := GLAccount."AQD Customer Rebate Enabled";
+                    END;
+            END;
+        UNTIL (SalesLine.NEXT = 0) OR RebateEnabled;
+
+        IF NOT RebateEnabled THEN
+            EXIT;
+
+        IF NOT CustomerRebateSetup.GET THEN
+            Error(CustomerRebateSetupDoesNotExist);
+
+        IF (CustomerRebateSetup."Default Rebate Customer No" = '') OR
+           (CustomerRebateSetup."Customer Rebate Document Nos" = '')
+        THEN
+            Error(CustomerRebateDefaultValuesMissing);
+    END;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesShptHeaderInsert, '', false, false)]
     local procedure Cod80_SalesPost_OnBeforeSalesShptHeaderInsert(var SalesShptHeader: Record "Sales Shipment Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; var IsHandled: Boolean; var TempWhseRcptHeader: Record "Warehouse Receipt Header" temporary; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header" temporary; WhseShip: Boolean; InvtPickPutaway: Boolean)
