@@ -242,16 +242,16 @@ page 14301933 "AQD Customer Rebate Document"
         CustomerRebateUserSetup.Get(UserId);
         PostEnabled := false;
         ApproveEnabled := false;
-        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
-           [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
-            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
+        if CustomerRebateUserSetup."AQD Cust Rebate Rebate Role" in
+           [CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::"Sales Manager",
+            CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::Admin]
         then
             PostEnabled := true;
 
-        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
-           [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson,
-            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
-            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
+        if CustomerRebateUserSetup."AQD Cust Rebate Rebate Role" in
+           [CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::Salesperson,
+            CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::"Sales Manager",
+            CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::Admin]
         then
             ApproveEnabled := true;
     end;
@@ -263,16 +263,16 @@ page 14301933 "AQD Customer Rebate Document"
         PostEnabled := false;
         ApproveEnabled := false;
 
-        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
-           [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
-            CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
+        if CustomerRebateUserSetup."AQD Cust Rebate Rebate Role" in
+           [CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::"Sales Manager",
+            CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::Admin]
          then
             PostEnabled := true;
 
-        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" in
-          [CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson,
-           CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
-           CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
+        if CustomerRebateUserSetup."AQD Cust Rebate Rebate Role" in
+          [CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::Salesperson,
+           CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::"Sales Manager",
+           CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::Admin]
         then
             ApproveEnabled := true;
     end;

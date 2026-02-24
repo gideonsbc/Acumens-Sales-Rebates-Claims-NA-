@@ -10,6 +10,7 @@ codeunit 14301918 "AQD Customer Rebate Install"
     trigger OnInstallAppPerCompany()
     var
         SalesSetup: Record "Sales & Receivables Setup";
+        UserSetup: Record "User Setup";
         ModifyRecord: Boolean;
         JobQueueEntry: Record "Job Queue Entry";
         GenCustRebateText: Label 'Generate Customer Rebate';
@@ -31,6 +32,10 @@ codeunit 14301918 "AQD Customer Rebate Install"
         END;
         IF ModifyRecord THEN
             SalesSetup.Modify();
+
+        UserSetup.RESET;
+        UserSetup.SetRange("AQD Cust Rebate Rebate Role", UserSetup."AQD Cust Rebate Rebate Role"::" ");
+        UserSetup.ModifyAll("AQD Cust Rebate Rebate Role", UserSetup."AQD Cust Rebate Rebate Role"::Admin);
 
         JobQueueEntry.RESET;
         JobQueueEntry.SetRange("Object Type to Run", JobQueueEntry."Object Type to Run"::Report);
