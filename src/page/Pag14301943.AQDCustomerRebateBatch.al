@@ -100,16 +100,16 @@ page 14301943 "AQD Customer Rebate Batch"
             RebateSetup.INIT;
         ShowBillToCustomer := RebateSetup."Post Rebates by Bill-To Cust";
 
-        if RebateUserSetup."AQD Cust Rbt Rebate Role" in
-          [RebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
-           RebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
+        if RebateUserSetup."AQD Cust Rebate Rebate Role" in
+          [RebateUserSetup."AQD Cust Rebate Rebate Role"::"Sales Manager",
+           RebateUserSetup."AQD Cust Rebate Rebate Role"::Admin]
         then
             PostEnabled := true;
 
-        if RebateUserSetup."AQD Cust Rbt Rebate Role" in
-          [RebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson,
-           RebateUserSetup."AQD Cust Rbt Rebate Role"::"Sales Manager",
-           RebateUserSetup."AQD Cust Rbt Rebate Role"::Admin]
+        if RebateUserSetup."AQD Cust Rebate Rebate Role" in
+          [RebateUserSetup."AQD Cust Rebate Rebate Role"::Salesperson,
+           RebateUserSetup."AQD Cust Rebate Rebate Role"::"Sales Manager",
+           RebateUserSetup."AQD Cust Rebate Rebate Role"::Admin]
         then
             ApproveEnabled := true;
     end;

@@ -8,6 +8,10 @@ tableextension 14301942 "AQD Cust Rbt User Setup Ext" extends "User Setup"
             OptionCaption = 'Salesperson,Sales Manager,Admin';
             OptionMembers = Salesperson,"Sales Manager",Admin;
             DataClassification = CustomerContent;
+            InitValue = Admin;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Rebate role is moved to a new field in User Setup table.';
+            ObsoleteTag = 'Removed From 25.1023.0.3';
         }
         field(14301911; "AQD Cust Rbt GlobalDim1Filter"; Code[250])
         {
@@ -45,6 +49,12 @@ tableextension 14301942 "AQD Cust Rbt User Setup Ext" extends "User Setup"
             TableRelation = Territory;
             ValidateTableRelation = false;
             DataClassification = CustomerContent;
+        }
+        field(14301916; "AQD Cust Rebate Rebate Role"; Enum "AQD Cust Rebate Rebate Role")
+        {
+            Caption = 'Rebate Role';
+            DataClassification = CustomerContent;
+            InitValue = Admin;
         }
     }
 }

@@ -32,7 +32,7 @@ page 14301918 "AQD Customer Rebate Cues"
 
         RebateUserSetup.Get(UserId);
         Rec.FilterGroup(2);
-        if RebateUserSetup."AQD Cust Rbt Rebate Role" = RebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson then
+        if RebateUserSetup."AQD Cust Rebate Rebate Role" = RebateUserSetup."AQD Cust Rebate Rebate Role"::Salesperson then
             RebateUserSetup.TestField("AQD Cust Rbt SP Code Filter");
         if RebateUserSetup."AQD Cust Rbt SP Code Filter" <> '' then
             Rec.SetFilter("Salesperson Code Filter", RebateUserSetup."AQD Cust Rbt SP Code Filter");

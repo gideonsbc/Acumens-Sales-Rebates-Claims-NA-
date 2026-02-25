@@ -201,7 +201,7 @@ page 14301956 "AQD Posted CustRbtDetail List"
     begin
         CustomerRebateUserSetup.Get(UserId);
         Rec.FilterGroup(2);
-        if CustomerRebateUserSetup."AQD Cust Rbt Rebate Role" = CustomerRebateUserSetup."AQD Cust Rbt Rebate Role"::Salesperson then
+        if CustomerRebateUserSetup."AQD Cust Rebate Rebate Role" = CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::Salesperson then
             CustomerRebateUserSetup.TestField("AQD Cust Rbt SP Code Filter");
         if CustomerRebateUserSetup."AQD Cust Rbt SP Code Filter" <> '' then
             Rec.SetFilter("Salesperson Code", CustomerRebateUserSetup."AQD Cust Rbt SP Code Filter");

@@ -11,6 +11,14 @@ pageextension 14301935 "AQD Cust Rbt User Setup Ext" extends "AQD CF User Setup 
                 field("AQD Cust Rbt Rebate Role"; Rec."AQD Cust Rbt Rebate Role")
                 {
                     ApplicationArea = All;
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Rebate role is moved to a new field in User Setup table.';
+                    ObsoleteTag = 'Removed From 25.1023.0.3';
+                    Visible = false;
+                }
+                field("AQD Cust Rebate Rebate Role"; Rec."AQD Cust Rebate Rebate Role")
+                {
+                    ApplicationArea = All;
                 }
                 field("AQD Cust Rbt Location Filter"; Rec."AQD Cust Rbt Location Filter")
                 {
