@@ -281,9 +281,9 @@ page 14301919 "AQD Cust Rebate & Claims RC"
             {
                 Caption = 'Setup';
                 Image = Setup;
-                action("Acumens Rebate Setup")
+                action("Acumens Customer Rebates Claims Setup")
                 {
-                    Caption = 'Acumens Claims & Rebates Setup';
+                    Caption = 'Acumens Customer Rebates & Claims Setup';
                     ApplicationArea = All;
                     Image = CostAccountingSetup;
                     RunObject = Page "AQD Acumens CustRbtClaim Setup";

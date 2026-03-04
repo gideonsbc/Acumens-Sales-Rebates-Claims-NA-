@@ -7,6 +7,7 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
     RefreshOnActivate = true;
     SourceTable = "AQD Acumens CustRbtClaim Setup";
     ApplicationArea = All;
+    UsageCategory = Administration;
 
     layout
     {
@@ -295,12 +296,20 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 if GenJournalBatch.FindFirst() then
                     Rec."Sales Journal Batch Name" := GenJournalBatch.Name
                 ELSE begin
-                    GenJournalBatch.Init();
-                    GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
-                    GenJournalBatch.Name := 'CUSTREBATE';
-                    GenJournalBatch.Description := 'Sales Rebate Batch';
-                    GenJournalBatch."AQD Customer Rebate" := TRUE;
-                    GenJournalBatch.Insert();
+                    IF NOT GenJournalBatch.GET(GenJournalTemplate.Name, 'CUSTREBATE') THEN BEGIN
+                        GenJournalBatch.Init();
+                        GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
+                        GenJournalBatch.Name := 'CUSTREBATE';
+                        GenJournalBatch.Description := 'Sales Rebate Batch';
+                        GenJournalBatch."AQD Customer Rebate" := TRUE;
+                        GenJournalBatch.Insert();
+                        Rec."Sales Journal Batch Name" := GenJournalBatch.Name;
+                    END ELSE begin
+                        IF NOT GenJournalBatch."AQD Customer Rebate" THEN BEGIN
+                            GenJournalBatch."AQD Customer Rebate" := TRUE;
+                            GenJournalBatch.Modify();
+                        END
+                    end;
                     Rec."Sales Journal Batch Name" := GenJournalBatch.Name;
                 end;
             end;
