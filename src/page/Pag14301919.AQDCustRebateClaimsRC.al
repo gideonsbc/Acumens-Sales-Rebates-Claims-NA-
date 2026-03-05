@@ -288,6 +288,16 @@ page 14301919 "AQD Cust Rebate & Claims RC"
                     Image = CostAccountingSetup;
                     RunObject = Page "AQD Acumens CustRbtClaim Setup";
                 }
+                action("Acumens Rebate Setup")
+                {
+                    Caption = 'Acumens Customer Rebates & Claims Setup';
+                    ApplicationArea = All;
+                    Image = CostAccountingSetup;
+                    RunObject = Page "AQD Acumens CustRbtClaim Setup";
+                    Visible = false;
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Replaced with Acumens Customer Rebates Claims Setup';
+                }
                 action("User Setup")
                 {
                     Caption = 'User Setup';
