@@ -125,6 +125,7 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         RebateEnabled: Boolean;
         CustomerRebateSetupDoesNotExist: Label 'Customer Rebate Setup does not exist. Please set up and try again.';
         CustomerRebateDefaultValuesMissing: Label 'Customer Rebate Setup default values are missing. Please update the setup and try again.';
+        CustomerRebateCardDefaultValuesMissing: Label 'Customer Card %1 - %2 is missing. Please update the setup and try again.';
     BEGIN
         IF SalesHeader.IsTemporary THEN
             EXIT;
@@ -171,10 +172,11 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         IF NOT CustomerRebateSetup.GET THEN
             Error(CustomerRebateSetupDoesNotExist);
 
-        IF (CustomerRebateSetup."Default Rebate Customer No" = '') OR
-           (CustomerRebateSetup."Customer Rebate Document Nos" = '')
-        THEN
+        IF CustomerRebateSetup."Customer Rebate Document Nos" = '' THEN
             Error(CustomerRebateDefaultValuesMissing);
+
+        IF BillToCustomer."AQD Cust Rebate Customer No." = '' THEN
+            Error(CustomerRebateCardDefaultValuesMissing, BillToCustomer."No.", BillToCustomer."AQD Cust Rebate Customer No.");
     END;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesShptHeaderInsert, '', false, false)]

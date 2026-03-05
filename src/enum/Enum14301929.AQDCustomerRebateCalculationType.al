@@ -8,10 +8,10 @@ enum 14301929 "AQD CustRebateCalculation Type"
     }
     value(1; "Shipment Date")
     {
-        Caption = 'SO Posting Date';
+        Caption = 'Shipment Posting Date';
     }
     value(2; "Rebate Order Date")
     {
-        Caption = 'SO Order Date';
+        Caption = 'Sales Order Date';
     }
 }

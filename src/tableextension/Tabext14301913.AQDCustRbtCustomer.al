@@ -15,6 +15,7 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
                    Rec."AQD Enroll for Cust Rebate"
                 THEN BEGIN
                     Rec."AQD Cust Rebate Customer No." := CustomerRebateSetup."Default Rebate Customer No";
+                    Rec."AQD CustRbt Calculation Date" := Rec."AQD CustRbt Calculation Date"::"Shipment Date";
                     IF Rec."AQD Cust Rebate Customer No." = '' THEN BEGIN
                         IF Rec."Bill-to Customer No." <> '' THEN
                             Rec."AQD Cust Rebate Customer No." := Rec."Bill-to Customer No."
