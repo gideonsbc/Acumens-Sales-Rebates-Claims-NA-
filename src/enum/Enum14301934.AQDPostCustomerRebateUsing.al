@@ -8,7 +8,7 @@ enum 14301934 "AQD Rebate Payable AC"
     }
     value(1; Customer)
     {
-        Caption = 'Customer';
+        Caption = 'Credit Customer';
     }
     value(2; "Rebate Payable AC")
     {

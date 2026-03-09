@@ -298,6 +298,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
         if CustomerRebateLine.FindFirst() then begin
             PostedCustRebateHeader.Init();
             PostedCustRebateHeader.TransferFields(CustomerRebateHeader);
+            PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Posted;
             PostedCustRebateHeader.Insert();
 
             MoveCustomerRebateLine(CustomerRebateHeader);
@@ -551,6 +552,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
 
                 PostedCustomerRebateLine.Init();
                 PostedCustomerRebateLine.TransferFields(CustomerRebateLine);
+                PostedCustomerRebateLine."Customer Rebate Status" := PostedCustomerRebateLine."Customer Rebate Status"::Posted;
                 PostedCustomerRebateLine.Insert();
             //END;
             until CustomerRebateLine.Next() = 0;
@@ -568,6 +570,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
             REPEAT
                 PostedCustomerRebateDetails.Init();
                 PostedCustomerRebateDetails.TransferFields(CustomerRebateDetails);
+                PostedCustomerRebateDetails."Customer Rebate Status" := PostedCustomerRebateDetails."Customer Rebate Status"::Posted;
                 PostedCustomerRebateDetails.Insert();
             UNTIL CustomerRebateDetails.Next() = 0;
         END;
@@ -784,7 +787,7 @@ codeunit 14301916 "AQD Customer Rebate Post"
                     ELSE
                         NextLineNo := 10000;
 
-                    LocalCustomer.GET(SalesCredirMemo."Bill-To Customer No.");
+                    LocalCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
 
                     SalesCrMemoLine.INIT;
                     SalesCrMemoLine."Document Type" := SalesCrMemoLine."Document Type"::"Credit Memo";

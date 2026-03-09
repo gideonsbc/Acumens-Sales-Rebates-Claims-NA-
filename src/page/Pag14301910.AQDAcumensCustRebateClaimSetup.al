@@ -44,6 +44,24 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 field("Start Date"; Rec."Start Date")
                 {
                     ApplicationArea = All;
+                    Caption = 'Rebate Calculation Start Date';
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Duplicate Field';
+                    ObsoleteTag = 'Discontined from 25.1023.0.7';
+                    Visible = FALSE;
+                }
+                field("Customer Rebate Start Date"; Rec."Customer Rebate Start Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Rebate Calculation Start Date';
+                }
+                field("Rebate Calc Start Invoice No."; Rec."Rebate Calc Start Invoice No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Rebate Calc Start CM No."; Rec."Rebate Calc Start CM No.")
+                {
+                    ApplicationArea = All;
                 }
                 field("Exclude Credit Memo"; Rec."Exclude Credit Memo")
                 {
@@ -88,7 +106,6 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                         Caption = 'Rebate Bill-To Customer No.';
                         Editable = Rec."Bill-To Rebate Customer" = Rec."Bill-To Rebate Customer"::"Customer Card Setup";
                         Enabled = Rec."Bill-To Rebate Customer" = Rec."Bill-To Rebate Customer"::"Customer Card Setup";
-                        ShowMandatory = TRUE;
                     }
                     field("Default Setup Rebate Type"; Rec."Default Setup Rebate Type")
                     {
@@ -336,12 +353,14 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 if GenJournalBatch.FindFirst() then
                     Rec."Sales Journal Batch Name" := GenJournalBatch.Name
                 ELSE begin
-                    GenJournalBatch.Init();
-                    GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
-                    GenJournalBatch.Name := 'CUSTREBATE';
-                    GenJournalBatch.Description := 'Sales Rebate Batch';
-                    GenJournalBatch."AQD Customer Rebate" := TRUE;
-                    GenJournalBatch.Insert();
+                    IF NOT GenJournalBatch.GET(GenJournalTemplate.Name, 'CUSTREBATE') THEN BEGIN
+                        GenJournalBatch.Init();
+                        GenJournalBatch."Journal Template Name" := GenJournalTemplate.Name;
+                        GenJournalBatch.Name := 'CUSTREBATE';
+                        GenJournalBatch.Description := 'Sales Rebate Batch';
+                        GenJournalBatch."AQD Customer Rebate" := TRUE;
+                        GenJournalBatch.Insert();
+                    END;
                     Rec."Sales Journal Batch Name" := GenJournalBatch.Name;
                 end;
             end;

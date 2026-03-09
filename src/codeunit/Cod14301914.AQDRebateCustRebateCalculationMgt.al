@@ -88,7 +88,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         OldDocAlreadyUpdatedSuccessfully: Label 'Old Posted Invoices and Credit Memos are updated successfully.';
     begin
         RebateSetup.Get;
-        RebateSetup.TestField("Start Date");
+        RebateSetup.TestField("Customer Rebate Start Date");
 
         if RebateSetup."Old Documents Updated" then
             Error(OldDocAlreadyUpdatedError);
@@ -97,11 +97,11 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             exit;
 
         SalesInvoiceHeader.Reset;
-        SalesInvoiceHeader.SetFilter("Posting Date", '<%1', RebateSetup."Start Date");
+        SalesInvoiceHeader.SetFilter("Posting Date", '<%1', RebateSetup."Customer Rebate Start Date");
         SalesInvoiceHeader.ModifyAll("AQD No Customer Rebate", true);
 
         SalesCrMemoHeader.Reset;
-        SalesCrMemoHeader.SetFilter("Posting Date", '<%1', RebateSetup."Start Date");
+        SalesCrMemoHeader.SetFilter("Posting Date", '<%1', RebateSetup."Customer Rebate Start Date");
         SalesCrMemoHeader.ModifyAll("AQD No Customer Rebate", true);
 
         RebateSetup."Old Documents Updated" := true;
@@ -126,8 +126,8 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
 
         StartPostingDate := DateArray[1];
         EndPostingDate := DateArray[2];
-        IF (StartPostingDate = 0D) or (StartPostingDate < RebateSetup."Start Date") then
-            StartPostingDate := RebateSetup."Start Date";
+        IF (StartPostingDate = 0D) or (StartPostingDate < RebateSetup."Customer Rebate Start Date") then
+            StartPostingDate := RebateSetup."Customer Rebate Start Date";
 
         GlobalShptRcptNo := ShptRcptNo;
         GlobalInvCrMemoNo := InvCrMemoNo;
@@ -192,13 +192,17 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         Clear(StartDate);
         if DateArray[1] <> 0D then
             StartDate := DateArray[1];
-        IF (StartDate = 0D) or (StartDate < RebateSetup."Start Date") then
-            StartDate := RebateSetup."Start Date";
+        IF (StartDate = 0D) or (StartDate < RebateSetup."Customer Rebate Start Date") then
+            StartDate := RebateSetup."Customer Rebate Start Date";
 
         SalesInvoiceHeader.Reset;
         SalesInvoiceHeader.SetCurrentKey("Bill-to Customer No.", "Posting Date");
         IF InvCrMemoNo <> '' THEN
-            SalesInvoiceHeader.SetRange("No.", InvCrMemoNo);
+            SalesInvoiceHeader.SetRange("No.", InvCrMemoNo)
+        ELSE BEGIN
+            IF RebateSetup."Rebate Calc Start Invoice No." <> '' THEN
+                SalesInvoiceHeader.SetFilter("No.", '%1..', RebateSetup."Rebate Calc Start Invoice No.");
+        END;
         SalesInvoiceHeader.SetRange("Bill-to Customer No.", CustomerIn."No.");
         SalesInvoiceHeader.SetRange("AQD No Customer Rebate", false);
         SalesInvoiceHeader.SetRange("AQD Cust Rebate Entry Created", false);
@@ -391,13 +395,17 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         Clear(StartDate);
         if DateArray[1] <> 0D then
             StartDate := DateArray[1];
-        IF (StartDate = 0D) or (StartDate < RebateSetup."Start Date") then
-            StartDate := RebateSetup."Start Date";
+        IF (StartDate = 0D) or (StartDate < RebateSetup."Customer Rebate Start Date") then
+            StartDate := RebateSetup."Customer Rebate Start Date";
 
         SalesCrMemoHeader.Reset;
         SalesCrMemoHeader.SetCurrentKey("Bill-to Customer No.", "Posting Date");
         IF InvCrMemoNo <> '' THEN
-            SalesCrMemoHeader.SetRange("No.", InvCrMemoNo);
+            SalesCrMemoHeader.SetRange("No.", InvCrMemoNo)
+        ELSE BEGIN
+            IF RebateSetup."Rebate Calc Start CM No." <> '' THEN
+                SalesCrMemoHeader.SetFilter("No.", '%1..', RebateSetup."Rebate Calc Start CM No.");
+        END;
         SalesCrMemoHeader.SetRange("Bill-to Customer No.", CustomerIn."No.");
         SalesCrMemoHeader.SetRange("AQD No Customer Rebate", false);
         SalesCrMemoHeader.SetRange("AQD Customer Rebate Status", SalesCrMemoHeader."AQD Customer Rebate Status"::" ");

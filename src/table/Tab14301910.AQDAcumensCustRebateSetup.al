@@ -35,6 +35,9 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         field(90; "Start Date"; Date)
         {
             Caption = 'Start Date';
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Duplicate Field';
+            ObsoleteTag = 'Discontined from 25.1023.0.7';
         }
         field(180; "Sales Journal Template Name"; Code[10])
         {
@@ -86,7 +89,15 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         }
         field(380; "Customer Rebate Start Date"; Date)
         {
-            Caption = 'Start Date';
+            Caption = 'Rebate Calculation Start Date';
+        }
+        field(381; "Rebate Calc Start Invoice No."; Code[20])
+        {
+            Caption = 'Rebate Calculation Start Invoice #';
+        }
+        field(382; "Rebate Calc Start CM No."; Code[20])
+        {
+            Caption = 'Rebate Calculation Start CM #';
         }
         field(385; "Rebate Payable Ac"; Enum "AQD Rebate Payable AC")
         {

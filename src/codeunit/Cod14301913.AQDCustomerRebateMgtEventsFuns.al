@@ -172,11 +172,17 @@ codeunit 14301913 "AQD CustRbtMgt EventsFunctions"
         IF NOT CustomerRebateSetup.GET THEN
             Error(CustomerRebateSetupDoesNotExist);
 
-        IF CustomerRebateSetup."Customer Rebate Document Nos" = '' THEN
-            Error(CustomerRebateDefaultValuesMissing);
+        //IF CustomerRebateSetup."Customer Rebate Document Nos" = '' THEN
+        //    Error(CustomerRebateDefaultValuesMissing);
 
-        IF BillToCustomer."AQD Cust Rebate Customer No." = '' THEN
-            Error(CustomerRebateCardDefaultValuesMissing, BillToCustomer."No.", BillToCustomer."AQD Cust Rebate Customer No.");
+        //IF BillToCustomer."AQD Cust Rebate Customer No." = '' THEN
+        //    Error(CustomerRebateCardDefaultValuesMissing, BillToCustomer."No.", BillToCustomer."AQD Cust Rebate Customer No.");
+
+        CustomerRebateSetup.TestField("Customer Rebate Document Nos");
+        CustomerRebateSetup.TESTFIELD("Sales Journal Template Name");
+        CustomerRebateSetup.TESTFIELD("Sales Journal Batch Name");
+        CustomerRebateSetup.TESTFIELD("Customer Rebate Start Date");
+        BillToCustomer.TestField("AQD Cust Rebate Customer No.");
     END;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesShptHeaderInsert, '', false, false)]
