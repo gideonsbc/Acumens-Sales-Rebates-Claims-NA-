@@ -60,9 +60,10 @@ page 14301915 "AQD Cust Rebate Program Codes"
                 {
                     ApplicationArea = All;
                     Caption = 'Rebate Payable A/C';
-                    Editable = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
-                    Enabled = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
-                    ShowMandatory = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
+                    Editable = ControlEditable;
+                    Enabled = ControlEditable;
+                    ShowMandatory = ControlEditable;
+                    Visible = ControlEditable;
                 }
                 field("Entity Type"; Rec."Entity Type")
                 {
@@ -95,8 +96,12 @@ page 14301915 "AQD Cust Rebate Program Codes"
     BEGIN
         IF NOT CustomerRebateSetup.GET THEN
             CustomerRebateSetup.Init();
+
+        ControlEditable := (Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense) AND
+                           (CustomerRebateSetup."Rebate Payable Ac" = CustomerRebateSetup."Rebate Payable Ac"::"Rebate Payable AC");
     END;
 
     VAR
         CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+        ControlEditable: Boolean;
 }
