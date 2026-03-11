@@ -11,7 +11,6 @@ pageextension 14301910 "AQD CustRbt Item Card" extends "Item Card"
                 field("AQD Customer Rebate Enabled"; Rec."AQD Customer Rebate Enabled")
                 {
                     ApplicationArea = All;
-                    Caption = 'Rebate Enabled';
                 }
                 field("AQD Cust Rebate Category Code"; Rec."AQD Cust Rebate Category Code")
                 {

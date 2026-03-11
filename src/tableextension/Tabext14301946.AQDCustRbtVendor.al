@@ -4,7 +4,7 @@ tableextension 14301946 "AQD CR Vendor Ext" extends Vendor
     {
         field(14301910; "AQD Customer Rebate"; Boolean)
         {
-            Caption = 'Customer Rebate';
+            Caption = 'Customer Rebate Enabled';
             DataClassification = CustomerContent;
         }
         field(14301920; "AQD Territory Filter"; Boolean)

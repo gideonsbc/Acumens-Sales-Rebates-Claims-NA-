@@ -338,7 +338,18 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
 
     local procedure InitializeDefaultSetups()
     var
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
         GLAccount: Record "G/L Account";
+        GLAccount2: Record "G/L Account";
+        TaxGroup: Record "Tax Group";
+        CustomerRebateProgramCode: Record "AQD Cust Rebate Program Code";
+        CustomerSalesRebateSetup: Record "AQD Sales Rebates Rate";
+        LastGLAccountNo: CODE[20];
+        CustomerRebatePayableGLAccount: Code[20];
+        CustomerRebateExpenseGLAccount: Code[20];
+        Counter: Integer;
+        ExitLoop: Boolean;
         LocalUserConfirmMsg: Label 'Do you want to initialize default setups?';
     begin
         if Confirm(LocalUserConfirmMsg) then begin
@@ -365,7 +376,189 @@ page 14301910 "AQD Acumens CustRbtClaim Setup"
                 end;
             end;
             Rec."Customer Rebate Document Nos" := 'CRB';
+            IF SalesInvoiceHeader.FINDLAST THEN
+                Rec."Rebate Calc Start Invoice No." := SalesInvoiceHeader."No.";
+            IF SalesCrMemoHeader.FINDLAST THEN
+                Rec."Rebate Calc Start CM No." := SalesCrMemoHeader."No.";
             Rec.Modify(true);
+
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/L Account", TRUE);
+            IF GLAccount2.FindLast() THEN
+                CustomerRebatePayableGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                GLAccount2.SETRANGE("AQD Cust Rebate G/L Account");
+                IF GLAccount2.FINDLAST THEN
+                    LastGLAccountNo := GLAccount2."No.";
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Customer Rebate Payable';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Balance Sheet";
+                GLAccount."Account Category" := GLAccount."Account Category"::Liabilities;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/L Account" := TRUE;
+                GLAccount.INSERT;
+                CustomerRebatePayableGLAccount := GLAccount."No.";
+            END;
+
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/L Account", TRUE);
+            IF GLAccount2.FindLast() THEN
+                CustomerRebateExpenseGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                GLAccount2.SETRANGE("AQD Cust Rebate G/L Account");
+                IF GLAccount2.FINDLAST THEN
+                    LastGLAccountNo := GLAccount2."No.";
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Customer Rebate Expense';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Income Statement";
+                GLAccount."Account Category" := GLAccount."Account Category"::Expense;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/L Account" := TRUE;
+                GLAccount.INSERT;
+                CustomerRebateExpenseGLAccount := GLAccount."No.";
+            END;
+
+            IF NOT CustomerRebateProgramCode.GET('ALL-UNIT') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'ALL-UNIT';
+                CustomerRebateProgramCode.Description := 'Rebate - All Customers';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 10;
+                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
+                CustomerRebateProgramCode."Entity No." := '';
+                CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
+                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+
+            IF NOT CustomerRebateProgramCode.GET('ALL-PCT') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'ALL-PCT';
+                CustomerRebateProgramCode.Description := 'Rebate - All Customers';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::"Per Quantity";
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 20;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 0;
+                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
+                CustomerRebateProgramCode."Entity No." := '';
+                CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
+                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+            //"Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", 
+            //"Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount"
+            IF NOT CustomerSalesRebateSetup.GET(CustomerSalesRebateSetup."Entity Type"::Customer,
+                '',
+                '',
+                CustomerSalesRebateSetup."Line Type"::Item,
+                '',
+                '',
+                'ALL-UNIT',
+                0D,
+                '',
+                0,
+                0)
+            THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
+                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Territory Code" := '';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-UNIT';
+                CustomerSalesRebateSetup."Starting Date" := 0D;
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Rebate Program Code") THEN BEGIN
+                    CustomerSalesRebateSetup."Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type";
+                    CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
+                    CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
+                END;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
+            //"Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", 
+            //"Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount"
+            IF NOT CustomerSalesRebateSetup.GET(CustomerSalesRebateSetup."Entity Type"::Customer,
+                '',
+                '',
+                CustomerSalesRebateSetup."Line Type"::Item,
+                '',
+                '',
+                'ALL-PCT',
+                0D,
+                '',
+                0,
+                0)
+            THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
+                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Territory Code" := '';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
+                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-PCT';
+                CustomerSalesRebateSetup."Starting Date" := 0D;
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Rebate Program Code") THEN BEGIN
+                    CustomerSalesRebateSetup."Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type";
+                    CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
+                    CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
+                END;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
         end;
     end;
 

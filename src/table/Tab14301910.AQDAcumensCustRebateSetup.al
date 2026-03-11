@@ -93,11 +93,15 @@ table 14301910 "AQD Acumens CustRbtClaim Setup"
         }
         field(381; "Rebate Calc Start Invoice No."; Code[20])
         {
-            Caption = 'Rebate Calculation Start Invoice #';
+            Caption = 'Start Rebate After Invoice #';
+            TableRelation = "Sales Invoice Header"."No.";
+            ValidateTableRelation = false;
         }
         field(382; "Rebate Calc Start CM No."; Code[20])
         {
-            Caption = 'Rebate Calculation Start CM #';
+            Caption = 'Start Rebate After Credit Memo #';
+            TableRelation = "Sales Cr.Memo Header"."No.";
+            ValidateTableRelation = false;
         }
         field(385; "Rebate Payable Ac"; Enum "AQD Rebate Payable AC")
         {

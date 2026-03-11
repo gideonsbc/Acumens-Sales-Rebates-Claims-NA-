@@ -4,7 +4,7 @@ tableextension 14301945 "AQD CR Employee Ext" extends "Employee"
     {
         field(14301910; "AQD Customer Rebate"; Boolean)
         {
-            Caption = 'Customer Rebate';
+            Caption = 'Customer Rebate Enabled';
             DataClassification = CustomerContent;
         }
         field(14301920; "AQD Territory Filter"; Boolean)

@@ -4,7 +4,7 @@ tableextension 14301913 "AQD CustRbt Customer Ext" extends Customer
     {
         field(14301910; "AQD Enroll for Cust Rebate"; Boolean)
         {
-            Caption = 'Enroll for Rebate';
+            Caption = 'Customer Rebate Enabled';
             DataClassification = CustomerContent;
 
             trigger OnValidate()

@@ -201,7 +201,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             SalesInvoiceHeader.SetRange("No.", InvCrMemoNo)
         ELSE BEGIN
             IF RebateSetup."Rebate Calc Start Invoice No." <> '' THEN
-                SalesInvoiceHeader.SetFilter("No.", '%1..', RebateSetup."Rebate Calc Start Invoice No.");
+                SalesInvoiceHeader.SetFilter("No.", '>%1', RebateSetup."Rebate Calc Start Invoice No.");
         END;
         SalesInvoiceHeader.SetRange("Bill-to Customer No.", CustomerIn."No.");
         SalesInvoiceHeader.SetRange("AQD No Customer Rebate", false);
@@ -404,7 +404,7 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
             SalesCrMemoHeader.SetRange("No.", InvCrMemoNo)
         ELSE BEGIN
             IF RebateSetup."Rebate Calc Start CM No." <> '' THEN
-                SalesCrMemoHeader.SetFilter("No.", '%1..', RebateSetup."Rebate Calc Start CM No.");
+                SalesCrMemoHeader.SetFilter("No.", '>%1', RebateSetup."Rebate Calc Start CM No.");
         END;
         SalesCrMemoHeader.SetRange("Bill-to Customer No.", CustomerIn."No.");
         SalesCrMemoHeader.SetRange("AQD No Customer Rebate", false);

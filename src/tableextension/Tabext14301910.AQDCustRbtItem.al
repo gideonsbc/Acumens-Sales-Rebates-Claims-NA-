@@ -4,12 +4,12 @@ tableextension 14301910 "AQD CustRbt Item Ext" extends Item
     {
         field(14301910; "AQD Customer Rebate Enabled"; Boolean)
         {
-            Caption = 'Rebate Enabled';
+            Caption = 'Customer Rebate Enabled';
             DataClassification = CustomerContent;
         }
         field(14301920; "AQD Cust Rebate Category Code"; Code[20])
         {
-            Caption = 'Rebate Category Code';
+            Caption = 'Customer Rebate Item Category';
             DataClassification = CustomerContent;
             TableRelation = "Item Category".Code;
         }
