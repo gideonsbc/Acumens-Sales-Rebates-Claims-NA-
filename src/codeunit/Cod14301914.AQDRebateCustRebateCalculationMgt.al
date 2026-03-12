@@ -1397,7 +1397,9 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
         PostingDate: Date;
         CustomerRebateDetailsLoc: Record "AQD Customer Rebate Details";
         TempSalesShptLine: Record "Sales Shipment Line" temporary;
+        SalesShptLine: Record "Sales Shipment Line";
         TempReturnReceiptLine: Record "Return Receipt Line" temporary;
+        ReturnReceiptLine: Record "Return Receipt Line";
         RebateProgramCodeRec: Record "AQD Cust Rebate Program Code";
         TempItemLedgEntry: Record "Item Ledger Entry" temporary;
         ItemLedgEntry: Record "Item Ledger Entry";
@@ -1523,10 +1525,23 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                 CustomerRebateDetails.State := SalesInvHeaderIn."Ship-to County";
                                 SalesInvLineIn.GetSalesShptLines(TempSalesShptLine);
                                 IF TempSalesShptLine.FindFirst() THEN BEGIN
+                                    CustomerRebateDetails."Order No." := TempSalesShptLine."Order No.";
+                                    CustomerRebateDetails."Order Line No." := TempSalesShptLine."Order Line No.";
+
                                     CustomerRebateDetails."Applies-to Doc. Type" := CustomerRebateDetails."Applies-to Doc. Type"::Shipment;
                                     CustomerRebateDetails."Applies-to Doc. No." := TempSalesShptLine."Document No.";
                                     CustomerRebateDetails."Applies-to Doc. Line No." := TempSalesShptLine."Line No.";
                                 END ELSE BEGIN
+                                    IF SalesInvLineIn."Order No." <> '' THEN BEGIN
+                                        CustomerRebateDetails."Order No." := SalesInvLineIn."Order No.";
+                                        CustomerRebateDetails."Order Line No." := SalesInvLineIn."Order Line No.";
+                                    END ELSE IF SalesInvLineIn."Shipment No." <> '' THEN BEGIN
+                                        IF SalesShptLine.GET(SalesInvLineIn."Shipment No.", SalesInvLineIn."Shipment Line No.") THEN BEGIN
+                                            CustomerRebateDetails."Order No." := SalesShptLine."Order No.";
+                                            CustomerRebateDetails."Order Line No." := SalesShptLine."Order Line No.";
+                                        END;
+                                    END;
+
                                     CustomerRebateDetails."Applies-to Doc. Type" := CustomerRebateDetails."Applies-to Doc. Type"::Invoice;
                                     CustomerRebateDetails."Applies-to Doc. No." := SalesInvLineIn."Document No.";
                                     CustomerRebateDetails."Applies-to Doc. Line No." := SalesInvLineIn."Line No.";
@@ -1570,10 +1585,23 @@ codeunit 14301914 "AQD Cust Rebate Calc Mgt"
                                 CustomerRebateDetails.State := SalesCrMemoHeaderIn."Ship-to County";
                                 SalesCrMemoLineIn.GetReturnRcptLines(TempReturnReceiptLine);
                                 IF TempReturnReceiptLine.FindFirst() THEN BEGIN
+                                    CustomerRebateDetails."Order No." := TempReturnReceiptLine."Return Order No.";
+                                    CustomerRebateDetails."Order Line No." := TempReturnReceiptLine."Return Order Line No.";
+
                                     CustomerRebateDetails."Applies-to Doc. Type" := CustomerRebateDetails."Applies-to Doc. Type"::"Return Receipt";
                                     CustomerRebateDetails."Applies-to Doc. No." := TempReturnReceiptLine."Document No.";
                                     CustomerRebateDetails."Applies-to Doc. Line No." := TempReturnReceiptLine."Line No.";
                                 END ELSE BEGIN
+                                    IF SalesCrMemoLineIn."Order No." <> '' THEN BEGIN
+                                        CustomerRebateDetails."Order No." := SalesCrMemoLineIn."Order No.";
+                                        CustomerRebateDetails."Order Line No." := SalesCrMemoLineIn."Order Line No.";
+                                    END ELSE IF SalesInvLineIn."Shipment No." <> '' THEN BEGIN
+                                        IF ReturnReceiptLine.GET(SalesCrMemoLineIn."Return Receipt No.", SalesCrMemoLineIn."Return Receipt Line No.") THEN BEGIN
+                                            CustomerRebateDetails."Order No." := ReturnReceiptLine."Return Order No.";
+                                            CustomerRebateDetails."Order Line No." := ReturnReceiptLine."Return Order Line No.";
+                                        END;
+                                    END;
+
                                     CustomerRebateDetails."Applies-to Doc. Type" := CustomerRebateDetails."Applies-to Doc. Type"::"Credit Memo";
                                     CustomerRebateDetails."Applies-to Doc. No." := SalesCrMemoLineIn."Document No.";
                                     CustomerRebateDetails."Applies-to Doc. Line No." := SalesCrMemoLineIn."Line No.";

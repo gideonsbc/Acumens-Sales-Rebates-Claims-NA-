@@ -248,6 +248,14 @@ table 14301935 "AQD Posted Cust Reb Details"
             Caption = 'Rebate Sales Line No.';
             Editable = false;
         }
+        field(370; "Order No."; Code[20])
+        {
+            Caption = 'Order No.';
+        }
+        field(380; "Order Line No."; Integer)
+        {
+            Caption = 'Order Line No.';
+        }
         field(401; State; Text[30])
         {
             Caption = 'State';
