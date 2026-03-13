@@ -434,6 +434,13 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     RunObject = page "Item Ledger Entries";
                     Image = ItemLedger;
                 }
+                action("AQD CustRbt Drop Shpt Info")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Drop Shipment Information';
+                    RunObject = page "AQD Drop Shipment Information";
+                    Image = History;
+                }
                 action("Posted Customer Rebate Batches")
                 {
                     ApplicationArea = All;
