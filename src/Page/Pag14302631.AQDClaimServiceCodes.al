@@ -44,11 +44,6 @@ page 14302631 "AQD Claim Service Codes"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Time Required field.';
                 }
-                field("Holdback %"; Rec."Holdback %")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Holdback % field.';
-                }
             }
         }
     }

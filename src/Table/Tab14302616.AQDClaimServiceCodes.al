@@ -37,12 +37,6 @@ table 14302616 "AQD Claim Service Codes"
             Caption = 'Time Required';
             ToolTip = 'Specifies the value of the Time Required field';
         }
-        field(70; "Holdback %"; Decimal)
-        {
-            BlankZero = true;
-            Caption = 'Holdback %';
-            ToolTip = 'Specifies the value of the Holdback % field';
-        }
     }
     keys
     {
