@@ -145,7 +145,7 @@ codeunit 14302516 "AQD Customer Rebate Post Mgt"
     var
         CustomerRebateBatch: Record "AQD Customer Rebate Batch";
         CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
-        VendorRebateSingleInstance: Codeunit "AQD Cust Rebate SingleInstance";
+        VendorRebateSingleInstance: Codeunit "AQD CustRbtClaim SngleInstance";
         RunBy: Enum "AQD Customer Rebate Posting";
         Window: Dialog;
         ObjectTypetoRun: Option ,,,"Report",,"Codeunit";

@@ -8,32 +8,48 @@ pageextension 14302513 "AQD CustRbt Customer Card" extends "Customer Card"
             {
                 Caption = 'Acumens Customer Rebates & Claims';
 
-                field("AQD Enroll for Rebate"; Rec."AQD Enroll for Cust Rebate")
+                Group(AcumensCustomerRebate)
                 {
-                    ApplicationArea = All;
+                    Caption = 'Customer Rebate';
+                    field("AQD Enroll for Rebate"; Rec."AQD Enroll for Cust Rebate")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("AQD Cust Rebate Customer No."; Rec."AQD Cust Rebate Customer No.")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Rebate Bill-To Customer No.';
+                        Editable = Rec."AQD Enroll for Cust Rebate";
+                        Enabled = Rec."AQD Enroll for Cust Rebate";
+                    }
+                    field("AQD Customer Rebate Category"; Rec."AQD Cust Rebate Category Code")
+                    {
+                        ApplicationArea = All;
+                        Editable = Rec."AQD Enroll for Cust Rebate";
+                        Enabled = Rec."AQD Enroll for Cust Rebate";
+                    }
+                    field("AQD Calculation Date"; Rec."AQD CustRbt Calculation Date")
+                    {
+                        ApplicationArea = All;
+                        Editable = Rec."AQD Enroll for Cust Rebate";
+                        Enabled = Rec."AQD Enroll for Cust Rebate";
+                    }
+                    field("AQD Territory Code"; Rec."Territory Code")
+                    {
+                        ApplicationArea = All;
+                    }
                 }
-                field("AQD Cust Rebate Customer No."; Rec."AQD Cust Rebate Customer No.")
+                Group(AcumensCustomerClaim)
                 {
-                    ApplicationArea = All;
-                    Caption = 'Rebate Bill-To Customer No.';
-                    Editable = Rec."AQD Enroll for Cust Rebate";
-                    Enabled = Rec."AQD Enroll for Cust Rebate";
-                }
-                field("AQD Customer Rebate Category"; Rec."AQD Cust Rebate Category Code")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."AQD Enroll for Cust Rebate";
-                    Enabled = Rec."AQD Enroll for Cust Rebate";
-                }
-                field("AQD Calculation Date"; Rec."AQD CustRbt Calculation Date")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."AQD Enroll for Cust Rebate";
-                    Enabled = Rec."AQD Enroll for Cust Rebate";
-                }
-                field("AQD Territory Code"; Rec."Territory Code")
-                {
-                    ApplicationArea = All;
+                    Caption = 'Customer Claim';
+                    field("AQM Vendor Claim Customer"; Rec."AQM Customer Claim Customer")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("AQD Default Claim Type"; Rec."AQD Default Claim Type")
+                    {
+                        ApplicationArea = All;
+                    }
                 }
             }
         }

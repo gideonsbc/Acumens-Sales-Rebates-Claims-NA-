@@ -267,7 +267,7 @@ report 14302509 "AQD Inventory - Customer Sales"
         AppliedEntries: Codeunit "Show Applied Entries";
         TempItemLedgerEntry: Record "Item Ledger Entry" temporary;
         ItemLedger_lv: Record "Item Ledger Entry";
-        RebateSingelInstance: Codeunit "AQD Cust Rebate SingleInstance";
+        RebateSingelInstance: Codeunit "AQD CustRbtClaim SngleInstance";
     begin
         CalculatedPurchaseRebate := 0;
         AppliedCostAmount := 0;

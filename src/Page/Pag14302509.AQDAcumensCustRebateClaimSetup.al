@@ -1,12 +1,12 @@
 page 14302509 "AQD Acumens CustRbtClaim Setup"
 {
+    ApplicationArea = All;
     Caption = 'Acumens Customer Rebates & Claims Setup';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
     RefreshOnActivate = true;
     SourceTable = "AQD Acumens CustRbtClaim Setup";
-    ApplicationArea = All;
     UsageCategory = Administration;
 
     layout
@@ -15,7 +15,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
         {
             group("Customer Rebate")
             {
-                Caption = 'General';
+                Caption = 'Customer Rebate';
                 Editable = AllowToEdit;
 
                 group(RebateEnabled)
@@ -139,25 +139,187 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                     }
                 }
             }
+            group("Customer Claim")
+            {
+                Caption = 'Customer Claim';
+                Editable = AllowToEdit;
+
+                field("Item Claim Enabled"; Rec."Item Claim Enabled")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Item Claim Enabled field.', Comment = '%';
+                }
+                field("Resource Claim Enabled"; Rec."Resource Claim Enabled")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Resource Claim Enabled field.', Comment = '%';
+                }
+                field("G/L Account Claim Enabled"; Rec."G/L Account Claim Enabled")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the G/L Account Claim Enabled field.', Comment = '%';
+                }
+
+                group(ClaimFullPrice)
+                {
+                    Caption = 'Full Price Claim';
+                    Editable = AllowToEdit;
+                    field("Claim No. is Order No."; Rec."Claim No. is Order No.")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Claim No. is Order No. field.', Comment = '%';
+                    }
+                    field("Create Claim On"; Rec."Create Claim On")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Create Claim On field.', Comment = '%';
+                    }
+                    field("Insert Comment Lines on Claim"; Rec."Insert Comment Lines on Claim")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Insert Comment Lines on Claim field.', Comment = '%';
+                    }
+                    field("Full Price Default Pyt Method"; Rec."Full Price Default Pyt Method")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Full Price Claim Default Payment Method Code field.', Comment = '%';
+                    }
+                    Field(PostCreditMemoOnOrderInvoicing; Rec.PostCreditMemoOnOrderInvoicing)
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Post Credit Memo On Order Invoicing field.', Comment = '%';
+                    }
+                    FIELD(AllowToPostOrdAfterClaimApprov; Rec.AllowToPostOrdAfterClaimApprov)
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Allow to Post Order After Claim Approval field.', Comment = '%';
+                    }
+                    field("Claims G/L Account"; Rec."Full Price Claims G/L Account")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Claims G/L Account field.', Comment = '%';
+                    }
+                    field("Claim Delivery Commission Acct"; Rec."Claim Delivery Commission Acct")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Claim Delivery Commission Acct field.', Comment = '%';
+                    }
+                    field("Claim Discount Account"; Rec."Claim Discount G/L Account")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Claim Discount Account field.', Comment = '%';
+                    }
+                    FIELD("Claim Variance G/L Account"; Rec."Claim Variance G/L Account")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Claim Variance G/L Account field.', Comment = '%';
+                    }
+                }
+                group(ClaimPriceMatch)
+                {
+                    Caption = 'Price Match Claim';
+                    Editable = AllowToEdit;
+
+                    field("Price Match Default Pyt Method"; Rec."Price Match Default Pyt Method")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Default Payment Method Code for Price Match Sales Invoice field.', Comment = '%';
+                    }
+                    field("Price Match Create Claim On"; Rec."Price Match Create Claim On")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Price Match Create Claim On field.', Comment = '%';
+                    }
+                    field("Price Match ClaimServCode Mand"; Rec."Price Match ClaimServCode Mand")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Claim Service Code field.', Comment = '%';
+                    }
+                    field("Price Match ClaimProgCode Mand"; Rec."Price Match ClaimProgCode Mand")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Claim Program Code field.', Comment = '%';
+                    }
+                    field("Price Match Always CreCostDiff"; Rec."Price Match Always CreCostDiff")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Always Create Cost Difference Line field.', Comment = '%';
+                    }
+                    field("Price Match Always CreCommLine"; Rec."Price Match Always CreCommLine")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Always Create Delivery Commission Line field.', Comment = '%';
+                    }
+                    field("Price Match Claims G/L Account"; Rec."Price Match Claims G/L Account")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Price Match Claims G/L Account field.', Comment = '%';
+                    }
+                    field("PriceMatch ClmCostDiff G/LAcct"; Rec."PriceMatch ClmCostDiff G/LAcct")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Price Match Claims Cost Difference G/L Account field.', Comment = '%';
+                    }
+                    field("Price Match Claim DelComm Acct"; Rec."Price Match Claim DelComm Acct")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Price Match Claims Delivery Commission G/L Account field.', Comment = '%';
+                    }
+                    field("Price Match Claim Disc G/LAcct"; Rec."Price Match Claim Disc G/LAcct")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Price Match Claims Discount G/L Account field.', Comment = '%';
+                    }
+                    field("Price Match Claim Vari G/LAcct"; Rec."Price Match Claim Vari G/LAcct")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of Price Match Claims Variance G/L Account field.', Comment = '%';
+                    }
+                }
+            }
             group("Number Series")
             {
                 Caption = 'Number Series';
                 Editable = AllowToEdit;
-
-                field("Customer Rebate Nos"; Rec."Customer Rebate Document Nos")
+                Group(AcumensCustomerRebate)
                 {
-                    ApplicationArea = All;
-                    ShowMandatory = TRUE;
+                    Caption = 'Customer Rebate';
+
+                    field("Customer Rebate Nos"; Rec."Customer Rebate Document Nos")
+                    {
+                        ApplicationArea = All;
+                        ShowMandatory = TRUE;
+                    }
+                }
+                Group(AcumensCustomerClaim)
+                {
+                    Caption = 'Customer Claim';
+                    field("Full Price Claim Nos."; Rec."Full Price Claim Nos.")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("Price Match Claim Nos."; Rec."Price Match Claim Nos.")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("Supplementary Invoice Nos."; Rec."Supplementary Invoice Nos.")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("Claim Purchase Cr Memo Nos."; Rec."Claim Purchase Cr Memo Nos.")
+                    {
+                        ApplicationArea = All;
+                    }
                 }
             }
         }
         area(factboxes)
         {
-            systempart(Control1000000016; Notes)
+            systempart(Notes; Notes)
             {
                 ApplicationArea = All;
             }
-            systempart(Control1000000017; Links)
+            systempart(Links; Links)
             {
                 ApplicationArea = All;
             }
@@ -343,6 +505,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
         GLAccount: Record "G/L Account";
         GLAccount2: Record "G/L Account";
         TaxGroup: Record "Tax Group";
+        SalesSetup: Record "Sales & Receivables Setup";
+        PurchaseSetup: Record "Purchases & Payables Setup";
         CustomerRebateProgramCode: Record "AQD Cust Rebate Program Code";
         CustomerSalesRebateSetup: Record "AQD Sales Rebates Rate";
         LastGLAccountNo: CODE[20];
@@ -354,6 +518,15 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
     begin
         if Confirm(LocalUserConfirmMsg) then begin
             ResetNoSeries();
+
+            SalesSetup.GET;
+            PurchaseSetup.GET;
+            Rec."Full Price Claim Nos." := 'FULL PRICE CLAIM';
+            Rec."Price Match Claim Nos." := 'PRICE MATCH CLAIM';
+            Rec."Create Claim On" := Rec."Create Claim On"::"Order Release";
+            Rec."Claim Purchase Cr Memo Nos." := PurchaseSetup."Credit Memo Nos.";
+            Rec."Supplementary Invoice Nos." := SalesSetup."Invoice Nos.";
+
             GenJournalTemplate.Reset();
             GenJournalTemplate.SetRange(Type, GenJournalTemplate.Type::Sales);
             if GenJournalTemplate.FindFirst() then begin
@@ -582,6 +755,37 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             NoSeriesLine."Starting No." := 'CRB00001';
             if NoSeriesLine.Insert() then;
         end;
+
+        NoSeries.Reset();
+        IF NOT NoSeries.Get('FULL PRICE CLAIM') THEN BEGIN
+            NoSeries.Init();
+            NoSeries.Code := 'FULL PRICE CLAIM';
+            NoSeries.Description := 'Full Price Customer Claim Nos';
+            NoSeries."Default Nos." := true;
+            NoSeries."Manual Nos." := true;
+            NoSeries.Insert();
+            NoSeriesLine.Reset();
+            NoSeriesLine.Init();
+            NoSeriesLine."Series Code" := 'FULL PRICE CLAIM';
+            NoSeriesLine."Line No." := 10000;
+            NoSeriesLine."Starting No." := 'FPC000001';
+            IF NoSeriesLine.Insert() THEN;
+        END;
+
+        IF NOT NoSeries.Get('PRICE MATCH CLAIM') THEN BEGIN
+            NoSeries.Init();
+            NoSeries.Code := 'PRICE MATCH CLAIM';
+            NoSeries.Description := 'Price Match Customer Claim Nos';
+            NoSeries."Default Nos." := true;
+            NoSeries."Manual Nos." := true;
+            NoSeries.Insert();
+            NoSeriesLine.Reset();
+            NoSeriesLine.Init();
+            NoSeriesLine."Series Code" := 'PRICE MATCH CLAIM';
+            NoSeriesLine."Line No." := 10000;
+            NoSeriesLine."Starting No." := 'PMC000001';
+            IF NoSeriesLine.Insert() THEN;
+        END;
     end;
 
     local procedure DeleteDefaultSetups()

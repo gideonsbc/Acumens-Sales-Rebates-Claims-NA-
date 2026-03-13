@@ -562,6 +562,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
     local procedure MoveCustomerRebateDetails(CustomerRebateLine: Record "AQD Customer Rebate Line")
     var
         PostedCustomerRebateDetails: Record "AQD Posted Cust Reb Details";
+        DropshipmentInfo: Record "AQD Drop Shipment Information";
     begin
         CustomerRebateDetails.Reset();
         CustomerRebateDetails.SetRange("Rebate No.", CustomerRebateLine."Rebate No.");
@@ -572,6 +573,14 @@ codeunit 14302515 "AQD Customer Rebate Post"
                 PostedCustomerRebateDetails.TransferFields(CustomerRebateDetails);
                 PostedCustomerRebateDetails."Customer Rebate Status" := PostedCustomerRebateDetails."Customer Rebate Status"::Posted;
                 PostedCustomerRebateDetails.Insert();
+
+                DropshipmentInfo.RESET;
+                DropshipmentInfo.SETRANGE("Sales Order No.", PostedCustomerRebateDetails."Order No.");
+                DropshipmentInfo.SETRANGE("Sales Order Line No.", PostedCustomerRebateDetails."Order Line No.");
+                IF DropshipmentInfo.FindFirst() THEN BEGIN
+                    DropshipmentInfo."AQD CustRbt Cust Rbt Amount" += PostedCustomerRebateDetails."Customer Rebate Amount";
+                    DropshipmentInfo.Modify();
+                END;
             UNTIL CustomerRebateDetails.Next() = 0;
         END;
     END;

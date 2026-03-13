@@ -6,7 +6,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     end;
 
     var
-        RebateSingleInstance: Codeunit "AQD Cust Rebate SingleInstance";
+        RebateSingleInstance: Codeunit "AQD CustRbtClaim SngleInstance";
         CalledFromRebate: Boolean;
         RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
 

@@ -19,5 +19,10 @@ tableextension 14302510 "AQD CustRbt G/L Account Ext" extends "G/L Account"
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
+        field(14302610; "AQM Customer Claim Enabled"; Boolean)
+        {
+            Caption = 'Claim Enabled';
+            DataClassification = CustomerContent;
+        }
     }
 }

@@ -8,15 +8,27 @@ pageextension 14302509 "AQD CustRbt Item Card" extends "Item Card"
             {
                 Caption = 'Acumens Customer Rebates & Claims';
 
-                field("AQD Customer Rebate Enabled"; Rec."AQD Customer Rebate Enabled")
+                Group(AcumensCustomerRebate)
                 {
-                    ApplicationArea = All;
+                    Caption = 'Customer Rebate';
+                    field("AQD Customer Rebate Enabled"; Rec."AQD Customer Rebate Enabled")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("AQD Cust Rebate Category Code"; Rec."AQD Cust Rebate Category Code")
+                    {
+                        ApplicationArea = All;
+                        Editable = Rec."AQD Customer Rebate Enabled";
+                        Enabled = Rec."AQD Customer Rebate Enabled";
+                    }
                 }
-                field("AQD Cust Rebate Category Code"; Rec."AQD Cust Rebate Category Code")
+                Group(AcumensCustomerClaim)
                 {
-                    ApplicationArea = All;
-                    Editable = Rec."AQD Customer Rebate Enabled";
-                    Enabled = Rec."AQD Customer Rebate Enabled";
+                    Caption = 'Customer Claim';
+                    field("AQM Vendor Claim Enabled"; Rec."AQM Customer Claim Enabled")
+                    {
+                        ApplicationArea = All;
+                    }
                 }
             }
         }

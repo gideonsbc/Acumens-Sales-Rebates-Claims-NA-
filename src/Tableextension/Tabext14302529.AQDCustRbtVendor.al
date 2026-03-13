@@ -21,5 +21,16 @@ tableextension 14302529 "AQD CR Vendor Ext" extends Vendor
             CalcFormula = exist("AQD CR Vend Emp Customer Filt" WHERE(Type = Const(Vendor), "No." = FIELD("No.")));
             Editable = false;
         }
+        field(14302610; "AQM Claim Vendor"; Boolean)
+        {
+            Caption = 'Claim Vendor';
+            DataClassification = CustomerContent;
+        }
+        field(14302620; "AQD Claim From Customer No."; Code[20])
+        {
+            Caption = 'Claim From Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer;
+        }
     }
 }

@@ -8,51 +8,67 @@ pageextension 14302538 "AQD CustRbt Vendor Card" extends "Vendor Card"
             {
                 Caption = 'Acumens Customer Rebates & Claims';
 
-                field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
+                Group(AcumensCustomerRebate)
                 {
-                    ApplicationArea = All;
+                    Caption = 'Customer Rebate';
+                    field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("AQD Territory Filter"; Rec."AQD Territory Filter")
+                    {
+                        ApplicationArea = All;
+                        Editable = Rec."AQD Customer Rebate";
+                        Enabled = Rec."AQD Customer Rebate";
+
+                        trigger OnDrillDown()
+                        var
+                            CRVenEmpTerittoryFilter: Record "AQD CR Vend Emp Territory Filt";
+                            CRVenEmpTerittoryFilterDrilldown: Page "AQD CR VenEmpTeritoryFiltDrill";
+                        begin
+                            CRVenEmpTerittoryFilter.Reset();
+                            CRVenEmpTerittoryFilter.SETRANGE("Type", CRVenEmpTerittoryFilter.Type::Vendor);
+                            CRVenEmpTerittoryFilter.SETRANGE("No.", Rec."No.");
+
+                            CLEAR(CRVenEmpTerittoryFilterDrilldown);
+                            CRVenEmpTerittoryFilterDrilldown.SetCalledFromMasterPage(true);
+                            CRVenEmpTerittoryFilterDrilldown.SetTableView(CRVenEmpTerittoryFilter);
+                            CRVenEmpTerittoryFilterDrilldown.RunModal();
+                        end;
+                    }
+                    field("AQD Customer Filter"; Rec."AQD Customer Filter")
+                    {
+                        ApplicationArea = All;
+                        Editable = Rec."AQD Customer Rebate";
+                        Enabled = Rec."AQD Customer Rebate";
+
+                        trigger OnDrillDown()
+                        var
+                            CRVenEmpCustomerFilter: Record "AQD CR Vend Emp Customer Filt";
+                            CRVenEmpCustomerFilterDrilldown: Page "AQD CR Vend Emp Customer Filt";
+                        begin
+                            CRVenEmpCustomerFilter.Reset();
+                            CRVenEmpCustomerFilter.SETRANGE("Type", CRVenEmpCustomerFilter.Type::Vendor);
+                            CRVenEmpCustomerFilter.SETRANGE("No.", Rec."No.");
+
+                            CLEAR(CRVenEmpCustomerFilterDrilldown);
+                            CRVenEmpCustomerFilterDrilldown.SetCalledFromMasterPage(true);
+                            CRVenEmpCustomerFilterDrilldown.SetTableView(CRVenEmpCustomerFilter);
+                            CRVenEmpCustomerFilterDrilldown.RunModal();
+                        end;
+                    }
                 }
-                field("AQD Territory Filter"; Rec."AQD Territory Filter")
+                Group(AcumensCustomerClaim)
                 {
-                    ApplicationArea = All;
-                    Editable = Rec."AQD Customer Rebate";
-                    Enabled = Rec."AQD Customer Rebate";
-
-                    trigger OnDrillDown()
-                    var
-                        CRVenEmpTerittoryFilter: Record "AQD CR Vend Emp Territory Filt";
-                        CRVenEmpTerittoryFilterDrilldown: Page "AQD CR VenEmpTeritoryFiltDrill";
-                    begin
-                        CRVenEmpTerittoryFilter.Reset();
-                        CRVenEmpTerittoryFilter.SETRANGE("Type", CRVenEmpTerittoryFilter.Type::Vendor);
-                        CRVenEmpTerittoryFilter.SETRANGE("No.", Rec."No.");
-
-                        CLEAR(CRVenEmpTerittoryFilterDrilldown);
-                        CRVenEmpTerittoryFilterDrilldown.SetCalledFromMasterPage(true);
-                        CRVenEmpTerittoryFilterDrilldown.SetTableView(CRVenEmpTerittoryFilter);
-                        CRVenEmpTerittoryFilterDrilldown.RunModal();
-                    end;
-                }
-                field("AQD Customer Filter"; Rec."AQD Customer Filter")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."AQD Customer Rebate";
-                    Enabled = Rec."AQD Customer Rebate";
-
-                    trigger OnDrillDown()
-                    var
-                        CRVenEmpCustomerFilter: Record "AQD CR Vend Emp Customer Filt";
-                        CRVenEmpCustomerFilterDrilldown: Page "AQD CR Vend Emp Customer Filt";
-                    begin
-                        CRVenEmpCustomerFilter.Reset();
-                        CRVenEmpCustomerFilter.SETRANGE("Type", CRVenEmpCustomerFilter.Type::Vendor);
-                        CRVenEmpCustomerFilter.SETRANGE("No.", Rec."No.");
-
-                        CLEAR(CRVenEmpCustomerFilterDrilldown);
-                        CRVenEmpCustomerFilterDrilldown.SetCalledFromMasterPage(true);
-                        CRVenEmpCustomerFilterDrilldown.SetTableView(CRVenEmpCustomerFilter);
-                        CRVenEmpCustomerFilterDrilldown.RunModal();
-                    end;
+                    Caption = 'Customer Claim';
+                    field("AQM Claim Vendor"; Rec."AQM Claim Vendor")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("AQD Claim From Customer No."; Rec."AQD Claim From Customer No.")
+                    {
+                        ApplicationArea = All;
+                    }
                 }
             }
         }

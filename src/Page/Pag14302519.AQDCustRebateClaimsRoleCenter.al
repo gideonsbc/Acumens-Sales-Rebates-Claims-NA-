@@ -1,8 +1,8 @@
-page 14302519 "AQD Cust Rebate & Claims RC"
+page 14302519 "AQD Cust Rebate And Claims RC"
 {
     ApplicationArea = All;
-    UsageCategory = Tasks;
     Caption = 'Customer Rebate & Claims Role Center', Comment = '';
+    UsageCategory = Tasks;
     PageType = RoleCenter;
 
     layout
@@ -121,6 +121,20 @@ page 14302519 "AQD Cust Rebate & Claims RC"
             //     Image = CampaignEntries;
             //     RunObject = Page "AQD Rebate Cust Type Eligib";
             // }
+            action(ClaimProgramCodes)
+            {
+                Caption = 'Claim Program Codes';
+                ApplicationArea = All;
+                Image = Entries;
+                RunObject = Page "AQD Cust Claim Program Code";
+            }
+            action(ClaimServiceCodes)
+            {
+                Caption = 'Claim Service Codes';
+                ApplicationArea = All;
+                Image = Entries;
+                RunObject = Page "AQD Claim Service Codes";
+            }
             action("Sales Orders")
             {
                 Caption = 'Sales Orders';
@@ -149,6 +163,13 @@ page 14302519 "AQD Cust Rebate & Claims RC"
                 Image = SalesCreditMemo;
                 RunObject = Page "Sales Credit Memos";
             }
+            action("Purchase Credit Memos")
+            {
+                Caption = 'Purchase Credit Memos';
+                ApplicationArea = All;
+                Image = SalesCreditMemo;
+                RunObject = Page "Purchase Credit Memos";
+            }
             action("Customer Rebate Batches")
             {
                 ApplicationArea = All;
@@ -160,6 +181,18 @@ page 14302519 "AQD Cust Rebate & Claims RC"
                 ApplicationArea = All;
                 Caption = 'Customer Rebates';
                 RunObject = page "AQD Customer Rebates Documents";
+            }
+            action("AQD Full Price Cust Claim List")
+            {
+                ApplicationArea = All;
+                Caption = 'Full Price Customer Claims';
+                RunObject = page "AQD Full Price Cust Claim List";
+            }
+            action("AQD PriceMatch Cust Claim List")
+            {
+                ApplicationArea = All;
+                Caption = 'Price Match Customer Claims';
+                RunObject = page "AQD PriceMatch Cust Claim List";
             }
         }
         area(sections)
@@ -199,6 +232,14 @@ page 14302519 "AQD Cust Rebate & Claims RC"
                     RunObject = Page "Posted Sales Credit Memos";
                     ToolTip = 'Open the list of posted sales credit memos.';
                 }
+                action("Posted Purchase Credit Memo")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Posted Purchase Credit Memos';
+                    Image = PostedCreditMemo;
+                    RunObject = Page "Posted Purchase Credit Memos";
+                    ToolTip = 'Open the list of posted Purchase credit memos.';
+                }
             }
         }
         area(Creation)
@@ -217,6 +258,20 @@ page 14302519 "AQD Cust Rebate & Claims RC"
                 Image = CalculateSalesTax;
                 RunObject = Report "AQD Post Cust Rebate Batches";
                 Visible = false;
+            }
+            action("Generate Customer Full Claim Claims")
+            {
+                ApplicationArea = All;
+                Caption = 'Create Customer Full Price Claims';
+                Image = CalculateSalesTax;
+                RunObject = Report "AQD Create CustFullPriceClaims";
+            }
+            action("Generate Customer Price Match Claims")
+            {
+                ApplicationArea = All;
+                Caption = 'Create Customer Price Match Claims';
+                Image = CalculateSalesTax;
+                RunObject = Report "AQD Create CustPriceMatchClaim";
             }
             group(Journals)
             {
@@ -277,9 +332,9 @@ page 14302519 "AQD Cust Rebate & Claims RC"
         }
         area(Processing)
         {
-            group(Setup)
+            group(CustomerRebateSetup)
             {
-                Caption = 'Setup';
+                Caption = 'Customer Rebate Setup';
                 Image = Setup;
                 action("Acumens Customer Rebates Claims Setup")
                 {
@@ -334,6 +389,40 @@ page 14302519 "AQD Cust Rebate & Claims RC"
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
                 }
             }
+            group(CustomerClaimSetup)
+            {
+                Caption = 'Claim Setup';
+                Image = Setup;
+                action("Acumens Customer Rebates Claims Setup2")
+                {
+                    Caption = 'Acumens Customer Rebates & Claims Setup';
+                    ApplicationArea = All;
+                    Image = CostAccountingSetup;
+                    RunObject = Page "AQD Acumens CustRbtClaim Setup";
+                }
+                action("AQD Customer Claim Vendors")
+                {
+                    Caption = 'Claim Vendors';
+                    ApplicationArea = All;
+                    Image = UserSetup;
+                    RunObject = Page "AQD Customer Claim Vendors";
+                }
+                action(ClaimProgramCodes2)
+                {
+                    Caption = 'Claim Program Codes';
+                    ApplicationArea = All;
+                    Image = Entries;
+                    RunObject = Page "AQD Cust Claim Program Code";
+                }
+                action(ClaimServiceCodes2)
+                {
+                    Caption = 'Claim Service Codes';
+                    ApplicationArea = All;
+                    Image = Entries;
+                    RunObject = Page "AQD Claim Service Codes";
+                }
+            }
+
             group(History)
             {
                 Caption = 'History';
@@ -365,6 +454,20 @@ page 14302519 "AQD Cust Rebate & Claims RC"
                     Caption = 'Posted Customer Rebate Details';
                     RunObject = page "AQD Posted CustRbtDetail List";
                     Image = PostedCreditMemo;
+                }
+                action("AQD Completed Full Price Cust Claim List2")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Completed Full Price Customer Claims';
+                    Image = CreditMemo;
+                    RunObject = page AQDCmpltedFullPriceCustClmList;
+                }
+                action("AQD Completed PriceMatch Cust Claim List2")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Completed Price Match Customer Claims';
+                    Image = CreditMemo;
+                    RunObject = page "AQD CmpltdPriceMthCustClmList";
                 }
             }
         }

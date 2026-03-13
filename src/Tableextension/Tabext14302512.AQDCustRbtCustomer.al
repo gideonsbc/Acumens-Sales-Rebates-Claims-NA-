@@ -42,5 +42,15 @@ tableextension 14302512 "AQD CustRbt Customer Ext" extends Customer
             Caption = 'Calculation Date';
             DataClassification = CustomerContent;
         }
+        field(14302610; "AQM Customer Claim Customer"; Boolean)
+        {
+            Caption = 'Claim Customer';
+            DataClassification = CustomerContent;
+        }
+        field(14302620; "AQD Default Claim Type"; Enum "AQD Cust Claim Claim Type")
+        {
+            Caption = 'Default Claim Type';
+            DataClassification = CustomerContent;
+        }
     }
 }

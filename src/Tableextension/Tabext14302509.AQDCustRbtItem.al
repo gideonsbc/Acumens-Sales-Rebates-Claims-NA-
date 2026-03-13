@@ -55,5 +55,15 @@ tableextension 14302509 "AQD CustRbt Item Ext" extends Item
             Editable = false;
             FieldClass = FlowField;
         }
+        field(14302610; "AQM Customer Claim Enabled"; Boolean)
+        {
+            Caption = 'Claim Enabled';
+            DataClassification = CustomerContent;
+        }
+        field(14302630; "AQM CustClaim Mfg Product Code"; Code[20])
+        {
+            Caption = 'Mfg. Product Code';
+            DataClassification = CustomerContent;
+        }
     }
 }

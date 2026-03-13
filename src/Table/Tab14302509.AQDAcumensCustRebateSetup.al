@@ -133,6 +133,213 @@ table 14302509 "AQD Acumens CustRbtClaim Setup"
             TableRelation = Customer;
             DataClassification = CustomerContent;
         }
+
+        //>> Customer Claims
+        field(2000; "Item Claim Enabled"; Boolean)
+        {
+            Caption = 'Item Claim Enabled';
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                IF CONFIRM(STRSUBSTNO(UserConfirmMsg, Item.TABLECAPTION)) THEN
+                    Item.MODIFYALL("AQM Customer Claim Enabled", Rec."Item Claim Enabled");
+            end;
+        }
+        field(2010; "Resource Claim Enabled"; Boolean)
+        {
+            Caption = 'Resource Claim Enabled';
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                IF CONFIRM(STRSUBSTNO(UserConfirmMsg, Resource.TABLECAPTION)) THEN
+                    Resource.MODIFYALL("AQM Customer Claim Enabled", Rec."Resource Claim Enabled");
+            end;
+        }
+        field(2040; "G/L Account Claim Enabled"; Boolean)
+        {
+            Caption = 'G/L Account Claim Enabled';
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                IF CONFIRM(STRSUBSTNO(UserConfirmMsg, GLAccount.TABLECAPTION)) THEN
+                    GLAccount.MODIFYALL("AQM Customer Claim Enabled", Rec."G/L Account Claim Enabled");
+            end;
+        }
+        field(2050; "Claim No. is Order No."; Boolean)
+        {
+            Caption = 'Claim No. is Order No.';
+            DataClassification = CustomerContent;
+        }
+        field(2060; "Insert Comment Lines on Claim"; Boolean)
+        {
+            Caption = 'Insert Comment Lines on Claim';
+            DataClassification = CustomerContent;
+        }
+        field(2070; "Full Price Default Pyt Method"; Code[10])
+        {
+            Caption = 'Full Price Claim Default Payment Method Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Payment Method";
+
+            trigger OnValidate()
+            var
+                PaymentMethod: Record "Payment Method";
+            begin
+                IF PaymentMethod.GET(Rec."Full Price Default Pyt Method") THEN
+                    PaymentMethod.TestField("Bal. Account No.");
+            end;
+        }
+        field(2080; AllowToPostOrdAfterClaimApprov; Boolean)
+        {
+            Caption = 'Allow To Post Order After Claim Approval';
+            DataClassification = CustomerContent;
+        }
+        field(2090; "Create Claim On"; Enum "AQD CustClaim Create Claim On")
+        {
+            Caption = 'Create Claim On';
+            DataClassification = CustomerContent;
+        }
+        FIELD(2100; "Claim Delivery Commission Acct"; Code[20])
+        {
+            Caption = 'Claim Delivery Commission G/L Account';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        FIELD(2120; "Claim Variance G/L Account"; Code[20])
+        {
+            Caption = 'Claim Variance G/L Account';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        FIELD(2130; "Full Price Claims G/L Account"; Code[20])
+        {
+            Caption = 'Claims G/L Account';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        FIELD(2140; "Claim Discount G/L Account"; Code[20])
+        {
+            Caption = 'Claim Discount G/L Account';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        FIELD(2160; PostCreditMemoOnOrderInvoicing; Boolean)
+        {
+            Caption = 'Post Credit Memo On Order Invoicing';
+            DataClassification = CustomerContent;
+        }
+
+        field(2300; "Price Match Default Pyt Method"; Code[10])
+        {
+            Caption = 'Price Match Claim Default Payment Method Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Payment Method";
+
+            trigger OnValidate()
+            var
+                PaymentMethod: Record "Payment Method";
+            begin
+                IF PaymentMethod.GET(Rec."Price Match Default Pyt Method") THEN
+                    PaymentMethod.TestField("Bal. Account No.");
+            end;
+        }
+        FIELD(2310; "Price Match Claims G/L Account"; Code[20])
+        {
+            Caption = 'Claims G/L Account';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        FIELD(2320; "Price Match Claim DelComm Acct"; Code[20])
+        {
+            Caption = 'Claim Delivery Commission G/L Account';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        FIELD(2340; "Price Match Claim Vari G/LAcct"; Code[20])
+        {
+            Caption = 'Claim Variance G/L Account';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        FIELD(2350; "Price Match Claim Disc G/LAcct"; Code[20])
+        {
+            Caption = 'Claim Discount G/L Account';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        FIELD(2360; "PriceMatch ClmCostDiff G/LAcct"; Code[20])
+        {
+            Caption = 'Claim Cost Difference G/L Account';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                "Account Type" = CONST(Posting),
+                                                Blocked = CONST(false));
+        }
+        field(2370; "Price Match Create Claim On"; Enum "AQD CustClmPrcMthCreateClaimOn")
+        {
+            Caption = 'Create Claim On';
+            DataClassification = CustomerContent;
+        }
+        field(2380; "Price Match ClaimServCode Mand"; Boolean)
+        {
+            Caption = 'Claim Service Code Mandatory';
+            DataClassification = CustomerContent;
+        }
+        field(2390; "Price Match ClaimProgCode Mand"; Boolean)
+        {
+            Caption = 'Claim Program Code Mandatory';
+            DataClassification = CustomerContent;
+        }
+        FIELD(2400; "Price Match Always CreCostDiff"; Boolean)
+        {
+            Caption = 'Always Create Cost Different Line';
+            DataClassification = CustomerContent;
+        }
+        FIELD(2410; "Price Match Always CreCommLine"; Boolean)
+        {
+            Caption = 'Always Create Delivery Commission Line';
+            DataClassification = CustomerContent;
+        }
+        field(2490; "Full Price Claim Nos."; Code[20])
+        {
+            Caption = 'Full Price Claim Nos.';
+            TableRelation = "No. Series";
+        }
+        FIELD(2500; "Price Match Claim Nos."; Code[20])
+        {
+            Caption = 'Price Match Claim Nos.';
+            TableRelation = "No. Series";
+        }
+        field(2510; "Supplementary Invoice Nos."; Code[20])
+        {
+            Caption = 'Supplementary Invoice Nos.';
+            TableRelation = "No. Series";
+        }
+        FIELD(2520; "Claim Purchase Cr Memo Nos."; Code[20])
+        {
+            Caption = 'Claim Purchase Credit Memo Nos.';
+            TableRelation = "No. Series";
+        }
+        //<< Customer Claims
     }
     keys
     {
@@ -144,4 +351,10 @@ table 14302509 "AQD Acumens CustRbtClaim Setup"
     fieldgroups
     {
     }
+
+    var
+        Item: Record Item;
+        Resource: Record Resource;
+        GLAccount: Record "G/L Account";
+        UserConfirmMsg: Label 'Do you want to update all %1?';
 }

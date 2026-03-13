@@ -70,4 +70,13 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
             }
         }
     }
+    trigger OnAfterGetCurrRecord()
+    begin
+        SetPriceMatchFieldsvisibilityOnLines();
+    end;
+
+    procedure SetPriceMatchFieldsvisibilityOnLines()
+    begin
+        CurrPage.SalesLines.Page.SetPriceMatchFieldsvisibility(Rec."AQD CustClaim Claim Type" = Rec."AQD CustClaim Claim Type"::"Price Match");
+    end;
 }

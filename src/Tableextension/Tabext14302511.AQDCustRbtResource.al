@@ -13,5 +13,10 @@ tableextension 14302511 "AQD CustRbt Resource Ext" extends Resource
             DataClassification = CustomerContent;
             TableRelation = "Item Category".Code;
         }
+        field(14302610; "AQM Customer Claim Enabled"; Boolean)
+        {
+            Caption = 'Claim Enabled';
+            DataClassification = CustomerContent;
+        }
     }
 }
