@@ -53,7 +53,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 field("Customer Rebate Start Date"; Rec."Customer Rebate Start Date")
                 {
                     ApplicationArea = All;
-                    Caption = 'Rebate Calculation Start Date';
+                    Caption = 'Calculation Start Date';
                 }
                 field("Rebate Calc Start Invoice No."; Rec."Rebate Calc Start Invoice No.")
                 {
@@ -549,23 +549,30 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 end;
             end;
             Rec."Customer Rebate Document Nos" := 'CRB';
-            IF SalesInvoiceHeader.FINDLAST THEN
+            IF SalesInvoiceHeader.FINDLAST THEN BEGIN
                 Rec."Rebate Calc Start Invoice No." := SalesInvoiceHeader."No.";
-            IF SalesCrMemoHeader.FINDLAST THEN
+                Rec."Customer Rebate Start Date" := SalesInvoiceHeader."Posting Date";
+            END;
+            IF SalesCrMemoHeader.FINDLAST THEN BEGIN
                 Rec."Rebate Calc Start CM No." := SalesCrMemoHeader."No.";
+                Rec."Customer Rebate Start Date" := SalesCrMemoHeader."Posting Date";
+            END;
+
+            IF Rec."Customer Rebate Start Date" <> 0D THEN
+                Rec."Customer Rebate Start Date" := CalcDate('1D', Rec."Customer Rebate Start Date")
+            ELSE
+                Rec."Customer Rebate Start Date" := WorkDate();
             Rec.Modify(true);
 
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
             GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
-            GLAccount2.SETRANGE("AQD Cust Rebate G/L Account", TRUE);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Payable);
             IF GLAccount2.FindLast() THEN
                 CustomerRebatePayableGLAccount := GLAccount2."No."
             ELSE BEGIN
-                GLAccount2.SETRANGE("AQD Cust Rebate G/L Account");
-                IF GLAccount2.FINDLAST THEN
-                    LastGLAccountNo := GLAccount2."No.";
+                LastGLAccountNo := '20160';
 
                 ExitLoop := FALSE;
                 Counter := 1;
@@ -589,7 +596,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount."Account Type" := GLAccount."Account Type"::Posting;
                 IF TaxGroup.GET('NONTAXABLE') THEN
                     GLAccount."Tax Group Code" := 'NONTAXABLE';
-                GLAccount."AQD Cust Rebate G/L Account" := TRUE;
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
                 GLAccount.INSERT;
                 CustomerRebatePayableGLAccount := GLAccount."No.";
             END;
@@ -598,13 +605,11 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
             GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Expense);
-            GLAccount2.SETRANGE("AQD Cust Rebate G/L Account", TRUE);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Expense);
             IF GLAccount2.FindLast() THEN
                 CustomerRebateExpenseGLAccount := GLAccount2."No."
             ELSE BEGIN
-                GLAccount2.SETRANGE("AQD Cust Rebate G/L Account");
-                IF GLAccount2.FINDLAST THEN
-                    LastGLAccountNo := GLAccount2."No.";
+                LastGLAccountNo := '50415';
 
                 ExitLoop := FALSE;
                 Counter := 1;
@@ -628,7 +633,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount."Account Type" := GLAccount."Account Type"::Posting;
                 IF TaxGroup.GET('NONTAXABLE') THEN
                     GLAccount."Tax Group Code" := 'NONTAXABLE';
-                GLAccount."AQD Cust Rebate G/L Account" := TRUE;
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Expense;
                 GLAccount.INSERT;
                 CustomerRebateExpenseGLAccount := GLAccount."No.";
             END;

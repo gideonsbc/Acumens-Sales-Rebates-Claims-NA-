@@ -21,7 +21,7 @@ codeunit 14302516 "AQD Customer Rebate Post Mgt"
     procedure SetCustomerRebateParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateHeaderIn: Record "AQD Customer Rebate Header"; CalledFromGenerateCustomerRebateIn: Boolean)
     begin
         RunBy := RunByIn;
-        GlobalCustomerRebateHeader.COPYFILTERS(CustomerRebateHeaderIn);
+        GlobalCustomerRebateHeader := CustomerRebateHeaderIn;
         CalledFromGenerateCustomerRebate := CalledFromGenerateCustomerRebateIn;
     end;
 
@@ -79,18 +79,24 @@ codeunit 14302516 "AQD Customer Rebate Post Mgt"
 
         TotalCount := GlobalCustomerRebateHeader.Count;
 
-        IF GlobalCustomerRebateHeader.FindFirst() THEN BEGIN
-            COMMIT; // There is nothing to commit except real time transaction
-            ClearLastError();
+        IF GlobalCustomerRebateHeader."No." = '' THEN
+            EXIT;
 
-            Clear(CustomerRebatePost);
-            CustomerRebatePost.SetCustomerRebateParameters(RunBy, GlobalCustomerRebateHeader, CalledFromGenerateCustomerRebate);
-            if CustomerRebatePost.Run() then
-                SuccessfulCount += 1
-            else
-                ErrorCount += 1;
-            Commit();
+        COMMIT; // There is nothing to commit except real time transaction
+        ClearLastError();
+
+        GlobalCustomerRebateHeader."AQD Last Processing Error Msg" := '';
+
+        Clear(CustomerRebatePost);
+        CustomerRebatePost.SetCustomerRebateParameters(RunBy, GlobalCustomerRebateHeader, CalledFromGenerateCustomerRebate);
+        if CustomerRebatePost.Run() then
+            SuccessfulCount += 1
+        else BEGIN
+            GlobalCustomerRebateHeader."AQD Last Processing Error Msg" := COPYSTR(GETLASTERRORTEXT, 1, MAXSTRLEN(GlobalCustomerRebateHeader."AQD Last Processing Error Msg"));
+            GlobalCustomerRebateHeader.Modify();
+            ErrorCount += 1;
         END;
+        Commit();
 
         CloseWindow();
         ShowProcessResult(ObjectTypetoRun::Report, 0);

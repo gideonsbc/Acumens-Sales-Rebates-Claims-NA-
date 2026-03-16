@@ -31,9 +31,9 @@ tableextension 14302512 "AQD CustRbt Customer Ext" extends Customer
             TableRelation = Customer."No.";
             DataClassification = CustomerContent;
         }
-        field(14302550; "AQD Cust Rebate Category Code"; Code[20])
+        field(14302550; "AQD Cust Rebate Category"; Code[20])
         {
-            Caption = 'Customer Rebate Category Code';
+            Caption = 'Customer Rebate Category';
             DataClassification = CustomerContent;
             TableRelation = "AQD Rebate Customer Category";
         }

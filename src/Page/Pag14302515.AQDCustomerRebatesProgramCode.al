@@ -63,7 +63,7 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     Editable = ControlEditable;
                     Enabled = ControlEditable;
                     ShowMandatory = ControlEditable;
-                    Visible = ControlEditable;
+                    Visible = ControlVisible;
                 }
                 field("Entity Type"; Rec."Entity Type")
                 {
@@ -97,11 +97,12 @@ page 14302515 "AQD Cust Rebate Program Codes"
         IF NOT CustomerRebateSetup.GET THEN
             CustomerRebateSetup.Init();
 
-        ControlEditable := (Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense) AND
-                           (CustomerRebateSetup."Rebate Payable Ac" = CustomerRebateSetup."Rebate Payable Ac"::"Rebate Payable AC");
+        ControlEditable := Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
+        ControlVisible := CustomerRebateSetup."Rebate Payable Ac" = CustomerRebateSetup."Rebate Payable Ac"::"Rebate Payable AC";
     END;
 
     VAR
         CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         ControlEditable: Boolean;
+        ControlVisible: Boolean;
 }

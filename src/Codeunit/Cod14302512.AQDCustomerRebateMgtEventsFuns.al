@@ -22,6 +22,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             EXIT;
 
         Rec."AQD Customer Rebate Enabled" := RebateSetup."G/L Account Rebate Enabled";
+        Rec."AQM Customer Claim Enabled" := RebateSetup."G/L Account Claim Enabled";
     end;
 
     [EventSubscriber(ObjectType::Table, Database::Item, 'OnBeforeInsertEvent', '', true, false)]
@@ -36,6 +37,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             EXIT;
 
         Rec."AQD Customer Rebate Enabled" := RebateSetup."Item Rebate Enabled";
+        Rec."AQM Customer Claim Enabled" := RebateSetup."Item Claim Enabled";
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterInitRecord, '', FALSE, FALSE)]
@@ -101,6 +103,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             EXIT;
 
         Rec."AQD Customer Rebate Enabled" := RebateSetup."Resource Rebate Enabled";
+        Rec."AQM Customer Claim Enabled" := RebateSetup."Resource Rebate Enabled";
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::GenJnlManagement, 'OnBeforeLookupName', '', true, false)]

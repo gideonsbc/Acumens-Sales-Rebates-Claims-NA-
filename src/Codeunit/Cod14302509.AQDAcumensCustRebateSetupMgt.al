@@ -8,11 +8,15 @@ codeunit 14302509 "AQD Acumens CustRbt Setup Mgt"
     local procedure Table70900_RebateSetup_ItemRebateEnabled_OnAfterValidate(var Rec: Record "AQD Acumens CustRbtClaim Setup"; var xRec: Record "AQD Acumens CustRbtClaim Setup"; CurrFieldNo: Integer)
     var
         Item: Record Item;
+        Customer: Record Vendor;
         UserConfirmMsg: Label 'Do you want to update all existing Items?';
     begin
-        IF CONFIRM(UserConfirmMsg) then
-            Item.ModifyAll("AQD Customer Rebate Enabled", Rec."Item Rebate Enabled");
-    end;
+        IF Rec."Item Rebate Enabled" THEN
+            IF CONFIRM(UserConfirmMsg) then BEGIN
+                Item.ModifyAll("AQD Customer Rebate Enabled", Rec."Item Rebate Enabled");
+                Customer.ModifyAll("AQD Customer Rebate", Rec."Item Rebate Enabled");
+            END;
+    END;
 
     [EventSubscriber(ObjectType::Table, Database::"AQD Acumens CustRbtClaim Setup", 'OnAfterValidateEvent', 'G/L Account Rebate Enabled', true, false)]
     local procedure Table70900_RebateSetup_GLAccountRebateEnabled_OnAfterValidate(var Rec: Record "AQD Acumens CustRbtClaim Setup"; var xRec: Record "AQD Acumens CustRbtClaim Setup"; CurrFieldNo: Integer)

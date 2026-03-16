@@ -13,9 +13,9 @@ tableextension 14302510 "AQD CustRbt G/L Account Ext" extends "G/L Account"
             DataClassification = CustomerContent;
             TableRelation = "Item Category".Code;
         }
-        field(14302530; "AQD Cust Rebate G/L Account"; Boolean)
+        field(14302530; "AQD Cust Rebate G/LAcct Type"; Enum "AQD Cust Rebate G/L Acc Type")
         {
-            Caption = 'Customer Rebate G/L Account (Internal UseOnly)';
+            Caption = 'Customer Rebate G/L Account Type (Internal UseOnly)';
             DataClassification = CustomerContent;
             Editable = FALSE;
         }

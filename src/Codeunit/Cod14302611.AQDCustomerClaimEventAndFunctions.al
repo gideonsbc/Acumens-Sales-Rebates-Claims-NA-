@@ -24,36 +24,6 @@ codeunit 14302611 "AQD Cust Claim Event And Func"
         ClaimIsNotApprovedError: Label 'Order cannot be posted as Claim is not approved yet.';
         BlankClaimVendorNoError: Label '%1 must not be blank.';
 
-    [EventSubscriber(ObjectType::Table, Database::"G/L Account", OnBeforeInsertEvent, '', FALSE, FALSE)]
-    local procedure Tab15_GLAccount_OnBeforeInsertEvent(var Rec: Record "G/L Account"; RunTrigger: Boolean)
-    BEGIN
-        IF Rec.IsTemporary THEN
-            EXIT;
-
-        IF ClaimSetup.GET THEN
-            Rec."AQM Customer Claim Enabled" := ClaimSetup."Item Claim Enabled";
-    END;
-
-    [EventSubscriber(ObjectType::Table, Database::Item, OnBeforeInsertEvent, '', FALSE, FALSE)]
-    local procedure Tab27_Item_OnBeforeInsertEvent(var Rec: Record Item; RunTrigger: Boolean)
-    BEGIN
-        IF Rec.IsTemporary THEN
-            EXIT;
-
-        IF ClaimSetup.GET THEN
-            Rec."AQM Customer Claim Enabled" := ClaimSetup."Item Claim Enabled";
-    END;
-
-    [EventSubscriber(ObjectType::Table, Database::Resource, OnBeforeInsertEvent, '', FALSE, FALSE)]
-    local procedure Tab156_Resource_OnBeforeInsertEvent(var Rec: Record Resource; RunTrigger: Boolean)
-    BEGIN
-        IF Rec.IsTemporary THEN
-            EXIT;
-
-        IF ClaimSetup.GET THEN
-            Rec."AQM Customer Claim Enabled" := ClaimSetup."Item Claim Enabled";
-    END;
-
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, 'Bill-To Customer No.', FALSE, FALSE)]
     local procedure Tab36_SalesHeader_BillToCustomerNo_OnAfterValidate(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
     BEGIN

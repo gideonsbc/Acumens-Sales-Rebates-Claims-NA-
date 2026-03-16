@@ -185,6 +185,11 @@ table 14302519 "AQD Customer Rebate Header"
             Caption = 'Calculation Date';
             Editable = FALSE;
         }
+        field(580; "AQD Last Processing Error Msg"; Text[250])
+        {
+            Caption = 'Last Processing Error Message';
+            Editable = false;
+        }
         field(600; "Batch Entry No."; Integer)
         {
             Editable = FALSE;

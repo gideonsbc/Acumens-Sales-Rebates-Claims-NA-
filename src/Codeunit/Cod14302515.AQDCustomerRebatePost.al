@@ -64,8 +64,9 @@ codeunit 14302515 "AQD Customer Rebate Post"
     procedure SetCustomerRebateParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateHeaderIn: Record "AQD Customer Rebate Header"; CalledFromGenerateCustomerRebateIn: Boolean)
     begin
         RunBy := RunByIn;
-        GlobalCustomerRebateHeader.COPYFILTERS(CustomerRebateHeaderIn);
         CalledFromGenerateCustomerRebate := CalledFromGenerateCustomerRebateIn;
+        GlobalCustomerRebateHeader := CustomerRebateHeaderIn;
+        GlobalCustomerRebateHeader.SetRecFilter();
     end;
 
     procedure PostCustomerRebateBatch(var CustomerRebateBatch: Record "AQD Customer Rebate Batch")
@@ -122,25 +123,21 @@ codeunit 14302515 "AQD Customer Rebate Post"
         RebateSetup.Get();
         SavedRecords := FALSE;
 
-        CustomerRebateHeader.RESET;
-        IF CustomerRebateHeader.FindFirst() THEN BEGIN
-            REPEAT
-                SkipRecord := FALSE;
-                IF CalledFromGenerateCustomerRebate THEN begin
-                    CreatedCustomerRebate.RESET;
-                    CreatedCustomerRebate.SETRANGE("Rebate No.", CustomerRebateHeader."No.");
-                    IF NOT CreatedCustomerRebate.FindFirst() THEN
-                        SkipRecord := TRUE;
-                end;
+        SkipRecord := FALSE;
+        IF CalledFromGenerateCustomerRebate THEN begin
+            CreatedCustomerRebate.RESET;
+            CreatedCustomerRebate.SETRANGE("Rebate No.", CustomerRebateHeader."No.");
+            IF NOT CreatedCustomerRebate.FindFirst() THEN
+                SkipRecord := TRUE;
+        end;
 
-                IF NOT SkipRecord THEN BEGIN
-                    CustomerRebateHeader.TestField("Posting Date");
+        IF NOT SkipRecord THEN BEGIN
+            CustomerRebateHeader.TestField("Posting Date");
 
-                    OnBeforePostCustomerRebates(CustomerRebateHeader);
-                    PostCustomerRebate(CustomerRebateHeader, FALSE);
-                    OnAfterPostCustomerRebates(CustomerRebateHeader);
-                END;
-            until CustomerRebateHeader.Next() = 0;
+            OnBeforePostCustomerRebates(CustomerRebateHeader);
+            PostCustomerRebate(CustomerRebateHeader, FALSE);
+            OnAfterPostCustomerRebates(CustomerRebateHeader);
+
         END;
     END;
 
@@ -298,7 +295,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         if CustomerRebateLine.FindFirst() then begin
             PostedCustRebateHeader.Init();
             PostedCustRebateHeader.TransferFields(CustomerRebateHeader);
-            PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Posted;
+            //PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Posted;
             PostedCustRebateHeader.Insert();
 
             MoveCustomerRebateLine(CustomerRebateHeader);
@@ -552,7 +549,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                 PostedCustomerRebateLine.Init();
                 PostedCustomerRebateLine.TransferFields(CustomerRebateLine);
-                PostedCustomerRebateLine."Customer Rebate Status" := PostedCustomerRebateLine."Customer Rebate Status"::Posted;
+                //PostedCustomerRebateLine."Customer Rebate Status" := PostedCustomerRebateLine."Customer Rebate Status"::Posted;
                 PostedCustomerRebateLine.Insert();
             //END;
             until CustomerRebateLine.Next() = 0;
@@ -571,7 +568,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
             REPEAT
                 PostedCustomerRebateDetails.Init();
                 PostedCustomerRebateDetails.TransferFields(CustomerRebateDetails);
-                PostedCustomerRebateDetails."Customer Rebate Status" := PostedCustomerRebateDetails."Customer Rebate Status"::Posted;
+                //PostedCustomerRebateDetails."Customer Rebate Status" := PostedCustomerRebateDetails."Customer Rebate Status"::Posted;
                 PostedCustomerRebateDetails.Insert();
 
                 DropshipmentInfo.RESET;

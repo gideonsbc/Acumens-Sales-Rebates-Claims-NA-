@@ -87,8 +87,8 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
             ERROR(BillToNotRebatableError, BillToCustomer."No.");
 
         IF (RebateSetup."Bill-To Rebate Customer" = RebateSetup."Bill-To Rebate Customer"::"Customer Rebate Category Setup") THEN BEGIN
-            BillToCustomer.TESTFIELD("AQD Cust Rebate Category Code");
-            LocalCustomerType.GET(BillToCustomer."AQD Cust Rebate Category Code");
+            BillToCustomer.TESTFIELD("AQD Cust Rebate Category");
+            LocalCustomerType.GET(BillToCustomer."AQD Cust Rebate Category");
             LocalCustomerType.TESTFIELD("Rebate Customer No");
         END ELSE IF RebateSetup."Bill-To Rebate Customer" = RebateSetup."Bill-To Rebate Customer"::"Customer Card Setup" THEN
                 BillToCustomer.TestField("AQD Cust Rebate Customer No.");
@@ -407,7 +407,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
     begin
         GlobalSalesRebateRate.RESET;
         GlobalSalesRebateRate.SetRange("Entity Type", GlobalSalesRebateRate."Entity Type"::"Customer Category");
-        GlobalSalesRebateRate.SetFilter("Entity No.", '%1|%2', BillToCustomer."AQD Cust Rebate Category Code", '');
+        GlobalSalesRebateRate.SetFilter("Entity No.", '%1|%2', BillToCustomer."AQD Cust Rebate Category", '');
         case DocumentLine_Type of
             DocumentLine_Type::Item:
                 begin
@@ -723,8 +723,8 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                 END;
             RebateSetup."Bill-To Rebate Customer"::"Customer Rebate Category Setup":
                 BEGIN
-                    BillToCustomer.TESTFIELD("AQD Cust Rebate Category Code");
-                    CustomerRebateType.GET(BillToCustomer."AQD Cust Rebate Category Code");
+                    BillToCustomer.TESTFIELD("AQD Cust Rebate Category");
+                    CustomerRebateType.GET(BillToCustomer."AQD Cust Rebate Category");
                     RebateCustomerRec.GET(CustomerRebateType."Rebate Customer No");
                 END;
         END;
@@ -1107,8 +1107,8 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                 END;
             RebateSetup."Bill-To Rebate Customer"::"Customer Rebate Category Setup":
                 BEGIN
-                    BillToCustomer.TestField("AQD Cust Rebate Category Code");
-                    LocalCustomerRebateType.GET(BillToCustomer."AQD Cust Rebate Category Code");
+                    BillToCustomer.TestField("AQD Cust Rebate Category");
+                    LocalCustomerRebateType.GET(BillToCustomer."AQD Cust Rebate Category");
                     RebateToCUstomer.Get(LocalCustomerRebateType."Rebate Customer No");
                 END;
         END;
