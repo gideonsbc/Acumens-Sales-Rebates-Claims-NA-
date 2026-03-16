@@ -122,6 +122,7 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                     ApplicationArea = All;
                     Caption = 'Create Claim';
                     Image = CreateCreditMemo;
+                    Visible = CreateClaimVisible;
 
                     trigger OnAction()
                     var
@@ -163,6 +164,15 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
             }
         }
     }
+
+    trigger OnOpenPage()
+    BEGIN
+        IF NOT ClaimSetup.GET THEN
+            ClaimSetup.INIT;
+
+        CreateClaimVisible := ClaimSetup."Create Claim On" = ClaimSetup."Create Claim On"::Manual; // This is for full Price Claim Only
+    END;
+
     trigger OnAfterGetCurrRecord()
     begin
         ClaimEditable := Rec."AQD Claim Status".AsInteger() < Rec."AQD Claim Status"::Submitted.AsInteger();
@@ -183,6 +193,8 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
     end;
 
     var
+        ClaimSetup: Record "AQD Acumens CustRbtClaim Setup";
         ClaimEditable: Boolean;
         FullClaimFieldVisible: Boolean;
+        CreateClaimVisible: Boolean;
 }

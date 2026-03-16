@@ -2,7 +2,7 @@ page 14302612 "AQD Customer Claim List"
 {
     ApplicationArea = All;
     Caption = 'Customer Claims';
-    CardPageId = "AQD Customer Claim";
+    //CardPageId = "AQD Customer Claim";
     Editable = false;
     PageType = List;
     SourceTable = "AQD Customer Claim Header";
@@ -20,6 +20,21 @@ page 14302612 "AQD Customer Claim List"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
+
+                    trigger OnDrillDown()
+                    BEGIN
+                        CASE Rec."Claim Type" OF
+                            Rec."Claim Type"::"Full Price":
+                                BEGIN
+                                    Page.RunModal(PAGE::"AQD FullPrice Customer Claim", Rec)
+                                END;
+                            Rec."Claim Type"::"Price Match":
+                                BEGIN
+                                    IF Rec.Status <> Rec.Status::"Credit Posted" THEN
+                                        Page.RunModal(PAGE::"AQD Price Match Customer Claim", Rec)
+                                END;
+                        END;
+                    END;
                 }
                 field("Claim Type"; Rec."Claim Type")
                 {

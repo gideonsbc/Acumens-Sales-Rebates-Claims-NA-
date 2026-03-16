@@ -138,6 +138,7 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                 ApplicationArea = All;
                 Caption = 'Create Claim';
                 Image = CreateCreditMemo;
+                Visible = CreateClaimVisible;
 
                 trigger OnAction()
                 var
@@ -196,7 +197,18 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
         CurrPage.SalesInvLines.Page.SetPriceMatchFieldsvisibility(Rec."AQD CustClaim Claim Type" = Rec."AQD CustClaim Claim Type"::"Price Match");
     end;
 
+    trigger OnOpenPage()
+    BEGIN
+        IF NOT ClaimSetup.GET THEN
+            ClaimSetup.INIT;
+
+        // This is for Price Match Claim Only
+        CreateClaimVisible := ClaimSetup."Price Match Create Claim On" = ClaimSetup."Price Match Create Claim On"::Manual;
+    END;
+
     var
+        ClaimSetup: Record "AQD Acumens CustRbtClaim Setup";
         FullClaimFieldVisible: Boolean;
+        CreateClaimVisible: Boolean;
 }
 

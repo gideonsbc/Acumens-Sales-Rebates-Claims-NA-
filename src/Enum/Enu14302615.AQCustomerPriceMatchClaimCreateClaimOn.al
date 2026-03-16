@@ -6,9 +6,9 @@ enum 14302615 "AQD CustClmPrcMthCreateClaimOn"
     {
         Caption = 'Manual';
     }
-    value(1; "Order Invoicing")
+    value(1; "Invoicing Order")
     {
-        Caption = 'Order Invoicing';
+        Caption = 'Invoicing Order';
     }
     value(2; "Batch Execution")
     {

@@ -327,7 +327,7 @@ codeunit 14302611 "AQD Cust Claim Event And Func"
            (SalesHeader."AQD CustClaim Claim Type" = SalesHeader."AQD CustClaim Claim Type"::"Price Match")
         THEN BEGIN
             IF (SalesInvoiceHeader."No." <> '') AND
-               (ClaimSetup."Price Match Create Claim On" = ClaimSetup."Price Match Create Claim On"::"Order Invoicing")
+               (ClaimSetup."Price Match Create Claim On" = ClaimSetup."Price Match Create Claim On"::"Invoicing Order")
             THEN BEGIN
                 CLEAR(ClaimManagement);
                 ClaimManagement.SetCreatePriceMatchClaimsParameters(SalesInvoiceHeader, TRUE, FALSE, FALSE);
@@ -744,7 +744,8 @@ codeunit 14302611 "AQD Cust Claim Event And Func"
             CreatePurchaseCreditMemoHeader(ClaimHeader);
             REPEAT
                 CreateSupplementaryInvoiceLine(ClaimLine);
-                CreatePurchaseCreditMemoLine(ClaimLine);
+                IF ClaimLine."Claim Line Type" <> ClaimLine."Claim Line Type"::"Delivery Commission" THEN
+                    CreatePurchaseCreditMemoLine(ClaimLine);
                 IF (ClaimLine."Claim Line Type" = ClaimLine."Claim Line Type"::"Cost of Good Sold") AND
                    (ClaimLine."Claim Line")
                 THEN BEGIN
@@ -810,6 +811,11 @@ codeunit 14302611 "AQD Cust Claim Event And Func"
             PurchHeader."AQD CustClaim Claim Type" := PurchHeader."AQD CustClaim Claim Type"::"Price Match";
             PurchHeader.MODIFY;
 
+            IF SupplementaryInvoice."No." <> '' THEN BEGIN
+                SupplementaryInvoice."AQD CustClaim Purch CrMemo No." := PurchHeader."No.";
+                SupplementaryInvoice.Modify();
+            END;
+
             ClaimHeader."Purchase Credit Memo No." := PurchHeader."No.";
             ClaimHeader.Modify;
         END ELSE BEGIN
@@ -837,6 +843,9 @@ codeunit 14302611 "AQD Cust Claim Event And Func"
             PurchHeader."Posting Description" := ClaimHeader."Order No.";
             PurchHeader."AQD CustClaim Claim Type" := PurchHeader."AQD CustClaim Claim Type"::"Price Match";
             PurchHeader.MODIFY;
+
+            SupplementaryInvoice."AQD CustClaim Purch CrMemo No." := PurchHeader."No.";
+            SupplementaryInvoice.Modify();
 
             ClaimHeader."Purchase Credit Memo No." := PurchHeader."No.";
             ClaimHeader.Modify;

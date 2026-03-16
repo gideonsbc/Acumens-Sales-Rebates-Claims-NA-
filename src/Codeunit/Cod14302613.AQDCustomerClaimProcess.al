@@ -479,6 +479,7 @@ codeunit 14302613 "AQD Customer Claim Process"
 
                     // Function to be implemented Current Returned Fixed Value 0 to disable it
                     EstimateDeliveryCommission := 0;
+                    EstimateDeliveryCommission := ClaimHeader."Delivery Commission";
                     IF EstimateDeliveryCommission = 0 THEN
                         IF ClaimSetup."Price Match Always CreCommLine" THEN
                             EstimateDeliveryCommission := 0.01;

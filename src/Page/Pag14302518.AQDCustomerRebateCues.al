@@ -11,12 +11,60 @@ page 14302518 "AQD Customer Rebate Cues"
         {
             cuegroup("Customer Rebate Activities")
             {
-                Caption = 'Customer';
+                Caption = 'Rebate';
                 field("Rebate Document"; Rec."Rebate Documents")
                 {
                     Caption = 'Rebate Documents';
                     ApplicationArea = All;
                     DrillDownPageId = "AQD Customer Rebates Documents";
+                }
+            }
+            cuegroup("Full Price Claims")
+            {
+                Caption = 'Full Price Claim';
+                field("Full Price Claims - Created"; Rec."Full Price Claims - Created")
+                {
+                    ApplicationArea = All;
+                    DrillDownPageId = "AQD Full Price Cust Claim List";
+                }
+                field("Full Price Claims - Submitted"; Rec."Full Price Claims - Submitted")
+                {
+                    ApplicationArea = All;
+                    DrillDownPageId = "AQD Full Price Cust Claim List";
+                }
+                field("Full Price Claims - Approved"; Rec."Full Price Claims - Approved")
+                {
+                    ApplicationArea = All;
+                    DrillDownPageId = "AQD Full Price Cust Claim List";
+                }
+                field("Full Price Claims - Completed"; Rec."Full Price Claims - Completed")
+                {
+                    ApplicationArea = All;
+                    DrillDownPageId = AQDCmpltedFullPriceCustClmList;
+                }
+            }
+            cuegroup("Price Match Claims")
+            {
+                Caption = 'Price Match Claim';
+                field("Price Match Claims - Created"; Rec."Price Match Claims - Created")
+                {
+                    ApplicationArea = All;
+                    DrillDownPageId = "AQD PriceMatch Cust Claim List";
+                }
+                field("Price Match Claims - Submitted"; Rec."Price Match Claims - Submitted")
+                {
+                    ApplicationArea = All;
+                    DrillDownPageId = "AQD PriceMatch Cust Claim List";
+                }
+                field("Price Match Claims - Approved"; Rec."Price Match Claims - Approved")
+                {
+                    ApplicationArea = All;
+                    DrillDownPageId = "AQD PriceMatch Cust Claim List";
+                }
+                field("Price Match Claims - Completed"; Rec."Price Match Claims - Completed")
+                {
+                    ApplicationArea = All;
+                    DrillDownPageId = "AQD CmpltdPriceMthCustClmList";
                 }
             }
         }

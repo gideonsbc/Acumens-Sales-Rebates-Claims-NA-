@@ -16,6 +16,62 @@ table 14302511 "AQD Customer Rebate Cues"
             FieldClass = FlowField;
             Editable = false;
         }
+        field(30; "Full Price Claims - Created"; Integer)
+        {
+            Caption = 'Created';
+            CalcFormula = count("AQD Customer Claim Header" Where("Claim Type" = const("Full Price"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Created)));
+            FieldClass = FlowField;
+            Editable = false;
+        }
+        field(31; "Full Price Claims - Submitted"; Integer)
+        {
+            Caption = 'Submitted';
+            CalcFormula = count("AQD Customer Claim Header" Where("Claim Type" = const("Full Price"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Submitted)));
+            FieldClass = FlowField;
+            Editable = false;
+        }
+        field(32; "Full Price Claims - Approved"; Integer)
+        {
+            Caption = 'Approved';
+            CalcFormula = count("AQD Customer Claim Header" where("Claim Type" = const("Full Price"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Approved)));
+            FieldClass = FlowField;
+            Editable = false;
+        }
+        field(33; "Full Price Claims - Completed"; Integer)
+        {
+            Caption = 'Completed';
+            CalcFormula = count("AQD Customer Claim Header" where("Claim Type" = const("Full Price"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const("Credit Posted")));
+            FieldClass = FlowField;
+            Editable = false;
+        }
+        field(40; "Price Match Claims - Created"; Integer)
+        {
+            Caption = 'Created';
+            CalcFormula = count("AQD Customer Claim Header" Where("Claim Type" = const("Price Match"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Created)));
+            FieldClass = FlowField;
+            Editable = false;
+        }
+        field(41; "Price Match Claims - Submitted"; Integer)
+        {
+            Caption = 'Submitted';
+            CalcFormula = count("AQD Customer Claim Header" Where("Claim Type" = const("Price Match"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Submitted)));
+            FieldClass = FlowField;
+            Editable = false;
+        }
+        field(42; "Price Match Claims - Approved"; Integer)
+        {
+            Caption = 'Approved';
+            CalcFormula = count("AQD Customer Claim Header" where("Claim Type" = const("Price Match"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Approved)));
+            FieldClass = FlowField;
+            Editable = false;
+        }
+        field(43; "Price Match Claims - Completed"; Integer)
+        {
+            Caption = 'Completed';
+            CalcFormula = count("AQD Customer Claim Header" where("Claim Type" = const("Price Match"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const("Credit Posted")));
+            FieldClass = FlowField;
+            Editable = false;
+        }
         field(50; "Date Filter"; Date)
         {
             Caption = 'Date Filter';

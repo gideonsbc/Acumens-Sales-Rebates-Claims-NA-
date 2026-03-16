@@ -9,7 +9,7 @@ tableextension 14302626 "AQD CustClaim PurchRcptHdr Ext" extends "Purch. Rcpt. H
         }
         field(14302620; "AQD Claim Sell-to Cust No."; Code[20])
         {
-            Caption = 'Claim Bill-To Customer No.';
+            Caption = 'Claim Sell-To Customer No.';
             Editable = FALSE;
         }
         field(14302630; "AQD Claim Bill-to Cust No."; Code[20])

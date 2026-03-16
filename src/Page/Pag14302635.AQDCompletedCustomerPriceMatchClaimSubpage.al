@@ -143,13 +143,6 @@ page 14302635 "AQD CustCpltdPriceMtchClmSubpg"
                     Enabled = false;
                     ToolTip = 'Specifies the value of the Quantity field.', Comment = '%';
                 }
-                field("Quantity Shipped"; Rec."Quantity Shipped")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                    Enabled = false;
-                    ToolTip = 'Specifies the value of the Quantity Shipped field.', Comment = '%';
-                }
                 field("Unit Price"; Rec."Unit Price")
                 {
                     ApplicationArea = All;

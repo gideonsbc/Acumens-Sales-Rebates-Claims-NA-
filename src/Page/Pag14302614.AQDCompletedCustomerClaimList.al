@@ -2,7 +2,7 @@ page 14302614 "AQD Completed Cust Claim List"
 {
     ApplicationArea = All;
     Caption = 'Completed Customer Claims';
-    CardPageId = "AQD Completed Customer Claim";
+    //CardPageId = "AQD Completed Customer Claim";
     Editable = FALSE;
     DeleteAllowed = FALSE;
     InsertAllowed = FALSE;
@@ -23,6 +23,20 @@ page 14302614 "AQD Completed Cust Claim List"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
+
+                    trigger OnDrillDown()
+                    BEGIN
+                        CASE Rec."Claim Type" OF
+                            Rec."Claim Type"::"Full Price":
+                                BEGIN
+                                    Page.RunModal(PAGE::"AQD CompltdFullPrice CustClaim", Rec)
+                                END;
+                            Rec."Claim Type"::"Price Match":
+                                BEGIN
+                                    Page.RunModal(PAGE::"AQD CompltdPriceMatchCustClaim", Rec)
+                                END;
+                        END;
+                    END;
                 }
                 field("Claim Type"; Rec."Claim Type")
                 {

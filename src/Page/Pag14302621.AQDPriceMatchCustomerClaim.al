@@ -4,6 +4,7 @@ page 14302621 "AQD Price Match Customer Claim"
     Caption = 'Price Match Customer Claim';
     InsertAllowed = FALSE;
     PageType = Document;
+    RefreshOnActivate = TRUE;
     SourceTable = "AQD Customer Claim Header";
 
     layout
