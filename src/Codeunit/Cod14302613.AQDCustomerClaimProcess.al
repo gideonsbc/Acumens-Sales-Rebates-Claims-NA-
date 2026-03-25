@@ -58,7 +58,14 @@ codeunit 14302613 "AQD Customer Claim Process"
     END;
 
     procedure IsSalesLineClaimable(SalesLine: Record "Sales Line"; IgnoreCommentsCheck: Boolean) ReturnValue: Boolean
+    var
+        IsHandled: Boolean;
     BEGIN
+        IsHandled := FALSE;
+        OnBeforeCheckSalesLineClaimable(SalesLine, IgnoreCommentsCheck, ReturnValue, IsHandled);
+        IF IsHandled THEN
+            EXIT;
+
         IF NOT IgnoreCommentsCheck THEN
             IF (SalesLine.Type = SalesLine.Type::" ") AND
                (NOT ClaimSetup."Insert Comment Lines on Claim")
@@ -92,7 +99,14 @@ codeunit 14302613 "AQD Customer Claim Process"
     END;
 
     procedure IsSalesInvoiceLineClaimable(SalesInvoiceLine: Record "Sales Invoice Line"; IgnoreCommentsCheck: Boolean) ReturnValue: Boolean
+    var
+        IsHandled: Boolean;
     BEGIN
+        IsHandled := FALSE;
+        OnBeforeCheckSalesInvoiceLineClaimable(SalesInvoiceLine, IgnoreCommentsCheck, ReturnValue, IsHandled);
+        IF IsHandled THEN
+            EXIT;
+
         IF NOT IgnoreCommentsCheck THEN
             IF (SalesInvoiceLine.Type = SalesInvoiceLine.Type::" ") AND
                (NOT ClaimSetup."Insert Comment Lines on Claim")
@@ -155,7 +169,13 @@ codeunit 14302613 "AQD Customer Claim Process"
     LOCAL procedure CreateFullPriceClaim()
     var
         LocalSalesLine: Record "Sales Line";
+        IsHandled: Boolean;
     BEGIN
+        IsHandled := FALSE;
+        OnBeforeCheckFullPriceClaim(SalesHeader, IsHandled);
+        IF IsHandled THEN
+            EXIT;
+
         ClaimError.RESET;
         ClaimError.SETRANGE("Order No.", SalesHeader."No.");
         IF ClaimError.FINDFIRST THEN
@@ -194,6 +214,12 @@ codeunit 14302613 "AQD Customer Claim Process"
             ClaimHeader.TESTFIELD("Claim Rejected", FALSE);
             ClaimHeader.TESTFIELD("Claim Approved", FALSE);
         END;
+
+        IsHandled := FALSE;
+        OnAfterInsertFullPriceClaimHeader(SalesHeader, ClaimHeader, IsHandled);
+        IF IsHandled THEN
+            EXIT;
+
         ClaimHeader."Order Date" := SalesHeader."Order Date";
         ClaimHeader."Posting Date" := SalesHeader."Posting Date";
         ClaimHeader."Shipment Date" := SalesHeader."Shipment Date";
@@ -257,6 +283,11 @@ codeunit 14302613 "AQD Customer Claim Process"
         ClaimHeader.Status := ClaimHeader.Status::Created;
         ClaimHeader.MODIFY;
 
+        IsHandled := FALSE;
+        OnAfterCreateFullPriceClaimHeader(SalesHeader, ClaimHeader, IsHandled);
+        IF IsHandled THEN
+            EXIT;
+
         ClaimLine.RESET;
         ClaimLine.SetRange("Claim Type", ClaimHeader."Claim Type");
         ClaimLine.SETRANGE("Document No.", ClaimHeader."No.");
@@ -265,6 +296,7 @@ codeunit 14302613 "AQD Customer Claim Process"
         LocalSalesLine.RESET;
         LocalSalesLine.SETRANGE("Document Type", SalesHeader."Document Type"::Order);
         LocalSalesLine.SETRANGE("Document No.", SalesHeader."No.");
+        OnAfterApplyFilterForFullPriceClaimLines(SalesHeader, LocalSalesLine, ClaimHeader);
         IF LocalSalesLine.FINDFIRST THEN BEGIN
             REPEAT
                 IF IsSalesLineClaimable(LocalSalesLine, FALSE) THEN BEGIN
@@ -298,7 +330,12 @@ codeunit 14302613 "AQD Customer Claim Process"
                     ClaimLine."Shortcut Dimension 2 Code" := LocalSalesLine."Shortcut Dimension 2 Code";
                     ClaimLine."Dimension Set ID" := LocalSalesLine."Dimension Set ID";
                     ClaimLine."Responsibility Center" := SalesHeader."Responsibility Center";
-                    ClaimLine.INSERT;
+
+                    IsHandled := false;
+                    OnBeforeInsertFullPriceClaimLine(SalesHeader, LocalSalesLine, ClaimHeader, ClaimLine, IsHandled);
+                    IF NOT IsHandled THEN
+                        ClaimLine.INSERT;
+                    OnAfterInsertFullPriceClaimLine(SalesHeader, LocalSalesLine, ClaimHeader, ClaimLine, IsHandled);
 
                     NextLineNo += 10000;
                 END;
@@ -312,11 +349,17 @@ codeunit 14302613 "AQD Customer Claim Process"
         IncludeLine: Boolean;
         ClaimIsRequired: Boolean;
         LineClaimRequired: Boolean;
+        IsHandled: Boolean;
         TotalAmount: Decimal;
         ClaimAmount: Decimal;
         CostDiff: Decimal;
     BEGIN
         IF SalesInvoiceHeader."AQD CustClaim Claim Type" <> SalesInvoiceHeader."AQD CustClaim Claim Type"::"Price Match" THEN
+            EXIT;
+
+        IsHandled := FALSE;
+        OnBeforeCheckPriceMatchClaim(SalesHeader, IsHandled);
+        IF IsHandled THEN
             EXIT;
 
         ClaimSetup.GET;
@@ -357,6 +400,7 @@ codeunit 14302613 "AQD Customer Claim Process"
         LocalSalesInvoiceLine.SETFILTER("No.", '<>%1', '');
         LocalSalesInvoiceLine.SETFILTER(Quantity, '<>%1', 0);
         LocalSalesInvoiceLine.SETFILTER("AQD CustClaim Vendor No.", '<>%1', '');
+        OnAfterApplyFilterForPriceMatchClaimLines(SalesInvoiceHeader, LocalSalesInvoiceLine, ClaimHeader);
         IF LocalSalesInvoiceLine.FINDFIRST THEN BEGIN
             REPEAT
                 IncludeLine := FALSE;
@@ -437,7 +481,11 @@ codeunit 14302613 "AQD Customer Claim Process"
                 IF ClaimAmount > 0 THEN
                     ClaimIsRequired := TRUE;
 
-                CreateCustomerClaimHeader(ClaimIsRequired);
+                IsHandled := FALSE;
+                CreateCustomerClaimHeader(ClaimIsRequired, IsHandled);
+                IF IsHandled THEN
+                    EXIT;
+
                 IF ClaimIsRequired THEN BEGIN
                     // Create Sales Invoice Lines
                     LocalSalesInvoiceLine.RESET;
@@ -500,9 +548,14 @@ codeunit 14302613 "AQD Customer Claim Process"
         END;
     END;
 
-    local procedure CreateCustomerClaimHeader(ClaimIsRequired: Boolean)
+    local procedure CreateCustomerClaimHeader(ClaimIsRequired: Boolean; var IsHandled: Boolean)
     BEGIN
         Vendor.GET(TmpInvPostingBuffer."Group ID");
+
+        IsHandled := false;
+        OnBeforePriceMatchClaimHeader(SalesHeader, Vendor, IsHandled);
+        IF IsHandled THEN
+            EXIT;
 
         ClaimHeader.RESET;
         ClaimHeader.SETRANGE("Claim Type", ClaimHeader."Claim Type"::"Price Match");
@@ -529,6 +582,11 @@ codeunit 14302613 "AQD Customer Claim Process"
         END;
 
         IF NOT ClaimIsRequired THEN
+            EXIT;
+
+        IsHandled := FALSE;
+        OnAfterInsertPriceMatchClaimHeader(SalesHeader, ClaimHeader, Vendor, IsHandled);
+        IF IsHandled THEN
             EXIT;
 
         ClaimHeader."Order Date" := SalesInvoiceHeader."Order Date";
@@ -589,10 +647,20 @@ codeunit 14302613 "AQD Customer Claim Process"
         ClaimHeader."Purchase Credit Memo No." := '';
         ClaimHeader."Supplementary Invoice No." := '';
         ClaimHeader.MODIFY;
+
+        IsHandled := FALSE;
+        OnAfterCreatePriceMatchClaimHeader(SalesHeader, ClaimHeader, Vendor, IsHandled);
     END;
 
     local procedure CreatePriceMatchClaimLine(SalesInvoiceLineIn: Record "Sales Invoice Line"; ClaimGLAccountNo: Code[20]; ClaimQuantity: Decimal; UnitClaimPrice: Decimal; ClaimLineDescription: Text[100]; LineClaimRequired: Boolean; ClaimLineTypeIn: enum "AQD CustClmPrcMthClaimLineType")
+    var
+        IsHandled: Boolean;
     begin
+        IsHandled := FALSE;
+        OnBeforePriceMatchClaimLine(SalesInvoiceLineIn, ClaimGLAccountNo, ClaimQuantity, UnitClaimPrice, ClaimLineDescription, LineClaimRequired, ClaimLineTypeIn, IsHandled);
+        IF IsHandled THEN
+            EXIT;
+
         ClaimLine.RESET;
         ClaimLine.SetRange("Claim Type", ClaimHeader."Claim Type");
         ClaimLine.SetRange("Document No.", ClaimHeader."No.");
@@ -647,6 +715,92 @@ codeunit 14302613 "AQD Customer Claim Process"
         ClaimLine."Cust Claim Mfg Product Code" := SalesInvoiceLineIn."AQM CustClaim Mfg Product Code";
         ClaimLine."Cust Claim Program Code" := SalesInvoiceLineIn."AQD CustClaim Program Code";
         ClaimLine."Cust Claim Service Code" := SalesInvoiceLineIn."AQD CustClaim Service Code";
-        ClaimLine.INSERT;
+
+        IsHandled := FALSE;
+        OnBeforeInsertPriceMatchClaimLine(SalesInvoiceLineIn, ClaimLine, ClaimGLAccountNo, ClaimQuantity, UnitClaimPrice, ClaimLineDescription, LineClaimRequired, ClaimLineTypeIn, IsHandled);
+        IF NOT IsHandled THEN
+            ClaimLine.INSERT;
+        OnAfterInsertPriceMatchClaimLine(SalesInvoiceLineIn, ClaimLine, ClaimGLAccountNo, ClaimQuantity, UnitClaimPrice, ClaimLineDescription, LineClaimRequired, ClaimLineTypeIn, IsHandled);
     end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeCheckFullPriceClaim(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterInsertFullPriceClaimHeader(var SalesHeader: Record "Sales Header"; var ClaimHeader: Record "AQD Customer Claim Header"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterCreateFullPriceClaimHeader(var SalesHeader: Record "Sales Header"; var ClaimHeader: Record "AQD Customer Claim Header"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterApplyFilterForFullPriceClaimLines(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var ClaimHeader: Record "AQD Customer Claim Header")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterApplyFilterForPriceMatchClaimLines(var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesInvoiceLine: Record "Sales Invoice Line"; var ClaimHeader: Record "AQD Customer Claim Header")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeInsertFullPriceClaimLine(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var ClaimHeader: Record "AQD Customer Claim Header"; var ClaimLine: Record "AQD Customer Claim Line"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterInsertFullPriceClaimLine(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var ClaimHeader: Record "AQD Customer Claim Header"; var ClaimLine: Record "AQD Customer Claim Line"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeCheckPriceMatchClaim(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforePriceMatchClaimHeader(var SalesHeader: Record "Sales Header"; Vendor: Record Vendor; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterInsertPriceMatchClaimHeader(var SalesHeader: Record "Sales Header"; var ClaimHeader: Record "AQD Customer Claim Header"; Vendor: Record Vendor; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterCreatePriceMatchClaimHeader(var SalesHeader: Record "Sales Header"; VAR ClaimHeader: Record "AQD Customer Claim Header"; Vendor: Record Vendor; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforePriceMatchClaimLine(var SalesInvoiceLine: Record "Sales Invoice Line"; var ClaimGLAccountNo: Code[20]; var ClaimQuantity: Decimal; var UnitClaimPrice: Decimal; var ClaimLineDescription: Text[100]; var LineClaimRequired: Boolean; var ClaimLineTypeIn: enum "AQD CustClmPrcMthClaimLineType"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeInsertPriceMatchClaimLine(var SalesInvoiceLine: Record "Sales Invoice Line"; var ClaimLine: Record "AQD Customer Claim Line"; var ClaimGLAccountNo: Code[20]; var ClaimQuantity: Decimal; var UnitClaimPrice: Decimal; var ClaimLineDescription: Text[100]; var LineClaimRequired: Boolean; var ClaimLineTypeIn: enum "AQD CustClmPrcMthClaimLineType"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterInsertPriceMatchClaimLine(var SalesInvoiceLine: Record "Sales Invoice Line"; var ClaimLine: Record "AQD Customer Claim Line"; var ClaimGLAccountNo: Code[20]; var ClaimQuantity: Decimal; var UnitClaimPrice: Decimal; var ClaimLineDescription: Text[100]; var LineClaimRequired: Boolean; var ClaimLineTypeIn: enum "AQD CustClmPrcMthClaimLineType"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeCheckSalesLineClaimable(SalesLine: Record "Sales Line"; IgnoreCommentsCheck: Boolean; var ReturnValue: Boolean; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeCheckSalesInvoiceLineClaimable(SalesInvoiceLine: Record "Sales Invoice Line"; IgnoreCommentsCheck: Boolean; var ReturnValue: Boolean; var IsHandled: Boolean)
+    begin
+    end;
+
 }
