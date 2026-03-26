@@ -315,6 +315,7 @@ table 14302517 "AQD Sales Rebates Rate"
         //"No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", 
         //"Minimum Quantity", "Minimum Amount"
         CustomerRebateRate.RESET;
+        CustomerRebateRate.SETFILTER("Entry No.", '<>%1', Rec."Entry No.");
         CustomerRebateRate.SETRANGE("CustRbt Rate Type", Rec."CustRbt Rate Type");
         CustomerRebateRate.SETRANGE("Entity Type", Rec."Entity Type");
         CustomerRebateRate.SETRANGE("Entity No.", Rec."Entity No.");
