@@ -29,6 +29,10 @@ pageextension 14302509 "AQD CustRbt Item Card" extends "Item Card"
                     {
                         ApplicationArea = All;
                     }
+                    field("AQD Contract Price"; Rec."AQD Contract Price")
+                    {
+                        ApplicationArea = All;
+                    }
                 }
             }
         }
