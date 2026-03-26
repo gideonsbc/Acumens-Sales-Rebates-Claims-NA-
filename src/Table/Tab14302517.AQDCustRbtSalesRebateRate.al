@@ -5,11 +5,20 @@ table 14302517 "AQD Sales Rebates Rate"
 
     fields
     {
-        field(1; "Entity Type"; Enum "AQD Cust Rebate Customer Type")
+        field(1; "Entry No."; Integer)
+        {
+            AutoIncrement = TRUE;
+            Caption = 'Entry No.';
+        }
+        field(10; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
+        {
+            Caption = 'Rebate Rate Type';
+        }
+        field(11; "Entity Type"; Enum "AQD Cust Rebate Customer Type")
         {
             Caption = 'Entity Type';
         }
-        field(2; "Entity No."; Code[20])
+        field(12; "Entity No."; Code[20])
         {
             Caption = 'Entity No.';
             TableRelation = if ("Entity Type" = const("Customer Category")) "AQD Rebate Customer Category"
@@ -17,13 +26,13 @@ table 14302517 "AQD Sales Rebates Rate"
             else if ("Entity Type" = const("Employee Commission")) Employee where(Status = const(Active))
             else if ("Entity Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
         }
-        field(3; "Territory Code"; Code[10])
+        field(13; "Territory Code"; Code[10])
         {
             Caption = 'Territory Code';
             TableRelation = Territory;
             DataClassification = CustomerContent;
         }
-        field(4; "Line Type"; Enum "AQD Customer Rebate Line Type")
+        field(14; "Line Type"; Enum "AQD Customer Rebate Line Type")
         {
             Caption = 'Line Type';
             DataClassification = CustomerContent;
@@ -33,7 +42,7 @@ table 14302517 "AQD Sales Rebates Rate"
                     Rec."No." := '';
             end;
         }
-        field(5; "No."; Code[20])
+        field(15; "No."; Code[20])
         {
             Caption = 'No.';
             TableRelation = if ("Line Type" = const("Rebate Category")) "Item Category".Code
@@ -87,13 +96,13 @@ table 14302517 "AQD Sales Rebates Rate"
                 END;
             END;
         }
-        field(6; "Variant Code"; Code[10])
+        field(16; "Variant Code"; Code[10])
         {
             Caption = 'Variant Code';
             TableRelation = "Item Variant".Code where("Item No." = field("No."));
         }
 
-        field(7; "Rebate Program Code"; Code[20])
+        field(17; "Rebate Program Code"; Code[20])
         {
             Caption = 'Rebate Program Code';
             NotBlank = true;
@@ -112,7 +121,7 @@ table 14302517 "AQD Sales Rebates Rate"
                 END;
             end;
         }
-        field(8; "Starting Date"; Date)
+        field(18; "Starting Date"; Date)
         {
             Caption = 'Starting Date';
 
@@ -122,35 +131,31 @@ table 14302517 "AQD Sales Rebates Rate"
                     Error(Text000, FieldCaption("Starting Date"), FieldCaption("Ending Date"));
             end;
         }
-        field(9; "Unit of Measure Code"; Code[10])
+        field(19; "Unit of Measure Code"; Code[10])
         {
             Caption = 'Unit of Measure Code';
             TableRelation = if ("Line Type" = const(Item)) "Item Unit of Measure".Code where("Item No." = field("No."));
         }
-        field(11; "Minimum Quantity"; Decimal)
+        field(20; "Minimum Quantity"; Decimal)
         {
             BlankZero = TRUE;
             Caption = 'Minimum Quantity';
             DecimalPlaces = 0 : 0;
             MinValue = 0;
         }
-        field(12; "Minimum Amount"; Decimal)
+        field(21; "Minimum Amount"; Decimal)
         {
             BlankZero = TRUE;
             Caption = 'Minimum Amount';
             DecimalPlaces = 0 : 0;
             MinValue = 0;
         }
-        field(13; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
-        {
-            Caption = 'Rebate Rate Type';
-        }
-        field(20; Description; Text[100])
+        field(30; Description; Text[100])
         {
             Caption = 'Description';
             Editable = false;
         }
-        field(30; "Rebate Type"; Option)
+        field(40; "Rebate Type"; Option)
         {
             AutoFormatType = 2;
             Caption = 'Rebate Type';
@@ -165,7 +170,7 @@ table 14302517 "AQD Sales Rebates Rate"
                 END;
             end;
         }
-        field(40; "Rebate %"; Decimal)
+        field(50; "Rebate %"; Decimal)
         {
             BlankZero = true;
             Caption = 'Rebate %';
@@ -177,7 +182,7 @@ table 14302517 "AQD Sales Rebates Rate"
                 Rec.TestField("Rebate Type");
             end;
         }
-        field(50; "Rebate Per Unit"; Decimal)
+        field(60; "Rebate Per Unit"; Decimal)
         {
             BlankZero = true;
             Caption = 'Rebate Per Unit';
@@ -187,7 +192,7 @@ table 14302517 "AQD Sales Rebates Rate"
                 Rec.TestField("Rebate Type");
             end;
         }
-        field(60; "Ending Date"; Date)
+        field(70; "Ending Date"; Date)
         {
             Caption = 'Ending Date';
 
@@ -243,12 +248,12 @@ table 14302517 "AQD Sales Rebates Rate"
                 end;
             end;
         }
-        field(903; "Blocked By"; Code[50])
+        field(560; "Blocked By"; Code[50])
         {
             Caption = 'Blocked By';
             Editable = false;
         }
-        field(904; "Blocked Date Time"; DateTime)
+        field(570; "Blocked Date Time"; DateTime)
         {
             Caption = 'Blocked Date Time';
             Editable = false;
@@ -257,23 +262,36 @@ table 14302517 "AQD Sales Rebates Rate"
 
     keys
     {
-        key(Key1; "CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        key(Key1; "Entry No.")
         {
             Clustered = true;
+        }
+        key(Key2; "CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        {
         }
     }
 
     fieldgroups
     {
+        fieldgroup(DropDown; "CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        {
+        }
+        fieldgroup(Brick; "CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        {
+        }
     }
 
     trigger OnInsert()
     begin
         Rec.TestField("Rebate Program Code");
+        CheckRecordAlreadyExist();
     end;
 
     trigger OnModify()
     begin
+        Rec.TestField("Rebate Program Code");
+        CheckRecordAlreadyExist();
+
         IF (Rec."Rebate Type" <> xRec."Rebate Type") OR
           ((Rec."Rebate %" <> Rec."Rebate %") AND (xRec."Rebate %" <> 0))
         THEN BEGIN
@@ -285,9 +303,50 @@ table 14302517 "AQD Sales Rebates Rate"
         END;
     end;
 
+    trigger OnRename()
+    begin
+        Rec.TestField("Rebate Program Code");
+        CheckRecordAlreadyExist();
+    end;
+
+    procedure CheckRecordAlreadyExist()
+    BEGIN
+        //"CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", 
+        //"No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", 
+        //"Minimum Quantity", "Minimum Amount"
+        CustomerRebateRate.RESET;
+        CustomerRebateRate.SETRANGE("CustRbt Rate Type", Rec."CustRbt Rate Type");
+        CustomerRebateRate.SETRANGE("Entity Type", Rec."Entity Type");
+        CustomerRebateRate.SETRANGE("Entity No.", Rec."Entity No.");
+        CustomerRebateRate.SETRANGE("Territory Code", Rec."Territory Code");
+        CustomerRebateRate.SETRANGE("Line Type", Rec."Line Type");
+        CustomerRebateRate.SETRANGE("No.", Rec."No.");
+        CustomerRebateRate.SETRANGE("Variant Code", Rec."Variant Code");
+        CustomerRebateRate.SETRANGE("Rebate Program Code", Rec."Rebate Program Code");
+        CustomerRebateRate.SETRANGE("Starting Date", Rec."Starting Date");
+        CustomerRebateRate.SETRANGE("Unit of Measure Code", Rec."Unit of Measure Code");
+        CustomerRebateRate.SetRange("Minimum Quantity", Rec."Minimum Quantity");
+        CustomerRebateRate.SetRange("Minimum Amount", Rec."Minimum Amount");
+        IF CustomerRebateRate.FindFirst() THEN
+            ERROR(Text002,
+                Rec.FieldCaption("CustRbt Rate Type"), Rec."CustRbt Rate Type",
+                Rec.FieldCaption("Entity Type"), Rec."Entity Type",
+                Rec.FieldCaption("Entity No."), Rec."Entity No.",
+                Rec.FieldCaption("Territory Code"), Rec."Territory Code",
+                Rec.FieldCaption("Line Type"), Rec."Line Type",
+                Rec.FieldCaption("No."), Rec."No.",
+                Rec.FieldCaption("Variant Code"), Rec."Variant Code",
+                Rec.FieldCaption("Rebate Program Code"), Rec."Rebate Program Code",
+                Rec.FieldCaption("Starting Date"), Rec."Starting Date",
+                Rec.FieldCaption("Unit of Measure Code"), Rec."Unit of Measure Code",
+                Rec.FieldCaption("Minimum Quantity"), Rec."Minimum Quantity",
+                Rec.FieldCaption("Minimum Amount"), Rec."Minimum Amount");
+    END;
+
     var
         Text000: Label '%1 cannot be after %2';
         Text001: Label '%1 must be blank.';
+        Text002: Label 'Customer Rebate Rate is already exists for %1=%2,%3=%4,%5=%6,%7=%8,%9=%10,%11=%12,%13=%14,%15=%16,%17=%18,%19=%20,%21=%22,%23=%24.';
         Customer: Record Customer;
         Item: Record Item;
         Resource: Record Resource;
@@ -295,4 +354,5 @@ table 14302517 "AQD Sales Rebates Rate"
         ItemCharge: Record "Item Charge";
         FixAsset: Record "Fixed Asset";
         ItemCategory: Record "Item Category";
+        CustomerRebateRate: Record "AQD Sales Rebates Rate";
 }

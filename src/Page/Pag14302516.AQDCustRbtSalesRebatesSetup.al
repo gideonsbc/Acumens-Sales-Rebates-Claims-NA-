@@ -324,6 +324,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     FromSalesRebateSetup: Record "AQD Sales Rebates Rate";
                     DeleteSalesRebateSetup: Record "AQD Sales Rebates Rate";
                     ToSalesRebateSetup: Record "AQD Sales Rebates Rate";
+                    TempRebateRateToCopy: Record "Drop Shpt. Post. Buffer"; //"Order No.", "Order Line No."
                     DeleteOldRates: Boolean;
                     StartDate: Date;
                     EndDate: Date;
@@ -347,32 +348,33 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     FromSalesRebateSetup.Copy(Rec, FALSE);
                     IF FromSalesRebateSetup.FindFirst() THEN BEGIN
                         REPEAT
-                            ToSalesRebateSetup.INIT;
-                            ToSalesRebateSetup := FromSalesRebateSetup;
-                            ToSalesRebateSetup."Starting Date" := StartDate;
-                            ToSalesRebateSetup."Ending Date" := EndDate;
-                            IF ToSalesRebateSetup.Insert THEN BEGIN
-                                CopiedRow += 1;
-                                IF DeleteOldRates THEN BEGIN
-                                    IF DeleteSalesRebateSetup.GET(FromSalesRebateSetup."CustRbt Rate Type",
-                                                                  FromSalesRebateSetup."Entity Type",
-                                                                  FromSalesRebateSetup."Entity No.",
-                                                                  FromSalesRebateSetup."Territory Code",
-                                                                  FromSalesRebateSetup."Line Type",
-                                                                  FromSalesRebateSetup."No.",
-                                                                  FromSalesRebateSetup."Variant Code",
-                                                                  FromSalesRebateSetup."Rebate Program Code",
-                                                                  FromSalesRebateSetup."Starting Date",
-                                                                  FromSalesRebateSetup."Unit of Measure Code",
-                                                                  FromSalesRebateSetup."Minimum Quantity",
-                                                                  FromSalesRebateSetup."Minimum Amount")
-                                    THEN BEGIN
-                                        DeletedRows += 1;
-                                        DeleteSalesRebateSetup.Delete();
+                            TempRebateRateToCopy.INIT;
+                            TempRebateRateToCopy."Order No." := '';
+                            TempRebateRateToCopy."Order Line No." := FromSalesRebateSetup."Entry No.";
+                            TempRebateRateToCopy.INSERT;
+                        UNTIL FromSalesRebateSetup.Next() = 0;
+                    END;
+
+                    TempRebateRateToCopy.RESET;
+                    IF TempRebateRateToCopy.FINDFIRST THEN BEGIN
+                        REPEAT
+                            IF FromSalesRebateSetup.GET(TempRebateRateToCopy."Order Line No.") THEN BEGIN
+                                ToSalesRebateSetup.INIT;
+                                ToSalesRebateSetup := FromSalesRebateSetup;
+                                ToSalesRebateSetup."Entry No." := 0;
+                                ToSalesRebateSetup."Starting Date" := StartDate;
+                                ToSalesRebateSetup."Ending Date" := EndDate;
+                                IF ToSalesRebateSetup.Insert THEN BEGIN
+                                    CopiedRow += 1;
+                                    IF DeleteOldRates THEN BEGIN
+                                        IF DeleteSalesRebateSetup.GET(FromSalesRebateSetup."Entry No.") THEN BEGIN
+                                            DeletedRows += 1;
+                                            DeleteSalesRebateSetup.Delete();
+                                        END;
                                     END;
                                 END;
                             END;
-                        UNTIL FromSalesRebateSetup.Next() = 0;
+                        UNTIL TempRebateRateToCopy.Next() = 0;
                     END;
                     IF DeleteOldRates THEN
                         Message(StrSubstNo(CompletionWithDeleteMsg, CopiedRow, DeletedRows))
@@ -410,20 +412,24 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
 
         RebateSetup.GET;
         SetCaption();
+
+        Rec.SetCurrentKey("CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount");
     end;
 
-    // trigger OnNewRecord(BelowxRec: Boolean)
-    // begin
-    //     RebateSetup.GET;
-    //     CASE RebateSetup."Default Setup Rebate Type" of
-    //         RebateSetup."Default Setup Rebate Type"::Item:
-    //             Rec."Line Type" := Rec."Line Type"::Item;
-    //         RebateSetup."Default Setup Rebate Type"::"Rebate Category":
-    //             Rec."Line Type" := Rec."Line Type"::"Rebate Category";
-    //     END;
-    //     Rec."Rebate Code" := RebateSetup."Default Rebate Code";
-    // end;
-
+    trigger OnNewRecord(BelowxRec: Boolean)
+    var
+        RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+    begin
+        RebateSetup.GET;
+        CASE RebateSetup."Default Setup Rebate Type" of
+            RebateSetup."Default Setup Rebate Type"::Item:
+                Rec."Line Type" := Rec."Line Type"::Item;
+            RebateSetup."Default Setup Rebate Type"::"Rebate Category":
+                Rec."Line Type" := Rec."Line Type"::"Rebate Category";
+        END;
+        IF RebateSetup."Default Rebate Program Code" <> '' THEN
+            Rec."Rebate Program Code" := RebateSetup."Default Rebate Program Code";
+    end;
 
     var
         Cust: Record Customer;
