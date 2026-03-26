@@ -65,5 +65,22 @@ tableextension 14302509 "AQD CustRbt Item Ext" extends Item
             Caption = 'Mfg. Product Code';
             DataClassification = CustomerContent;
         }
+        field(14302640; "AQD Ship-To Code Filter"; Code[10])
+        {
+            Caption = 'Ship-To Code Filter';
+            FieldClass = FlowFilter;
+            TableRelation = "Ship-to Address".Code WHERE("Customer No." = FIELD("AQD Source No. Filter"));
+        }
+        field(14302650; "AQD Source No. Filter"; Code[20])
+        {
+            Caption = 'Source No. Filter';
+            FieldClass = FlowFilter;
+            TableRelation = Customer;
+        }
+        field(14302660; "AQD Contract Price"; Decimal)
+        {
+            Caption = 'Contract Price';
+            DataClassification = CustomerContent;
+        }
     }
 }

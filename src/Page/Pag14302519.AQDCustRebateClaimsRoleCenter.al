@@ -194,6 +194,12 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 Caption = 'Price Match Customer Claims';
                 RunObject = page "AQD PriceMatch Cust Claim List";
             }
+            action("Customer Contract Prices")
+            {
+                ApplicationArea = All;
+                Caption = 'Customer Contract Prices';
+                RunObject = page "AQD Customer Contract Prices";
+            }
         }
         area(sections)
         {

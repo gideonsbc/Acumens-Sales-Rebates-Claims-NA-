@@ -126,5 +126,12 @@ tableextension 14302523 "AQD CustRbt Sales Inv Line Ext" extends "Sales Invoice 
             CalcFormula = EXIST("AQD Customer Claim Line" WHERE("Order No." = Field("No."),
                                                                 "Order Line No." = field("Line No.")));
         }
+        field(14302750; "AQD POD Customer"; Code[20])
+        {
+            Caption = 'POD Customer';
+            DataClassification = CustomerContent;
+            Editable = false;
+            TableRelation = Customer;
+        }
     }
 }

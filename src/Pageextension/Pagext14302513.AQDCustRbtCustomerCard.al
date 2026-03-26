@@ -73,6 +73,14 @@ pageextension 14302513 "AQD CustRbt Customer Card" extends "Customer Card"
                                   "Entity No." = FIELD("No.");
                     RunPageView = SORTING("Entity Type", "Entity No.");
                 }
+                action("AQD Customer Contract Prices")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Customer Contract Prices';
+                    Image = PriceWorksheet;
+                    RunObject = Page "AQD Customer Contract Prices";
+                    RunPageLink = "Customer No" = FIELD("No.");
+                }
             }
         }
         addafter(Category_Synchronize)
