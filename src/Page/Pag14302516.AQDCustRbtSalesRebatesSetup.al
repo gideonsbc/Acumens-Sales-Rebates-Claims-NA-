@@ -156,6 +156,13 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
             }
             repeater(Control1)
             {
+                field("CustRbt Rate Type"; Rec."CustRbt Rate Type")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the the Customer Rebate Type applies to Line Item.';
+                    ShowMandatory = TRUE;
+                    QuickEntry = TRUE;
+                }
                 field("Rebate Program Code"; Rec."Rebate Program Code")
                 {
                     ApplicationArea = All;
@@ -347,7 +354,8 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                             IF ToSalesRebateSetup.Insert THEN BEGIN
                                 CopiedRow += 1;
                                 IF DeleteOldRates THEN BEGIN
-                                    IF DeleteSalesRebateSetup.GET(FromSalesRebateSetup."Entity Type",
+                                    IF DeleteSalesRebateSetup.GET(FromSalesRebateSetup."CustRbt Rate Type",
+                                                                  FromSalesRebateSetup."Entity Type",
                                                                   FromSalesRebateSetup."Entity No.",
                                                                   FromSalesRebateSetup."Territory Code",
                                                                   FromSalesRebateSetup."Line Type",

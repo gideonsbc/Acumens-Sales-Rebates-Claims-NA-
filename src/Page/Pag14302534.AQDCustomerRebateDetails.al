@@ -87,6 +87,12 @@ page 14302534 "AQD Customer Rebate Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Rebate Program Code field.', Comment = '%';
                 }
+                field("CustRbt Rate Type"; Rec."CustRbt Rate Type")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Customer Rebate Rate Type field.', Comment = '%';
+                }
                 field("Rebate Type"; Rec."Rebate Type")
                 {
                     ApplicationArea = All;

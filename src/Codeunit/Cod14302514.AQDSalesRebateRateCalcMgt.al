@@ -101,9 +101,12 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         SalesLineRebateExists(CustomerRebateDetailsLocIn);
         CalcBestSalesRebateRate(CustomerRebateDetailsLocIn, TempSalesRebatesRate);
 
-        CustomerRebateDetailsLocIn."Rebate Type" := TempSalesRebatesRate."Rebate Type";
-        CustomerRebateDetailsLocIn."Rebate %" := TempSalesRebatesRate."Rebate %";
-        CustomerRebateDetailsLocIn."Rebate Per Unit" := TempSalesRebatesRate."Rebate Per Unit";
+        IF NOT CustomerRebateDetailsLocIn.Ineligible THEN BEGIN
+            CustomerRebateDetailsLocIn."CustRbt Rate Type" := TempSalesRebatesRate."CustRbt Rate Type";
+            CustomerRebateDetailsLocIn."Rebate Type" := TempSalesRebatesRate."Rebate Type";
+            CustomerRebateDetailsLocIn."Rebate %" := TempSalesRebatesRate."Rebate %";
+            CustomerRebateDetailsLocIn."Rebate Per Unit" := TempSalesRebatesRate."Rebate Per Unit";
+        END;
     END;
 
     procedure SalesLineRebateExists(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"): Boolean;
@@ -234,6 +237,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         FoundSalesRebate: Boolean;
         SalesQty: Decimal;
         SalesAmount: Decimal;
+        RebateDateFilter: text;
     begin
         FoundSalesRebate := CustomerSalesRebateRate.FindFirst();
         IF FoundSalesRebate THEN BEGIN
@@ -241,59 +245,56 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                 SalesQty := 0;
                 SalesAmount := 0;
 
-                IF CustomerRebateDetailsLocIn.Preview THEN begin
-                    SalesQty += CustomerRebateDetailsLocIn.Quantity;
-                    SalesAmount += CustomerRebateDetailsLocIn.Amount;
-                end;
+                IF CustomerSalesRebateRate."Starting Date" <> 0D THEN
+                    RebateDateFilter := FORMAT(CustomerSalesRebateRate."Starting Date");
+
+                IF (CustomerSalesRebateRate."Ending Date" <> 0D) THEN BEGIN
+                    RebateDateFilter := RebateDateFilter + '..' + FORMAT(CustomerSalesRebateRate."Ending Date")
+                END ELSE
+                    IF RebateDateFilter <> '' THEN
+                        RebateDateFilter := RebateDateFilter + '..';
+
+                //IF CustomerRebateDetailsLocIn.Preview THEN begin
+                //SalesQty += CustomerRebateDetailsLocIn.Quantity;
+                //SalesAmount += CustomerRebateDetailsLocIn.Amount;
+                //end;
+                SalesQty := CustomerRebateDetailsLocIn.Quantity;
+                SalesAmount := CustomerRebateDetailsLocIn.Amount;
 
                 CASE CustomerSalesRebateRate."Entity Type" OF
                     CustomerSalesRebateRate."Entity Type"::Customer,
                     CustomerSalesRebateRate."Entity Type"::"Employee Commission",
                     CustomerSalesRebateRate."Entity Type"::"Vendor Commission":
                         BEGIN
-                            Case CustomerSalesRebateRate."Line Type" OF
-                                CustomerSalesRebateRate."Line Type"::Item:
-                                    BEGIN
-                                        ItemRec.GET(CustomerRebateDetailsLocIn."No.");
-                                        ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
-                                        IF (CustomerRebateDetailsLocIn."Posting Date" < CustomerSalesRebateRate."Ending Date")
-                                        then
-                                            ItemRec.SetFilter("Date Filter", '%1..%2',
-                                                CustomerSalesRebateRate."Starting Date",
-                                                CustomerRebateDetailsLocIn."Posting Date")
-                                        ELSE
-                                            ItemRec.SetFilter("Date Filter", '%1..%2',
-                                                CustomerSalesRebateRate."Starting Date",
-                                                CustomerSalesRebateRate."Ending Date");
+                            IF CustomerSalesRebateRate."CustRbt Rate Type" = CustomerSalesRebateRate."CustRbt Rate Type"::"Volume Rebate" THEN BEGIN
+                                Case CustomerSalesRebateRate."Line Type" OF
+                                    CustomerSalesRebateRate."Line Type"::Item:
+                                        BEGIN
+                                            ItemRec.GET(CustomerRebateDetailsLocIn."No.");
+                                            ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                            ItemRec.SetFilter("Date Filter", RebateDateFilter);
 
-                                        ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
-                                        SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
-                                        SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
-                                    END;
-                                CustomerSalesRebateRate."Line Type"::"Rebate Category":
-                                    BEGIN
-                                        ItemRec.RESET;
-                                        ItemRec.SETRANGE("AQD Cust Rebate Category Code", CustomerRebateDetailsLocIn."Rebate Item Category Code");
-                                        IF ItemRec.FINDFIRST THEN BEGIN
-                                            REPEAT
-                                                ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
-                                                IF (CustomerRebateDetailsLocIn."Posting Date" < CustomerSalesRebateRate."Ending Date")
-                                                then
-                                                    ItemRec.SetFilter("Date Filter", '%1..%2',
-                                                        CustomerSalesRebateRate."Starting Date",
-                                                        CustomerRebateDetailsLocIn."Posting Date")
-                                                ELSE
-                                                    ItemRec.SetFilter("Date Filter", '%1..%2',
-                                                        CustomerSalesRebateRate."Starting Date",
-                                                        CustomerSalesRebateRate."Ending Date");
-
-                                                ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
-                                                SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
-                                                SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
-                                            UNTIL ItemRec.Next() = 0;
+                                            ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
+                                            SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
+                                            SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
                                         END;
-                                    END;
-                            End;
+                                    CustomerSalesRebateRate."Line Type"::"Rebate Category":
+                                        BEGIN
+                                            ItemRec.RESET;
+                                            ItemRec.SETRANGE("AQD Cust Rebate Category Code", CustomerRebateDetailsLocIn."Rebate Item Category Code");
+                                            IF ItemRec.FINDFIRST THEN BEGIN
+                                                REPEAT
+                                                    ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                                    ItemRec.SetFilter("Date Filter", RebateDateFilter);
+
+                                                    ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
+                                                    SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
+                                                    SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
+                                                UNTIL ItemRec.Next() = 0;
+                                            END;
+                                        END;
+                                End;
+                            END;
 
                             Case TRUE of
                                 (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
@@ -341,15 +342,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                                             BEGIN
                                                 ItemRec.GET(CustomerRebateDetailsLocIn."No.");
                                                 ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
-                                                IF (CustomerRebateDetailsLocIn."Posting Date" < CustomerSalesRebateRate."Ending Date")
-                                                then
-                                                    ItemRec.SetFilter("Date Filter", '%1..%2',
-                                                        CustomerSalesRebateRate."Starting Date",
-                                                        CustomerRebateDetailsLocIn."Posting Date")
-                                                ELSE
-                                                    ItemRec.SetFilter("Date Filter", '%1..%2',
-                                                        CustomerSalesRebateRate."Starting Date",
-                                                        CustomerSalesRebateRate."Ending Date");
+                                                ItemRec.SetFilter("Date Filter", RebateDateFilter);
 
                                                 ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
                                                 SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
@@ -362,15 +355,8 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                                                 IF ItemRec.FINDFIRST THEN BEGIN
                                                     REPEAT
                                                         ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
-                                                        IF (CustomerRebateDetailsLocIn."Posting Date" < CustomerSalesRebateRate."Ending Date")
-                                                                                                        then
-                                                            ItemRec.SetFilter("Date Filter", '%1..%2',
-                                                                CustomerSalesRebateRate."Starting Date",
-                                                                CustomerRebateDetailsLocIn."Posting Date")
-                                                        ELSE
-                                                            ItemRec.SetFilter("Date Filter", '%1..%2',
-                                                                CustomerSalesRebateRate."Starting Date",
-                                                                CustomerSalesRebateRate."Ending Date");
+                                                        ItemRec.SetFilter("Date Filter", RebateDateFilter);
+
                                                         ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
                                                         SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
                                                         SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";

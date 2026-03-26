@@ -74,6 +74,10 @@ table 14302521 "AQD Customer Rebate Details"
             NotBlank = true;
             TableRelation = "AQD Cust Rebate Program Code";
         }
+        field(67; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
+        {
+            Caption = 'Rebate Rate Type';
+        }
         field(70; Description; Text[100])
         {
             Caption = 'Description';

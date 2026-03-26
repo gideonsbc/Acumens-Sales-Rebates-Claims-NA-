@@ -141,6 +141,10 @@ table 14302517 "AQD Sales Rebates Rate"
             DecimalPlaces = 0 : 0;
             MinValue = 0;
         }
+        field(13; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
+        {
+            Caption = 'Rebate Rate Type';
+        }
         field(20; Description; Text[100])
         {
             Caption = 'Description';
@@ -253,7 +257,7 @@ table 14302517 "AQD Sales Rebates Rate"
 
     keys
     {
-        key(Key1; "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        key(Key1; "CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
             Clustered = true;
         }
