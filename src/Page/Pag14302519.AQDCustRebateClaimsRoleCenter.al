@@ -327,6 +327,36 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Image = InventoryCalculation;
                     RunObject = Report "Inventory Valuation";
                 }
+                action("AQD POD Cust/Item Sales New")
+                {
+                    Caption = 'POD Customer/Item Sales';
+                    ApplicationArea = All;
+                    Image = InventoryCalculation;
+                    RunObject = Report "AQD POD Cust/Item Sales New";
+                    Visible = false;
+                }
+                action("AQD Sales History POD")
+                {
+                    Caption = 'Sales History POD';
+                    ApplicationArea = All;
+                    Image = InventoryCalculation;
+                    RunObject = Report "AQD Sales History POD";
+                    Visible = false;
+                }
+                action("AQD Sales History POD New")
+                {
+                    Caption = 'Sales History POD';
+                    ApplicationArea = All;
+                    Image = InventoryCalculation;
+                    RunObject = Report "AQD Sales History POD New";
+                }
+                action("AQD POD Cust/Item Sales New 2")
+                {
+                    Caption = 'POD Customer/Item Sales';
+                    ApplicationArea = All;
+                    Image = InventoryCalculation;
+                    RunObject = Report "AQD POD Cust/Item Sales New 2";
+                }
                 // action("AQD Udt Rebate Customer Type")
                 // {
                 //     Caption = 'Update Rebate Customer Type';

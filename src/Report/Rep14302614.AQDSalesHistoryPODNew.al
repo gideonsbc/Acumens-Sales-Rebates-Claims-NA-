@@ -2,7 +2,7 @@ report 14302614 "AQD Sales History POD New"
 {
     ApplicationArea = All;
     AdditionalSearchTerms = 'Sales History POD';
-    Caption = 'AQD Sales History POD New';
+    Caption = 'Sales History POD New';
     DefaultLayout = RDLC;
     RDLCLayout = './src/Layout/Rep14302614.AQDSalesHistoryPODNew.rdl';
     UsageCategory = ReportsAndAnalysis;
