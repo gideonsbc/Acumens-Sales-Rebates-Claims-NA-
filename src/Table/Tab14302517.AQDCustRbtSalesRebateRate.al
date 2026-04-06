@@ -91,6 +91,8 @@ table 14302517 "AQD Sales Rebates Rate"
                                     Description := ItemCategory.Description
                                 ELSE
                                     Description := '';
+                                Rec."Unit of Measure Code" := '';
+                                Rec."Variant Code" := '';
                             END;
                     END;
                 END;
