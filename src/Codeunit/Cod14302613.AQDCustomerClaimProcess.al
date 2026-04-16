@@ -76,21 +76,21 @@ codeunit 14302613 "AQD Customer Claim Process"
             SalesLine.Type::Item:
                 BEGIN
                     IF Item.GET(SalesLine."No.") THEN
-                        EXIT(Item."AQM Customer Claim Enabled")
+                        EXIT(Item."AQD Customer Claim Enabled")
                     ELSE
                         EXIT(FALSE);
                 END;
             SalesLine.Type::Resource:
                 BEGIN
                     IF Resource.GET(SalesLine."No.") THEN
-                        EXIT(Resource."AQM Customer Claim Enabled")
+                        EXIT(Resource."AQD Customer Claim Enabled")
                     ELSE
                         EXIT(FALSE);
                 END;
             SalesLine.Type::"G/L Account":
                 BEGIN
                     IF GLAccount.GET(SalesLine."No.") THEN
-                        EXIT(GLAccount."AQM Customer Claim Enabled")
+                        EXIT(GLAccount."AQD Customer Claim Enabled")
                     ELSE
                         EXIT(FALSE);
                 END;
@@ -117,21 +117,21 @@ codeunit 14302613 "AQD Customer Claim Process"
             SalesInvoiceLine.Type::Item:
                 BEGIN
                     IF Item.GET(SalesInvoiceLine."No.") THEN
-                        EXIT(Item."AQM Customer Claim Enabled")
+                        EXIT(Item."AQD Customer Claim Enabled")
                     ELSE
                         EXIT(FALSE);
                 END;
             SalesInvoiceLine.Type::Resource:
                 BEGIN
                     IF Resource.GET(SalesInvoiceLine."No.") THEN
-                        EXIT(Resource."AQM Customer Claim Enabled")
+                        EXIT(Resource."AQD Customer Claim Enabled")
                     ELSE
                         EXIT(FALSE);
                 END;
             SalesInvoiceLine.Type::"G/L Account":
                 BEGIN
                     IF GLAccount.GET(SalesInvoiceLine."No.") THEN
-                        EXIT(GLAccount."AQM Customer Claim Enabled")
+                        EXIT(GLAccount."AQD Customer Claim Enabled")
                     ELSE
                         EXIT(FALSE);
                 END;
@@ -429,7 +429,7 @@ codeunit 14302613 "AQD Customer Claim Process"
                           LocalSalesInvoiceLine."Line No.");
 
                     IF Vendor.GET(LocalSalesInvoiceLine."AQD CustClaim Vendor No.") AND
-                       Vendor."AQM Claim Vendor" AND
+                       Vendor."AQD Claim Vendor" AND
                        (Vendor."AQD Claim From Customer No." <> '')
                     THEN BEGIN
                         Vendor.TESTFIELD(Blocked, Vendor.Blocked::" ");
@@ -712,7 +712,7 @@ codeunit 14302613 "AQD Customer Claim Process"
         ClaimLine."Responsibility Center" := SalesInvoiceHeader."Responsibility Center";
         ClaimLine."Claim Line Type" := ClaimLineTypeIn;
         ClaimLine."Claim Line" := LineClaimRequired;
-        ClaimLine."Cust Claim Mfg Product Code" := SalesInvoiceLineIn."AQM CustClaim Mfg Product Code";
+        ClaimLine."Cust Claim Mfg Product Code" := SalesInvoiceLineIn."AQD CustClaim Mfg Product Code";
         ClaimLine."Cust Claim Program Code" := SalesInvoiceLineIn."AQD CustClaim Program Code";
         ClaimLine."Cust Claim Service Code" := SalesInvoiceLineIn."AQD CustClaim Service Code";
 

@@ -91,7 +91,7 @@ codeunit 14302612 "AQD Customer Claim Management"
                 IF OrderHasClaimLine(SalesHeader) THEN BEGIN
                     LocalSalesHeader.GET(SalesHeader."Document Type", SalesHeader."No.");
                     IF Location.GET(LocalSalesHeader."Location Code") AND
-                      Location."AQM CustFullPriceClaim Enabled"
+                      Location."AQD CustFullPriceClaim Enabled"
                     THEN BEGIN
                         CLEAR(ClaimProcesing);
                         ClaimProcesing.SetCreateFullPriceClaimsParameters(LocalSalesHeader, RecreateClaim, RunForFullPriceClaims);
@@ -145,7 +145,7 @@ codeunit 14302612 "AQD Customer Claim Management"
                 IF InvoiceHasClaimLine(SalesInvoiceHeader) THEN BEGIN
                     LocalSalesInvoiceHeader.GET(SalesInvoiceHeader."No.");
                     IF Location.GET(LocalSalesInvoiceHeader."Location Code") AND
-                      Location."AQM CustPriceMatchClaimEnabled"
+                      Location."AQD CustPriceMatchClaimEnabled"
                     THEN BEGIN
                         CLEAR(ClaimProcesing);
                         ClaimProcesing.SetCreatePriceMatchClaimsParameters(LocalSalesInvoiceHeader, CurrentRecord, RecreateClaim, ShowResult);

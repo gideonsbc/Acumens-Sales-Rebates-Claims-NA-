@@ -15,7 +15,7 @@ report 14302613 "AQD Sales History POD"
             column(FORMAT_TODAY_0_4_; Format(Today, 0, 4))
             {
             }
-            column(TIME; Time)
+            column("TIME"; Time)
             {
             }
             column(CompanyInformation_Name; CompanyInformation.Name)
@@ -24,7 +24,7 @@ report 14302613 "AQD Sales History POD"
             column(CurrReport_PAGENO; CurrReport.PageNo)
             {
             }
-            column(USERID; UserId)
+            column("USERID"; UserId)
             {
             }
             column(Item_TABLECAPTION__________ItemFilter; Item.TableCaption + ': ' + ItemFilter)

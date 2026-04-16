@@ -37,7 +37,7 @@ table 14302613 "AQD Customer Claim Line"
         {
             Caption = 'Ship-To Code';
         }
-        field(60; "Type"; Enum "Sales Line Type")
+        field(60; Type; Enum "Sales Line Type")
         {
             Caption = 'Type';
         }

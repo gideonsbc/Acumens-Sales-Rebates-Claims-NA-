@@ -214,7 +214,7 @@ table 14302519 "AQD Customer Rebate Header"
         {
             Caption = 'BatchId';
         }
-        field(960; Preview; Boolean)
+        field(960; "Preview"; Boolean)
         {
             Caption = 'Preview';
             Editable = FALSE;

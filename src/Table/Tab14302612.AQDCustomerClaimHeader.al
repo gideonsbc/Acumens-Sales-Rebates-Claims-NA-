@@ -259,7 +259,7 @@ table 14302612 "AQD Customer Claim Header"
             FieldClass = FlowField;
             CalcFormula = SUM("AQD Customer Claim Line"."Approved Amount" WHERE("Document No." = FIELD("No.")));
         }
-        field(700; "Status"; Enum "AQD Cust Claim Claim Status")
+        field(700; Status; Enum "AQD Cust Claim Claim Status")
         {
             Caption = 'Status';
         }

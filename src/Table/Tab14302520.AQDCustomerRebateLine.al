@@ -149,7 +149,7 @@ table 14302520 "AQD Customer Rebate Line"
             Caption = 'Rebate Amount Changed DateTime';
             Editable = false;
         }
-        field(230; "Ineligible"; Boolean)
+        field(230; Ineligible; Boolean)
         {
             Caption = 'Ineligible';
             Editable = false;
@@ -240,7 +240,7 @@ table 14302520 "AQD Customer Rebate Line"
         {
             Caption = 'BatchId';
         }
-        field(960; Preview; Boolean)
+        field(960; "Preview"; Boolean)
         {
             Caption = 'Preview';
             Editable = FALSE;

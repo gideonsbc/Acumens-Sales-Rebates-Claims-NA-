@@ -1,8 +1,8 @@
 {
-  "id": "2e2cdef8-d480-4ff1-9c02-9e1482e6d200",
+  "id": "71649818-9890-4986-9f55-6b2509f843fb",
   "name": "Acumens Customer Rebates & Claims (NA)",
   "publisher": "SBC Dynamics ERP",
-  "version": "25.1023.0.8",
+  "version": "25.1023.0.1",
   "brief": "Acumens Customer Rebates and Claims is an intuitive application designed to streamline Customer Rebate and Claim Management Process.",
   "description": "Acumens Customer Rebates and Claims is an intuitive Rebate and Claim Management application designed to streamline the Customer Rebate and Claim Process for businesses.",
   "privacyStatement": "https://www.sbcdynamicserp.com/privacy-policy/",
@@ -20,7 +20,7 @@
     }],
   "screenshots": [],
   "platform": "1.0.0.0",
-  "application": "25.0.0.0",
+  "application": "27.0.0.0",
   "idRanges": [
     {
       "from": 14302509,
@@ -28,9 +28,9 @@
     }
   ],
   "resourceExposurePolicy": {
-    "allowDebugging": true,
-    "allowDownloadingSource": true,
-    "includeSourceInSymbolFile": true
+    "allowDebugging": false,
+    "allowDownloadingSource": false,
+    "includeSourceInSymbolFile": false
   },
   "runtime": "14.0",
   "features": [

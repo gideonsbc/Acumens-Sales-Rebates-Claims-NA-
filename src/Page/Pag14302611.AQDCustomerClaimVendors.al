@@ -119,10 +119,10 @@ page 14302611 "AQD Customer Claim Vendors"
                     ToolTip = 'Specifies the value of the Vendor Post Code field.', Comment = '%';
                     Visible = FALSE;
                 }
-                field("AQM Claim Type"; Rec."Claim Type")
+                field("AQD Claim Type"; Rec."Claim Type")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the AQM Claim Type field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the AQD Claim Type field.', Comment = '%';
                 }
             }
         }

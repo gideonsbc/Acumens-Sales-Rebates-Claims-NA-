@@ -201,7 +201,7 @@ table 14302521 "AQD Customer Rebate Details"
         {
             Caption = 'Document Type';
         }
-        field(230; "Ineligible"; Boolean)
+        field(230; Ineligible; Boolean)
         {
             Caption = 'Ineligible';
             Editable = false;
@@ -325,7 +325,7 @@ table 14302521 "AQD Customer Rebate Details"
         {
             Caption = 'BatchId';
         }
-        field(960; Preview; Boolean)
+        field(960; "Preview"; Boolean)
         {
             Caption = 'Preview';
             Editable = FALSE;
