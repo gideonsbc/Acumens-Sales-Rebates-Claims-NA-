@@ -887,9 +887,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     else
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
                     GenJnlLine."Document No." := DocumentNo;
-                    GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
-                    //GenJnlLine.Validate("Account No.", LocalBillToCustomerType."G/L Account No.");
-                    GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
+
+                    //GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
+                    //GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
+                    GenJnlLine."Account Type" := GenJnlLine."Account Type"::Vendor;
+                    GenJnlLine.Validate("Account No.", InvoicePostingBuffer."Job No.");
+
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     //GenJnlLine.Validate(Amount, PostedCustomerRebateLine."Vendor Commission");
                     GenJnlLine.Validate(Amount, InvoicePostingBuffer.Amount);
@@ -901,9 +904,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(PostedCustomerRebateLine."Line No.");
                     if GenJnlLine."External Document No." = '' then
                         GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+
+                    //GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
+                    //GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                    //GenJnlLine.Validate("Bal. Account No.", LocalBillToCustomerType."Bal. G/L Account No.");
-                    GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
+                    GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
+
                     GenJnlLine."AQD Cust Rebate Document Type" := PostedCustomerRebateLine."Document Type";
                     GenJnlLine."AQD Cust Rebate Document No." := PostedCustomerRebateLine."Rebate No.";
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
@@ -962,9 +968,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     else
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
                     GenJnlLine."Document No." := DocumentNo;
-                    GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
-                    //GenJnlLine.Validate("Account No.", LocalBillToCustomerType."G/L Account No.");
-                    GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
+
+                    //GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
+                    //GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
+                    GenJnlLine."Account Type" := GenJnlLine."Account Type"::Employee;
+                    GenJnlLine.Validate("Account No.", InvoicePostingBuffer."Job No.");
+
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     //GenJnlLine.Validate(Amount, PostedCustomerRebateLine."Employee Commission");
                     GenJnlLine.Validate(Amount, InvoicePostingBuffer.Amount);
@@ -976,9 +985,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(PostedCustomerRebateLine."Line No.");
                     if GenJnlLine."External Document No." = '' then
                         GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+
+                    //GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
+                    //GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                    //GenJnlLine.Validate("Bal. Account No.", LocalBillToCustomerType."Bal. G/L Account No.");
-                    GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
+                    GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
+
                     GenJnlLine."AQD Cust Rebate Document Type" := PostedCustomerRebateLine."Document Type";
                     GenJnlLine."AQD Cust Rebate Document No." := PostedCustomerRebateLine."Rebate No.";
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
@@ -1263,9 +1275,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     else
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
                     GenJnlLine."Document No." := DocumentNo;
-                    GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
-                    //GenJnlLine.Validate("Account No.", LocalBillToCustomerType."G/L Account No.");
-                    GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
+
+                    //GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
+                    //GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
+                    GenJnlLine."Account Type" := GenJnlLine."Account Type"::Vendor;
+                    GenJnlLine.Validate("Account No.", InvoicePostingBuffer."Job No.");
+
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     //GenJnlLine.Validate(Amount, PostedCustomerRebateLine."Vendor Commission");
                     GenJnlLine.Validate(Amount, InvoicePostingBuffer.Amount);
@@ -1277,9 +1292,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(PostedCustomerRebateLine."Line No.");
                     if GenJnlLine."External Document No." = '' then
                         GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+
+                    //GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
+                    //GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                    //GenJnlLine.Validate("Bal. Account No.", LocalBillToCustomerType."Bal. G/L Account No.");
-                    GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
+                    GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
+
                     GenJnlLine."AQD Cust Rebate Document Type" := PostedCustomerRebateLine."Document Type";
                     GenJnlLine."AQD Cust Rebate Document No." := PostedCustomerRebateLine."Rebate No.";
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
@@ -1337,8 +1355,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     else
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
                     GenJnlLine."Document No." := DocumentNo;
-                    GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
-                    GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
+
+                    //GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
+                    //GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
+                    GenJnlLine."Account Type" := GenJnlLine."Account Type"::Employee;
+                    GenJnlLine.Validate("Account No.", InvoicePostingBuffer."Job No.");
+
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     GenJnlLine.Validate(Amount, PostedCustomerRebateLine."Employee Commission");
                     GenJnlLine."Shortcut Dimension 1 Code" := PostedCustomerRebateLine."Shortcut Dimension 1 Code";
@@ -1349,8 +1371,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(PostedCustomerRebateLine."Line No.");
                     if GenJnlLine."External Document No." = '' then
                         GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+
+                    //GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
+                    //GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                    GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
+                    GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
+
                     GenJnlLine."AQD Cust Rebate Document Type" := PostedCustomerRebateLine."Document Type";
                     GenJnlLine."AQD Cust Rebate Document No." := PostedCustomerRebateLine."Rebate No.";
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
@@ -1411,6 +1437,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                 InvoicePostingBuffer.RESET;
                 IF InvoicePostingBuffer.FINDFIRST THEN BEGIN
                     REPEAT
+                        Evaluate(PostedCustRebateDetailLine."Entity Type", Format(InvoicePostingBuffer."Dimension Set ID"));
+
                         GenJnlLine.Reset;
                         GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
                         GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
@@ -1438,9 +1466,19 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         else
                             GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
                         GenJnlLine."Document No." := DocumentNo;
-                        GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
-                        //GenJnlLine.Validate("Account No.", LocalBillToCustomerType."G/L Account No.");
-                        GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
+
+                        //GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
+                        //GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
+                        Case PostedCustRebateDetailLine."Entity Type" of
+                            PostedCustRebateDetailLine."Entity Type"::Customer:
+                                GenJnlLine."Account Type" := GenJnlLine."Account Type"::Customer;
+                            PostedCustRebateDetailLine."Entity Type"::Employee:
+                                GenJnlLine."Account Type" := GenJnlLine."Account Type"::Employee;
+                            PostedCustRebateDetailLine."Entity Type"::Vendor:
+                                GenJnlLine."Account Type" := GenJnlLine."Account Type"::Vendor;
+                        END;
+                        GenJnlLine.Validate("Account No.", InvoicePostingBuffer."Job No.");
+
                         GenJnlLine.Validate("Currency Code", PostedCustRebateLine."Currency Code");
                         //GenJnlLine.Validate(Amount, PostedCustRebateLine."Customer Rebate Amount");
                         GenJnlLine.Validate(Amount, InvoicePostingBuffer.Amount);
@@ -1452,9 +1490,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                             GenJnlLine."External Document No." := PostedCustRebateHeader."External Document No." + '-' + FORMAT(PostedCustRebateLine."Line No.");
                         if GenJnlLine."External Document No." = '' then
                             GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+
+                        //GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
+                        //GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
                         GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                        //GenJnlLine.Validate("Bal. Account No.", LocalBillToCustomerType."Bal. G/L Account No.");
-                        GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
+                        GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
+
                         GenJnlLine."AQD Cust Rebate Document Type" := PostedCustRebateLine."Document Type";
                         GenJnlLine."AQD Cust Rebate Document No." := PostedCustRebateLine."Rebate No.";
                         GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
@@ -1539,17 +1580,23 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     InvoicePostingBuffer.RESET;
                     InvoicePostingBuffer.SetRange("G/L Account", LocalRebateProgramCode."Rebate Expense AC");
+                    InvoicePostingBuffer.SetRange("Dimension Set ID", LocalPostedCustRebateLineDetail."Entity Type".AsInteger());
+                    //IF CalledFromSalesJournal THEN
+                    //    InvoicePostingBuffer.SetRange("Job No.", LocalRebateProgramCode."Rebate Payable AC");
                     IF CalledFromSalesJournal THEN
-                        InvoicePostingBuffer.SetRange("Job No.", LocalRebateProgramCode."Rebate Payable AC");
+                        InvoicePostingBuffer.SetRange("Job No.", LocalPostedCustRebateLineDetail."Entity No.");
                     IF InvoicePostingBuffer.FindFirst() THEN BEGIN
                         InvoicePostingBuffer.Amount += LocalPostedCustRebateLineDetail."Customer Rebate Amount";
                         InvoicePostingBuffer.Modify();
                     END ELSE BEGIN
                         InvoicePostingBuffer.INIT;
                         InvoicePostingBuffer."Group ID" := LocalGroupID;
+                        InvoicePostingBuffer."Dimension Set ID" := LocalPostedCustRebateLineDetail."Entity Type".AsInteger();
                         InvoicePostingBuffer."G/L Account" := LocalRebateProgramCode."Rebate Expense AC";
+                        //IF CalledFromSalesJournal THEN
+                        //    InvoicePostingBuffer."Job No." := LocalRebateProgramCode."Rebate Payable AC";
                         IF CalledFromSalesJournal THEN
-                            InvoicePostingBuffer."Job No." := LocalRebateProgramCode."Rebate Payable AC";
+                            InvoicePostingBuffer."Job No." := LocalPostedCustRebateLineDetail."Entity No.";
                         InvoicePostingBuffer.Amount := LocalPostedCustRebateLineDetail."Customer Rebate Amount";
                         InvoicePostingBuffer.Insert();
                         LocalGroupID := IncStr(LocalGroupID);
