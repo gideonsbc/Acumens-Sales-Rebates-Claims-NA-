@@ -51,7 +51,7 @@ page 14302515 "AQD Cust Rebate Program Codes"
                 field("Rebate Expense AC"; Rec."Rebate Expense AC")
                 {
                     ApplicationArea = All;
-                    Caption = 'Rebate Expense A/C';
+                    Caption = 'Rebate Exp/Accrual A/C';
                     Editable = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
                     Enabled = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
                     ShowMandatory = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
