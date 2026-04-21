@@ -245,6 +245,12 @@ table 14302520 "AQD Customer Rebate Line"
             Caption = 'Preview';
             Editable = FALSE;
         }
+        field(970; "Cust Rebate Program Code"; Code[10])
+        {
+            Caption = 'Customer Rebate Program Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD Cust Rebate Program Code";
+        }
     }
     keys
     {

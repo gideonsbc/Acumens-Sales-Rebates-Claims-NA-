@@ -99,6 +99,12 @@ table 14302516 "AQD Cust Rebate Program Code"
             Caption = 'Specific Sales';
             DataClassification = CustomerContent;
         }
+        field(70; "Customer No."; Code[20])
+        {
+            Caption = 'Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer;
+        }
     }
 
     keys

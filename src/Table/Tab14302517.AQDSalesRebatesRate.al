@@ -120,6 +120,7 @@ table 14302517 "AQD Sales Rebates Rate"
                     Rec."Rebate Per Unit" := RebateProgramCode."Customer Def Rebate Per Unit";
                     Rec."Entity Type" := RebateProgramCode."Entity Type";
                     Rec."Entity No." := RebateProgramCode."Entity No.";
+                    Rec."Specific Sales" := RebateProgramCode."Specific Sales";
                 END;
             end;
         }
@@ -260,11 +261,26 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Blocked Date Time';
             Editable = false;
         }
-        field(580; "Customer No. Filter"; Code[20])
+        field(580; "Specific Sales"; Boolean)
+        {
+            Caption = 'Specific Sales';
+            DataClassification = CustomerContent;
+        }
+        field(590; "Customer No."; Code[20])
         {
             Caption = 'Customer No. Filter';
             DataClassification = CustomerContent;
             TableRelation = Customer;
+            trigger OnValidate()
+            var
+                RebateProgramCode: Record "AQD Cust Rebate Program Code";
+            begin
+                if Rec."Customer No." <> xRec."Customer No." then
+                    if RebateProgramCode.Get("Rebate Program Code") then begin
+                        RebateProgramCode."Customer No." := Rec."Customer No.";
+                        RebateProgramCode.Modify(false);
+                    end;
+            end;
         }
     }
 

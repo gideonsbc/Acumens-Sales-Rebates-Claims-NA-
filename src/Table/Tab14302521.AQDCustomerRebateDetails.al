@@ -340,6 +340,10 @@ table 14302521 "AQD Customer Rebate Details"
             Caption = 'Cust Rebate Posting Type';
             Editable = FALSE;
         }
+        field(7070; "Special Rebate Program Code"; Code[10])
+        {
+            Caption = 'Special Rebate Program Code';
+        }
     }
 
     keys

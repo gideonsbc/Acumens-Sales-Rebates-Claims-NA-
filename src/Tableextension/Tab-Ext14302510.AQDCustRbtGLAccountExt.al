@@ -24,5 +24,10 @@ tableextension 14302510 "AQD CustRbt G/L Account Ext" extends "G/L Account"
             Caption = 'Claim Enabled';
             DataClassification = CustomerContent;
         }
+        field(14302620; "AQD Cust Rebate Acct Group"; Enum "AQD Cust Rebate Acct Group")
+        {
+            Caption = 'Customer Rebate Account Group';
+            DataClassification = CustomerContent;
+        }
     }
 }

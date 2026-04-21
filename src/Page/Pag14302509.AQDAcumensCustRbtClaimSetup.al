@@ -512,9 +512,15 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
         LastGLAccountNo: CODE[20];
         CustomerRebatePayableGLAccount: Code[20];
         CustomerRebateExpenseGLAccount: Code[20];
+        AmazonRebateExpenseGLAccount, ShopifyRebateExpenseGLAccount, WalmartRebateExpenseGLAccount, RoyaltyRebateExpenseGLAccount : Code[20];
         Counter: Integer;
         ExitLoop: Boolean;
         LocalUserConfirmMsg: Label 'Do you want to initialize default setups?';
+        AmazonVendor, ShopifyVendor, WalmartVendor, RoyaltyVendor : Record Vendor;
+        AmazonVendor2, ShopifyVendor2, WalmartVendor2, RoyaltyVendor2 : Record Vendor;
+        AmazonVendorCode, ShopifyVendorCode, WalmartVendorCode, RoyaltyVendorCode : Code[20];
+        NoSeries: Codeunit "No. Series";
+        PurchSetup: Record "Purchases & Payables Setup";
     begin
         if Confirm(LocalUserConfirmMsg) then begin
             ResetNoSeries();
@@ -638,6 +644,220 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateExpenseGLAccount := GLAccount."No.";
             END;
 
+            //Amazon Expense A/c
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Amazon);
+            IF GLAccount2.FindLast() THEN
+                AmazonRebateExpenseGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '50435';
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Amazon Commission';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Income Statement";
+                GLAccount."Account Category" := GLAccount."Account Category"::Expense;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Expense;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Amazon;
+                GLAccount.INSERT;
+                AmazonRebateExpenseGLAccount := GLAccount."No.";
+            END;
+
+            //Shopify Expense A/c
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Shopify);
+            IF GLAccount2.FindLast() THEN
+                ShopifyRebateExpenseGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '50436';
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Shopify Commission';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Income Statement";
+                GLAccount."Account Category" := GLAccount."Account Category"::Expense;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Expense;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Shopify;
+                GLAccount.INSERT;
+                ShopifyRebateExpenseGLAccount := GLAccount."No.";
+            END;
+
+            //Walmart Expense A/c
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Walmart);
+            IF GLAccount2.FindLast() THEN
+                WalmartRebateExpenseGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '50437';
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Walmart Commission';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Income Statement";
+                GLAccount."Account Category" := GLAccount."Account Category"::Expense;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Expense;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Walmart;
+                GLAccount.INSERT;
+                WalmartRebateExpenseGLAccount := GLAccount."No.";
+            END;
+
+            //Royalty Expense A/c
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Royalty);
+            IF GLAccount2.FindLast() THEN
+                RoyaltyRebateExpenseGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '50438';
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Royalty Commission';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Income Statement";
+                GLAccount."Account Category" := GLAccount."Account Category"::Expense;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Expense;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Royalty;
+                GLAccount.INSERT;
+                RoyaltyRebateExpenseGLAccount := GLAccount."No.";
+            END;
+
+            PurchSetup.Get();
+
+            //Amazon Vendor
+            AmazonVendor.Reset();
+            AmazonVendor.SetFilter(Name, '@*Amazon*');
+            if AmazonVendor.FindFirst() then
+                AmazonVendorCode := AmazonVendor."No."
+            else begin
+                AmazonVendor2.Init();
+                AmazonVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
+                AmazonVendor2.Validate(Name, 'Amazon Commission Accruals');
+                AmazonVendor2.Insert(true);
+                AmazonVendorCode := AmazonVendor2."No.";
+            end;
+
+            //Shopify Vendor
+            ShopifyVendor.Reset();
+            ShopifyVendor.SetFilter(Name, '@*Shopify*');
+            if ShopifyVendor.FindFirst() then
+                ShopifyVendorCode := ShopifyVendor."No."
+            else begin
+                ShopifyVendor2.Init();
+                ShopifyVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
+                ShopifyVendor2.Validate(Name, 'Shopify Commission Accruals');
+                ShopifyVendor2.Insert(true);
+                ShopifyVendorCode := ShopifyVendor2."No.";
+            end;
+
+            //Walmart Vendor
+            WalmartVendor.Reset();
+            WalmartVendor.SetFilter(Name, '@*Walmart*');
+            if WalmartVendor.FindFirst() then
+                WalmartVendorCode := WalmartVendor."No."
+            else begin
+                WalmartVendor2.Init();
+                WalmartVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
+                WalmartVendor2.Validate(Name, 'Walmart Commission Accruals');
+                WalmartVendor2.Insert(true);
+                WalmartVendorCode := WalmartVendor2."No.";
+            end;
+
+            //Royalty Vendor
+            RoyaltyVendor.Reset();
+            RoyaltyVendor.SetFilter(Name, '@*Royalty*');
+            if RoyaltyVendor.FindFirst() then
+                RoyaltyVendorCode := RoyaltyVendor."No."
+            else begin
+                RoyaltyVendor2.Init();
+                RoyaltyVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
+                RoyaltyVendor2.Validate(Name, 'Royalty Commission Accruals');
+                RoyaltyVendor2.Insert(true);
+                RoyaltyVendorCode := RoyaltyVendor2."No.";
+            end;
+
             IF NOT CustomerRebateProgramCode.GET('ALL-UNIT') THEN BEGIN
                 CustomerRebateProgramCode.INIT;
                 CustomerRebateProgramCode.Code := 'ALL-UNIT';
@@ -668,6 +888,69 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
+            IF NOT CustomerRebateProgramCode.GET('AMAZON') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'AMAZON';
+                CustomerRebateProgramCode.Description := 'Amazon Commission';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 5;
+                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Entity No." := AmazonVendorCode;
+                CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount;
+                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
+                CustomerRebateProgramCode."Specific Sales" := true;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+
+            IF NOT CustomerRebateProgramCode.GET('SHOPIFY') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'SHOPIFY';
+                CustomerRebateProgramCode.Description := 'Shopify Commission';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 5;
+                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Entity No." := ShopifyVendorCode;
+                CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount;
+                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
+                CustomerRebateProgramCode."Specific Sales" := true;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+
+            IF NOT CustomerRebateProgramCode.GET('WALMART') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'WALMART';
+                CustomerRebateProgramCode.Description := 'Walmart Commission';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 5;
+                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Entity No." := WalmartVendorCode;
+                CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount;
+                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
+                CustomerRebateProgramCode."Specific Sales" := true;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+
+            IF NOT CustomerRebateProgramCode.GET('ROYALTY') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'ROYALTY';
+                CustomerRebateProgramCode.Description := 'Royalty Commission';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::"Per Quantity";
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 1;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 0;
+                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Entity No." := RoyaltyVendorCode;
+                CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount;
+                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
@@ -815,6 +1098,127 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 END;
                 CustomerSalesRebateSetup.Insert();
             END;
+
+            //AMAZON
+            CustomerSalesRebateSetup.RESET;
+            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
+            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
+            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'AMAZON');
+            CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
+            CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
+            CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
+            CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
+            IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entry No." := 0;
+                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'AMAZON');
+                CustomerSalesRebateSetup."Territory Code" := '';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Starting Date" := 0D;
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
+            //SHOPIFY
+            CustomerSalesRebateSetup.RESET;
+            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
+            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
+            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'SHOPIFY');
+            CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
+            CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
+            CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
+            CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
+            IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entry No." := 0;
+                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'SHOPIFY');
+                CustomerSalesRebateSetup."Territory Code" := '';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Starting Date" := 0D;
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
+            //WALMART
+            CustomerSalesRebateSetup.RESET;
+            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
+            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
+            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'WALMART');
+            CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
+            CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
+            CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
+            CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
+            IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entry No." := 0;
+                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'WALMART');
+                CustomerSalesRebateSetup."Territory Code" := '';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Starting Date" := 0D;
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
+            //ROYALTY
+            CustomerSalesRebateSetup.RESET;
+            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
+            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
+            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ROYALTY');
+            CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
+            CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
+            CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
+            CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
+            IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entry No." := 0;
+                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'ROYALTY');
+                CustomerSalesRebateSetup."Territory Code" := '';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup.Validate("No.", '1968-S');
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Starting Date" := 0D;
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
         END;
     END;
 

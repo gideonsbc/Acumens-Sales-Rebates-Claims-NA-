@@ -120,6 +120,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
     procedure FindSalesRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     var
         SalesRebatesRate: Record "AQD Sales Rebates Rate";
+        LocalSalesRebatesRate: Record "AQD Sales Rebates Rate";
         LocalCust: Record Customer;
         ItemCard: Record Item;
         Resource: Record Resource;
@@ -128,6 +129,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         FixedAsset: Record "Fixed Asset";
         ItemCategories: Record "Item Category";
         RebateCategoryCodeFilter: Code[50];
+        CustomerProgramCode: Record "AQD Cust Rebate Program Code";
     begin
         TempSalesRebatesRate.RESET;
         IF TempSalesRebatesRate.ISTEMPORARY THEN
@@ -160,6 +162,12 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, DocumentDate);
         SalesRebatesRate.SETRANGE(Blocked, false);
         SalesRebatesRate.SetRange("Rebate Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
+
+        //Filter using Special Rebate Program Code
+        if CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code") then
+            if CustomerProgramCode."Specific Sales" and (CustomerRebateDetailsLocIn."Rebate Program Code" <> CustomerRebateDetailsLocIn."Special Rebate Program Code") and (CustomerProgramCode."Customer No." <> CustomerRebateDetailsLocIn."Bill-To Customer No.") then
+                SalesRebatesRate.SetRange("Specific Sales", false);
+
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');
 
         CASE CustomerRebateDetailsLocIn."Entity Type" OF

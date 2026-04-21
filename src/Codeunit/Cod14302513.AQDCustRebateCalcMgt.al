@@ -1323,6 +1323,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Rebate No." := RebateNo;
                     CustomerRebateLine."Line No." := RebateLineNo;
                     CustomerRebateLine."Document Type" := CustomerRebateLine."Document Type"::Invoice;
+                    CustomerRebateLine."Cust Rebate Program Code" := SalesInvHeaderIn."AQD Cust Rebate Program Code";
                     CustomerRebateLine."Document No." := SalesInvHeaderIn."No.";
                     CustomerRebateLine."Order No." := SalesInvHeaderIn."Order No.";
                     CustomerRebateLine.Description := SalesInvHeaderIn."Posting Description";
@@ -1351,6 +1352,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Rebate No." := RebateNo;
                     CustomerRebateLine."Line No." := RebateLineNo;
                     CustomerRebateLine."Document Type" := CustomerRebateLine."Document Type"::"Credit Memo";
+                    CustomerRebateLine."Cust Rebate Program Code" := SalesInvHeaderIn."AQD Cust Rebate Program Code";
                     CustomerRebateLine."Document No." := SalesCrMemoHeaderIn."No.";
                     CustomerRebateLine."Order No." := SalesCrMemoHeaderIn."Return Order No.";
                     CustomerRebateLine.Description := SalesCrMemoHeaderIn."Posting Description";
@@ -1611,6 +1613,9 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Sell-To Customer No.";
                     CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Bill-To Customer No.";
                     CustomerRebateDetails."Rebate Pay-To Customer No." := CustomerRebateLine."Rebate Pay-To Customer No.";
+
+                    //Add special Rebate Program code
+                    CustomerRebateDetails."Special Rebate Program Code" := SalesInvHeaderIn."AQD Cust Rebate Program Code";
 
                     // Calculate and Vendor Rebate Amount
                     CustomerRebateDetails."Rebate Item Category Code" := TempRebateCategoryLines."Rebate Category Code";

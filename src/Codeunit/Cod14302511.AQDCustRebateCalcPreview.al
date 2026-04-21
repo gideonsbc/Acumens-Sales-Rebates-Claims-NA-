@@ -783,6 +783,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
 
         CustomerRebateLine.Init;
         CustomerRebateLine."Rebate No." := SalesHeaderIn."No.";
+        CustomerRebateLine."Cust Rebate Program Code" := SalesHeaderIn."AQD Cust Rebate Program Code";
         CustomerRebateLine."Line No." := RebateLineNo;
         CASE SalesHeaderIn."Document Type" OF
             SalesHeaderIn."Document Type"::Order:
@@ -951,6 +952,9 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                 CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Sell-To Customer No.";
                 CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Bill-To Customer No.";
                 CustomerRebateDetails."Rebate Pay-To Customer No." := CustomerRebateLine."Rebate Pay-To Customer No.";
+
+                //Add special Rebate Program code
+                CustomerRebateDetails."Special Rebate Program Code" := SalesHeaderIn."AQD Cust Rebate Program Code";
 
                 // Calculate and Vendor Rebate Amount
                 CustomerRebateDetails."Rebate Item Category Code" := TempRebateCategoryLines."Rebate Category Code";

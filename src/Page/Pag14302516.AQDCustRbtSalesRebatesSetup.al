@@ -1,7 +1,7 @@
 page 14302516 "AQD CustRbt SalesRebates Setup"
 {
     ApplicationArea = All;
-    Caption = 'Sales Rebates Setup';
+    Caption = 'Customer Rebates Setup';
     DataCaptionExpression = GetCaption;
     DelayedInsert = true;
     PageType = List;
@@ -189,7 +189,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     Editable = CustomerNoControlEditable;
                     ToolTip = 'Specifies the Entity No. that belongs to the Entity Type.';
                 }
-                field("Customer No. Filter"; Rec."Customer No. Filter")
+                field("Customer No."; Rec."Customer No.")
                 {
                     ApplicationArea = All;
                 }
@@ -264,6 +264,10 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     ApplicationArea = All;
                     Editable = Rec."Rebate Type" = Rec."Rebate Type"::"Per Quantity";
                     Enabled = Rec."Rebate Type" = Rec."Rebate Type"::"Per Quantity";
+                }
+                field("Specific Sales"; Rec."Specific Sales")
+                {
+                    ApplicationArea = All;
                 }
                 field(Blocked; Rec.Blocked)
                 {
