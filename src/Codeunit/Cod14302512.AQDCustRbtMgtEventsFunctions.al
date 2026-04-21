@@ -194,7 +194,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         IF CustomerRebateProgramCode.FindFirst() THEN
             REPEAT
                 CustomerRebateProgramCode.TestField("Rebate Expense AC");
-                CustomerRebateProgramCode.TestField("Rebate Payable AC");
+            //CustomerRebateProgramCode.TestField("Rebate Payable AC");
             UNTIL CustomerRebateProgramCode.Next() = 0;
     END;
 

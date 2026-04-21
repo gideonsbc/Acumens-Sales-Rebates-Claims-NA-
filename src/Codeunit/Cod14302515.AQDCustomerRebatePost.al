@@ -1575,8 +1575,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
             REPEAT
                 IF LocalRebateProgramCode.GET(LocalPostedCustRebateLineDetail."Rebate Program Code") THEN BEGIN
                     LocalRebateProgramCode.TestField("Rebate Expense AC");
-                    IF CalledFromSalesJournal THEN
-                        LocalRebateProgramCode.TestField("Rebate Payable AC");
+                    //IF CalledFromSalesJournal THEN
+                    //    LocalRebateProgramCode.TestField("Rebate Payable AC");
 
                     InvoicePostingBuffer.RESET;
                     InvoicePostingBuffer.SetRange("G/L Account", LocalRebateProgramCode."Rebate Expense AC");
