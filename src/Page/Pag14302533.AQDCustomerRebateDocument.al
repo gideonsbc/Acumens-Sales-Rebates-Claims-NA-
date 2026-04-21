@@ -254,6 +254,7 @@ page 14302533 "AQD Customer Rebate Document"
             CustomerRebateUserSetup."AQD Cust Rebate Rebate Role"::Admin]
         then
             ApproveEnabled := true;
+        Rec.SetRange(Preview, false);
     end;
 
     trigger OnAfterGetRecord()
