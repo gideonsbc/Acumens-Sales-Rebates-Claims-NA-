@@ -129,6 +129,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         CustomerRebateSetupDoesNotExist: Label 'Customer Rebate Setup does not exist. Please set up and try again.';
         CustomerRebateDefaultValuesMissing: Label 'Customer Rebate Setup default values are missing. Please update the setup and try again.';
         CustomerRebateCardDefaultValuesMissing: Label 'Customer Card %1 - %2 is missing. Please update the setup and try again.';
+        CustomerRebateProgramCode: Record "AQD Cust Rebate Program Code";
     BEGIN
         IF SalesHeader.IsTemporary THEN
             EXIT;
@@ -186,6 +187,15 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         CustomerRebateSetup.TESTFIELD("Sales Journal Batch Name");
         CustomerRebateSetup.TESTFIELD("Customer Rebate Start Date");
         BillToCustomer.TestField("AQD Cust Rebate Customer No.");
+
+        CustomerRebateProgramCode.RESET;
+        CustomerRebateProgramCode.SETRANGE("Customer Rebate Posting Type",
+            CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense);
+        IF CustomerRebateProgramCode.FindFirst() THEN
+            REPEAT
+                CustomerRebateProgramCode.TestField("Rebate Expense AC");
+                CustomerRebateProgramCode.TestField("Rebate Payable AC");
+            UNTIL CustomerRebateProgramCode.Next() = 0;
     END;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesShptHeaderInsert, '', false, false)]
