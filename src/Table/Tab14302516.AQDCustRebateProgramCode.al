@@ -75,6 +75,9 @@ table 14302516 "AQD Cust Rebate Program Code"
             TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
                                                 "Account Type" = CONST(Posting),
                                                 Blocked = CONST(false));
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Used Customer Vendor Employee No.';
+            ObsoleteTag = 'Discontinued 25.1023.0.2';
         }
         field(40; "Entity Type"; Enum "AQD Cust Rebate Customer Type")
         {

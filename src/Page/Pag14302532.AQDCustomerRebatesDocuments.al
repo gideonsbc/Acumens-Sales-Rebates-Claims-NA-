@@ -140,6 +140,7 @@ page 14302532 "AQD Customer Rebates Documents"
             Rec.SetFilter("Location Code", CustomerRebateUserSetup."AQD Cust Rbt Location Filter");
         if CustomerRebateUserSetup."AQD Cust Rbt State Filter" <> '' then
             Rec.SetFilter("Territory Code", CustomerRebateUserSetup."AQD Cust Rbt State Filter");
+        Rec.SetRange(Preview, false);
         Rec.FilterGroup(0);
     end;
 

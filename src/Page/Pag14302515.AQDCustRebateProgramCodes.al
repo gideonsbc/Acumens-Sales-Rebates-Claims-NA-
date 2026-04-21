@@ -71,6 +71,10 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     Editable = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
                     Enabled = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
                     ShowMandatory = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Used Customer Vendor Employee No.';
+                    ObsoleteTag = 'Discontinued 25.1023.0.2';
+                    Visible = false;
                 }
                 field("Entity Type"; Rec."Entity Type")
                 {

@@ -869,7 +869,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
                 CustomerRebateProgramCode."Entity No." := '';
                 CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
-                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
+                //CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -884,7 +884,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
                 CustomerRebateProgramCode."Entity No." := '';
                 CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
-                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
+                //CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
