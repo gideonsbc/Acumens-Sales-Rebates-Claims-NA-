@@ -260,6 +260,12 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Blocked Date Time';
             Editable = false;
         }
+        field(580; "Customer No. Filter"; Code[20])
+        {
+            Caption = 'Customer No. Filter';
+            DataClassification = CustomerContent;
+            TableRelation = Customer;
+        }
     }
 
     keys

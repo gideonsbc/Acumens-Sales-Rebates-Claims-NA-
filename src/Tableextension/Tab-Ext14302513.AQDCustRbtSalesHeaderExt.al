@@ -139,6 +139,12 @@ tableextension 14302513 "AQD CustRbt Sales Header Ext" extends "Sales Header"
             FieldClass = Normal;
             Editable = false;
         }
+        field(14302707; "AQD Cust Rebate Program Code"; Code[10])
+        {
+            Caption = 'Customer Rebate Program Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD Cust Rebate Program Code";
+        }
     }
     LOCAL procedure CheckClaimStatus()
     var

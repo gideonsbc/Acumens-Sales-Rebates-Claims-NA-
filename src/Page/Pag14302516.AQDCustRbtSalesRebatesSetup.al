@@ -189,6 +189,10 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     Editable = CustomerNoControlEditable;
                     ToolTip = 'Specifies the Entity No. that belongs to the Entity Type.';
                 }
+                field("Customer No. Filter"; Rec."Customer No. Filter")
+                {
+                    ApplicationArea = All;
+                }
                 Field("Territory Code"; Rec."Territory Code")
                 {
                     ApplicationArea = All;

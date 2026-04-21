@@ -26,6 +26,10 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                     {
                         ApplicationArea = All;
                     }
+                    field("AQD Cust Rebate Program Code"; Rec."AQD Cust Rebate Program Code")
+                    {
+                        ApplicationArea = All;
+                    }
                     field("AQD Rebate Last Changed By"; Rec."AQD Rebate Last Changed By")
                     {
                         ApplicationArea = All;

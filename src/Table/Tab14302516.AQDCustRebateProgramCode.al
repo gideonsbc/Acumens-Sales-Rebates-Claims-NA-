@@ -94,6 +94,11 @@ table 14302516 "AQD Cust Rebate Program Code"
             else if ("Entity Type" = const("Employee Commission")) Employee where(Status = const(Active))
             else if ("Entity Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
         }
+        field(60; "Specific Sales"; Boolean)
+        {
+            Caption = 'Specific Sales';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

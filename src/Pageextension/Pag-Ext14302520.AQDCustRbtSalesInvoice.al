@@ -25,6 +25,10 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
                     {
                         ApplicationArea = All;
                     }
+                    field("AQD Cust Rebate Program Code"; Rec."AQD Cust Rebate Program Code")
+                    {
+                        ApplicationArea = All;
+                    }
                     field("AQD Rebate Last Changed By"; Rec."AQD Rebate Last Changed By")
                     {
                         ApplicationArea = All;

@@ -51,6 +51,10 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                         ApplicationArea = All;
                         Editable = FALSE;
                     }
+                    field("AQD Cust Rebate Program Code"; Rec."AQD Cust Rebate Program Code")
+                    {
+                        ApplicationArea = All;
+                    }
                     field("AQD Claim Errors"; Rec."AQD Claim Errors")
                     {
                         ApplicationArea = All;

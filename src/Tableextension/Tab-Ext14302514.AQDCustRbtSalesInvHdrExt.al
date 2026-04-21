@@ -125,6 +125,12 @@ tableextension 14302514 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
             FieldClass = Normal;
             Editable = false;
         }
+        field(14302707; "AQD Cust Rebate Program Code"; Code[10])
+        {
+            Caption = 'Customer Rebate Program Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD Cust Rebate Program Code";
+        }
     }
     LOCAL procedure CheckClaimStatus()
     var
