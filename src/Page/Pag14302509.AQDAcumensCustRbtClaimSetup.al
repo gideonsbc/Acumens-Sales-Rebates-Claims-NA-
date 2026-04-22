@@ -512,15 +512,19 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
         LastGLAccountNo: CODE[20];
         CustomerRebatePayableGLAccount: Code[20];
         CustomerRebateExpenseGLAccount: Code[20];
-        AmazonRebateExpenseGLAccount, ShopifyRebateExpenseGLAccount, WalmartRebateExpenseGLAccount, RoyaltyRebateExpenseGLAccount : Code[20];
+        AmazonRebateExpenseGLAccount, ShopifyRebateExpenseGLAccount, WalmartRebateExpenseGLAccount, RoyaltyRebateExpenseGLAccount, CouponRebateExpenseGLAccount : Code[20];
+        AmazonRebatePayableGLAccount, ShopifyRebatePayableGLAccount, WalmartRebatePayableGLAccount, RoyaltyRebatePayableGLAccount, CouponRebatePayableGLAccount : Code[20];
         Counter: Integer;
         ExitLoop: Boolean;
         LocalUserConfirmMsg: Label 'Do you want to initialize default setups?';
-        AmazonVendor, ShopifyVendor, WalmartVendor, RoyaltyVendor : Record Vendor;
-        AmazonVendor2, ShopifyVendor2, WalmartVendor2, RoyaltyVendor2 : Record Vendor;
-        AmazonVendorCode, ShopifyVendorCode, WalmartVendorCode, RoyaltyVendorCode : Code[20];
+        AmazonVendor, ShopifyVendor, WalmartVendor, RoyaltyVendor, CouponVendor : Record Vendor;
+        AmazonVendor2, ShopifyVendor2, WalmartVendor2, RoyaltyVendor2, CouponVendor2 : Record Vendor;
+        AmazonVendorCode, ShopifyVendorCode, WalmartVendorCode, RoyaltyVendorCode, CouponVendorCode : Code[20];
         NoSeries: Codeunit "No. Series";
         PurchSetup: Record "Purchases & Payables Setup";
+        GenBusinessPostingGroup: Record "Gen. Business Posting Group";
+        VendorPostingGroup: Record "Vendor Posting Group";
+        VendorRec: Record Vendor;
     begin
         if Confirm(LocalUserConfirmMsg) then begin
             ResetNoSeries();
@@ -644,7 +648,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateExpenseGLAccount := GLAccount."No.";
             END;
 
-            //Amazon Expense A/c
+
+            //Expense Accounts
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
@@ -684,7 +689,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 AmazonRebateExpenseGLAccount := GLAccount."No.";
             END;
 
-            //Shopify Expense A/c
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
@@ -724,7 +728,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 ShopifyRebateExpenseGLAccount := GLAccount."No.";
             END;
 
-            //Walmart Expense A/c
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
@@ -764,7 +767,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 WalmartRebateExpenseGLAccount := GLAccount."No.";
             END;
 
-            //Royalty Expense A/c
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
@@ -804,9 +806,245 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 RoyaltyRebateExpenseGLAccount := GLAccount."No.";
             END;
 
-            PurchSetup.Get();
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Expense);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Coupon);
+            IF GLAccount2.FindLast() THEN
+                CouponRebateExpenseGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '50439';
 
-            //Amazon Vendor
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Coupon Accrual';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Income Statement";
+                GLAccount."Account Category" := GLAccount."Account Category"::Expense;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Expense;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Coupon;
+                GLAccount.INSERT;
+                CouponRebateExpenseGLAccount := GLAccount."No.";
+            END;
+
+
+            //Payable Accounts
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Payable);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Amazon);
+            IF GLAccount2.FindLast() THEN
+                AmazonRebatePayableGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '20165';
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Amazon Commission Payable';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Balance Sheet";
+                GLAccount."Account Category" := GLAccount."Account Category"::Liabilities;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Amazon;
+                GLAccount.INSERT;
+                AmazonRebatePayableGLAccount := GLAccount."No.";
+            END;
+
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Payable);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Shopify);
+            IF GLAccount2.FindLast() THEN
+                ShopifyRebatePayableGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '20166';
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Shopify Commission Payable';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Balance Sheet";
+                GLAccount."Account Category" := GLAccount."Account Category"::Liabilities;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Shopify;
+                GLAccount.INSERT;
+                ShopifyRebatePayableGLAccount := GLAccount."No.";
+            END;
+
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Payable);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Walmart);
+            IF GLAccount2.FindLast() THEN
+                WalmartRebatePayableGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '20167';
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Walmart Commission Payable';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Balance Sheet";
+                GLAccount."Account Category" := GLAccount."Account Category"::Liabilities;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Walmart;
+                GLAccount.INSERT;
+                WalmartRebatePayableGLAccount := GLAccount."No.";
+            END;
+
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Payable);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Royalty);
+            IF GLAccount2.FindLast() THEN
+                RoyaltyRebatePayableGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '20168';
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Royalty Commission Payable';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Balance Sheet";
+                GLAccount."Account Category" := GLAccount."Account Category"::Liabilities;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Royalty;
+                GLAccount.INSERT;
+                RoyaltyRebatePayableGLAccount := GLAccount."No.";
+            END;
+
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Payable);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Coupon);
+            IF GLAccount2.FindLast() THEN
+                CouponRebatePayableGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '20169';
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Coupon Commission Payable';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Balance Sheet";
+                GLAccount."Account Category" := GLAccount."Account Category"::Liabilities;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Coupon;
+                GLAccount.INSERT;
+                CouponRebatePayableGLAccount := GLAccount."No.";
+            END;
+
+
+            //Vendors
+            PurchSetup.Get();
             AmazonVendor.Reset();
             AmazonVendor.SetFilter(Name, '@*Amazon*');
             if AmazonVendor.FindFirst() then
@@ -819,7 +1057,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 AmazonVendorCode := AmazonVendor2."No.";
             end;
 
-            //Shopify Vendor
             ShopifyVendor.Reset();
             ShopifyVendor.SetFilter(Name, '@*Shopify*');
             if ShopifyVendor.FindFirst() then
@@ -832,7 +1069,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 ShopifyVendorCode := ShopifyVendor2."No.";
             end;
 
-            //Walmart Vendor
             WalmartVendor.Reset();
             WalmartVendor.SetFilter(Name, '@*Walmart*');
             if WalmartVendor.FindFirst() then
@@ -845,7 +1081,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 WalmartVendorCode := WalmartVendor2."No.";
             end;
 
-            //Royalty Vendor
             RoyaltyVendor.Reset();
             RoyaltyVendor.SetFilter(Name, '@*Royalty*');
             if RoyaltyVendor.FindFirst() then
@@ -858,6 +1093,103 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 RoyaltyVendorCode := RoyaltyVendor2."No.";
             end;
 
+            CouponVendor.Reset();
+            CouponVendor.SetFilter(Name, '@*Coupon*');
+            if CouponVendor.FindFirst() then
+                CouponVendorCode := CouponVendor."No."
+            else begin
+                CouponVendor2.Init();
+                CouponVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
+                CouponVendor2.Validate(Name, 'Coupon Accruals');
+                CouponVendor2.Insert(true);
+                CouponVendorCode := CouponVendor2."No.";
+            end;
+
+
+            //General business Posting Group
+            if not GenBusinessPostingGroup.Get('DOMESTIC') then begin
+                GenBusinessPostingGroup.Init();
+                GenBusinessPostingGroup.Code := 'DOMESTIC';
+                GenBusinessPostingGroup.Description := 'Domestic customers and vendors';
+                GenBusinessPostingGroup.Insert(true);
+            end;
+
+
+            //Vendor Posting Group
+            if not VendorPostingGroup.Get('AMAZON') then begin
+                VendorPostingGroup.Init();
+                VendorPostingGroup.Code := 'AMAZON';
+                VendorPostingGroup.Description := 'Amazon Commission';
+                VendorPostingGroup.Validate("Payables Account", AmazonRebatePayableGLAccount);
+                VendorPostingGroup.Insert(true);
+            end;
+
+            if not VendorPostingGroup.Get('SHOPIFY') then begin
+                VendorPostingGroup.Init();
+                VendorPostingGroup.Code := 'SHOPIFY';
+                VendorPostingGroup.Description := 'Shopify Commission';
+                VendorPostingGroup.Validate("Payables Account", ShopifyRebatePayableGLAccount);
+                VendorPostingGroup.Insert(true);
+            end;
+
+            if not VendorPostingGroup.Get('WALMART') then begin
+                VendorPostingGroup.Init();
+                VendorPostingGroup.Code := 'WALMART';
+                VendorPostingGroup.Description := 'Walmart Commission';
+                VendorPostingGroup.Validate("Payables Account", WalmartRebatePayableGLAccount);
+                VendorPostingGroup.Insert(true);
+            end;
+
+            if not VendorPostingGroup.Get('ROYALTY') then begin
+                VendorPostingGroup.Init();
+                VendorPostingGroup.Code := 'ROYALTY';
+                VendorPostingGroup.Description := 'Royalty Commission';
+                VendorPostingGroup.Validate("Payables Account", RoyaltyRebatePayableGLAccount);
+                VendorPostingGroup.Insert(true);
+            end;
+
+            if not VendorPostingGroup.Get('COUPON') then begin
+                VendorPostingGroup.Init();
+                VendorPostingGroup.Code := 'COUPON';
+                VendorPostingGroup.Description := 'Coupon Commission';
+                VendorPostingGroup.Validate("Payables Account", CouponRebatePayableGLAccount);
+                VendorPostingGroup.Insert(true);
+            end;
+
+
+            //Modify Vendors
+            if VendorRec.Get(AmazonVendorCode) then begin
+                VendorRec.Validate("Gen. Bus. Posting Group", 'DOMESTIC');
+                VendorRec.Validate("Vendor Posting Group", 'AMAZON');
+                VendorRec.Modify(true);
+            end;
+
+            if VendorRec.Get(ShopifyVendorCode) then begin
+                VendorRec.Validate("Gen. Bus. Posting Group", 'DOMESTIC');
+                VendorRec.Validate("Vendor Posting Group", 'SHOPIFY');
+                VendorRec.Modify(true);
+            end;
+
+            if VendorRec.Get(WalmartVendorCode) then begin
+                VendorRec.Validate("Gen. Bus. Posting Group", 'DOMESTIC');
+                VendorRec.Validate("Vendor Posting Group", 'WALMART');
+                VendorRec.Modify(true);
+            end;
+
+            if VendorRec.Get(RoyaltyVendorCode) then begin
+                VendorRec.Validate("Gen. Bus. Posting Group", 'DOMESTIC');
+                VendorRec.Validate("Vendor Posting Group", 'ROYALTY');
+                VendorRec.Modify(true);
+            end;
+
+            if VendorRec.Get(CouponVendorCode) then begin
+                VendorRec.Validate("Gen. Bus. Posting Group", 'DOMESTIC');
+                VendorRec.Validate("Vendor Posting Group", 'COUPON');
+                VendorRec.Modify(true);
+            end;
+
+
+            //Customer Rebate Program Code
             IF NOT CustomerRebateProgramCode.GET('ALL-UNIT') THEN BEGIN
                 CustomerRebateProgramCode.INIT;
                 CustomerRebateProgramCode.Code := 'ALL-UNIT';
@@ -869,7 +1201,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
                 CustomerRebateProgramCode."Entity No." := '';
                 CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
-                //CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -884,7 +1215,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
                 CustomerRebateProgramCode."Entity No." := '';
                 CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
-                //CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -899,7 +1229,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := AmazonVendorCode;
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount;
-                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
                 CustomerRebateProgramCode."Specific Sales" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
@@ -915,7 +1244,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := ShopifyVendorCode;
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount;
-                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
                 CustomerRebateProgramCode."Specific Sales" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
@@ -931,7 +1259,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := WalmartVendorCode;
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount;
-                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
                 CustomerRebateProgramCode."Specific Sales" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
@@ -947,7 +1274,21 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := RoyaltyVendorCode;
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount;
-                CustomerRebateProgramCode."Rebate Payable AC" := CustomerRebatePayableGLAccount;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+
+            IF NOT CustomerRebateProgramCode.GET('COUPON') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'COUPON';
+                CustomerRebateProgramCode.Description := 'Coupon Accrual';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 5;
+                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Entity No." := CouponVendorCode;
+                CustomerRebateProgramCode."Rebate Expense AC" := CouponRebateExpenseGLAccount;
+                CustomerRebateProgramCode."Specific Sales" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -1099,7 +1440,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Insert();
             END;
 
-            //AMAZON
+            //Sales Rebate Setup
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
@@ -1129,7 +1470,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Insert();
             END;
 
-            //SHOPIFY
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
@@ -1159,7 +1499,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Insert();
             END;
 
-            //WALMART
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
@@ -1189,14 +1528,12 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Insert();
             END;
 
-            //ROYALTY
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
             CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ROYALTY');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -1211,6 +1548,34 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup.Validate("No.", '1968-S');
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Starting Date" := 0D;
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
+            CustomerSalesRebateSetup.RESET;
+            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
+            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
+            CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'COUPON');
+            CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
+            CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
+            CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
+            CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
+            IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entry No." := 0;
+                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'COUPON');
+                CustomerSalesRebateSetup."Territory Code" := '';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';

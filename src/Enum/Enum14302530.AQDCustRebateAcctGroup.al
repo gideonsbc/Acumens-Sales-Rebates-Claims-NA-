@@ -22,4 +22,8 @@ enum 14302530 "AQD Cust Rebate Acct Group"
     {
         Caption = 'Royalty';
     }
+    value(5; "Coupon")
+    {
+        Caption = 'Coupon';
+    }
 }
