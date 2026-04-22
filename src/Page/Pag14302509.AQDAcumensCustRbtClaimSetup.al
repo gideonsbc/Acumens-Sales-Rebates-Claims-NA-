@@ -878,6 +878,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount."Direct Posting" := true;
                 GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
                 GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                GLAccount.Validate("Account Subcategory Entry No.", 11);
                 IF TaxGroup.GET('NONTAXABLE') THEN
                     GLAccount."Tax Group Code" := 'NONTAXABLE';
                 GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
@@ -917,6 +918,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount."Direct Posting" := true;
                 GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
                 GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                GLAccount.Validate("Account Subcategory Entry No.", 11);
                 IF TaxGroup.GET('NONTAXABLE') THEN
                     GLAccount."Tax Group Code" := 'NONTAXABLE';
                 GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
@@ -956,6 +958,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount."Direct Posting" := true;
                 GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
                 GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                GLAccount.Validate("Account Subcategory Entry No.", 11);
                 IF TaxGroup.GET('NONTAXABLE') THEN
                     GLAccount."Tax Group Code" := 'NONTAXABLE';
                 GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
@@ -995,6 +998,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount."Direct Posting" := true;
                 GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
                 GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                GLAccount.Validate("Account Subcategory Entry No.", 11);
                 IF TaxGroup.GET('NONTAXABLE') THEN
                     GLAccount."Tax Group Code" := 'NONTAXABLE';
                 GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
@@ -1034,6 +1038,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount."Direct Posting" := true;
                 GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
                 GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                GLAccount.Validate("Account Subcategory Entry No.", 11);
                 IF TaxGroup.GET('NONTAXABLE') THEN
                     GLAccount."Tax Group Code" := 'NONTAXABLE';
                 GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
