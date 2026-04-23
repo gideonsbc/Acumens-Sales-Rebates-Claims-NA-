@@ -139,5 +139,8 @@ permissionset 14302509 "AQD Customer Rebate"
         page "AQD Select Items" = X,
         page "AQD Select Ship-To Codes" = X,
         page "AQD Select Vendors" = X,
-        page AQDCmpltedFullPriceCustClmList = X;
+        page AQDCmpltedFullPriceCustClmList = X,
+        tabledata "AQD Marketplace" = RIMD,
+        table "AQD Marketplace" = X,
+        page "AQD Marketplace" = X;
 }

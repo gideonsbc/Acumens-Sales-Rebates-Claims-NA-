@@ -19,6 +19,14 @@ pageextension 14302522 "AQD CustRbt Sales Return Order" extends "Sales Return Or
                 {
                     ApplicationArea = All;
                 }
+                field("AQD Cust Rebate Program Code"; Rec."AQD Cust Rebate Program Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Marketplace Code"; Rec."AQD Marketplace Code")
+                {
+                    ApplicationArea = All;
+                }
                 field("AQD Customer Rebate Order Date"; Rec."AQD Customer Rebate Order Date")
                 {
                     ApplicationArea = All;

@@ -37,6 +37,10 @@ table 14302513 "AQD Cust Rebate Category Lines"
         {
             Caption = 'Cust Rebate Cost Type'; // As Temporary Used
         }
+        field(7071; "Marketplace Code"; Code[10])
+        {
+            Caption = 'Marketplace Code';
+        }
     }
     keys
     {

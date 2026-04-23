@@ -101,6 +101,13 @@ table 14302516 "AQD Cust Rebate Program Code"
         {
             Caption = 'Specific Sales';
             DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Replaced by Specific Sales New';
+        }
+        field(61; "Specific Sales New"; Enum "AQD Specific Sales")
+        {
+            Caption = 'Specific Sales';
+            DataClassification = CustomerContent;
             trigger OnValidate()
             var
                 SalesRebateRate: Record "AQD Sales Rebates Rate";
@@ -109,7 +116,7 @@ table 14302516 "AQD Cust Rebate Program Code"
                 SalesRebateRate.SetRange("Rebate Program Code", Code);
                 if SalesRebateRate.FindSet() then begin
                     repeat
-                        SalesRebateRate."Specific Sales" := "Specific Sales";
+                        SalesRebateRate."Specific Sales New" := "Specific Sales New";
                         SalesRebateRate.Modify(false);
                     until SalesRebateRate.Next() = 0;
                 end;
@@ -120,6 +127,31 @@ table 14302516 "AQD Cust Rebate Program Code"
             Caption = 'Customer No.';
             DataClassification = CustomerContent;
             TableRelation = Customer;
+        }
+        field(80; "Marketplace Code"; Code[20])
+        {
+            Caption = 'Marketplace Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD Marketplace";
+            trigger OnValidate()
+            var
+                SalesRebateRate: Record "AQD Sales Rebates Rate";
+            begin
+                if (xRec."Marketplace Code" <> '') and (Rec."Marketplace Code" = '') and ("Specific Sales New" = "Specific Sales New"::Marketplace) then begin
+                    SalesRebateRate.Reset();
+                    SalesRebateRate.SetRange("Rebate Program Code", Code);
+                    if SalesRebateRate.FindFirst() then
+                        Error('There are already existing rate(s) for this marketplace. Please delete the rate(s) before removing the value.');
+                end;
+                SalesRebateRate.Reset();
+                SalesRebateRate.SetRange("Rebate Program Code", Code);
+                if SalesRebateRate.FindSet() then begin
+                    repeat
+                        SalesRebateRate."Marketplace Code" := "Marketplace Code";
+                        SalesRebateRate.Modify(false);
+                    until SalesRebateRate.Next() = 0;
+                end;
+            end;
         }
     }
 

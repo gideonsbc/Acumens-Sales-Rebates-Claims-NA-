@@ -20,6 +20,14 @@ pageextension 14302521 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Mem
                 {
                     ApplicationArea = All;
                 }
+                field("AQD Cust Rebate Program Code"; Rec."AQD Cust Rebate Program Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("AQD Marketplace Code"; Rec."AQD Marketplace Code")
+                {
+                    ApplicationArea = All;
+                }
                 field("AQD Customer Rebate Order Date"; Rec."AQD Customer Rebate Order Date")
                 {
                     ApplicationArea = All;

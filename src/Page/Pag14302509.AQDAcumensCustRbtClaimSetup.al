@@ -568,10 +568,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 Rec."Customer Rebate Start Date" := SalesCrMemoHeader."Posting Date";
             END;
 
-            IF Rec."Customer Rebate Start Date" <> 0D THEN
-                Rec."Customer Rebate Start Date" := CalcDate('1D', Rec."Customer Rebate Start Date")
-            ELSE
+            // IF Rec."Customer Rebate Start Date" <> 0D THEN
+            //     Rec."Customer Rebate Start Date" := CalcDate('1D', Rec."Customer Rebate Start Date")
+            // ELSE
+            //     Rec."Customer Rebate Start Date" := WorkDate();
+            IF Rec."Customer Rebate Start Date" = 0D THEN
                 Rec."Customer Rebate Start Date" := WorkDate();
+
             Rec.Modify(true);
 
             GLAccount2.RESET;
@@ -1234,7 +1237,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := AmazonVendorCode;
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount;
-                CustomerRebateProgramCode."Specific Sales" := true;
+                CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -1249,7 +1252,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := ShopifyVendorCode;
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount;
-                CustomerRebateProgramCode."Specific Sales" := true;
+                CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -1264,7 +1267,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := WalmartVendorCode;
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount;
-                CustomerRebateProgramCode."Specific Sales" := true;
+                CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -1293,7 +1296,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := CouponVendorCode;
                 CustomerRebateProgramCode."Rebate Expense AC" := CouponRebateExpenseGLAccount;
-                CustomerRebateProgramCode."Specific Sales" := true;
+                CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 

@@ -251,6 +251,12 @@ table 14302520 "AQD Customer Rebate Line"
             DataClassification = CustomerContent;
             TableRelation = "AQD Cust Rebate Program Code";
         }
+        field(980; "Marketplace Code"; Code[20])
+        {
+            Caption = 'Marketplace Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD Marketplace";
+        }
     }
     keys
     {

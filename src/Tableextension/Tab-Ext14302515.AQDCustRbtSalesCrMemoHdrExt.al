@@ -57,6 +57,12 @@ tableextension 14302515 "AQD CustRbt SalesCrMemoHdr Ext" extends "Sales Cr.Memo 
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
+        field(14302706; "AQD Marketplace Code"; Code[20])
+        {
+            Caption = 'Marketplace Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD Marketplace";
+        }
         field(14302707; "AQD Cust Rebate Program Code"; Code[10])
         {
             Caption = 'Customer Rebate Program Code';

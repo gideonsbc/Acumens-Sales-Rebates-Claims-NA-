@@ -115,12 +115,15 @@ table 14302517 "AQD Sales Rebates Rate"
                 RebateProgramCode: Record "AQD Cust Rebate Program Code";
             begin
                 IF RebateProgramCode.GET(Rec."Rebate Program Code") THEN BEGIN
+                    if RebateProgramCode."Specific Sales New" = RebateProgramCode."Specific Sales New"::Marketplace then
+                        RebateProgramCode.TestField("Marketplace Code");
                     Rec."Rebate Type" := RebateProgramCode."Customer Default Rebate Type";
                     Rec."Rebate %" := RebateProgramCode."Customer Default Rebate %";
                     Rec."Rebate Per Unit" := RebateProgramCode."Customer Def Rebate Per Unit";
                     Rec."Entity Type" := RebateProgramCode."Entity Type";
                     Rec."Entity No." := RebateProgramCode."Entity No.";
-                    Rec."Specific Sales" := RebateProgramCode."Specific Sales";
+                    Rec."Specific Sales New" := RebateProgramCode."Specific Sales New";
+                    Rec."Marketplace Code" := RebateProgramCode."Marketplace Code";
                 END;
             end;
         }
@@ -266,6 +269,14 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Specific Sales';
             DataClassification = CustomerContent;
             Editable = false;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Replaced by Specific Sales New';
+        }
+        field(581; "Specific Sales New"; Enum "AQD Specific Sales")
+        {
+            Caption = 'Specific Sales';
+            DataClassification = CustomerContent;
+            Editable = false;
         }
         field(590; "Customer No."; Code[20])
         {
@@ -282,6 +293,12 @@ table 14302517 "AQD Sales Rebates Rate"
                         RebateProgramCode.Modify(false);
                     end;
             end;
+        }
+        field(600; "Marketplace Code"; Code[20])
+        {
+            Caption = 'Marketplace Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD Marketplace";
         }
     }
 

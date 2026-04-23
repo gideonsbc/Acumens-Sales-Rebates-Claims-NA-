@@ -376,6 +376,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                     TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
                     TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
                     TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Rebate Program Code";
+                    TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
                     TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
                     TempRebateCategoryLines.Insert();
                     GlobalNextRebateProgramLineNo += 10000;
@@ -395,6 +396,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                     TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
                     TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
                     TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Rebate Program Code";
+                    TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
                     TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
                     TempRebateCategoryLines.Insert();
                     GlobalNextRebateProgramLineNo += 10000;
@@ -443,6 +445,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                     TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
                     TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
                     TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Rebate Program Code";
+                    TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
                     TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
                     TempRebateCategoryLines.Insert();
                     GlobalNextRebateProgramLineNo += 10000;
@@ -462,6 +465,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                     TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
                     TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
                     TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Rebate Program Code";
+                    TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
                     TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
                     TempRebateCategoryLines.Insert();
                     GlobalNextRebateProgramLineNo += 10000;
@@ -511,6 +515,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                     TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
                     TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
                     TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Rebate Program Code";
+                    TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
                     TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
                     TempRebateCategoryLines.Insert();
                     GlobalNextRebateProgramLineNo += 10000;
@@ -530,6 +535,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                     TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
                     TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
                     TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Rebate Program Code";
+                    TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
                     TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
                     TempRebateCategoryLines.Insert();
                     GlobalNextRebateProgramLineNo += 10000;
@@ -593,6 +599,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                     TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
                     TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
                     TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Rebate Program Code";
+                    TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
                     TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Employee;
                     TempRebateCategoryLines.Insert();
                     GlobalNextRebateProgramLineNo += 10000;
@@ -612,6 +619,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                     TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
                     TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
                     TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Rebate Program Code";
+                    TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
                     TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Employee;
                     TempRebateCategoryLines.Insert();
                     GlobalNextRebateProgramLineNo += 10000;
@@ -675,6 +683,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                     TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
                     TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
                     TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Rebate Program Code";
+                    TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
                     TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
                     TempRebateCategoryLines.Insert();
                     GlobalNextRebateProgramLineNo += 10000;
@@ -694,6 +703,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                     TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
                     TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
                     TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Rebate Program Code";
+                    TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
                     TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
                     TempRebateCategoryLines.Insert();
                     GlobalNextRebateProgramLineNo += 10000;
@@ -784,6 +794,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
         CustomerRebateLine.Init;
         CustomerRebateLine."Rebate No." := SalesHeaderIn."No.";
         CustomerRebateLine."Cust Rebate Program Code" := SalesHeaderIn."AQD Cust Rebate Program Code";
+        CustomerRebateLine."Marketplace Code" := SalesHeaderIn."AQD Marketplace Code";
         CustomerRebateLine."Line No." := RebateLineNo;
         CASE SalesHeaderIn."Document Type" OF
             SalesHeaderIn."Document Type"::Order:
@@ -955,6 +966,8 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
 
                 //Add special Rebate Program code
                 CustomerRebateDetails."Special Rebate Program Code" := SalesHeaderIn."AQD Cust Rebate Program Code";
+                CustomerRebateDetails."Special Marketplace Code" := SalesHeaderIn."AQD Marketplace Code";
+                CustomerRebateDetails."Marketplace Code" := TempRebateCategoryLines."Marketplace Code";
 
                 // Calculate and Vendor Rebate Amount
                 CustomerRebateDetails."Rebate Item Category Code" := TempRebateCategoryLines."Rebate Category Code";

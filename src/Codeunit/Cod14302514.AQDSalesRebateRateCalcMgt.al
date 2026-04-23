@@ -163,10 +163,14 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         SalesRebatesRate.SETRANGE(Blocked, false);
         SalesRebatesRate.SetRange("Rebate Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
 
-        //Filter using Special Rebate Program Code
-        if CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code") then
-            if CustomerProgramCode."Specific Sales" and (CustomerRebateDetailsLocIn."Rebate Program Code" <> CustomerRebateDetailsLocIn."Special Rebate Program Code") and (CustomerProgramCode."Customer No." <> CustomerRebateDetailsLocIn."Bill-To Customer No.") then
-                SalesRebatesRate.SetRange("Specific Sales", false);
+        //Rebate Program Filter
+        CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code");
+        if (CustomerProgramCode."Specific Sales New" = CustomerProgramCode."Specific Sales New"::"Rebate Program") and (CustomerRebateDetailsLocIn."Rebate Program Code" <> CustomerRebateDetailsLocIn."Special Rebate Program Code") and (CustomerProgramCode."Customer No." <> CustomerRebateDetailsLocIn."Bill-To Customer No.") then
+            SalesRebatesRate.SetFilter("Specific Sales New", '<>%1', SalesRebatesRate."Specific Sales New"::"Rebate Program");
+
+        //Marketplace Code Filter
+        if (CustomerProgramCode."Specific Sales New" = CustomerProgramCode."Specific Sales New"::Marketplace) and (CustomerRebateDetailsLocIn."Marketplace Code" <> CustomerRebateDetailsLocIn."Special Marketplace Code") and (CustomerProgramCode."Customer No." <> CustomerRebateDetailsLocIn."Bill-To Customer No.") then
+            SalesRebatesRate.SetFilter("Specific Sales New", '<>%1', SalesRebatesRate."Specific Sales New"::Marketplace);
 
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');
 

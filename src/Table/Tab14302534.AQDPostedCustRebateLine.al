@@ -268,6 +268,18 @@ table 14302534 "AQD Posted Cust Rebate Line"
         {
             Caption = 'BatchId';
         }
+        field(970; "Cust Rebate Program Code"; Code[10])
+        {
+            Caption = 'Customer Rebate Program Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD Cust Rebate Program Code";
+        }
+        field(980; "Marketplace Code"; Code[20])
+        {
+            Caption = 'Marketplace Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD Marketplace";
+        }
     }
     keys
     {

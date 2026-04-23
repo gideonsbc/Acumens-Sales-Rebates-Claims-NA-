@@ -55,6 +55,10 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                     {
                         ApplicationArea = All;
                     }
+                    field("AQD Marketplace Code"; Rec."AQD Marketplace Code")
+                    {
+                        ApplicationArea = All;
+                    }
                     field("AQD Claim Errors"; Rec."AQD Claim Errors")
                     {
                         ApplicationArea = All;

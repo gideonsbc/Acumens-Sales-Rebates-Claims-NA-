@@ -265,10 +265,6 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     Editable = Rec."Rebate Type" = Rec."Rebate Type"::"Per Quantity";
                     Enabled = Rec."Rebate Type" = Rec."Rebate Type"::"Per Quantity";
                 }
-                field("Specific Sales"; Rec."Specific Sales")
-                {
-                    ApplicationArea = All;
-                }
                 field(Blocked; Rec.Blocked)
                 {
                     ApplicationArea = All;

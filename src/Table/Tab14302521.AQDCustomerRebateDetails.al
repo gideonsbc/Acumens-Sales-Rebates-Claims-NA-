@@ -344,6 +344,14 @@ table 14302521 "AQD Customer Rebate Details"
         {
             Caption = 'Special Rebate Program Code';
         }
+        field(7071; "Marketplace Code"; Code[10])
+        {
+            Caption = 'Marketplace Code';
+        }
+        field(7072; "Special Marketplace Code"; Code[10])
+        {
+            Caption = 'Special Marketplace Code';
+        }
         field(8070; "Vendor Document Type"; Enum "Gen. Journal Document Type")
         {
             Caption = 'Document Type';

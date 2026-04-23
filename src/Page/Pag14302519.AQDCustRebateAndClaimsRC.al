@@ -396,6 +396,13 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Image = UserSetup;
                     RunObject = Page "User Setup";
                 }
+                action(Marketplace)
+                {
+                    Caption = 'Marketplace';
+                    ApplicationArea = All;
+                    Image = UserSetup;
+                    RunObject = Page "AQD Marketplace";
+                }
                 action("Customer Rebate Program Codes2")
                 {
                     ApplicationArea = All;

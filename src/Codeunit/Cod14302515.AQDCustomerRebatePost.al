@@ -194,6 +194,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                                 SalesInvoiceHeader."AQD Customer Rebate Status" := SalesInvoiceHeader."AQD Customer Rebate Status"::Posted;
                                 SalesInvoiceHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
                                 SalesInvoiceHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
+                                SalesInvoiceHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
                                 SalesInvoiceHeader.Modify(true);
                             end;
                         end;
@@ -203,6 +204,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                                 SalesCrMemoHeader."AQD Customer Rebate Status" := SalesCrMemoHeader."AQD Customer Rebate Status"::Posted;
                                 SalesCrMemoHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
                                 SalesCrMemoHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
+                                SalesCrMemoHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
                                 SalesCrMemoHeader.Modify(true);
                             end;
                         end;
@@ -212,6 +214,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                                 SalesShipmentHeader."AQD Customer Rebate Status" := SalesShipmentHeader."AQD Customer Rebate Status"::Posted;
                                 SalesShipmentHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
                                 SalesShipmentHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
+                                SalesShipmentHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
                                 SalesShipmentHeader.Modify(true);
                             end;
                         end;
@@ -221,6 +224,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                                 ReturnReceiptHeader."AQD Customer Rebate Status" := ReturnReceiptHeader."AQD Customer Rebate Status"::Posted;
                                 ReturnReceiptHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
                                 ReturnReceiptHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
+                                ReturnReceiptHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
                                 ReturnReceiptHeader.Modify(true);
                             end;
                         end;
