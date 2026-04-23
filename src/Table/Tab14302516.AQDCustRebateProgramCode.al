@@ -101,6 +101,19 @@ table 14302516 "AQD Cust Rebate Program Code"
         {
             Caption = 'Specific Sales';
             DataClassification = CustomerContent;
+            trigger OnValidate()
+            var
+                SalesRebateRate: Record "AQD Sales Rebates Rate";
+            begin
+                SalesRebateRate.Reset();
+                SalesRebateRate.SetRange("Rebate Program Code", Code);
+                if SalesRebateRate.FindSet() then begin
+                    repeat
+                        SalesRebateRate."Specific Sales" := "Specific Sales";
+                        SalesRebateRate.Modify(false);
+                    until SalesRebateRate.Next() = 0;
+                end;
+            end;
         }
         field(70; "Customer No."; Code[20])
         {

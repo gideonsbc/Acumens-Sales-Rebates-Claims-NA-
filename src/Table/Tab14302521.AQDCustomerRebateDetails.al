@@ -344,6 +344,16 @@ table 14302521 "AQD Customer Rebate Details"
         {
             Caption = 'Special Rebate Program Code';
         }
+        field(8070; "Vendor Document Type"; Enum "Gen. Journal Document Type")
+        {
+            Caption = 'Document Type';
+            Editable = false;
+        }
+        field(8080; "Vendor Document No."; Code[20])
+        {
+            Caption = 'Document No.';
+            Editable = false;
+        }
     }
 
     keys

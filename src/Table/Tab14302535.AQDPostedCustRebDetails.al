@@ -346,6 +346,20 @@ table 14302535 "AQD Posted Cust Reb Details"
             Caption = 'Cust Rebate Posting Type';
             Editable = FALSE;
         }
+        field(7070; "Special Rebate Program Code"; Code[10])
+        {
+            Caption = 'Special Rebate Program Code';
+        }
+        field(8070; "Vendor Document Type"; Enum "Gen. Journal Document Type")
+        {
+            Caption = 'Document Type';
+            Editable = false;
+        }
+        field(8080; "Vendor Document No."; Code[20])
+        {
+            Caption = 'Document No.';
+            Editable = false;
+        }
     }
 
     keys
@@ -365,4 +379,8 @@ table 14302535 "AQD Posted Cust Reb Details"
         Rec."Rebate Amount Changed By" := UserId;
         Rec."Rebate Amount Changed DateTime" := CurrentDateTime;
     end;
+
+
+    var
+        VLE: Record "Vendor Ledger Entry";
 }

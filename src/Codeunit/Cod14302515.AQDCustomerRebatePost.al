@@ -646,6 +646,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         DocumentNo: Code[20];
         LineNo: Integer;
         ItemChargeNextLineNo: Integer;
+        VendLocalRebateAmount, EmpLocalRebateAmount : Decimal;
     begin
         PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)",
                                             "Vendor Commission", "Employee Commission");
@@ -898,7 +899,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.SetHideValidation(true);
                     GenJnlLine."Posting Date" := PostedCustomerRebateHeader."Posting Date";
                     GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Vendor Commission ' + PostedCustomerRebateLine."Order No.";
-                    if InvoicePostingBuffer.Amount > 0 then
+                    VendLocalRebateAmount := -InvoicePostingBuffer.Amount;
+                    if VendLocalRebateAmount > 0 then
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
                     else
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
@@ -909,7 +911,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     //GenJnlLine.Validate(Amount, PostedCustomerRebateLine."Vendor Commission");
-                    GenJnlLine.Validate(Amount, InvoicePostingBuffer.Amount);
+                    GenJnlLine.Validate(Amount, VendLocalRebateAmount);
                     GenJnlLine."Shortcut Dimension 1 Code" := PostedCustomerRebateLine."Shortcut Dimension 1 Code";
                     GenJnlLine.Validate("Shortcut Dimension 1 Code");
                     GenJnlLine."Shortcut Dimension 2 Code" := PostedCustomerRebateLine."Shortcut Dimension 2 Code";
@@ -936,6 +938,31 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.Modify(TRUE);
                     if GenJnlLine.Amount = 0 then
                         GenJnlLine.Delete();
+
+                    PostedCustomerRebateLineDetails.RESET;
+                    PostedCustomerRebateLineDetails.SetRange("Rebate No.", PostedCustomerRebateLine."Rebate No.");
+                    PostedCustomerRebateLineDetails.SetRange("Rebate Line No.", PostedCustomerRebateLine."Line No.");
+                    PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
+                    PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Expense);
+                    PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
+                    PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Vendor);
+                    IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
+                        Repeat
+                            case GenJnlLine."Document Type" of
+                                GenJnlLine."Document Type"::"Credit Memo":
+                                    PostedCustomerRebateLineDetails."Vendor Document Type" := PostedCustomerRebateLineDetails."Vendor Document Type"::"Credit Memo";
+                                GenJnlLine."Document Type"::Invoice:
+                                    PostedCustomerRebateLineDetails."Vendor Document Type" := PostedCustomerRebateLineDetails."Vendor Document Type"::Invoice;
+                                GenJnlLine."Document Type"::Payment:
+                                    PostedCustomerRebateLineDetails."Vendor Document Type" := PostedCustomerRebateLineDetails."Vendor Document Type"::Payment;
+                                GenJnlLine."Document Type"::Refund:
+                                    PostedCustomerRebateLineDetails."Vendor Document Type" := PostedCustomerRebateLineDetails."Vendor Document Type"::Refund;
+                            end;
+                            if GenJnlLine."Document No." <> '' then
+                                PostedCustomerRebateLineDetails."Vendor Document No." := GenJnlLine."Document No.";
+                            PostedCustomerRebateLineDetails.Modify();
+                        Until PostedCustomerRebateLineDetails.Next() = 0;
+                    end;
                 UNTIL InvoicePostingBuffer.Next() = 0;
             END;
         END;
@@ -993,7 +1020,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     //GenJnlLine.Validate(Amount, PostedCustomerRebateLine."Employee Commission");
-                    GenJnlLine.Validate(Amount, InvoicePostingBuffer.Amount);
+                    EmpLocalRebateAmount := -InvoicePostingBuffer.Amount;
+                    GenJnlLine.Validate(Amount, EmpLocalRebateAmount);
                     GenJnlLine."Shortcut Dimension 1 Code" := PostedCustomerRebateLine."Shortcut Dimension 1 Code";
                     GenJnlLine.Validate("Shortcut Dimension 1 Code");
                     GenJnlLine."Shortcut Dimension 2 Code" := PostedCustomerRebateLine."Shortcut Dimension 2 Code";
@@ -1038,6 +1066,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         DocumentNo: Code[20];
         LineNo: Integer;
         ItemChargeNextLineNo: Integer;
+        LocalRebateAmount: Decimal;
     begin
         PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)",
                                             "Vendor Commission", "Employee Commission");
@@ -1293,7 +1322,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.SetHideValidation(true);
                     GenJnlLine."Posting Date" := PostedCustomerRebateHeader."Posting Date";
                     GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Vendor Commission ' + PostedCustomerRebateLine."Order No.";
-                    if InvoicePostingBuffer.Amount > 0 then
+                    LocalRebateAmount := -InvoicePostingBuffer.Amount;
+                    if LocalRebateAmount > 0 then
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
                     else
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
@@ -1305,7 +1335,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     //GenJnlLine.Validate(Amount, PostedCustomerRebateLine."Vendor Commission");
-                    GenJnlLine.Validate(Amount, InvoicePostingBuffer.Amount);
+                    GenJnlLine.Validate(Amount, LocalRebateAmount);
                     GenJnlLine."Shortcut Dimension 1 Code" := PostedCustomerRebateLine."Shortcut Dimension 1 Code";
                     GenJnlLine.Validate("Shortcut Dimension 1 Code");
                     GenJnlLine."Shortcut Dimension 2 Code" := PostedCustomerRebateLine."Shortcut Dimension 2 Code";
@@ -1332,6 +1362,31 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.Modify(TRUE);
                     if GenJnlLine.Amount = 0 then
                         GenJnlLine.Delete();
+
+                    PostedCustomerRebateLineDetails.RESET;
+                    PostedCustomerRebateLineDetails.SetRange("Rebate No.", PostedCustomerRebateLine."Rebate No.");
+                    PostedCustomerRebateLineDetails.SetRange("Rebate Line No.", PostedCustomerRebateLine."Line No.");
+                    PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
+                    PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Expense);
+                    PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
+                    PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Vendor);
+                    IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
+                        Repeat
+                            case GenJnlLine."Document Type" of
+                                GenJnlLine."Document Type"::"Credit Memo":
+                                    PostedCustomerRebateLineDetails."Vendor Document Type" := PostedCustomerRebateLineDetails."Vendor Document Type"::"Credit Memo";
+                                GenJnlLine."Document Type"::Invoice:
+                                    PostedCustomerRebateLineDetails."Vendor Document Type" := PostedCustomerRebateLineDetails."Vendor Document Type"::Invoice;
+                                GenJnlLine."Document Type"::Payment:
+                                    PostedCustomerRebateLineDetails."Vendor Document Type" := PostedCustomerRebateLineDetails."Vendor Document Type"::Payment;
+                                GenJnlLine."Document Type"::Refund:
+                                    PostedCustomerRebateLineDetails."Vendor Document Type" := PostedCustomerRebateLineDetails."Vendor Document Type"::Refund;
+                            end;
+                            if GenJnlLine."Document No." <> '' then
+                                PostedCustomerRebateLineDetails."Vendor Document No." := GenJnlLine."Document No.";
+                            PostedCustomerRebateLineDetails.Modify();
+                        Until PostedCustomerRebateLineDetails.Next() = 0;
+                    end;
                 UNTIL InvoicePostingBuffer.Next() = 0;
             END;
         END;

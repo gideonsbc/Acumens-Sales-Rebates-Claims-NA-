@@ -831,7 +831,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
                 GLAccount.INIT;
                 GLAccount."No." := LastGLAccountNo;
-                GLAccount.Name := 'Coupon Accrual';
+                GLAccount.Name := 'Coupon Commission';
                 GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Income Statement";
                 GLAccount."Account Category" := GLAccount."Account Category"::Expense;
                 GLAccount."Direct Posting" := true;
@@ -1057,7 +1057,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             else begin
                 AmazonVendor2.Init();
                 AmazonVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
-                AmazonVendor2.Validate(Name, 'Amazon Commission Accruals');
+                AmazonVendor2.Validate(Name, 'Amazon Commission Accrual');
                 AmazonVendor2.Insert(true);
                 AmazonVendorCode := AmazonVendor2."No.";
             end;
@@ -1069,7 +1069,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             else begin
                 ShopifyVendor2.Init();
                 ShopifyVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
-                ShopifyVendor2.Validate(Name, 'Shopify Commission Accruals');
+                ShopifyVendor2.Validate(Name, 'Shopify Commission Accrual');
                 ShopifyVendor2.Insert(true);
                 ShopifyVendorCode := ShopifyVendor2."No.";
             end;
@@ -1081,7 +1081,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             else begin
                 WalmartVendor2.Init();
                 WalmartVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
-                WalmartVendor2.Validate(Name, 'Walmart Commission Accruals');
+                WalmartVendor2.Validate(Name, 'Walmart Commission Accrual');
                 WalmartVendor2.Insert(true);
                 WalmartVendorCode := WalmartVendor2."No.";
             end;
@@ -1093,7 +1093,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             else begin
                 RoyaltyVendor2.Init();
                 RoyaltyVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
-                RoyaltyVendor2.Validate(Name, 'Royalty Commission Accruals');
+                RoyaltyVendor2.Validate(Name, 'Royalty Commission Accrual');
                 RoyaltyVendor2.Insert(true);
                 RoyaltyVendorCode := RoyaltyVendor2."No.";
             end;
@@ -1105,7 +1105,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             else begin
                 CouponVendor2.Init();
                 CouponVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
-                CouponVendor2.Validate(Name, 'Coupon Accruals');
+                CouponVendor2.Validate(Name, 'Coupon Commission Accrual');
                 CouponVendor2.Insert(true);
                 CouponVendorCode := CouponVendor2."No.";
             end;
@@ -1285,7 +1285,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerRebateProgramCode.GET('COUPON') THEN BEGIN
                 CustomerRebateProgramCode.INIT;
                 CustomerRebateProgramCode.Code := 'COUPON';
-                CustomerRebateProgramCode.Description := 'Coupon Accrual';
+                CustomerRebateProgramCode.Description := 'Coupon Commission';
                 CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;

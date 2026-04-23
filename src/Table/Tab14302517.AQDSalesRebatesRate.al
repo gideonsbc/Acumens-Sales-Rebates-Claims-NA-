@@ -265,6 +265,7 @@ table 14302517 "AQD Sales Rebates Rate"
         {
             Caption = 'Specific Sales';
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(590; "Customer No."; Code[20])
         {
