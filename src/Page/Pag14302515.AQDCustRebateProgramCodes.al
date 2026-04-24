@@ -86,6 +86,13 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     ApplicationArea = All;
                     Caption = 'Entity No.';
                 }
+                field("Specific Sales"; Rec."Specific Sales")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Specific Sales';
+                    Visible = false;
+                    ObsoleteState = Pending;
+                }
                 field("Specific Sales New"; Rec."Specific Sales New")
                 {
                     ApplicationArea = All;

@@ -270,6 +270,12 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     ApplicationArea = All;
                     Caption = 'Blocked';
                 }
+                field("Specific Sales"; Rec."Specific Sales")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                    ObsoleteState = Pending;
+                }
             }
         }
         area(factboxes)

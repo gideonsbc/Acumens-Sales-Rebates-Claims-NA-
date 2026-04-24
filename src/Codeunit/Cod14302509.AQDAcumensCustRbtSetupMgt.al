@@ -12,24 +12,24 @@ codeunit 14302509 "AQD Acumens CustRbt Setup Mgt"
         Customer, CustomerRec : Record Customer;
         UserConfirmMsg: Label 'Do you want to update all existing Items?';
     begin
-        IF Rec."Item Rebate Enabled" THEN
-            IF CONFIRM(UserConfirmMsg) then BEGIN
-                Item.ModifyAll("AQD Customer Rebate Enabled", Rec."Item Rebate Enabled");
-                Vendor.ModifyAll("AQD Customer Rebate", Rec."Item Rebate Enabled");
-                Customer.ModifyAll("AQD Enroll for Cust Rebate", Rec."Item Rebate Enabled");
-                CustomerRec.Reset();
-                if CustomerRec.FindSet() then begin
-                    repeat
-                        IF CustomerRec."AQD Cust Rebate Customer No." = '' THEN BEGIN
-                            IF CustomerRec."Bill-to Customer No." <> '' THEN
-                                CustomerRec."AQD Cust Rebate Customer No." := CustomerRec."Bill-to Customer No."
-                            ELSE
-                                CustomerRec."AQD Cust Rebate Customer No." := CustomerRec."No.";
-                            CustomerRec.Modify(false);
-                        end;
-                    until CustomerRec.Next() = 0;
-                end;
-            END;
+        IF Rec."Item Rebate Enabled" THEN BEGIN
+            //IF CONFIRM(UserConfirmMsg) then BEGIN
+            Item.ModifyAll("AQD Customer Rebate Enabled", Rec."Item Rebate Enabled");
+            Vendor.ModifyAll("AQD Customer Rebate", Rec."Item Rebate Enabled");
+            Customer.ModifyAll("AQD Enroll for Cust Rebate", Rec."Item Rebate Enabled");
+            CustomerRec.Reset();
+            if CustomerRec.FindSet() then begin
+                repeat
+                    IF CustomerRec."AQD Cust Rebate Customer No." = '' THEN BEGIN
+                        IF CustomerRec."Bill-to Customer No." <> '' THEN
+                            CustomerRec."AQD Cust Rebate Customer No." := CustomerRec."Bill-to Customer No."
+                        ELSE
+                            CustomerRec."AQD Cust Rebate Customer No." := CustomerRec."No.";
+                        CustomerRec.Modify(false);
+                    end;
+                until CustomerRec.Next() = 0;
+            end;
+        END;
     END;
 
     [EventSubscriber(ObjectType::Table, Database::"AQD Acumens CustRbtClaim Setup", 'OnAfterValidateEvent', 'G/L Account Rebate Enabled', true, false)]
