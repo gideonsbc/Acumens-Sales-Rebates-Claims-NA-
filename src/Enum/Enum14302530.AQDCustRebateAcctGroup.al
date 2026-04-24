@@ -50,4 +50,8 @@ enum 14302530 "AQD Cust Rebate Acct Group"
     {
         Caption = 'Canada';
     }
+    value(12; "Canada Cusomers")
+    {
+        Caption = 'Canada Cusomers';
+    }
 }

@@ -122,7 +122,7 @@ table 14302517 "AQD Sales Rebates Rate"
                     Rec."Rebate Per Unit" := RebateProgramCode."Customer Def Rebate Per Unit";
                     Rec."Entity Type" := RebateProgramCode."Entity Type";
                     Rec."Entity No." := RebateProgramCode."Entity No.";
-                    Rec."Specific Sales New" := RebateProgramCode."Specific Sales New";
+                    Rec.Validate("Specific Sales New", RebateProgramCode."Specific Sales New");
                     Rec."Marketplace Code" := RebateProgramCode."Marketplace Code";
                 END;
             end;
@@ -277,6 +277,26 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Specific Sales';
             DataClassification = CustomerContent;
             Editable = false;
+            trigger OnValidate()
+            begin
+                case Rec."Specific Sales New" of
+                    Rec."Specific Sales New"::" ":
+                        begin
+                            Rec."Is Rebate Program" := false;
+                            Rec."Is Marketplace" := false;
+                        end;
+                    Rec."Specific Sales New"::"Rebate Program":
+                        begin
+                            Rec."Is Rebate Program" := true;
+                            Rec."Is Marketplace" := false;
+                        end;
+                    Rec."Specific Sales New"::Marketplace:
+                        begin
+                            Rec."Is Rebate Program" := false;
+                            Rec."Is Marketplace" := true;
+                        end;
+                end;
+            end;
         }
         field(590; "Customer No."; Code[20])
         {
@@ -299,6 +319,14 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Marketplace Code';
             DataClassification = CustomerContent;
             TableRelation = "AQD Marketplace";
+        }
+        field(700; "Is Rebate Program"; Boolean)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(800; "Is Marketplace"; Boolean)
+        {
+            DataClassification = CustomerContent;
         }
     }
 

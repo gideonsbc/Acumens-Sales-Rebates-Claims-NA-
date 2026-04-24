@@ -116,8 +116,8 @@ table 14302516 "AQD Cust Rebate Program Code"
                 SalesRebateRate.SetRange("Rebate Program Code", Code);
                 if SalesRebateRate.FindSet() then begin
                     repeat
-                        SalesRebateRate."Specific Sales New" := "Specific Sales New";
-                        SalesRebateRate.Modify(false);
+                        SalesRebateRate.Validate("Specific Sales New", Rec."Specific Sales New");
+                        SalesRebateRate.Modify();
                     until SalesRebateRate.Next() = 0;
                 end;
             end;
