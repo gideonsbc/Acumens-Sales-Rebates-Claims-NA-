@@ -153,6 +153,24 @@ table 14302516 "AQD Cust Rebate Program Code"
                 end;
             end;
         }
+        field(90; Blocked; Boolean)
+        {
+            Caption = 'Blocked';
+
+            trigger OnValidate()
+            var
+                SalesRebateRate: Record "AQD Sales Rebates Rate";
+            begin
+                SalesRebateRate.Reset();
+                SalesRebateRate.SetRange("Rebate Program Code", Code);
+                if SalesRebateRate.FindSet() then begin
+                    repeat
+                        SalesRebateRate.Validate(Blocked, Rec.Blocked);
+                        SalesRebateRate.Modify();
+                    until SalesRebateRate.Next() = 0;
+                end;
+            end;
+        }
     }
 
     keys

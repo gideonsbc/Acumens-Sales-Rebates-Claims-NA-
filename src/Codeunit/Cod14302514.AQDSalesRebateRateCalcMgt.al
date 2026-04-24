@@ -164,13 +164,14 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         SalesRebatesRate.SetRange("Rebate Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
 
         // //Rebate Program Filter
-        CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code");
-        if (CustomerProgramCode."Specific Sales New" = CustomerProgramCode."Specific Sales New"::"Rebate Program") and (CustomerRebateDetailsLocIn."Rebate Program Code" <> CustomerRebateDetailsLocIn."Special Rebate Program Code") and (CustomerProgramCode."Customer No." <> CustomerRebateDetailsLocIn."Bill-To Customer No.") then
-            SalesRebatesRate.SetRange("Is Rebate Program", false);
+        if CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code") then begin
+            if (CustomerProgramCode."Specific Sales New" = CustomerProgramCode."Specific Sales New"::"Rebate Program") and (CustomerRebateDetailsLocIn."Rebate Program Code" <> CustomerRebateDetailsLocIn."Special Rebate Program Code") and (CustomerProgramCode."Customer No." <> CustomerRebateDetailsLocIn."Bill-To Customer No.") then
+                SalesRebatesRate.SetRange("Is Rebate Program", false);
 
-        // //Marketplace Code Filter
-        if (CustomerProgramCode."Specific Sales New" = CustomerProgramCode."Specific Sales New"::Marketplace) and (CustomerRebateDetailsLocIn."Marketplace Code" <> CustomerRebateDetailsLocIn."Special Marketplace Code") and (CustomerProgramCode."Customer No." <> CustomerRebateDetailsLocIn."Bill-To Customer No.") then
-            SalesRebatesRate.SetRange("Is Marketplace", false);
+            // //Marketplace Code Filter
+            if (CustomerProgramCode."Specific Sales New" = CustomerProgramCode."Specific Sales New"::Marketplace) and (CustomerRebateDetailsLocIn."Marketplace Code" <> CustomerRebateDetailsLocIn."Special Marketplace Code") and (CustomerProgramCode."Customer No." <> CustomerRebateDetailsLocIn."Bill-To Customer No.") then
+                SalesRebatesRate.SetRange("Is Marketplace", false);
+        end;
 
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');
 

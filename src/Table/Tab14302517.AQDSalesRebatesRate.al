@@ -242,6 +242,7 @@ table 14302517 "AQD Sales Rebates Rate"
         field(550; Blocked; Boolean)
         {
             Caption = 'Blocked';
+            Editable = false;
 
             trigger OnValidate()
             begin

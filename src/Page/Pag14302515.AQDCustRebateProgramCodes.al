@@ -103,6 +103,10 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Marketplace Code field.', Comment = '%';
                 }
+                field(Blocked; Rec.Blocked)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
         area(factboxes)
