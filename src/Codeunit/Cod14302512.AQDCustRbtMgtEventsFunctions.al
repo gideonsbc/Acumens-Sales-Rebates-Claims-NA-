@@ -436,4 +436,31 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     local procedure OnBeforeGenerateRealTimeCustomerRebate(var SalesHeader: Record "Sales Header"; SalesShptHdrNo: Code[20]; RetRcpHdrNo: Code[20]; SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; PreviewMode: Boolean; var IsHandled: Boolean)
     BEGIN
     END;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnAfterFindSalesRebateRate, '', false, false)]
+    local procedure "AQD Sales Rebate Rate Calc Mgt_OnAfterFindSalesRebateRate"(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    var
+        CustomerProgramCode: Record "AQD Cust Rebate Program Code";
+        CustomerNoFilter: Code[20];
+        CustomerRebateProgramCode, MarketplaceCode : Code[20];
+    begin
+        CustomerRebateProgramCode := CustomerRebateDetailsLocIn."Header Rebate Program Code";
+        MarketplaceCode := CustomerRebateDetailsLocIn."Header Marketplace Code";
+        CustomerNoFilter := CustomerRebateDetailsLocIn."Bill-To Customer No.";
+
+        if CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code") then begin
+            case CustomerProgramCode."Specific Sales New" of
+                CustomerProgramCode."Specific Sales New"::"Rebate Program":
+                    begin
+                        if (CustomerRebateDetailsLocIn."Rebate Program Code" <> CustomerRebateProgramCode) and (CustomerProgramCode."Customer No." <> CustomerNoFilter) then
+                            SalesRebatesRate.SetFilter("Specific Sales New", '%1|%2', SalesRebatesRate."Specific Sales New"::" ", SalesRebatesRate."Specific Sales New"::Marketplace);
+                    end;
+                CustomerProgramCode."Specific Sales New"::Marketplace:
+                    begin
+                        if (CustomerRebateDetailsLocIn."Marketplace Code" <> MarketplaceCode) and (CustomerProgramCode."Customer No." <> CustomerNoFilter) then
+                            SalesRebatesRate.SetFilter("Specific Sales New", '%1|%2', SalesRebatesRate."Specific Sales New"::" ", SalesRebatesRate."Specific Sales New"::"Rebate Program");
+                    end;
+            end;
+        end;
+    end;
 }

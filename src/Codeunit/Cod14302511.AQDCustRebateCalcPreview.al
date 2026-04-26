@@ -965,8 +965,8 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                 CustomerRebateDetails."Rebate Pay-To Customer No." := CustomerRebateLine."Rebate Pay-To Customer No.";
 
                 //Add special Rebate Program code
-                CustomerRebateDetails."Special Rebate Program Code" := SalesHeaderIn."AQD Cust Rebate Program Code";
-                CustomerRebateDetails."Special Marketplace Code" := SalesHeaderIn."AQD Marketplace Code";
+                CustomerRebateDetails."Header Rebate Program Code" := SalesHeaderIn."AQD Cust Rebate Program Code";
+                CustomerRebateDetails."Header Marketplace Code" := SalesHeaderIn."AQD Marketplace Code";
                 CustomerRebateDetails."Marketplace Code" := TempRebateCategoryLines."Marketplace Code";
 
                 // Calculate and Vendor Rebate Amount

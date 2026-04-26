@@ -278,26 +278,6 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Specific Sales';
             DataClassification = CustomerContent;
             Editable = false;
-            trigger OnValidate()
-            begin
-                case Rec."Specific Sales New" of
-                    Rec."Specific Sales New"::" ":
-                        begin
-                            Rec."Is Rebate Program" := false;
-                            Rec."Is Marketplace" := false;
-                        end;
-                    Rec."Specific Sales New"::"Rebate Program":
-                        begin
-                            Rec."Is Rebate Program" := true;
-                            Rec."Is Marketplace" := false;
-                        end;
-                    Rec."Specific Sales New"::Marketplace:
-                        begin
-                            Rec."Is Rebate Program" := false;
-                            Rec."Is Marketplace" := true;
-                        end;
-                end;
-            end;
         }
         field(590; "Customer No."; Code[20])
         {
@@ -324,10 +304,14 @@ table 14302517 "AQD Sales Rebates Rate"
         field(700; "Is Rebate Program"; Boolean)
         {
             DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
         }
         field(800; "Is Marketplace"; Boolean)
         {
             DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
         }
     }
 

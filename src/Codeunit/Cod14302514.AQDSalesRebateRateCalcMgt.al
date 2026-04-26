@@ -129,7 +129,6 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         FixedAsset: Record "Fixed Asset";
         ItemCategories: Record "Item Category";
         RebateCategoryCodeFilter: Code[50];
-        CustomerProgramCode: Record "AQD Cust Rebate Program Code";
     begin
         TempSalesRebatesRate.RESET;
         IF TempSalesRebatesRate.ISTEMPORARY THEN
@@ -162,18 +161,8 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, DocumentDate);
         SalesRebatesRate.SETRANGE(Blocked, false);
         SalesRebatesRate.SetRange("Rebate Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
-
-        // //Rebate Program Filter
-        if CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code") then begin
-            if (CustomerProgramCode."Specific Sales New" = CustomerProgramCode."Specific Sales New"::"Rebate Program") and (CustomerRebateDetailsLocIn."Rebate Program Code" <> CustomerRebateDetailsLocIn."Special Rebate Program Code") and (CustomerProgramCode."Customer No." <> CustomerRebateDetailsLocIn."Bill-To Customer No.") then
-                SalesRebatesRate.SetRange("Is Rebate Program", false);
-
-            // //Marketplace Code Filter
-            if (CustomerProgramCode."Specific Sales New" = CustomerProgramCode."Specific Sales New"::Marketplace) and (CustomerRebateDetailsLocIn."Marketplace Code" <> CustomerRebateDetailsLocIn."Special Marketplace Code") and (CustomerProgramCode."Customer No." <> CustomerRebateDetailsLocIn."Bill-To Customer No.") then
-                SalesRebatesRate.SetRange("Is Marketplace", false);
-        end;
-
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');
+        OnAfterFindSalesRebateRate(SalesRebatesRate, CustomerRebateDetailsLocIn);
 
         CASE CustomerRebateDetailsLocIn."Entity Type" OF
             CustomerRebateDetailsLocIn."Entity Type"::Customer:
@@ -459,6 +448,11 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         IF UnitofMeasureCode = '' THEN
             EXIT(MinQty <= QtyPerUOM * Qty);
         EXIT(MinQty <= Qty);
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterFindSalesRebateRate(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    begin
     end;
 
     var

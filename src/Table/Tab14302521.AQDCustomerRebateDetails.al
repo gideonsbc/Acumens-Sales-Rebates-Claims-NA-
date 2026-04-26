@@ -343,12 +343,24 @@ table 14302521 "AQD Customer Rebate Details"
         field(7070; "Special Rebate Program Code"; Code[10])
         {
             Caption = 'Special Rebate Program Code';
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Replaced by Header Rebate Program Code';
         }
         field(7071; "Marketplace Code"; Code[10])
         {
             Caption = 'Marketplace Code';
         }
         field(7072; "Special Marketplace Code"; Code[10])
+        {
+            Caption = 'Special Marketplace Code';
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Replaced by Header Marketplace Code';
+        }
+        field(7073; "Header Rebate Program Code"; Code[10])
+        {
+            Caption = 'Header Rebate Program Code';
+        }
+        field(7074; "Header Marketplace Code"; Code[10])
         {
             Caption = 'Special Marketplace Code';
         }
