@@ -11,6 +11,7 @@ page 14302537 "AQD Posted Customer Rebates"
     RefreshOnActivate = true;
     SourceTable = "AQD Posted Cust Rebate Header";
     CardPageId = "AQD Posted Customer Rebate Doc";
+    SourceTableView = sorting("No.") order(descending);
 
     layout
     {

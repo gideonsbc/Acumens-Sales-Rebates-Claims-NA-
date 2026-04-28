@@ -437,30 +437,79 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     BEGIN
     END;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnBeforeInsertTempRebateCategoryLines, '', false, false)]
+    local procedure "AQD Cust Rebate Calc Preview_OnBeforeInsertTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate"; CustomerNo: Code[20])
+    begin
+        TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
+        TempRebateCategoryLines."Bill-to Customer No." := CustomerNo;
+        TempRebateCategoryLines."Customer Rebate Category" := CustomerRebateCategory(CustomerNo);
+    end;
+
+    local procedure CustomerRebateCategory(CustomerNo: Code[20]): Code[20]
+    var
+        Customer: Record Customer;
+    begin
+        if Customer.Get(CustomerNo) then
+            exit(Customer."AQD Cust Rebate Category");
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnSetFilterTempRebateCategoryLines, '', false, false)]
+    local procedure "AQD Cust Rebate Calc Preview_OnSetFilterTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; SalesHeaderIn: Record "Sales Header")
+    var
+        CustomerProgramCode: Record "AQD Cust Rebate Program Code";
+        Customer: Record Customer;
+    begin
+        if CustomerProgramCode.Get(TempRebateCategoryLines."Rebate Program Code") then begin
+            case CustomerProgramCode."Customer Type Filter" of
+                CustomerProgramCode."Customer Type Filter"::"Customer":
+                    TempRebateCategoryLines.SetFilter("Bill-to Customer No.", '%1|%2', CustomerProgramCode."Customer No. Filter", '');
+                CustomerProgramCode."Customer Type Filter"::"Customer Category":
+                    TempRebateCategoryLines.SetFilter("Customer Rebate Category", '%1|%2', CustomerProgramCode."Customer No. Filter", '');
+            end;
+        end;
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnAfterFindSalesRebateRate, '', false, false)]
     local procedure "AQD Sales Rebate Rate Calc Mgt_OnAfterFindSalesRebateRate"(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     var
         CustomerProgramCode: Record "AQD Cust Rebate Program Code";
-        CustomerNoFilter: Code[20];
-        CustomerRebateProgramCode, MarketplaceCode : Code[20];
+        BillCustomerNoFilter, SellCustomerNoFilter : Code[20];
+        HeaderRebateProgramCode, HeaderMarketplaceCode : Code[20];
+        FilterType: Option "Rebate Program Mismatch","Marketplace Mismatch";
     begin
-        CustomerRebateProgramCode := CustomerRebateDetailsLocIn."Header Rebate Program Code";
-        MarketplaceCode := CustomerRebateDetailsLocIn."Header Marketplace Code";
-        CustomerNoFilter := CustomerRebateDetailsLocIn."Bill-To Customer No.";
+        HeaderRebateProgramCode := CustomerRebateDetailsLocIn."Header Rebate Program Code";
+        HeaderMarketplaceCode := CustomerRebateDetailsLocIn."Header Marketplace Code";
+        BillCustomerNoFilter := CustomerRebateDetailsLocIn."Bill-To Customer No.";
+        SellCustomerNoFilter := CustomerRebateDetailsLocIn."Sell-To Customer No.";
 
         if CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code") then begin
-            case CustomerProgramCode."Specific Sales New" of
-                CustomerProgramCode."Specific Sales New"::"Rebate Program":
+            case CustomerProgramCode."Customer Type Filter" of
+                CustomerProgramCode."Customer Type Filter"::" ":
                     begin
-                        if (CustomerRebateDetailsLocIn."Rebate Program Code" <> CustomerRebateProgramCode) and (CustomerProgramCode."Customer No." <> CustomerNoFilter) then
-                            SalesRebatesRate.SetFilter("Specific Sales New", '%1|%2', SalesRebatesRate."Specific Sales New"::" ", SalesRebatesRate."Specific Sales New"::Marketplace);
-                    end;
-                CustomerProgramCode."Specific Sales New"::Marketplace:
-                    begin
-                        if (CustomerRebateDetailsLocIn."Marketplace Code" <> MarketplaceCode) and (CustomerProgramCode."Customer No." <> CustomerNoFilter) then
-                            SalesRebatesRate.SetFilter("Specific Sales New", '%1|%2', SalesRebatesRate."Specific Sales New"::" ", SalesRebatesRate."Specific Sales New"::"Rebate Program");
+                        case CustomerProgramCode."Specific Sales New" of
+                            CustomerProgramCode."Specific Sales New"::"Rebate Program":
+                                begin
+                                    if (CustomerRebateDetailsLocIn."Rebate Program Code" <> HeaderRebateProgramCode) then
+                                        SetRebateRateFilters(SalesRebatesRate, FilterType::"Rebate Program Mismatch");
+                                end;
+                            CustomerProgramCode."Specific Sales New"::Marketplace:
+                                begin
+                                    if (CustomerRebateDetailsLocIn."Marketplace Code" <> HeaderMarketplaceCode) then
+                                        SetRebateRateFilters(SalesRebatesRate, FilterType::"Marketplace Mismatch");
+                                end;
+                        end;
                     end;
             end;
+        end;
+    end;
+
+    local procedure SetRebateRateFilters(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; FilterType: Option "Rebate Program Mismatch","Marketplace Mismatch")
+    begin
+        case FilterType of
+            FilterType::"Rebate Program Mismatch":
+                SalesRebatesRate.SetFilter("Specific Sales New", '%1|%2', SalesRebatesRate."Specific Sales New"::" ", SalesRebatesRate."Specific Sales New"::Marketplace);
+            FilterType::"Marketplace Mismatch":
+                SalesRebatesRate.SetFilter("Specific Sales New", '%1|%2', SalesRebatesRate."Specific Sales New"::" ", SalesRebatesRate."Specific Sales New"::"Rebate Program");
         end;
     end;
 }

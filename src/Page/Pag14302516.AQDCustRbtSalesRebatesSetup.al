@@ -189,9 +189,46 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     Editable = CustomerNoControlEditable;
                     ToolTip = 'Specifies the Entity No. that belongs to the Entity Type.';
                 }
+                field("Customer Type Filter"; Rec."Customer Type Filter")
+                {
+                    ApplicationArea = All;
+                }
+                field("Customer No. Filter"; Rec."Customer No. Filter")
+                {
+                    ApplicationArea = All;
+                    trigger onlookup(var Text: Text): Boolean
+                    var
+                        CustList: Page "Customer List";
+                        RebateCustomerTypeList: Page "AQD Rebate Customer Categories";
+                    begin
+                        CASE Rec."Customer Type Filter" OF
+                            Rec."Customer Type Filter"::Customer:
+                                BEGIN
+                                    CustList.LOOKUPMODE := TRUE;
+                                    IF CustList.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := CustList.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                            Rec."Customer Type Filter"::"Customer Category":
+                                BEGIN
+                                    RebateCustomerTypeList.LOOKUPMODE := TRUE;
+                                    IF RebateCustomerTypeList.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := RebateCustomerTypeList.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                        END;
+
+                        EXIT(TRUE);
+                    end;
+                }
                 field("Customer No."; Rec."Customer No.")
                 {
                     ApplicationArea = All;
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Replaced by Customer No. Filter field.';
+                    Visible = false;
                 }
                 Field("Territory Code"; Rec."Territory Code")
                 {

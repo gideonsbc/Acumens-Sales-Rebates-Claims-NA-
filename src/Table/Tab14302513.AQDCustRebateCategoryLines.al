@@ -41,6 +41,15 @@ table 14302513 "AQD Cust Rebate Category Lines"
         {
             Caption = 'Marketplace Code';
         }
+        field(7080; "Bill-to Customer No."; Code[20])
+        {
+            DataClassification = CustomerContent;
+        }
+        field(7090; "Customer Rebate Category"; Code[20])
+        {
+            DataClassification = CustomerContent;
+        }
+
     }
     keys
     {

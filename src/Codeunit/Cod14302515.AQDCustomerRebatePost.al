@@ -950,6 +950,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Expense);
                     PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
                     PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Vendor);
+                    PostedCustomerRebateLineDetails.SetRange("Entity No.", GenJnlLine."Account No.");
                     IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                         Repeat
                             case GenJnlLine."Document Type" of
@@ -962,9 +963,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                                 GenJnlLine."Document Type"::Refund:
                                     PostedCustomerRebateLineDetails."Vendor Document Type" := PostedCustomerRebateLineDetails."Vendor Document Type"::Refund;
                             end;
-                            if GenJnlLine."Document No." <> '' then
-                                PostedCustomerRebateLineDetails."Vendor Document No." := GenJnlLine."Document No.";
-                            PostedCustomerRebateLineDetails.Modify();
+                            PostedCustomerRebateLineDetails."Vendor Document No." := GenJnlLine."Document No.";
+                            PostedCustomerRebateLineDetails.Modify(false);
                         Until PostedCustomerRebateLineDetails.Next() = 0;
                     end;
                 UNTIL InvoicePostingBuffer.Next() = 0;
@@ -1374,6 +1374,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Expense);
                     PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
                     PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Vendor);
+                    PostedCustomerRebateLineDetails.SetRange("Entity No.", GenJnlLine."Account No.");
                     IF PostedCustomerRebateLineDetails.FindFirst() THEN begin
                         Repeat
                             case GenJnlLine."Document Type" of
@@ -1386,8 +1387,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                                 GenJnlLine."Document Type"::Refund:
                                     PostedCustomerRebateLineDetails."Vendor Document Type" := PostedCustomerRebateLineDetails."Vendor Document Type"::Refund;
                             end;
-                            if GenJnlLine."Document No." <> '' then
-                                PostedCustomerRebateLineDetails."Vendor Document No." := GenJnlLine."Document No.";
+                            PostedCustomerRebateLineDetails."Vendor Document No." := GenJnlLine."Document No.";
                             PostedCustomerRebateLineDetails.Modify();
                         Until PostedCustomerRebateLineDetails.Next() = 0;
                     end;

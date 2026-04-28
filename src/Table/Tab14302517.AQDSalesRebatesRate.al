@@ -279,11 +279,46 @@ table 14302517 "AQD Sales Rebates Rate"
             DataClassification = CustomerContent;
             Editable = false;
         }
-        field(590; "Customer No."; Code[20])
+        field(585; "Customer Type Filter"; Enum "AQD Rates Customer Type Filter")
+        {
+            Caption = 'Customer Type Filter';
+            DataClassification = CustomerContent;
+            trigger OnValidate()
+            var
+                RebateProgramCode: Record "AQD Cust Rebate Program Code";
+            begin
+                if Rec."Customer Type Filter" <> xRec."Customer Type Filter" then begin
+                    Rec.Validate("Customer No. Filter", '');
+                    if RebateProgramCode.Get("Rebate Program Code") then begin
+                        RebateProgramCode."Customer Type Filter" := Rec."Customer Type Filter";
+                        RebateProgramCode.Modify(false);
+                    end;
+                end;
+            end;
+        }
+        field(586; "Customer No. Filter"; Code[20])
         {
             Caption = 'Customer No. Filter';
             DataClassification = CustomerContent;
+            trigger OnValidate()
+            var
+                RebateProgramCode: Record "AQD Cust Rebate Program Code";
+            begin
+                if Rec."Customer No. Filter" <> xRec."Customer No. Filter" then begin
+                    if RebateProgramCode.Get("Rebate Program Code") then begin
+                        RebateProgramCode."Customer No. Filter" := Rec."Customer No. Filter";
+                        RebateProgramCode.Modify(false);
+                    end;
+                end;
+            end;
+        }
+        field(590; "Customer No."; Code[20])
+        {
+            Caption = 'Customer No.';
+            DataClassification = CustomerContent;
             TableRelation = Customer;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Replaced by Customer No. Filter';
             trigger OnValidate()
             var
                 RebateProgramCode: Record "AQD Cust Rebate Program Code";

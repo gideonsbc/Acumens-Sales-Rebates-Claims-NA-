@@ -127,6 +127,18 @@ table 14302516 "AQD Cust Rebate Program Code"
             Caption = 'Customer No.';
             DataClassification = CustomerContent;
             TableRelation = Customer;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Used for specific customer filter, replaced by Customer Type Filter and Customer';
+        }
+        field(71; "Customer Type Filter"; Enum "AQD Rates Customer Type Filter")
+        {
+            Caption = 'Customer Type Filter';
+            DataClassification = CustomerContent;
+        }
+        field(72; "Customer No. Filter"; Code[20])
+        {
+            Caption = 'Customer No. Filter';
+            DataClassification = CustomerContent;
         }
         field(80; "Marketplace Code"; Code[20])
         {
