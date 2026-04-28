@@ -162,7 +162,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         SalesRebatesRate.SETRANGE(Blocked, false);
         SalesRebatesRate.SetRange("Rebate Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');
-        OnAfterFindSalesRebateRate(SalesRebatesRate, CustomerRebateDetailsLocIn);
+        OnSetSalesRebateRateFilter(SalesRebatesRate, CustomerRebateDetailsLocIn);
 
         CASE CustomerRebateDetailsLocIn."Entity Type" OF
             CustomerRebateDetailsLocIn."Entity Type"::Customer:
@@ -451,7 +451,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFindSalesRebateRate(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    local procedure OnSetSalesRebateRateFilter(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     begin
     end;
 

@@ -445,6 +445,14 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         TempRebateCategoryLines."Customer Rebate Category" := CustomerRebateCategory(CustomerNo);
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnBeforeInsertTempRebateCategoryLines, '', false, false)]
+    local procedure "AQD Cust Rebate Calc Mgt_OnBeforeInsertTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate"; CustomerNo: Code[20])
+    begin
+        TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
+        TempRebateCategoryLines."Bill-to Customer No." := CustomerNo;
+        TempRebateCategoryLines."Customer Rebate Category" := CustomerRebateCategory(CustomerNo);
+    end;
+
     local procedure CustomerRebateCategory(CustomerNo: Code[20]): Code[20]
     var
         Customer: Record Customer;
@@ -469,8 +477,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         end;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnAfterFindSalesRebateRate, '', false, false)]
-    local procedure "AQD Sales Rebate Rate Calc Mgt_OnAfterFindSalesRebateRate"(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnSetSalesRebateRateFilter, '', false, false)]
+    local procedure "AQD Sales Rebate Rate Calc Mgt_OnSetSalesRebateRateFilter"(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     var
         CustomerProgramCode: Record "AQD Cust Rebate Program Code";
         BillCustomerNoFilter, SellCustomerNoFilter : Code[20];
@@ -479,8 +487,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     begin
         HeaderRebateProgramCode := CustomerRebateDetailsLocIn."Header Rebate Program Code";
         HeaderMarketplaceCode := CustomerRebateDetailsLocIn."Header Marketplace Code";
-        BillCustomerNoFilter := CustomerRebateDetailsLocIn."Bill-To Customer No.";
-        SellCustomerNoFilter := CustomerRebateDetailsLocIn."Sell-To Customer No.";
 
         if CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code") then begin
             case CustomerProgramCode."Customer Type Filter" of
