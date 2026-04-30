@@ -280,6 +280,11 @@ table 14302534 "AQD Posted Cust Rebate Line"
             DataClassification = CustomerContent;
             TableRelation = "AQD Marketplace";
         }
+        field(990; "Off-Invoice Rebate"; Decimal)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
     keys
     {

@@ -20,5 +20,10 @@ tableextension 14302524 "AQD CustRbt SalesCrMemoLineExt" extends "Sales Cr.Memo 
             Editable = false;
             DataClassification = CustomerContent;
         }
+        field(14302705; "AQD Off-Invoice Rebate"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 }

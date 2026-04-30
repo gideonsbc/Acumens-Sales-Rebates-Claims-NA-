@@ -126,6 +126,10 @@ page 14302539 "AQD Posted Cust Reb Subpage"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Employee Commission field.', Comment = '%';
                 }
+                field("Off-Invoice Rebate"; Rec."Off-Invoice Rebate")
+                {
+                    ApplicationArea = All;
+                }
                 field(Ineligible; Rec.Ineligible)
                 {
                     ApplicationArea = All;

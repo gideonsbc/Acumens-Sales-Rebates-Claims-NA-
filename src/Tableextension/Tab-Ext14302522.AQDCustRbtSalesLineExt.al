@@ -121,5 +121,9 @@ tableextension 14302522 "AQD CustRbt Sales Line Ext" extends "Sales Line"
             FieldClass = Normal;
             Editable = false;
         }
+        field(14302705; "AQD Off-Invoice Rebate"; Boolean)
+        {
+            DataClassification = CustomerContent;
+        }
     }
 }

@@ -1284,7 +1284,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
             OnBeforeInsertRebateHeader(CustomerRebateHeader, IsHandled);
             IF NOT IsHandled THEN
                 CustomerRebateHeader.Insert;
-            OnAfterInsertRebateHeader(CustomerRebateHeader);
+            OnAfterInsertRebateHeader(DocumentType, SalesInvHeaderIn, SalesCrMemoHeaderIn, CustomerRebateHeader);
 
             RebateNo := CustomerRebateHeader."No.";
 
@@ -1310,6 +1310,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     var
         LocalCustomerRebateLine: Record "AQD Customer Rebate Line";
         IsHandled: Boolean;
+        CustMgtEvent: Codeunit "AQD CustRbtMgt EventsFunctions";
     begin
         IsHandled := false;
         OnBeforeInitRebateLine(DocumentType, SalesInvHeaderIn, SalesCrMemoHeaderIn, IsHandled);
@@ -1334,6 +1335,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Document Type" := CustomerRebateLine."Document Type"::Invoice;
                     CustomerRebateLine."Cust Rebate Program Code" := SalesInvHeaderIn."AQD Cust Rebate Program Code";
                     CustomerRebateLine."Marketplace Code" := SalesInvHeaderIn."AQD Marketplace Code";
+                    CustomerRebateLine."Off-Invoice Rebate" := CustMgtEvent.OffInvoiceRebateAmount(SalesInvHeaderIn);
                     CustomerRebateLine."Document No." := SalesInvHeaderIn."No.";
                     CustomerRebateLine."Order No." := SalesInvHeaderIn."Order No.";
                     CustomerRebateLine.Description := SalesInvHeaderIn."Posting Description";
@@ -1362,8 +1364,9 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Rebate No." := RebateNo;
                     CustomerRebateLine."Line No." := RebateLineNo;
                     CustomerRebateLine."Document Type" := CustomerRebateLine."Document Type"::"Credit Memo";
-                    CustomerRebateLine."Cust Rebate Program Code" := SalesInvHeaderIn."AQD Cust Rebate Program Code";
-                    CustomerRebateLine."Marketplace Code" := SalesInvHeaderIn."AQD Marketplace Code";
+                    CustomerRebateLine."Cust Rebate Program Code" := SalesCrMemoHeaderIn."AQD Cust Rebate Program Code";
+                    CustomerRebateLine."Marketplace Code" := SalesCrMemoHeaderIn."AQD Marketplace Code";
+                    CustomerRebateLine."Off-Invoice Rebate" := CustMgtEvent.OffInvoiceRebateCrAmount(SalesCrMemoHeaderIn);
                     CustomerRebateLine."Document No." := SalesCrMemoHeaderIn."No.";
                     CustomerRebateLine."Order No." := SalesCrMemoHeaderIn."Return Order No.";
                     CustomerRebateLine.Description := SalesCrMemoHeaderIn."Posting Description";
@@ -1903,7 +1906,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterInsertRebateHeader(var CustomerRebateHeader: Record "AQD Customer Rebate Header")
+    local procedure OnAfterInsertRebateHeader(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeaderIn: Record "Sales Invoice Header"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; var CustomerRebateHeader: Record "AQD Customer Rebate Header")
     begin
     end;
 

@@ -196,7 +196,17 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                 CustomerRebateProgramCode.TestField("Rebate Expense AC");
             //CustomerRebateProgramCode.TestField("Rebate Payable AC");
             UNTIL CustomerRebateProgramCode.Next() = 0;
+
+        if not SalesHeader."AQD Disallow Off-Inv Rebate" then
+            UpdateOffInvoiceRebate(SalesHeader);
     END;
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnBeforePerformManualRelease, '', false, false)]
+    local procedure "Sales Header_OnBeforePerformManualRelease"(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
+    begin
+        if not SalesHeader."AQD Disallow Off-Inv Rebate" then
+            UpdateOffInvoiceRebate(SalesHeader);
+    end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesShptHeaderInsert, '', false, false)]
     local procedure Cod80_SalesPost_OnBeforeSalesShptHeaderInsert(var SalesShptHeader: Record "Sales Shipment Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; var IsHandled: Boolean; var TempWhseRcptHeader: Record "Warehouse Receipt Header" temporary; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header" temporary; WhseShip: Boolean; InvtPickPutaway: Boolean)
@@ -488,6 +498,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         HeaderRebateProgramCode := CustomerRebateDetailsLocIn."Header Rebate Program Code";
         HeaderMarketplaceCode := CustomerRebateDetailsLocIn."Header Marketplace Code";
 
+        SalesRebatesRate.SetFilter("Rebate Expense Type", '<>%1', SalesRebatesRate."Rebate Expense Type"::"Off-Invoice Rebate");
+
         if CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code") then begin
             case CustomerProgramCode."Customer Type Filter" of
                 CustomerProgramCode."Customer Type Filter"::" ":
@@ -518,4 +530,252 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                 SalesRebatesRate.SetFilter("Specific Sales New", '%1|%2', SalesRebatesRate."Specific Sales New"::" ", SalesRebatesRate."Specific Sales New"::"Rebate Program");
         end;
     end;
+
+    [EventSubscriber(ObjectType::Page, Page::"Sales Order", OnBeforeRebatePreviewAction, '', false, false)]
+    local procedure "Sales Order_OnBeforeRebatePreviewAction"(var SalesHeader: Record "Sales Header")
+    begin
+        if not SalesHeader."AQD Disallow Off-Inv Rebate" then
+            UpdateOffInvoiceRebate(SalesHeader);
+    end;
+
+    [EventSubscriber(ObjectType::Page, Page::"Sales Invoice", OnBeforeRebatePreviewAction, '', false, false)]
+    local procedure "Sales Invoice_OnBeforeRebatePreviewAction"(var SalesHeader: Record "Sales Header")
+    begin
+        if not SalesHeader."AQD Disallow Off-Inv Rebate" then
+            UpdateOffInvoiceRebate(SalesHeader);
+    end;
+
+    [EventSubscriber(ObjectType::Page, Page::"Sales Return Order", OnBeforeRebatePreviewAction, '', false, false)]
+    local procedure "Sales Return Order_OnBeforeRebatePreviewAction"(var SalesHeader: Record "Sales Header")
+    begin
+        if not SalesHeader."AQD Disallow Off-Inv Rebate" then
+            UpdateOffInvoiceRebate(SalesHeader);
+    end;
+
+    procedure UpdateOffInvoiceRebate(var SalesHeader: Record "Sales Header")
+    var
+        SalesLine: Record "Sales Line";
+        lvSalesLine: Record "Sales Line";
+        ResourceRec: Record Resource;
+        ItemRec: Record "Item";
+        ResourceFilter: Record Resource;
+        lvSalesHeader: Record "Sales Header";
+        RebateProgram: Record "AQD Cust Rebate Program Code";
+        RebateRates: Record "AQD Sales Rebates Rate";
+        UnitPrice: Decimal;
+    begin
+        if SalesHeader.Status <> SalesHeader.Status::Open then
+            exit;
+
+        RebateRates.Reset();
+        RebateRates.SetRange("Rebate Expense Type", RebateRates."Rebate Expense Type"::"Off-Invoice Rebate");
+        RebateRates.SetFilter("Rebate Program Code", '<>%1', '');
+        if RebateRates.FindSet() then begin
+            repeat
+                if RebateProgram.Get(RebateRates."Rebate Program Code") and (RebateProgram."Rebate Expense AC" <> '') then
+                    if ResourceRec.Get(RebateProgram."Rebate Expense AC") then begin
+                        UnitPrice := 0;
+                        CalcOffInvoiceRebateAmount(SalesHeader, RebateRates, UnitPrice);
+                        if UnitPrice <> 0 then begin
+                            lvSalesLine.Reset();
+                            lvSalesLine.SetRange("Document Type", SalesHeader."Document Type");
+                            lvSalesLine.SetRange("Document No.", SalesHeader."No.");
+                            lvSalesLine.SetRange(Type, lvSalesLine.Type::Item);
+                            lvSalesLine.SetFilter("No.", '<>%1', '');
+                            if lvSalesLine.FindFirst() then begin
+
+                                SalesLine.Reset();
+                                SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+                                SalesLine.SetRange("Document No.", SalesHeader."No.");
+                                SalesLine.SetRange(Type, SalesLine.Type::Resource);
+                                SalesLine.SetRange("No.", ResourceRec."No.");
+                                if not SalesLine.FindFirst() then begin
+                                    SalesLine.Init();
+                                    SalesLine."Document Type" := SalesHeader."Document Type";
+                                    SalesLine."Document No." := SalesHeader."No.";
+                                    SalesLine."Line No." := GetLineNo(lvSalesLine);
+                                    SalesLine.Type := SalesLine.Type::Resource;
+                                    SalesLine.Validate("No.", ResourceRec."No.");
+                                    SalesLine.Validate(Quantity, 1);
+                                    SalesLine.Validate("Unit Price", UnitPrice);
+                                    SalesLine.Insert(true);
+                                    SalesLine."AQD Off-Invoice Rebate" := true;
+                                    SalesLine.Modify(false);
+                                end else begin
+                                    SalesLine.Validate("Unit Price", UnitPrice);
+                                    SalesLine.Modify(true);
+                                end;
+                            end;
+                        end;
+                    end;
+            until RebateRates.Next() = 0;
+        end
+    end;
+
+    local procedure GetLineNo(lvSalesLine: Record "Sales Line"): Integer
+    var
+        Salesline: Record "Sales Line";
+    begin
+        Salesline.Reset();
+        Salesline.SetRange("Document Type", lvSalesLine."Document Type");
+        SalesLine.SetRange("Document No.", lvSalesLine."Document No.");
+        if Salesline.FindLast() then
+            exit(Salesline."Line No." + 10000);
+    end;
+
+    local procedure CalcOffInvoiceRebateAmount(SalesHeader: Record "Sales Header"; RebateRates: Record "AQD Sales Rebates Rate"; var UnitPrice: Decimal)
+    var
+        TotalAmount: Decimal;
+        TotalQuantity: Decimal;
+    begin
+        GetQuantityAndAmounts(SalesHeader, RebateRates, TotalAmount, TotalQuantity);
+
+        case RebateRates."Rebate Type" of
+            RebateRates."Rebate Type"::Percentage:
+                begin
+                    UnitPrice := Round((RebateRates."Rebate %" / 100) * TotalAmount, 0.01);
+                end;
+            RebateRates."Rebate Type"::"Per Quantity":
+                begin
+                    UnitPrice := Round(RebateRates."Rebate Per Unit" * TotalQuantity, 0.01);
+                end;
+        end;
+    end;
+
+    local procedure GetQuantityAndAmounts(SalesHeader: Record "Sales Header"; RebateRates: Record "AQD Sales Rebates Rate"; var TotalAmount: Decimal; var TotalQuantity: Decimal)
+    var
+        SalesLine: Record "Sales Line";
+    begin
+        TotalAmount := 0;
+        TotalQuantity := 0;
+
+        SalesLine.Reset();
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        SalesLine.SetRange("AQD Off-Invoice Rebate", false);
+        if RebateRates."No. Filter" <> '' then
+            SalesLine.SetFilter("No.", RebateRates."No. Filter");
+        if SalesLine.FindSet() then begin
+            SalesLine.CalcSums(Amount);
+            case SalesHeader."Document Type" of
+                SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Invoice:
+                    begin
+                        TotalAmount := -SalesLine.Amount;
+                        TotalQuantity := -SalesLine.Quantity;
+                    end;
+                SalesHeader."Document Type"::"Return Order":
+                    begin
+                        TotalAmount := SalesLine.Amount;
+                        TotalQuantity := SalesLine.Quantity;
+                    end;
+            end;
+        end;
+    end;
+
+    // local procedure GetItemsQuantityAndAmounts(SalesHeader: Record "Sales Header"; var TotalAmount: Decimal; var TotalQuantity: Decimal)
+    // var
+    //     SalesLine: Record "Sales Line";
+    // begin
+    //     TotalAmount := 0;
+    //     TotalQuantity := 0;
+
+    //     SalesLine.Reset();
+    //     SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+    //     SalesLine.SetRange("Document No.", SalesHeader."No.");
+    //     SalesLine.SetRange(Type, SalesLine.Type::Item);
+    //     SalesLine.SetRange("AQD Off-Invoice Rebate", false);
+    //     if SalesLine.FindSet() then begin
+    //         SalesLine.CalcSums(Amount);
+    //         case SalesHeader."Document Type" of
+    //             SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Invoice:
+    //                 begin
+    //                     TotalAmount := -SalesLine.Amount;
+    //                     TotalQuantity := -SalesLine.Quantity;
+    //                 end;
+    //             SalesHeader."Document Type"::"Return Order":
+    //                 begin
+    //                     TotalAmount := SalesLine.Amount;
+    //                     TotalQuantity := SalesLine.Quantity;
+    //                 end;
+    //         end;
+    //     end;
+    // end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnAfterInsertRebateHeader, '', false, false)]
+    local procedure "AQD Cust Rebate Calc Preview_OnAfterInsertRebateHeader"(SalesHeader: Record "Sales Header"; var CustomerRebateHeader: Record "AQD Customer Rebate Header")
+    begin
+        CustomerRebateHeader."Off-Invoice Rebate" := OffInvoiceRebateAmountPreview(SalesHeader);
+        CustomerRebateHeader.Modify(false);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnAfterInsertRebateHeader, '', false, false)]
+    local procedure "AQD Cust Rebate Calc Mgt_OnAfterInsertRebateHeader"(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeaderIn: Record "Sales Invoice Header"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; var CustomerRebateHeader: Record "AQD Customer Rebate Header")
+    var
+        OffInvoiceRebateAmount: Decimal;
+    begin
+        case DocumentType OF
+            DocumentType::Invoice:
+                CustomerRebateHeader."Off-Invoice Rebate" := OffInvoiceRebateAmount(SalesInvHeaderIn);
+            DocumentType::"Credit Memo":
+                CustomerRebateHeader."Off-Invoice Rebate" := OffInvoiceRebateCrAmount(SalesCrMemoHeaderIn);
+        end;
+        CustomerRebateHeader.Modify(false);
+    end;
+
+    procedure OffInvoiceRebateAmountPreview(SalesHeader: Record "Sales Header"): Decimal
+    var
+        SalesLine: Record "Sales Line";
+        OffInvoiceRebateAmount: Decimal;
+    begin
+        OffInvoiceRebateAmount := 0;
+
+        SalesLine.Reset();
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        SalesLine.SetRange("AQD Off-Invoice Rebate", true);
+        if SalesLine.FindSet() then begin
+            repeat
+                OffInvoiceRebateAmount += SalesLine.Amount;
+            until SalesLine.Next() = 0;
+        end;
+        exit(OffInvoiceRebateAmount);
+    end;
+
+    procedure OffInvoiceRebateAmount(SalesInvHeader: Record "Sales Invoice Header"): Decimal
+    var
+        SalesInvLine: Record "Sales Invoice Line";
+        OffInvoiceRebateAmount: Decimal;
+    begin
+        OffInvoiceRebateAmount := 0;
+
+        SalesInvLine.Reset();
+        SalesInvLine.SetRange("Document No.", SalesInvHeader."No.");
+        SalesInvLine.SetRange("AQD Off-Invoice Rebate", true);
+        if SalesInvLine.FindSet() then begin
+            repeat
+                OffInvoiceRebateAmount += SalesInvLine.Amount;
+            until SalesInvLine.Next() = 0;
+        end;
+        exit(OffInvoiceRebateAmount);
+    end;
+
+    procedure OffInvoiceRebateCrAmount(SalesCrMemoHeader: Record "Sales Cr.Memo Header"): Decimal
+    var
+        SalesCrLine: Record "Sales Cr.Memo Line";
+        OffInvoiceRebateAmount: Decimal;
+    begin
+        OffInvoiceRebateAmount := 0;
+
+        SalesCrLine.Reset();
+        SalesCrLine.SetRange("Document No.", SalesCrMemoHeader."No.");
+        SalesCrLine.SetRange("AQD Off-Invoice Rebate", true);
+        if SalesCrLine.FindSet() then begin
+            repeat
+                OffInvoiceRebateAmount += SalesCrLine.Amount;
+            until SalesCrLine.Next() = 0;
+        end;
+        exit(OffInvoiceRebateAmount);
+    end;
+
+
 }

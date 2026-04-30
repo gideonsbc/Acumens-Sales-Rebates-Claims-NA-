@@ -219,6 +219,12 @@ table 14302519 "AQD Customer Rebate Header"
             Caption = 'Preview';
             Editable = FALSE;
         }
+        field(970; "Off-Invoice Rebate"; Decimal)
+        {
+            Caption = 'Off-Invoice Rebate';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys

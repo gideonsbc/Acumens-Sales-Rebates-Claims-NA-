@@ -765,16 +765,17 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
         CustomerRebateHeader."AQD Calculation Date" := BillToCustomer."AQD CustRbt Calculation Date";
         CustomerRebateHeader.Preview := true;
         IsHandled := FALSE;
-        OnBeforeInsertRebateHeader(CustomerRebateHeader, IsHandled);
+        OnBeforeInsertRebateHeader(SalesHeaderIn, CustomerRebateHeader, IsHandled);
         IF NOT IsHandled THEN
             CustomerRebateHeader.Insert;
-        OnAfterInsertRebateHeader(CustomerRebateHeader);
+        OnAfterInsertRebateHeader(SalesHeaderIn, CustomerRebateHeader);
     end;
 
     local procedure InsertCustomerRebateLine(SalesHeaderIn: Record "Sales Header")
     var
         LocalCustomerRebateLine: Record "AQD Customer Rebate Line";
         IsHandled: Boolean;
+        CustMgtEvent: Codeunit "AQD CustRbtMgt EventsFunctions";
     begin
         IsHandled := false;
         OnBeforeInitCustomerRebateLine(SalesHeaderIn, IsHandled);
@@ -794,6 +795,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
         CustomerRebateLine."Rebate No." := SalesHeaderIn."No.";
         CustomerRebateLine."Cust Rebate Program Code" := SalesHeaderIn."AQD Cust Rebate Program Code";
         CustomerRebateLine."Marketplace Code" := SalesHeaderIn."AQD Marketplace Code";
+        CustomerRebateLine."Off-Invoice Rebate" := CustMgtEvent.OffInvoiceRebateAmountPreview(SalesHeaderIn);
         CustomerRebateLine."Line No." := RebateLineNo;
         CASE SalesHeaderIn."Document Type" OF
             SalesHeaderIn."Document Type"::Order:
@@ -1147,12 +1149,12 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsertRebateHeader(var CustomerRebateHeader: Record "AQD Customer Rebate Header"; var IsHandled: Boolean)
+    local procedure OnBeforeInsertRebateHeader(SalesHeader: Record "Sales Header"; var CustomerRebateHeader: Record "AQD Customer Rebate Header"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterInsertRebateHeader(var CustomerRebateHeader: Record "AQD Customer Rebate Header")
+    local procedure OnAfterInsertRebateHeader(SalesHeader: Record "Sales Header"; var CustomerRebateHeader: Record "AQD Customer Rebate Header")
     begin
     end;
 

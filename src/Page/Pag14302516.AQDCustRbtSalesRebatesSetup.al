@@ -245,6 +245,45 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the number of the item for which the Sales Rebate is valid.';
                 }
+                field("No. Filter"; Rec."No. Filter")
+                {
+                    ApplicationArea = All;
+                    trigger onlookup(var Text: Text): Boolean
+                    var
+                        ItemList: Page "Item List";
+                        GLList: Page "G/L Account List";
+                        ResourceList: Page "Resource List";
+                    begin
+                        CASE Rec."Line Type" OF
+                            Rec."Line Type"::Item:
+                                BEGIN
+                                    ItemList.LOOKUPMODE := TRUE;
+                                    IF ItemList.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := ItemList.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                            Rec."Line Type"::"G/L Account":
+                                BEGIN
+                                    GLList.LOOKUPMODE := TRUE;
+                                    IF GLList.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := GLList.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                            Rec."Line Type"::Resource:
+                                BEGIN
+                                    ResourceList.LOOKUPMODE := TRUE;
+                                    IF ResourceList.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := ResourceList.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                        END;
+
+                        EXIT(TRUE);
+                    end;
+                }
                 field("Variant Code"; Rec."Variant Code")
                 {
                     ApplicationArea = All;

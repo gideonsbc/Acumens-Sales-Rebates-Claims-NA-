@@ -139,6 +139,18 @@ tableextension 14302513 "AQD CustRbt Sales Header Ext" extends "Sales Header"
             FieldClass = Normal;
             Editable = false;
         }
+        // field(14302704; "AQD Off-Invoice Calc. Level"; Option)
+        // {
+        //     Caption = 'Off-Invoice Calculation Level';
+        //     OptionMembers = "Invoice Total","Items Only";
+        //     OptionCaption = 'Invoice Total,Items Only';
+        //     DataClassification = CustomerContent;
+        // }
+        field(14302705; "AQD Disallow Off-Inv Rebate"; Boolean)
+        {
+            Caption = 'Disallow Off-Invoice Rebate';
+            DataClassification = CustomerContent;
+        }
         field(14302706; "AQD Marketplace Code"; Code[20])
         {
             Caption = 'Marketplace Code';

@@ -515,7 +515,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
         AmazonRebateExpenseGLAccount, ShopifyRebateExpenseGLAccount, WalmartRebateExpenseGLAccount, RoyaltyRebateExpenseGLAccount, CouponRebateExpenseGLAccount : Code[20];
         AmazonRebatePayableGLAccount, ShopifyRebatePayableGLAccount, WalmartRebatePayableGLAccount, RoyaltyRebatePayableGLAccount, CouponRebatePayableGLAccount : Code[20];
         AmazonRebateExpenseGLAccount2, ShopifyRebateExpenseGLAccount2, WalmartRebateExpenseGLAccount2, RoyaltyRebateExpenseGLAccount2 : Code[20];
-        AmazonRebatePayableGLAccount2, ShopifyRebatePayableGLAccount2, WalmartRebatePayableGLAccount2, RoyaltyRebatePayableGLAccount2, CouponRebatePayableGLAccount2 : Code[20];
+        AmazonRebatePayableGLAccount2, ShopifyRebatePayableGLAccount2, WalmartRebatePayableGLAccount2, RoyaltyRebatePayableGLAccount2, CouponRebatePayableGLAccount2, DDARebatePayableGLAccount : Code[20];
         Counter: Integer;
         ExitLoop: Boolean;
         LocalUserConfirmMsg: Label 'Do you want to initialize default setups?';
@@ -744,7 +744,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 AmazonRebateExpenseGLAccount2 := GLAccount."No.";
             END;
 
-
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
@@ -822,7 +821,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount.INSERT;
                 ShopifyRebateExpenseGLAccount2 := GLAccount."No.";
             END;
-
 
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
@@ -902,7 +900,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 WalmartRebateExpenseGLAccount2 := GLAccount."No.";
             END;
 
-
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
@@ -980,7 +977,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount.INSERT;
                 RoyaltyRebateExpenseGLAccount2 := GLAccount."No.";
             END;
-
 
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
@@ -1141,7 +1137,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount.INSERT;
                 AmazonRebatePayableGLAccount2 := GLAccount."No.";
             END;
-
 
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
@@ -1385,7 +1380,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 RoyaltyRebatePayableGLAccount2 := GLAccount."No.";
             END;
 
-
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
@@ -1471,6 +1465,46 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
             GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
             GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Payable);
+            GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::DDA);
+            IF GLAccount2.FindLast() THEN
+                DDARebatePayableGLAccount := GLAccount2."No."
+            ELSE BEGIN
+                LastGLAccountNo := '20173';
+
+                ExitLoop := FALSE;
+                Counter := 1;
+
+                GLAccount2.RESET;
+                REPEAT
+                    IF GLAccount2.GET(LastGLAccountNo) THEN
+                        LastGLAccountNo := IncStr(LastGLAccountNo)
+                    ELSE
+                        ExitLoop := TRUE;
+                    Counter += 1;
+                UNTIL (Counter > 100) OR ExitLoop;
+
+                GLAccount.INIT;
+                GLAccount."No." := LastGLAccountNo;
+                GLAccount.Name := 'Damage, Distribution and Advertising';
+                GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Balance Sheet";
+                GLAccount."Account Category" := GLAccount."Account Category"::Liabilities;
+                GLAccount."Direct Posting" := true;
+                GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
+                GLAccount."Account Type" := GLAccount."Account Type"::Posting;
+                GLAccount.Validate("Account Subcategory Entry No.", 11);
+                IF TaxGroup.GET('NONTAXABLE') THEN
+                    GLAccount."Tax Group Code" := 'NONTAXABLE';
+                GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
+                GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::DDA;
+                GLAccount.INSERT;
+                DDARebatePayableGLAccount := GLAccount."No.";
+            END;
+
+            GLAccount2.RESET;
+            GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
+            GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
+            GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
+            GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Payable);
             GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Canada);
             IF GLAccount2.FindLast() THEN
                 CanadaRebatePayableGLAccount := GLAccount2."No."
@@ -1546,6 +1580,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CanadaReceivableAccount := GLAccount."No.";
             END;
 
+
             //Territory
             If not Territory.Get('CAN') then begin
                 Territory.Init();
@@ -1554,7 +1589,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 Territory.Insert(true);
             end;
 
-            //Marketplace
+
+            //Marketplaces
             if not Marketplace.Get('AMAZONMKP') then begin
                 Marketplace.Init();
                 Marketplace.Code := 'AMAZONMKP';
@@ -1576,6 +1612,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 Marketplace.Insert(true);
             end;
 
+
             //General business Posting Group
             if not GenBusinessPostingGroup.Get('DOMESTIC') then begin
                 GenBusinessPostingGroup.Init();
@@ -1584,6 +1621,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GenBusinessPostingGroup.Insert(true);
             end;
 
+
             //General Product Posting Groupo
             if not GenProductPostingGroup.Get('COUPON') then begin
                 GenProductPostingGroup.Init();
@@ -1591,6 +1629,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GenProductPostingGroup.Description := 'Coupon';
                 GenProductPostingGroup.Insert(true);
             end;
+
+            if not GenProductPostingGroup.Get('DDA') then begin
+                GenProductPostingGroup.Init();
+                GenProductPostingGroup.Code := 'DDA';
+                GenProductPostingGroup.Description := 'Damage, Distribution and Advertising';
+                GenProductPostingGroup.Insert(true);
+            end;
+
 
             //General Posting Setup
             if not GenPostingSetup.Get('DOMESTIC', 'COUPON') then begin
@@ -1603,6 +1649,18 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GenPostingSetup.Modify(true);
             end;
 
+            if not GenPostingSetup.Get('DOMESTIC', 'DDA') then begin
+                GenPostingSetup.Init();
+                GenPostingSetup."Gen. Bus. Posting Group" := 'DOMESTIC';
+                GenPostingSetup."Gen. Prod. Posting Group" := 'DDA';
+                GenPostingSetup.Description := 'Damage, Distribution and Advertising';
+                GenPostingSetup.Insert(true);
+                GenPostingSetup."Sales Account" := DDARebatePayableGLAccount;
+                GenPostingSetup."Sales Credit Memo Account" := DDARebatePayableGLAccount;
+                GenPostingSetup.Modify(true);
+            end;
+
+
             //Customer Posting Group
             if not CustomerPostingGroup.Get('CANADA') then begin
                 CustomerPostingGroup.Init();
@@ -1611,6 +1669,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerPostingGroup."Receivables Account" := CanadaReceivableAccount;
                 CustomerPostingGroup.Insert(true);
             end;
+
 
             //Canadian Customer
             if not Customer.Get('CAN001') then begin
@@ -1631,6 +1690,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 Customer.Modify();
             end;
 
+
             //Resource
             if not ResourceRec.Get('COUPON') then begin
                 ResourceRec.Init();
@@ -1638,14 +1698,24 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 ResourceRec.Validate(Name, 'Coupon');
                 ResourceRec.Type := ResourceRec.Type::Person;
                 ResourceRec.Validate("Gen. Prod. Posting Group", 'COUPON');
-                //ResourceRec.Validate("Tax Group Code", 'NT');
+                ResourceRec.Insert(true);
+                ResourceRec.Validate("Base Unit of Measure", 'HOUR');
+                ResourceRec.Modify(true);
+            end;
+
+            if not ResourceRec.Get('DDA') then begin
+                ResourceRec.Init();
+                ResourceRec.Validate("No.", 'DDA');
+                ResourceRec.Validate(Name, 'Damage, Distribution and Advertising');
+                ResourceRec.Type := ResourceRec.Type::Person;
+                ResourceRec.Validate("Gen. Prod. Posting Group", 'DDA');
                 ResourceRec.Insert(true);
                 ResourceRec.Validate("Base Unit of Measure", 'HOUR');
                 ResourceRec.Modify(true);
             end;
 
 
-            //Vendors
+            //Create Vendors
             PurchSetup.Get();
             AmazonVendor.Reset();
             AmazonVendor.SetFilter(Name, '@*Amazon Commission*');
@@ -1683,7 +1753,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 WalmartVendorCode := WalmartVendor2."No.";
             end;
 
-
             AmazonVendor.Reset();
             AmazonVendor.SetFilter(Name, '@*Amazon Allowance*');
             if AmazonVendor.FindFirst() then
@@ -1719,7 +1788,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 WalmartVendor2.Insert(true);
                 WalmartVendorCode2 := WalmartVendor2."No.";
             end;
-
 
             RoyaltyVendor.Reset();
             RoyaltyVendor.SetFilter(Name, '@*Royalty Commission Accrual*');
@@ -1770,7 +1838,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             end;
 
 
-            //Vendor Posting Group
+            //Vendor Posting Groups
             if not VendorPostingGroup.Get('AMAZON') then begin
                 VendorPostingGroup.Init();
                 VendorPostingGroup.Code := 'AMAZON';
@@ -1794,7 +1862,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 VendorPostingGroup.Validate("Payables Account", WalmartRebatePayableGLAccount);
                 VendorPostingGroup.Insert(true);
             end;
-
 
             if not VendorPostingGroup.Get('AMAZON 2') then begin
                 VendorPostingGroup.Init();
@@ -1820,7 +1887,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 VendorPostingGroup.Insert(true);
             end;
 
-
             if not VendorPostingGroup.Get('ROYALTY') then begin
                 VendorPostingGroup.Init();
                 VendorPostingGroup.Code := 'ROYALTY';
@@ -1836,7 +1902,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 VendorPostingGroup.Validate("Payables Account", RoyaltyRebatePayableGLAccount2);
                 VendorPostingGroup.Insert(true);
             end;
-
 
             if not VendorPostingGroup.Get('COUPON') then begin
                 VendorPostingGroup.Init();
@@ -1874,7 +1939,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 VendorRec.Modify(true);
             end;
 
-
             if VendorRec.Get(AmazonVendorCode2) then begin
                 VendorRec.Validate("Gen. Bus. Posting Group", 'DOMESTIC');
                 VendorRec.Validate("Vendor Posting Group", 'AMAZON 2');
@@ -1892,7 +1956,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 VendorRec.Validate("Vendor Posting Group", 'WALMART 2');
                 VendorRec.Modify(true);
             end;
-
 
             if VendorRec.Get(RoyaltyVendorCode) then begin
                 VendorRec.Validate("Gen. Bus. Posting Group", 'DOMESTIC');
@@ -1919,7 +1982,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             end;
 
 
-            //Customer Rebate Program Code
+            //Rebate Program Codes
             IF NOT CustomerRebateProgramCode.GET('ALL-UNIT') THEN BEGIN
                 CustomerRebateProgramCode.INIT;
                 CustomerRebateProgramCode.Code := 'ALL-UNIT';
@@ -1930,6 +1993,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 10;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
                 CustomerRebateProgramCode."Entity No." := '';
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
@@ -1944,10 +2008,25 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 0;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
                 CustomerRebateProgramCode."Entity No." := '';
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
+            IF NOT CustomerRebateProgramCode.GET('DDA') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'DDA';
+                CustomerRebateProgramCode.Description := 'Damage, Distribution and Advertising';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 5;
+                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
+                CustomerRebateProgramCode."Entity No." := '';
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Off-Invoice Rebate";
+                CustomerRebateProgramCode.Validate("Rebate Expense AC", 'DDA');
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
 
             IF NOT CustomerRebateProgramCode.GET('AMAZONCOM') THEN BEGIN
                 CustomerRebateProgramCode.INIT;
@@ -1959,6 +2038,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := AmazonVendorCode;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount;
                 CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::Marketplace;
                 CustomerRebateProgramCode.Validate("Marketplace Code", 'AMAZONMKP');
@@ -1975,6 +2055,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := ShopifyVendorCode;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount;
                 CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::Marketplace;
                 CustomerRebateProgramCode.Validate("Marketplace Code", 'SHOPIFYMKP');
@@ -1991,12 +2072,12 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := WalmartVendorCode;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount;
                 CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::Marketplace;
                 CustomerRebateProgramCode.Validate("Marketplace Code", 'WALMARTMKP');
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
-
 
             IF NOT CustomerRebateProgramCode.GET('AMAZONALW') THEN BEGIN
                 CustomerRebateProgramCode.INIT;
@@ -2008,6 +2089,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := AmazonVendorCode2;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
@@ -2023,6 +2105,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := ShopifyVendorCode2;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
@@ -2038,11 +2121,11 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := WalmartVendorCode2;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
-
 
             IF NOT CustomerRebateProgramCode.GET('ROYALTYUNT') THEN BEGIN
                 CustomerRebateProgramCode.INIT;
@@ -2054,6 +2137,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 0;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := RoyaltyVendorCode;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
@@ -2068,6 +2152,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := RoyaltyVendorCode2;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
@@ -2082,6 +2167,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := CouponVendorCode;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CouponRebateExpenseGLAccount;
                 CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
@@ -2097,11 +2183,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 2;
                 CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Entity No." := CanadaVendorCode;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CanadaRebateExpenseGLAccount;
                 CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::" ";
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
+
+            //Rebate Rates
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
@@ -2175,7 +2264,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 END;
                 CustomerSalesRebateSetup.Insert();
             END;
-
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
@@ -2284,7 +2372,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 END;
                 CustomerSalesRebateSetup.Insert();
             END;
-
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
@@ -2400,8 +2487,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Insert();
             END;
 
-
-            //Sales Rebate Setup
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
@@ -2488,7 +2573,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup.Insert();
             END;
-
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
@@ -2577,7 +2661,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Insert();
             END;
 
-
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
@@ -2634,7 +2717,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Insert();
             END;
 
-
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
@@ -2681,6 +2763,34 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
                 CustomerSalesRebateSetup.Validate("Rebate Program Code", 'CASHDISC');
                 CustomerSalesRebateSetup."Territory Code" := 'CAN';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Starting Date" := 0D;
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
+            CustomerSalesRebateSetup.RESET;
+            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
+            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
+            CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'DDA');
+            CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
+            CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
+            CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
+            CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
+            IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entry No." := 0;
+                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'DDA');
+                CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';

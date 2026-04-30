@@ -29,6 +29,32 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
                     {
                         ApplicationArea = All;
                     }
+                    field("AQD Disallow Off-Inv Rebate"; Rec."AQD Disallow Off-Inv Rebate")
+                    {
+                        ApplicationArea = All;
+                        trigger OnValidate()
+                        var
+                            SalesLine: Record "Sales Line";
+                        begin
+                            Rec.TestField(Status, Rec.Status::Open);
+
+                            SalesLine.Reset();
+                            SalesLine.SetRange("Document Type", Rec."Document Type");
+                            SalesLine.SetRange("Document No.", Rec."No.");
+                            SalesLine.SetRange("AQD Off-Invoice Rebate", true);
+                            if SalesLine.FindSet() then begin
+                                repeat
+                                    SalesLine.Delete();
+                                until SalesLine.Next() = 0;
+                            end;
+                            CurrPage.Update();
+                        end;
+                    }
+                    // field("AQD Off-Invoice Calc. Level"; Rec."AQD Off-Invoice Calc. Level")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Editable = Rec.Status = Rec.Status::Open;
+                    // }
                     field("AQD Rebate Last Changed By"; Rec."AQD Rebate Last Changed By")
                     {
                         ApplicationArea = All;
@@ -71,6 +97,7 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
                     var
                         CustomerRebateCalcPreview: Codeunit "AQD Cust Rebate Calc Preview";
                     begin
+                        OnBeforeRebatePreviewAction(Rec);
                         clear(CustomerRebateCalcPreview);
                         CustomerRebateCalcPreview.CustomerRebateCalcPreview(Rec);
                         CurrPage.Update(false);
@@ -98,5 +125,10 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
     procedure SetPriceMatchFieldsvisibilityOnLines()
     begin
         CurrPage.SalesLines.Page.SetPriceMatchFieldsvisibility(Rec."AQD CustClaim Claim Type" = Rec."AQD CustClaim Claim Type"::"Price Match");
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeRebatePreviewAction(var SalesHeader: Record "Sales Header")
+    begin
     end;
 }

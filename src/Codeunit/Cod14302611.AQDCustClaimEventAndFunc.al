@@ -30,7 +30,8 @@ codeunit 14302611 "AQD Cust Claim Event And Func"
         IF Rec.ISTEMPORARY THEN
             EXIT;
 
-        ClaimSetup.GET;
+        if not ClaimSetup.GET() then
+            exit;
 
         IF Rec."Bill-to Customer No." <> xRec."Bill-to Customer No." THEN BEGIN
             IF BillToCustomer.GET(Rec."Bill-to Customer No.") THEN BEGIN

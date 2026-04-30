@@ -17,6 +17,12 @@ table 14302517 "AQD Sales Rebates Rate"
         field(11; "Entity Type"; Enum "AQD Cust Rebate Customer Type")
         {
             Caption = 'Entity Type';
+
+            trigger onvalidate()
+            begin
+                IF Rec."Entity Type" <> xRec."Entity Type" THEN
+                    Rec."Entity No." := '';
+            end;
         }
         field(12; "Entity No."; Code[20])
         {
@@ -124,6 +130,7 @@ table 14302517 "AQD Sales Rebates Rate"
                     Rec."Entity No." := RebateProgramCode."Entity No.";
                     Rec.Validate("Specific Sales New", RebateProgramCode."Specific Sales New");
                     Rec."Marketplace Code" := RebateProgramCode."Marketplace Code";
+                    Rec."Rebate Expense Type" := RebateProgramCode."Rebate Expense Type";
                 END;
             end;
         }
@@ -347,6 +354,15 @@ table 14302517 "AQD Sales Rebates Rate"
             DataClassification = CustomerContent;
             ObsoleteState = Pending;
             ObsoleteReason = 'Not in use';
+        }
+        field(100; "Rebate Expense Type"; Enum "AQD Rebate Expense Type")
+        {
+            Caption = 'Rebate Expense Type';
+            DataClassification = CustomerContent;
+        }
+        field(110; "No. Filter"; Code[20])
+        {
+            DataClassification = CustomerContent;
         }
     }
 

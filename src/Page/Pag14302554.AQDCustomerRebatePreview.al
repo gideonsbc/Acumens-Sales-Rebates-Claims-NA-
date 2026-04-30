@@ -61,6 +61,10 @@ page 14302554 "AQD Customer Rebate Preview"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Employee Commission field.';
                 }
+                field("Off-Invoice Rebate"; Rec."Off-Invoice Rebate")
+                {
+                    ApplicationArea = All;
+                }
                 field("AQD Calculation Date"; Rec."AQD Calculation Date")
                 {
                     ApplicationArea = All;

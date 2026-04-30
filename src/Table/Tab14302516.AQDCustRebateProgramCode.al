@@ -65,9 +65,10 @@ table 14302516 "AQD Cust Rebate Program Code"
         field(20; "Rebate Expense AC"; Code[20])
         {
             Caption = 'Rebate Expense A/C';
-            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
+            TableRelation = if ("Rebate Expense Type" = const("Rebate Accrual")) "G/L Account" WHERE("Direct Posting" = CONST(true),
                                                 "Account Type" = CONST(Posting),
-                                                Blocked = CONST(false));
+                                                Blocked = CONST(false))
+            else if ("Rebate Expense Type" = const("Off-Invoice Rebate")) Resource where(Blocked = const(false));
         }
         field(30; "Rebate Payable AC"; Code[20])
         {
@@ -85,8 +86,14 @@ table 14302516 "AQD Cust Rebate Program Code"
 
             trigger OnValidate()
             begin
-                IF Rec."Entity Type" <> xRec."Entity Type" THEN
+                if (Rec."Entity Type" in [Rec."Entity Type"::"Employee Commission", Rec."Entity Type"::"Vendor Commission"]) and (Rec."Rebate Expense Type" = Rec."Rebate Expense Type"::"Off-Invoice Rebate") then
+                    Error('Off-Invoice Rebate is not applicable for Employee Commission or Vendor Commission.');
+
+                IF Rec."Entity Type" <> xRec."Entity Type" THEN begin
                     Rec."Entity No." := '';
+
+                    UpdateRates(FieldCaption("Entity Type"));
+                end;
             end;
         }
         field(50; "Entity No."; Code[20])
@@ -96,6 +103,12 @@ table 14302516 "AQD Cust Rebate Program Code"
             else if ("Entity Type" = const(Customer)) Customer
             else if ("Entity Type" = const("Employee Commission")) Employee where(Status = const(Active))
             else if ("Entity Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
+
+            trigger onvalidate()
+            begin
+                if Rec."Entity No." <> xRec."Entity No." then
+                    UpdateRates(FieldCaption("Entity No."));
+            end;
         }
         field(60; "Specific Sales"; Boolean)
         {
@@ -112,14 +125,8 @@ table 14302516 "AQD Cust Rebate Program Code"
             var
                 SalesRebateRate: Record "AQD Sales Rebates Rate";
             begin
-                SalesRebateRate.Reset();
-                SalesRebateRate.SetRange("Rebate Program Code", Code);
-                if SalesRebateRate.FindSet() then begin
-                    repeat
-                        SalesRebateRate.Validate("Specific Sales New", Rec."Specific Sales New");
-                        SalesRebateRate.Modify();
-                    until SalesRebateRate.Next() = 0;
-                end;
+                if REc."Specific Sales New" <> xRec."Specific Sales New" then
+                    UpdateRates(FieldCaption("Specific Sales New"));
             end;
         }
         field(70; "Customer No."; Code[20])
@@ -146,8 +153,6 @@ table 14302516 "AQD Cust Rebate Program Code"
             DataClassification = CustomerContent;
             TableRelation = "AQD Marketplace";
             trigger OnValidate()
-            var
-                SalesRebateRate: Record "AQD Sales Rebates Rate";
             begin
                 if (xRec."Marketplace Code" <> '') and (Rec."Marketplace Code" = '') and ("Specific Sales New" = "Specific Sales New"::Marketplace) then begin
                     SalesRebateRate.Reset();
@@ -155,14 +160,9 @@ table 14302516 "AQD Cust Rebate Program Code"
                     if SalesRebateRate.FindFirst() then
                         Error('There are already existing rate(s) for this marketplace. Please delete the rate(s) before removing the value.');
                 end;
-                SalesRebateRate.Reset();
-                SalesRebateRate.SetRange("Rebate Program Code", Code);
-                if SalesRebateRate.FindSet() then begin
-                    repeat
-                        SalesRebateRate."Marketplace Code" := "Marketplace Code";
-                        SalesRebateRate.Modify(false);
-                    until SalesRebateRate.Next() = 0;
-                end;
+
+                if Rec."Marketplace Code" <> xRec."Marketplace Code" then
+                    UpdateRates(FieldCaption("Marketplace Code"));
             end;
         }
         field(90; Blocked; Boolean)
@@ -170,16 +170,24 @@ table 14302516 "AQD Cust Rebate Program Code"
             Caption = 'Blocked';
 
             trigger OnValidate()
-            var
-                SalesRebateRate: Record "AQD Sales Rebates Rate";
             begin
-                SalesRebateRate.Reset();
-                SalesRebateRate.SetRange("Rebate Program Code", Code);
-                if SalesRebateRate.FindSet() then begin
-                    repeat
-                        SalesRebateRate.Validate(Blocked, Rec.Blocked);
-                        SalesRebateRate.Modify();
-                    until SalesRebateRate.Next() = 0;
+                if Rec.Blocked <> xRec.Blocked then
+                    UpdateRates(FieldCaption(Blocked));
+            end;
+        }
+        field(100; "Rebate Expense Type"; Enum "AQD Rebate Expense Type")
+        {
+            Caption = 'Rebate Expense Type';
+            DataClassification = CustomerContent;
+            trigger OnValidate()
+            begin
+                if Rec."Rebate Expense Type" = Rec."Rebate Expense Type"::"Off-Invoice Rebate" then
+                    Rec.Validate("Entity Type");
+
+                if Rec."Rebate Expense Type" <> xRec."Rebate Expense Type" then begin
+                    Rec."Rebate Expense AC" := '';
+
+                    UpdateRates(FieldCaption("Rebate Expense Type"));
                 end;
             end;
         }
@@ -211,4 +219,33 @@ table 14302516 "AQD Cust Rebate Program Code"
             IF CustomerRebateSetupRec.GET THEN
                 Rec."Customer Rebate Posting Type" := CustomerRebateSetupRec."Default Rebate Posting Type";
     end;
+
+    local procedure UpdateRates(ChangedFieldName: Text[100])
+    begin
+        SalesRebateRate.Reset();
+        SalesRebateRate.SetRange("Rebate Program Code", Code);
+        if SalesRebateRate.FindSet() then begin
+            repeat
+                case ChangedFieldName of
+                    fieldcaption("Specific Sales New"):
+                        SalesRebateRate.Validate("Specific Sales New", Rec."Specific Sales New");
+                    FieldCaption("Marketplace Code"):
+                        SalesRebateRate.Validate("Marketplace Code", "Marketplace Code");
+                    FieldCaption(Blocked):
+                        SalesRebateRate.Validate(Blocked, Rec.Blocked);
+                    FieldCaption("Rebate Expense Type"):
+                        SalesRebateRate.Validate("Rebate Expense Type", Rec."Rebate Expense Type");
+                    FieldCaption("Entity Type"):
+                        SalesRebateRate.Validate("Entity Type", Rec."Entity Type");
+                    FieldCaption("Entity No."):
+                        SalesRebateRate.Validate("Entity No.", Rec."Entity No.");
+                end;
+                SalesRebateRate.Modify();
+            until SalesRebateRate.Next() = 0;
+        end;
+    end;
+
+    var
+        SalesRebateRate: Record "AQD Sales Rebates Rate";
+
 }

@@ -10,6 +10,7 @@ page 14302532 "AQD Customer Rebates Documents"
     RefreshOnActivate = true;
     SourceTable = "AQD Customer Rebate Header";
     UsageCategory = Lists;
+    SourceTableView = sorting("No.") order(descending);
     layout
     {
         area(Content)

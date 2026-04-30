@@ -48,6 +48,11 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     Editable = Rec."Customer Default Rebate Type" = Rec."Customer Default Rebate Type"::"Per Quantity";
                     Enabled = Rec."Customer Default Rebate Type" = Rec."Customer Default Rebate Type"::"Per Quantity";
                 }
+                field("Rebate Expense Type"; Rec."Rebate Expense Type")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Rebate Expense Type';
+                }
                 field("Rebate Expense AC"; Rec."Rebate Expense AC")
                 {
                     ApplicationArea = All;

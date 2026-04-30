@@ -1066,7 +1066,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         LocalBillToCustomer: Record Customer;
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlBatch: Record "Gen. Journal Line";
-        LocalCustomer: Record Customer;
+        //LocalCustomer: Record Customer;
         DocumentNo: Code[20];
         LineNo: Integer;
         ItemChargeNextLineNo: Integer;
@@ -1234,7 +1234,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     ELSE
                         NextLineNo := 10000;
 
-                    LocalCustomer.GET(SalesCredirMemo."Bill-To Customer No.");
+                    //LocalCustomer.GET(SalesCredirMemo."Bill-To Customer No.");
 
                     SalesInvoiceLine.INIT;
                     SalesInvoiceLine."Document Type" := SalesInvoiceLine."Document Type"::Invoice;
