@@ -777,5 +777,10 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         exit(OffInvoiceRebateAmount);
     end;
 
-
+    [EventSubscriber(ObjectType::Table, Database::"Vendor Ledger Entry", OnAfterCopyVendLedgerEntryFromGenJnlLine, '', false, false)]
+    local procedure "Vendor Ledger Entry_OnAfterCopyVendLedgerEntryFromGenJnlLine"(var VendorLedgerEntry: Record "Vendor Ledger Entry"; GenJournalLine: Record "Gen. Journal Line")
+    begin
+        VendorLedgerEntry."AQD CR Rebate Program Code" := GenJournalLine."AQD CR Rebate Program Code";
+        //VendorLedgerEntry.Modify(false);
+    end;
 }
