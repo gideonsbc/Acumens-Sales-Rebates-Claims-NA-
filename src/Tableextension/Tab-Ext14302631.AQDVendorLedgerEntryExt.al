@@ -6,6 +6,7 @@ tableextension 14302631 "AQD Vendor Ledger Entry Ext" extends "Vendor Ledger Ent
         {
             Caption = 'Rebate Program Code';
             DataClassification = CustomerContent;
+            TableRelation = "AQD Cust Rebate Program Code";
         }
     }
 }
