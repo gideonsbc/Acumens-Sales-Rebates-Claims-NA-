@@ -570,6 +570,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         RebateRates.Reset();
         RebateRates.SetRange("Rebate Expense Type", RebateRates."Rebate Expense Type"::"Off-Invoice Rebate");
         RebateRates.SetFilter("Rebate Program Code", '<>%1', '');
+        RebateRates.SetRange(Blocked, false);
         if RebateRates.FindSet() then begin
             repeat
                 if RebateProgram.Get(RebateRates."Rebate Program Code") and (RebateProgram."Rebate Expense AC" <> '') then
