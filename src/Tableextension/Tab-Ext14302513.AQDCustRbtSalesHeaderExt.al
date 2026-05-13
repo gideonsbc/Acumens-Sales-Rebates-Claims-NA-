@@ -139,13 +139,12 @@ tableextension 14302513 "AQD CustRbt Sales Header Ext" extends "Sales Header"
             FieldClass = Normal;
             Editable = false;
         }
-        // field(14302704; "AQD Off-Invoice Calc. Level"; Option)
-        // {
-        //     Caption = 'Off-Invoice Calculation Level';
-        //     OptionMembers = "Invoice Total","Items Only";
-        //     OptionCaption = 'Invoice Total,Items Only';
-        //     DataClassification = CustomerContent;
-        // }
+        field(14302704; "AQD Cust Rebate Category"; Code[20])
+        {
+            Caption = 'Customer Rebate Category';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD Rebate Customer Category";
+        }
         field(14302705; "AQD Disallow Off-Inv Rebate"; Boolean)
         {
             Caption = 'Disallow Off-Invoice Rebate';
@@ -163,7 +162,6 @@ tableextension 14302513 "AQD CustRbt Sales Header Ext" extends "Sales Header"
             DataClassification = CustomerContent;
             TableRelation = "AQD Cust Rebate Program Code" where("Specific Sales New" = filter("Rebate Program"));
         }
-
     }
     LOCAL procedure CheckClaimStatus()
     var

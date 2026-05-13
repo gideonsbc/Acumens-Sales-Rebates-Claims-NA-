@@ -374,6 +374,26 @@ table 14302521 "AQD Customer Rebate Details"
             Caption = 'Document No.';
             Editable = false;
         }
+        field(8090; "Rebate Rate Entry No."; Integer)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(9000; "Customer Rebate Category"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(9010; "Specific Sales New"; Enum "AQD Specific Sales")
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(9020; "Payment Terms Code"; code[20])
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys

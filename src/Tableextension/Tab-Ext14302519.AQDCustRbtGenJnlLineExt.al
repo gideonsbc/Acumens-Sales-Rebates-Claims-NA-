@@ -34,6 +34,7 @@ tableextension 14302519 "AQD CustRbt Gen. Jnl Line Ext" extends "Gen. Journal Li
         {
             Caption = 'Rebate Program Code';
             DataClassification = CustomerContent;
+            TableRelation = "AQD Cust Rebate Program Code";
         }
     }
 }

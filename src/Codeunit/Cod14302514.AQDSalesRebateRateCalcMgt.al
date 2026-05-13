@@ -99,6 +99,12 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
 
         Cust.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.");
         SalesLineRebateExists(CustomerRebateDetailsLocIn);
+
+        //Add Filters Fields after getting  Rebate Rates
+        CustomerRebateDetailsLocIn."Rebate Rate Entry No." := TempSalesRebatesRate."Entry No.";
+        CustomerRebateDetailsLocIn."Customer Rebate Category" := BillToCustomer."AQD Cust Rebate Category";
+        CustomerRebateDetailsLocIn."Specific Sales New" := TempSalesRebatesRate."Specific Sales New";
+
         CalcBestSalesRebateRate(CustomerRebateDetailsLocIn, TempSalesRebatesRate);
 
         IF NOT CustomerRebateDetailsLocIn.Ineligible THEN BEGIN

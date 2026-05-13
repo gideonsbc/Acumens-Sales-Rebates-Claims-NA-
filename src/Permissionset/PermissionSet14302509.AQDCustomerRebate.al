@@ -142,5 +142,9 @@ permissionset 14302509 "AQD Customer Rebate"
         page AQDCmpltedFullPriceCustClmList = X,
         tabledata "AQD Marketplace" = RIMD,
         table "AQD Marketplace" = X,
-        page "AQD Marketplace" = X;
+        page "AQD Marketplace" = X,
+        tabledata "AQD CR Reb Item Ledger Entry" = RIMD,
+        table "AQD CR Reb Item Ledger Entry" = X,
+        page "AQD CR Reb Item Ledger Entries" = X,
+        codeunit "AQD CR SelectionFilterMgt" = X;
 }

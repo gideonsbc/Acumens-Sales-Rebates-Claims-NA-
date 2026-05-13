@@ -916,7 +916,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
 
         TempRebateCategoryLines.RESET;
         TempRebateCategoryLines.SetRange("Entity Type", RebateEntigyType);
-        OnSetFilterTempRebateCategoryLines(TempRebateCategoryLines, SalesHeaderIn);
+        //OnSetFilterTempRebateCategoryLines(TempRebateCategoryLines, SalesHeaderIn);
         IF TempRebateCategoryLines.FindFirst() THEN BEGIN
             Repeat
                 CustomerRebateDetails.INIT;
@@ -970,6 +970,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
                 CustomerRebateDetails."Header Rebate Program Code" := SalesHeaderIn."AQD Cust Rebate Program Code";
                 CustomerRebateDetails."Header Marketplace Code" := SalesHeaderIn."AQD Marketplace Code";
                 CustomerRebateDetails."Marketplace Code" := TempRebateCategoryLines."Marketplace Code";
+                CustomerRebateDetails."Payment Terms Code" := SalesHeaderIn."Payment Terms Code";
 
                 // Calculate and Vendor Rebate Amount
                 CustomerRebateDetails."Rebate Item Category Code" := TempRebateCategoryLines."Rebate Category Code";

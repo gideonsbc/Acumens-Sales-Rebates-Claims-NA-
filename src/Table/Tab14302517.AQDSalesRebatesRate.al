@@ -44,8 +44,10 @@ table 14302517 "AQD Sales Rebates Rate"
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
-                IF Rec."Line Type" <> xRec."Line Type" then
+                IF Rec."Line Type" <> xRec."Line Type" then begin
                     Rec."No." := '';
+                    Clear(Rec."No. Filter");
+                end;
             end;
         }
         field(15; "No."; Code[20])
@@ -214,6 +216,20 @@ table 14302517 "AQD Sales Rebates Rate"
                 Rec.Validate("Starting Date");
             end;
         }
+
+        field(100; "Rebate Expense Type"; Enum "AQD Rebate Expense Type")
+        {
+            Caption = 'Rebate Expense Type';
+            DataClassification = CustomerContent;
+        }
+        field(110; "No. Filter"; Code[20])
+        {
+            DataClassification = CustomerContent;
+        }
+        field(200; "SO Payment Term Filter"; Code[20])
+        {
+            DataClassification = CustomerContent;
+        }
         field(500; "Last Changed DataTime"; DateTime)
         {
             Caption = 'Last Changed DataTime';
@@ -272,17 +288,9 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Blocked Date Time';
             Editable = false;
         }
-        field(580; "Specific Sales"; Boolean)
-        {
-            Caption = 'Specific Sales';
-            DataClassification = CustomerContent;
-            Editable = false;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Replaced by Specific Sales New';
-        }
         field(581; "Specific Sales New"; Enum "AQD Specific Sales")
         {
-            Caption = 'Specific Sales';
+            Caption = 'SO Rebate Program';
             DataClassification = CustomerContent;
             Editable = false;
         }
@@ -291,33 +299,15 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Customer Type Filter';
             DataClassification = CustomerContent;
             trigger OnValidate()
-            var
-                RebateProgramCode: Record "AQD Cust Rebate Program Code";
             begin
-                if Rec."Customer Type Filter" <> xRec."Customer Type Filter" then begin
-                    Rec.Validate("Customer No. Filter", '');
-                    if RebateProgramCode.Get("Rebate Program Code") then begin
-                        RebateProgramCode."Customer Type Filter" := Rec."Customer Type Filter";
-                        RebateProgramCode.Modify(false);
-                    end;
-                end;
+                if Rec."Customer Type Filter" <> xRec."Customer Type Filter" then
+                    Clear(Rec."Customer No. Filter");
             end;
         }
         field(586; "Customer No. Filter"; Code[20])
         {
             Caption = 'Customer No. Filter';
             DataClassification = CustomerContent;
-            trigger OnValidate()
-            var
-                RebateProgramCode: Record "AQD Cust Rebate Program Code";
-            begin
-                if Rec."Customer No. Filter" <> xRec."Customer No. Filter" then begin
-                    if RebateProgramCode.Get("Rebate Program Code") then begin
-                        RebateProgramCode."Customer No. Filter" := Rec."Customer No. Filter";
-                        RebateProgramCode.Modify(false);
-                    end;
-                end;
-            end;
         }
         field(590; "Customer No."; Code[20])
         {
@@ -339,7 +329,7 @@ table 14302517 "AQD Sales Rebates Rate"
         }
         field(600; "Marketplace Code"; Code[20])
         {
-            Caption = 'Marketplace Code';
+            Caption = 'SO Marketplace';
             DataClassification = CustomerContent;
             TableRelation = "AQD Marketplace";
         }
@@ -354,15 +344,6 @@ table 14302517 "AQD Sales Rebates Rate"
             DataClassification = CustomerContent;
             ObsoleteState = Pending;
             ObsoleteReason = 'Not in use';
-        }
-        field(100; "Rebate Expense Type"; Enum "AQD Rebate Expense Type")
-        {
-            Caption = 'Rebate Expense Type';
-            DataClassification = CustomerContent;
-        }
-        field(110; "No. Filter"; Code[20])
-        {
-            DataClassification = CustomerContent;
         }
     }
 

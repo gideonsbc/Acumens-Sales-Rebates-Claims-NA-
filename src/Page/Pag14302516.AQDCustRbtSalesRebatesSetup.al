@@ -253,6 +253,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                         ItemList: Page "Item List";
                         GLList: Page "G/L Account List";
                         ResourceList: Page "Resource List";
+                        ItemCategories: Page "Item Categories";
                     begin
                         CASE Rec."Line Type" OF
                             Rec."Line Type"::Item:
@@ -279,9 +280,32 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                                     ELSE
                                         EXIT(FALSE);
                                 END;
+                            Rec."Line Type"::"Rebate Category":
+                                BEGIN
+                                    ItemCategories.LOOKUPMODE := TRUE;
+                                    IF ItemCategories.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := ItemCategories.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
                         END;
 
                         EXIT(TRUE);
+                    end;
+                }
+                field("SO Payment Term Filter"; Rec."SO Payment Term Filter")
+                {
+                    ApplicationArea = All;
+                    trigger OnLookup(var Text: Text): Boolean
+                    var
+                        PaymentTerms: Page "Payment Terms";
+                    begin
+                        PaymentTerms.LOOKUPMODE := TRUE;
+                        IF PaymentTerms.RUNMODAL = ACTION::LookupOK THEN
+                            Text := PaymentTerms.GetSelectionFilter
+                        ELSE
+                            EXIT(false);
+                        EXIT(true);
                     end;
                 }
                 field("Variant Code"; Rec."Variant Code")
@@ -345,12 +369,6 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                 {
                     ApplicationArea = All;
                     Caption = 'Blocked';
-                }
-                field("Specific Sales"; Rec."Specific Sales")
-                {
-                    ApplicationArea = All;
-                    Visible = false;
-                    ObsoleteState = Pending;
                 }
             }
         }

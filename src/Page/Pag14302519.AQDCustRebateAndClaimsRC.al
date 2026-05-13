@@ -473,8 +473,8 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 action("Item Ledger Entries")
                 {
                     ApplicationArea = All;
-                    Caption = 'Item Ledger Entries';
-                    RunObject = page "Item Ledger Entries";
+                    Caption = 'Rebate Item Ledger Entries';
+                    RunObject = page "AQD CR Reb Item Ledger Entries";
                     Image = ItemLedger;
                 }
                 action("AQD CustRbt Drop Shpt Info")

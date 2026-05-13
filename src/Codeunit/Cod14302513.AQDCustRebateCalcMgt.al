@@ -120,6 +120,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         BatchPostCustomerRebate: Report "AQD Post Cust Rebate Batches";
         LocalCustomerType: Record "AQD Rebate Customer Category";
         CustomerRebatePostMgt: Codeunit "AQD Customer Rebate Post Mgt";
+        CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
     begin
         RebateSetup.Get;
         RebateSetup.TestField("Customer Rebate Document Nos");
@@ -161,6 +162,11 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
 
         // Calculate Rebate for Posted Sales Invoices
         BuildInvoiceRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
+
+        // //Remove end date for autoposting
+        // if CustomerRebateSetup.Get() then
+        //     if CustomerRebateSetup."Auto Process Customer Rebates" then
+        //         DateArray[2] := CalcDate('CY', WorkDate);
 
         // Calculate Rebate for Posted Sales Credit memos
         if not RebateSetup."Exclude Credit Memo" then
@@ -213,9 +219,19 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
             CASE CustomerIn."AQD CustRbt Calculation Date" OF
                 CustomerIn."AQD CustRbt Calculation Date"::" ",
                 CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
-                    SalesInvoiceHeader.SetFilter("Posting Date", '%1..%2', StartDate, DateArray[2]);
+                    begin
+                        if RebateSetup."Auto Process Customer Rebates" then
+                            SalesInvoiceHeader.SetFilter("Posting Date", '%1..', StartDate)
+                        else
+                            SalesInvoiceHeader.SetFilter("Posting Date", '%1..%2', StartDate, DateArray[2]);
+                    end;
                 CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                    SalesInvoiceHeader.SetFilter("AQD Customer Rebate Order Date", '%1..%2', StartDate, DateArray[2])
+                    begin
+                        if RebateSetup."Auto Process Customer Rebates" then
+                            SalesInvoiceHeader.SetFilter("AQD Customer Rebate Order Date", '%1..', StartDate)
+                        else
+                            SalesInvoiceHeader.SetFilter("AQD Customer Rebate Order Date", '%1..%2', StartDate, DateArray[2])
+                    end;
             END;
         end;
         if SalesInvoiceHeader.FindFirst then
@@ -416,9 +432,19 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
             CASE CustomerIn."AQD CustRbt Calculation Date" OF
                 CustomerIn."AQD CustRbt Calculation Date"::" ",
                 CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
-                    SalesCrMemoHeader.SetFilter("Posting Date", '%1..%2', StartDate, DateArray[2]);
+                    begin
+                        if RebateSetup."Auto Process Customer Rebates" then
+                            SalesCrMemoHeader.SetFilter("Posting Date", '%1..', StartDate)
+                        else
+                            SalesCrMemoHeader.SetFilter("Posting Date", '%1..%2', StartDate, DateArray[2]);
+                    end;
                 CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                    SalesCrMemoHeader.SetFilter("AQD Customer Rebate Order Date", '%1..%2', StartDate, DateArray[2])
+                    begin
+                        if RebateSetup."Auto Process Customer Rebates" then
+                            SalesCrMemoHeader.SetFilter("AQD Customer Rebate Order Date", '%1..', StartDate)
+                        else
+                            SalesCrMemoHeader.SetFilter("AQD Customer Rebate Order Date", '%1..%2', StartDate, DateArray[2]);
+                    end;
             END;
         end;
         if SalesCrMemoHeader.FindFirst then begin
@@ -1562,6 +1588,12 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                                     CustomerRebateDetails."Applies-to Doc. No." := SalesInvLineIn."Document No.";
                                     CustomerRebateDetails."Applies-to Doc. Line No." := SalesInvLineIn."Line No.";
                                 END;
+
+                                //Add special Rebate Program code
+                                CustomerRebateDetails."Header Rebate Program Code" := SalesInvHeaderIn."AQD Cust Rebate Program Code";
+                                CustomerRebateDetails."Header Marketplace Code" := SalesInvHeaderIn."AQD Marketplace Code";
+                                CustomerRebateDetails."Marketplace Code" := TempRebateCategoryLines."Marketplace Code";
+                                CustomerRebateDetails."Payment Terms Code" := SalesInvHeaderIn."Payment Terms Code";
                             END;
                         DocumentTypeIn::"Credit Memo":
                             BEGIN
@@ -1622,16 +1654,17 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                                     CustomerRebateDetails."Applies-to Doc. No." := SalesCrMemoLineIn."Document No.";
                                     CustomerRebateDetails."Applies-to Doc. Line No." := SalesCrMemoLineIn."Line No.";
                                 END;
+
+                                //Add special Rebate Program code
+                                CustomerRebateDetails."Header Rebate Program Code" := SalesCrMemoHeaderIn."AQD Cust Rebate Program Code";
+                                CustomerRebateDetails."Header Marketplace Code" := SalesCrMemoHeaderIn."AQD Marketplace Code";
+                                CustomerRebateDetails."Marketplace Code" := TempRebateCategoryLines."Marketplace Code";
+                                CustomerRebateDetails."Payment Terms Code" := SalesCrMemoHeaderIn."Payment Terms Code";
                             END;
                     END;
                     CustomerRebateDetails."Sell-To Customer No." := CustomerRebateLine."Sell-To Customer No.";
                     CustomerRebateDetails."Bill-To Customer No." := CustomerRebateLine."Bill-To Customer No.";
                     CustomerRebateDetails."Rebate Pay-To Customer No." := CustomerRebateLine."Rebate Pay-To Customer No.";
-
-                    //Add special Rebate Program code
-                    CustomerRebateDetails."Header Rebate Program Code" := SalesInvHeaderIn."AQD Cust Rebate Program Code";
-                    CustomerRebateDetails."Header Marketplace Code" := SalesInvHeaderIn."AQD Marketplace Code";
-                    CustomerRebateDetails."Marketplace Code" := TempRebateCategoryLines."Marketplace Code";
 
                     // Calculate and Vendor Rebate Amount
                     CustomerRebateDetails."Rebate Item Category Code" := TempRebateCategoryLines."Rebate Category Code";

@@ -471,63 +471,100 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             exit(Customer."AQD Cust Rebate Category");
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnSetFilterTempRebateCategoryLines, '', false, false)]
-    local procedure "AQD Cust Rebate Calc Preview_OnSetFilterTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; SalesHeaderIn: Record "Sales Header")
-    var
-        CustomerProgramCode: Record "AQD Cust Rebate Program Code";
-        Customer: Record Customer;
-    begin
-        if CustomerProgramCode.Get(TempRebateCategoryLines."Rebate Program Code") then begin
-            case CustomerProgramCode."Customer Type Filter" of
-                CustomerProgramCode."Customer Type Filter"::"Customer":
-                    TempRebateCategoryLines.SetFilter("Bill-to Customer No.", '%1|%2', CustomerProgramCode."Customer No. Filter", '');
-                CustomerProgramCode."Customer Type Filter"::"Customer Category":
-                    TempRebateCategoryLines.SetFilter("Customer Rebate Category", '%1|%2', CustomerProgramCode."Customer No. Filter", '');
-            end;
-        end;
-    end;
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnSetFilterTempRebateCategoryLines, '', false, false)]
+    // local procedure "AQD Cust Rebate Calc Preview_OnSetFilterTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; SalesHeaderIn: Record "Sales Header")
+    // var
+    //     CustomerProgramCode: Record "AQD Cust Rebate Program Code";
+    //     Customer: Record Customer;
+    // begin
+    //     if CustomerProgramCode.Get(TempRebateCategoryLines."Rebate Program Code") then begin
+    //         case CustomerProgramCode."Customer Type Filter" of
+    //             CustomerProgramCode."Customer Type Filter"::"Customer":
+    //                 TempRebateCategoryLines.SetFilter("Bill-to Customer No.", '%1|%2', CustomerProgramCode."Customer No. Filter", '');
+    //             CustomerProgramCode."Customer Type Filter"::"Customer Category":
+    //                 TempRebateCategoryLines.SetFilter("Customer Rebate Category", '%1|%2', CustomerProgramCode."Customer No. Filter", '');
+    //         end;
+    //     end;
+    // end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnSetSalesRebateRateFilter, '', false, false)]
     local procedure "AQD Sales Rebate Rate Calc Mgt_OnSetSalesRebateRateFilter"(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    begin
+        SalesRebatesRate.SetFilter("Rebate Expense Type", '<>%1', SalesRebatesRate."Rebate Expense Type"::"Off-Invoice Rebate");
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnBeforeInsertRebateDetail, '', false, false)]
+    local procedure "AQD Cust Rebate Calc Preview_OnBeforeInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
+    begin
+        if not ApplyMoreRebateFilters(CustomerRebateDetails) then
+            IsHandled := true;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnBeforeInsertRebateDetail, '', false, false)]
+    local procedure "AQD Cust Rebate Calc Mgt_OnBeforeInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
+    begin
+        if not ApplyMoreRebateFilters(CustomerRebateDetails) then
+            IsHandled := true;
+    end;
+
+    local procedure ApplyMoreRebateFilters(var CustomerRebateDetails: Record "AQD Customer Rebate Details"): Boolean
     var
-        CustomerProgramCode: Record "AQD Cust Rebate Program Code";
-        BillCustomerNoFilter, SellCustomerNoFilter : Code[20];
+        RebateRates: Record "AQD Sales Rebates Rate";
+        RebateDetailsTemp: Record "AQD Customer Rebate Details" temporary;
         HeaderRebateProgramCode, HeaderMarketplaceCode : Code[20];
         FilterType: Option "Rebate Program Mismatch","Marketplace Mismatch";
     begin
-        HeaderRebateProgramCode := CustomerRebateDetailsLocIn."Header Rebate Program Code";
-        HeaderMarketplaceCode := CustomerRebateDetailsLocIn."Header Marketplace Code";
+        RebateDetailsTemp.Reset();
+        RebateDetailsTemp.DeleteAll();
 
-        SalesRebatesRate.SetFilter("Rebate Expense Type", '<>%1', SalesRebatesRate."Rebate Expense Type"::"Off-Invoice Rebate");
+        HeaderRebateProgramCode := CustomerRebateDetails."Header Rebate Program Code";
+        HeaderMarketplaceCode := CustomerRebateDetails."Header Marketplace Code";
 
-        if CustomerProgramCode.Get(CustomerRebateDetailsLocIn."Rebate Program Code") then begin
-            case CustomerProgramCode."Customer Type Filter" of
-                CustomerProgramCode."Customer Type Filter"::" ":
-                    begin
-                        case CustomerProgramCode."Specific Sales New" of
-                            CustomerProgramCode."Specific Sales New"::"Rebate Program":
-                                begin
-                                    if (CustomerRebateDetailsLocIn."Rebate Program Code" <> HeaderRebateProgramCode) then
-                                        SetRebateRateFilters(SalesRebatesRate, FilterType::"Rebate Program Mismatch");
-                                end;
-                            CustomerProgramCode."Specific Sales New"::Marketplace:
-                                begin
-                                    if (CustomerRebateDetailsLocIn."Marketplace Code" <> HeaderMarketplaceCode) then
-                                        SetRebateRateFilters(SalesRebatesRate, FilterType::"Marketplace Mismatch");
-                                end;
-                        end;
-                    end;
-            end;
+        RebateDetailsTemp := CustomerRebateDetails;
+        RebateDetailsTemp.Insert();
+
+        RebateRates.Get(CustomerRebateDetails."Rebate Rate Entry No.");
+        if RebateRates."SO Payment Term Filter" <> '' then
+            RebateDetailsTemp.SetFilter("Payment Terms Code", RebateRates."SO Payment Term Filter");
+        case RebateRates."Line Type" of
+            RebateRates."Line Type"::"Rebate Category":
+                if RebateRates."No. Filter" <> '' then
+                    RebateDetailsTemp.SetFilter("Rebate Item Category Code", RebateRates."No. Filter");
         end;
+        case RebateRates."Customer Type Filter" of
+            RebateRates."Customer Type Filter"::Customer:
+                if RebateRates."Customer No. Filter" <> '' then
+                    RebateDetailsTemp.SetFilter("Bill-to Customer No.", RebateRates."Customer No. Filter");
+            RebateRates."Customer Type Filter"::"Customer Category":
+                if RebateRates."Customer No. Filter" <> '' then
+                    RebateDetailsTemp.SetFilter("Customer Rebate Category", RebateRates."Customer No. Filter");
+            RebateRates."Customer Type Filter"::" ":
+                begin
+                    case RebateRates."Specific Sales New" of
+                        RebateRates."Specific Sales New"::"Rebate Program":
+                            begin
+                                if (CustomerRebateDetails."Rebate Program Code" <> HeaderRebateProgramCode) then
+                                    SetRebateRateFilters(RebateDetailsTemp, FilterType::"Rebate Program Mismatch");
+                            end;
+                        RebateRates."Specific Sales New"::Marketplace:
+                            begin
+                                if (CustomerRebateDetails."Marketplace Code" <> HeaderMarketplaceCode) then
+                                    SetRebateRateFilters(RebateDetailsTemp, FilterType::"Marketplace Mismatch");
+                            end;
+                    end;
+                end;
+        end;
+        exit(RebateDetailsTemp.FindFirst());
     end;
 
-    local procedure SetRebateRateFilters(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; FilterType: Option "Rebate Program Mismatch","Marketplace Mismatch")
+
+    local procedure SetRebateRateFilters(var RebateDetailsTemp: Record "AQD Customer Rebate Details" temporary; FilterType: Option "Rebate Program Mismatch","Marketplace Mismatch")
     begin
         case FilterType of
             FilterType::"Rebate Program Mismatch":
-                SalesRebatesRate.SetFilter("Specific Sales New", '%1|%2', SalesRebatesRate."Specific Sales New"::" ", SalesRebatesRate."Specific Sales New"::Marketplace);
+                RebateDetailsTemp.SetFilter("Specific Sales New", '%1|%2', RebateDetailsTemp."Specific Sales New"::" ", RebateDetailsTemp."Specific Sales New"::Marketplace);
             FilterType::"Marketplace Mismatch":
-                SalesRebatesRate.SetFilter("Specific Sales New", '%1|%2', SalesRebatesRate."Specific Sales New"::" ", SalesRebatesRate."Specific Sales New"::"Rebate Program");
+                RebateDetailsTemp.SetFilter("Specific Sales New", '%1|%2', RebateDetailsTemp."Specific Sales New"::" ", RebateDetailsTemp."Specific Sales New"::"Rebate Program");
         end;
     end;
 
@@ -563,13 +600,17 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         RebateProgram: Record "AQD Cust Rebate Program Code";
         RebateRates: Record "AQD Sales Rebates Rate";
         UnitPrice: Decimal;
+        BillToCustomer: Record Customer;
     begin
         if SalesHeader.Status <> SalesHeader.Status::Open then
             exit;
 
+        BillToCustomer.Get(SalesHeader."Bill-to Customer No.");
+
         RebateRates.Reset();
         RebateRates.SetRange("Rebate Expense Type", RebateRates."Rebate Expense Type"::"Off-Invoice Rebate");
         RebateRates.SetFilter("Rebate Program Code", '<>%1', '');
+        RebateRates.SETFILTER("Territory Code", '%1|%2', BillToCustomer."Territory Code", '');
         RebateRates.SetRange(Blocked, false);
         if RebateRates.FindSet() then begin
             repeat
@@ -581,7 +622,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                             lvSalesLine.Reset();
                             lvSalesLine.SetRange("Document Type", SalesHeader."Document Type");
                             lvSalesLine.SetRange("Document No.", SalesHeader."No.");
-                            lvSalesLine.SetRange(Type, lvSalesLine.Type::Item);
                             lvSalesLine.SetFilter("No.", '<>%1', '');
                             if lvSalesLine.FindFirst() then begin
 
@@ -643,19 +683,94 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         end;
     end;
 
-    local procedure GetQuantityAndAmounts(SalesHeader: Record "Sales Header"; RebateRates: Record "AQD Sales Rebates Rate"; var TotalAmount: Decimal; var TotalQuantity: Decimal)
+    local procedure GetQuantityAndAmounts(SalesHeaderIn: Record "Sales Header"; RebateRates: Record "AQD Sales Rebates Rate"; var TotalAmount: Decimal; var TotalQuantity: Decimal)
     var
         SalesLine: Record "Sales Line";
+        SalesHeader: Record "Sales Header";
     begin
         TotalAmount := 0;
         TotalQuantity := 0;
+
+        //Set Sales Header Filters
+        SalesHeader.Reset();
+        SalesHeader.SetRange("Document Type", SalesHeaderIn."Document Type");
+        SalesHeader.SetRange("No.", SalesHeaderIn."No.");
+        case RebateRates."Entity Type" of
+            RebateRates."Entity Type"::Customer:
+                if RebateRates."Entity No." <> '' then
+                    SalesHeader.SetRange("Bill-to Customer No.", RebateRates."Entity No.");
+            RebateRates."Entity Type"::"Customer Category":
+                if RebateRates."Entity No." <> '' then
+                    SalesHeader.SetRange("AQD Cust Rebate Category", RebateRates."Entity No.");
+        end;
+        case RebateRates."Customer Type Filter" of
+            RebateRates."Customer Type Filter"::Customer:
+                if RebateRates."Customer No. Filter" <> '' then
+                    SalesHeader.SetFilter("Bill-to Customer No.", RebateRates."Customer No. Filter");
+            RebateRates."Customer Type Filter"::"Customer Category":
+                if RebateRates."Customer No. Filter" <> '' then
+                    SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter");
+        end;
+        if RebateRates."SO Payment Term Filter" <> '' then
+            SalesHeader.SetFilter("Payment Terms Code", RebateRates."SO Payment Term Filter");
+
+        if not SalesHeader.FindFirst() then
+            exit;
 
         SalesLine.Reset();
         SalesLine.SetRange("Document Type", SalesHeader."Document Type");
         SalesLine.SetRange("Document No.", SalesHeader."No.");
         SalesLine.SetRange("AQD Off-Invoice Rebate", false);
-        if RebateRates."No. Filter" <> '' then
-            SalesLine.SetFilter("No.", RebateRates."No. Filter");
+        case RebateRates."Line Type" of
+            RebateRates."Line Type"::Item:
+                begin
+                    if RebateRates."No." <> '' then begin
+                        SalesLine.SetRange(Type, SalesLine.Type::Item);
+                        SalesLine.SetRange("No.", RebateRates."No.");
+                    end;
+
+                    if RebateRates."No. Filter" <> '' then begin
+                        SalesLine.SetRange(Type, SalesLine.Type::Item);
+                        SalesLine.SetFilter("No.", RebateRates."No. Filter");
+                    end;
+                end;
+            RebateRates."Line Type"::Resource:
+                begin
+                    if RebateRates."No." <> '' then begin
+                        SalesLine.SetRange(Type, SalesLine.Type::Resource);
+                        SalesLine.SetRange("No.", RebateRates."No.");
+                    end;
+
+                    if RebateRates."No. Filter" <> '' then begin
+                        SalesLine.SetRange(Type, SalesLine.Type::Resource);
+                        SalesLine.SetFilter("No.", RebateRates."No. Filter");
+                    end;
+                end;
+            RebateRates."Line Type"::"G/L Account":
+                begin
+                    if RebateRates."No." <> '' then begin
+                        SalesLine.SetRange(Type, SalesLine.Type::"G/L Account");
+                        SalesLine.SetRange("No.", RebateRates."No.");
+                    end;
+
+                    if RebateRates."No. Filter" <> '' then begin
+                        SalesLine.SetRange(Type, SalesLine.Type::"G/L Account");
+                        SalesLine.SetFilter("No.", RebateRates."No. Filter");
+                    end;
+                end;
+            RebateRates."Line Type"::"Rebate Category":
+                begin
+                    if RebateRates."No." <> '' then begin
+                        SalesLine.SetRange(Type, SalesLine.Type::Item);
+                        SalesLine.SetRange("AQD Rebate Item Category Code", RebateRates."No.");
+                    end;
+
+                    if RebateRates."No. Filter" <> '' then begin
+                        SalesLine.SetRange(Type, SalesLine.Type::Item);
+                        SalesLine.SetFilter("AQD Rebate Item Category Code", RebateRates."No. Filter");
+                    end;
+                end;
+        end;
         if SalesLine.FindSet() then begin
             SalesLine.CalcSums(Amount);
             case SalesHeader."Document Type" of
@@ -672,35 +787,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             end;
         end;
     end;
-
-    // local procedure GetItemsQuantityAndAmounts(SalesHeader: Record "Sales Header"; var TotalAmount: Decimal; var TotalQuantity: Decimal)
-    // var
-    //     SalesLine: Record "Sales Line";
-    // begin
-    //     TotalAmount := 0;
-    //     TotalQuantity := 0;
-
-    //     SalesLine.Reset();
-    //     SalesLine.SetRange("Document Type", SalesHeader."Document Type");
-    //     SalesLine.SetRange("Document No.", SalesHeader."No.");
-    //     SalesLine.SetRange(Type, SalesLine.Type::Item);
-    //     SalesLine.SetRange("AQD Off-Invoice Rebate", false);
-    //     if SalesLine.FindSet() then begin
-    //         SalesLine.CalcSums(Amount);
-    //         case SalesHeader."Document Type" of
-    //             SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Invoice:
-    //                 begin
-    //                     TotalAmount := -SalesLine.Amount;
-    //                     TotalQuantity := -SalesLine.Quantity;
-    //                 end;
-    //             SalesHeader."Document Type"::"Return Order":
-    //                 begin
-    //                     TotalAmount := SalesLine.Amount;
-    //                     TotalQuantity := SalesLine.Quantity;
-    //                 end;
-    //         end;
-    //     end;
-    // end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnAfterInsertRebateHeader, '', false, false)]
     local procedure "AQD Cust Rebate Calc Preview_OnAfterInsertRebateHeader"(SalesHeader: Record "Sales Header"; var CustomerRebateHeader: Record "AQD Customer Rebate Header")
@@ -782,6 +868,149 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     local procedure "Vendor Ledger Entry_OnAfterCopyVendLedgerEntryFromGenJnlLine"(var VendorLedgerEntry: Record "Vendor Ledger Entry"; GenJournalLine: Record "Gen. Journal Line")
     begin
         VendorLedgerEntry."AQD CR Rebate Program Code" := GenJournalLine."AQD CR Rebate Program Code";
-        //VendorLedgerEntry.Modify(false);
     end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Item Ledger Entry", OnAfterInsertEvent, '', false, false)]
+    local procedure Tab32_ItemLedgerEntry_OnAfterInsertEvent(var Rec: Record "Item Ledger Entry"; RunTrigger: Boolean)
+    var
+        RebateItemLdgrEntry: Record "AQD CR Reb Item Ledger Entry";
+        LocalShipmentHdr: Record "Sales Shipment Header";
+        LocalSalesInvHdr: Record "Sales Invoice Header";
+        LocalSalesCrMemoHdr: Record "Sales Cr.Memo Header";
+        LocalReceiptReturnHdr: Record "Return Receipt Header";
+        AppliedItemLdgerEntry: Record "Item Ledger Entry";
+        ExitFunction: Boolean;
+    begin
+        IF Rec.IsTemporary THEN
+            EXIT;
+
+        IF Rec."Entry Type" <> Rec."Entry Type"::Sale THEN
+            EXIT;
+
+        IF Rec."Drop Shipment" THEN
+            EXIT;
+
+        IF NOT (Rec."Document Type" IN
+               [Rec."Document Type"::"Sales Shipment", Rec."Document Type"::"Sales Invoice", Rec."Document Type"::"Sales Return Receipt",
+                Rec."Document Type"::"Sales Credit Memo"])
+        THEN
+            EXIT;
+
+        IF NOT RebateSetup.GET THEN
+            EXIT;
+
+        // ExitFunction := FALSE;
+        // Case Rec."Document Type" OF
+        //     Rec."Document Type"::"Sales Invoice":
+        //         BEGIN
+        //             IF RebateSetup."Start Rebate After SO-Invoice No." >= Rec."Document No." THEN
+        //                 ExitFunction := TRUE;
+        //         END;
+        //     Rec."Document Type"::"Sales Credit Memo":
+        //         BEGIN
+        //             IF RebateSetup."Start Rebate After SO-Credit Memo No." >= Rec."Document No." THEN
+        //                 ExitFunction := TRUE;
+        //         END;
+        // END;
+
+        // IF ExitFunction THEN
+        //     EXIT;
+
+        RebateItemLdgrEntry.Init();
+        RebateItemLdgrEntry.TransferFields(Rec);
+        Case Rec."Document Type" OF
+            Rec."Document Type"::"Sales Invoice", Rec."Document Type"::"Sales Shipment":
+                BEGIN
+                    IF LocalShipmentHdr.GET(Rec."Document No.") then begin
+                        RebateItemLdgrEntry."AQD Sell-to Customer No." := LocalShipmentHdr."Sell-to Customer No.";
+                        RebateItemLdgrEntry."AQD Bill-to Customer No." := LocalShipmentHdr."Bill-to Customer No.";
+                        RebateItemLdgrEntry."Responsibility Center" := LocalShipmentHdr."Responsibility Center";
+                        RebateItemLdgrEntry."AQD Salesperson Code" := LocalShipmentHdr."Salesperson Code";
+                        RebateItemLdgrEntry."AQD Ship-to County" := LocalShipmentHdr."Ship-to County";
+                        RebateItemLdgrEntry."Document Posting Description" := LocalShipmentHdr."Posting Description";
+                        RebateItemLdgrEntry."Order Date" := LocalShipmentHdr."Order Date";
+                        RebateItemLdgrEntry."AQD Customer Rebate Order Date" := LocalShipmentHdr."AQD Customer Rebate Order Date";
+                        RebateItemLdgrEntry."Order No." := LocalShipmentHdr."Order No.";
+                        RebateItemLdgrEntry."Order Line No." := Rec."Document Line No.";
+                        LocalSalesInvHdr.Reset();
+                        LocalSalesInvHdr.SetRange("Order No.", LocalShipmentHdr."Order No.");
+                        if LocalSalesInvHdr.FindFirst() then
+                            RebateItemLdgrEntry."Customer Invoice No." := LocalSalesInvHdr."No.";
+                    end;
+                END;
+            Rec."Document Type"::"Sales Return Receipt":
+                BEGIN
+                    IF LocalReceiptReturnHdr.GET(Rec."Document No.") then begin
+                        RebateItemLdgrEntry."AQD Sell-to Customer No." := LocalReceiptReturnHdr."Sell-to Customer No.";
+                        RebateItemLdgrEntry."AQD Bill-to Customer No." := LocalReceiptReturnHdr."Bill-to Customer No.";
+                        RebateItemLdgrEntry."Responsibility Center" := LocalReceiptReturnHdr."Responsibility Center";
+                        RebateItemLdgrEntry."AQD Salesperson Code" := LocalReceiptReturnHdr."Salesperson Code";
+                        RebateItemLdgrEntry."AQD Ship-to County" := LocalReceiptReturnHdr."Ship-to County";
+                        RebateItemLdgrEntry."Document Posting Description" := LocalReceiptReturnHdr."Posting Description";
+                        RebateItemLdgrEntry."Order Date" := LocalReceiptReturnHdr."Posting Date";
+                        RebateItemLdgrEntry."AQD Customer Rebate Order Date" := LocalReceiptReturnHdr."AQD Customer Rebate Order Date";
+                        RebateItemLdgrEntry."Order No." := LocalReceiptReturnHdr."Return Order No.";
+                        RebateItemLdgrEntry."Order Line No." := Rec."Document Line No.";
+                        LocalSalesCrMemoHdr.Reset();
+                        LocalSalesCrMemoHdr.SetRange("Return Order No.", LocalReceiptReturnHdr."Return Order No.");
+                        if LocalSalesCrMemoHdr.FindFirst() then
+                            RebateItemLdgrEntry."Customer Cr. Memo No." := LocalSalesCrMemoHdr."No.";
+                    end;
+                END;
+            Rec."Document Type"::"Sales Credit Memo":
+                BEGIN
+                    IF LocalSalesCrMemoHdr.GET(Rec."Document No.") then begin
+                        RebateItemLdgrEntry."AQD Sell-to Customer No." := LocalSalesCrMemoHdr."Sell-to Customer No.";
+                        RebateItemLdgrEntry."AQD Bill-to Customer No." := LocalSalesCrMemoHdr."Bill-to Customer No.";
+                        RebateItemLdgrEntry."Responsibility Center" := LocalSalesCrMemoHdr."Responsibility Center";
+                        RebateItemLdgrEntry."AQD Salesperson Code" := LocalSalesCrMemoHdr."Salesperson Code";
+                        RebateItemLdgrEntry."AQD Ship-to County" := LocalSalesCrMemoHdr."Ship-to County";
+                        RebateItemLdgrEntry."Document Posting Description" := LocalSalesCrMemoHdr."Posting Description";
+                        RebateItemLdgrEntry."Order Date" := LocalSalesCrMemoHdr."Posting Date";
+                        RebateItemLdgrEntry."Customer Cr. Memo No." := LocalSalesCrMemoHdr."No.";
+                        RebateItemLdgrEntry."AQD Customer Rebate Order Date" := LocalSalesCrMemoHdr."AQD Customer Rebate Order Date";
+                        RebateItemLdgrEntry."Order No." := LocalSalesCrMemoHdr."Pre-Assigned No.";
+                        RebateItemLdgrEntry."Order Line No." := Rec."Document Line No.";
+                    end;
+                END;
+        End;
+        RebateItemLdgrEntry.Insert();
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnAfterInsertRebateDetail, '', false, false)]
+    local procedure "AQD Cust Rebate Calc Mgt_OnAfterInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details")
+    var
+        ItemLedgerEntry: Record "AQD CR Reb Item Ledger Entry";
+    begin
+        ItemLedgerEntry.Reset();
+        ItemLedgerEntry.SetRange("AQD Bill-to Customer No.", CustomerRebateDetails."Bill-to Customer No.");
+        case CustomerRebateDetails."Document Type" of
+            CustomerRebateDetails."Document Type"::Invoice:
+                ItemLedgerEntry.SetRange("Customer Invoice No.", CustomerRebateDetails."Document No.");
+            CustomerRebateDetails."Document Type"::"Credit Memo":
+                ItemLedgerEntry.SetRange("Customer Cr. Memo No.", CustomerRebateDetails."Document No.");
+        end;
+        ItemLedgerEntry.SetRange("Document Line No.", CustomerRebateDetails."Document Line No.");
+        ItemLedgerEntry.SetRange("Item No.", CustomerRebateDetails."No.");
+        if ItemLedgerEntry.FindFirst() then begin
+            ItemLedgerEntry."AQD Rebate No" := CustomerRebateDetails."Rebate No.";
+            // ItemLedgerEntry."AQD Rebate Line No" := CustomerRebateDetails."Rebate Line No.";
+            // ItemLedgerEntry."AQD Rebate Detail Line No." := CustomerRebateDetails."Line No.";
+            // ItemLedgerEntry."AQD Rebate %" := CustomerRebateDetails."Rebate %";
+            // ItemLedgerEntry."Rebate Per Quantity" := CustomerRebateDetails."Rebate Per Unit";
+            // ItemLedgerEntry."AQD Rebate Type" := CustomerRebateDetails."Rebate Type";
+            // ItemLedgerEntry."AQD Rebate Type" := CustomerRebateDetails."Rebate Type";
+            ItemLedgerEntry."Rebate Amount" += CustomerRebateDetails."Calculated Line Rebate Amount";
+            ItemLedgerEntry."AQD Rebate Entry Created" := true;
+            ItemLedgerEntry.Modify();
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::Item, OnAfterValidateItemCategoryCode, '', false, false)]
+    local procedure Item_OnAfterValidateItemCategoryCode(var Item: Record Item; xItem: Record Item)
+    begin
+        if Item."Item Category Code" <> xItem."Item Category Code" then
+            Item."AQD Cust Rebate Category Code" := Item."Item Category Code";
+    end;
+
 }

@@ -58,4 +58,20 @@ enum 14302530 "AQD Cust Rebate Acct Group"
     {
         Caption = 'DDA';
     }
+    value(14; Damage)
+    {
+        Caption = 'Damage';
+    }
+    value(15; Distribution)
+    {
+        Caption = 'Distribution';
+    }
+    value(16; Advertising)
+    {
+        Caption = 'Advertising';
+    }
+    value(17; Broker)
+    {
+        Caption = 'Broker';
+    }
 }

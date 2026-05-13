@@ -110,22 +110,15 @@ table 14302516 "AQD Cust Rebate Program Code"
                     UpdateRates(FieldCaption("Entity No."));
             end;
         }
-        field(60; "Specific Sales"; Boolean)
-        {
-            Caption = 'Specific Sales';
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Replaced by Specific Sales New';
-        }
         field(61; "Specific Sales New"; Enum "AQD Specific Sales")
         {
-            Caption = 'Specific Sales';
+            Caption = 'SO Rebate Program';
             DataClassification = CustomerContent;
             trigger OnValidate()
             var
                 SalesRebateRate: Record "AQD Sales Rebates Rate";
             begin
-                if REc."Specific Sales New" <> xRec."Specific Sales New" then
+                if Rec."Specific Sales New" <> xRec."Specific Sales New" then
                     UpdateRates(FieldCaption("Specific Sales New"));
             end;
         }
@@ -141,15 +134,19 @@ table 14302516 "AQD Cust Rebate Program Code"
         {
             Caption = 'Customer Type Filter';
             DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
         }
         field(72; "Customer No. Filter"; Code[20])
         {
             Caption = 'Customer No. Filter';
             DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
         }
         field(80; "Marketplace Code"; Code[20])
         {
-            Caption = 'Marketplace Code';
+            Caption = 'SO Marketplace';
             DataClassification = CustomerContent;
             TableRelation = "AQD Marketplace";
             trigger OnValidate()

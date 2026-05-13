@@ -49,6 +49,8 @@ codeunit 14302611 "AQD Cust Claim Event And Func"
                     PaymentMethod.TestField("Bal. Account No.");
                     Rec.VALIDATE("Payment Method Code", ClaimSetup."Full Price Default Pyt Method");
                 END;
+                //To add Customer Rebate Category to Sales Document
+                Rec."AQD Cust Rebate Category" := BillToCustomer."AQD Cust Rebate Category";
             END;
         END;
     END;
