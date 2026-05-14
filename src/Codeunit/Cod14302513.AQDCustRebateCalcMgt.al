@@ -117,6 +117,18 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 
+    [Obsolete('This function is deprecated. Use NewFunctionName instead.', '15.0')]
+    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean)
+    var
+        LocalCustomer: Record Customer;
+        //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
+        BatchPostCustomerRebate: Report "AQD Post Cust Rebate Batches";
+        LocalCustomerType: Record "AQD Rebate Customer Category";
+        CustomerRebatePostMgt: Codeunit "AQD Customer Rebate Post Mgt";
+        CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+    begin
+    end;
+
     procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
     var
         LocalCustomer: Record Customer;

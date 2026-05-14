@@ -110,6 +110,12 @@ table 14302516 "AQD Cust Rebate Program Code"
                     UpdateRates(FieldCaption("Entity No."));
             end;
         }
+        field(60; "Specific Sales"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
+        }
         field(61; "Specific Sales New"; Enum "AQD Specific Sales")
         {
             Caption = 'SO Rebate Program';

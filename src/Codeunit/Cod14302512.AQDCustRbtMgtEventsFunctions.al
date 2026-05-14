@@ -519,14 +519,14 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         RebateRates: Record "AQD Sales Rebates Rate";
         RebatePrograms: Record "AQD Cust Rebate Program Code";
         RebateDetailsTemp: Record "AQD Customer Rebate Details" temporary;
-        HeaderRebateProgramCode, HeaderMarketplaceCode : Code[20];
+        //HeaderRebateProgramCode, HeaderMarketplaceCode : Code[20];
         FilterType: Option "Rebate Program Mismatch","Marketplace Mismatch";
     begin
         RebateDetailsTemp.Reset();
         RebateDetailsTemp.DeleteAll();
 
-        HeaderRebateProgramCode := CustomerRebateDetails."Header Rebate Program Code";
-        HeaderMarketplaceCode := CustomerRebateDetails."Header Marketplace Code";
+        // HeaderRebateProgramCode := CustomerRebateDetails."Header Rebate Program Code";
+        // HeaderMarketplaceCode := CustomerRebateDetails."Header Marketplace Code";
 
         RebateDetailsTemp := CustomerRebateDetails;
         RebateDetailsTemp.Insert();
@@ -535,15 +535,15 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         RebatePrograms.Get(CustomerRebateDetails."Rebate Program Code");
 
         //Payment Terms Filter
-        if RebatePrograms."SO Payment Term Filter" <> '' then
+        if not GlobalProcessCatchUpRebate and (RebatePrograms."SO Payment Term Filter" <> '') then
             RebateDetailsTemp.SetFilter("Payment Terms Code", RebatePrograms."SO Payment Term Filter");
 
         //Rebate Program Filter
-        if RebatePrograms."SO Rebate Program Filter" <> '' then
+        if not GlobalProcessCatchUpRebate and (RebatePrograms."SO Rebate Program Filter" <> '') then
             RebateDetailsTemp.SetFilter("Header Rebate Program Code", RebatePrograms."SO Rebate Program Filter");
 
         //Marketplace Filter
-        if RebatePrograms."SO Marketplace Code Filter" <> '' then
+        if not GlobalProcessCatchUpRebate and (RebatePrograms."SO Marketplace Code Filter" <> '') then
             RebateDetailsTemp.SetFilter("Header Marketplace Code", RebatePrograms."SO Marketplace Code Filter");
 
 
@@ -552,6 +552,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                 if RebateRates."No. Filter" <> '' then
                     RebateDetailsTemp.SetFilter("Rebate Item Category Code", RebateRates."No. Filter");
         end;
+
         case RebateRates."Customer Type Filter" of
             RebateRates."Customer Type Filter"::Customer:
                 if RebateRates."Customer No. Filter" <> '' then
@@ -738,6 +739,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                     SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter");
         end;
 
+        //Set Payment Term Filter
         ProgramCode.Get(RebateRates."Rebate Program Code");
         if ProgramCode."SO Payment Term Filter" <> '' then
             SalesHeader.SetFilter("Payment Terms Code", ProgramCode."SO Payment Term Filter");

@@ -284,6 +284,13 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Blocked Date Time';
             Editable = false;
         }
+        field(580; "Specific Sales"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
+        }
         field(581; "Specific Sales New"; Enum "AQD Specific Sales")
         {
             Caption = 'SO Rebate Program';
