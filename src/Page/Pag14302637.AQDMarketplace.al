@@ -23,4 +23,13 @@ page 14302637 "AQD Marketplace"
             }
         }
     }
+
+    procedure GetSelectionFilter(): Text
+    var
+        Marketplace: Record "AQD Marketplace";
+        SelectionFilterManagement: Codeunit "AQD CR SelectionFilterMgt";
+    begin
+        CurrPage.SetSelectionFilter(Marketplace);
+        exit(SelectionFilterManagement.GetSelectionFilterForMarketplaceCode(Marketplace));
+    end;
 }

@@ -94,15 +94,63 @@ page 14302515 "AQD Cust Rebate Program Codes"
                 field("Specific Sales New"; Rec."Specific Sales New")
                 {
                     ApplicationArea = All;
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Not in use';
+                    Visible = false;
                 }
                 field("Marketplace Code"; Rec."Marketplace Code")
                 {
                     ApplicationArea = All;
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Not in use';
+                    Visible = false;
                 }
-                // field("SO Payment Terms"; Rec."SO Payment Terms")
-                // {
-                //     ApplicationArea = All;
-                // }
+
+                field("SO Rebate Program Filter"; Rec."SO Rebate Program Filter")
+                {
+                    ApplicationArea = All;
+                    trigger OnLookup(var Text: Text): Boolean
+                    var
+                        RebateProgramCodes: Page "AQD Cust Rebate Program Codes";
+                    begin
+                        RebateProgramCodes.LOOKUPMODE := TRUE;
+                        IF RebateProgramCodes.RUNMODAL = ACTION::LookupOK THEN
+                            Text := RebateProgramCodes.GetSelectionFilter
+                        ELSE
+                            EXIT(false);
+                        EXIT(true);
+                    end;
+                }
+                field("SO Marketplace Code Filter"; Rec."SO Marketplace Code Filter")
+                {
+                    ApplicationArea = All;
+                    trigger OnLookup(var Text: Text): Boolean
+                    var
+                        MArketplace: Page "AQD Marketplace";
+                    begin
+                        MArketplace.LOOKUPMODE := TRUE;
+                        IF MArketplace.RUNMODAL = ACTION::LookupOK THEN
+                            Text := MArketplace.GetSelectionFilter
+                        ELSE
+                            EXIT(false);
+                        EXIT(true);
+                    end;
+                }
+                field("SO Payment Term Filter"; Rec."SO Payment Term Filter")
+                {
+                    ApplicationArea = All;
+                    trigger OnLookup(var Text: Text): Boolean
+                    var
+                        PaymentTerms: Page "Payment Terms";
+                    begin
+                        PaymentTerms.LOOKUPMODE := TRUE;
+                        IF PaymentTerms.RUNMODAL = ACTION::LookupOK THEN
+                            Text := PaymentTerms.GetSelectionFilter
+                        ELSE
+                            EXIT(false);
+                        EXIT(true);
+                    end;
+                }
                 field(Blocked; Rec.Blocked)
                 {
                     ApplicationArea = All;
@@ -132,6 +180,15 @@ page 14302515 "AQD Cust Rebate Program Codes"
         ControlEditable := Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
         ControlVisible := CustomerRebateSetup."Rebate Payable Ac" = CustomerRebateSetup."Rebate Payable Ac"::"Rebate Payable AC";
     END;
+
+    procedure GetSelectionFilter(): Text
+    var
+        RebateProgramCodes: Record "AQD Cust Rebate Program Code";
+        SelectionFilterManagement: Codeunit "AQD CR SelectionFilterMgt";
+    begin
+        CurrPage.SetSelectionFilter(RebateProgramCodes);
+        exit(SelectionFilterManagement.GetSelectionFilterForRebateProgramCode(RebateProgramCodes));
+    end;
 
     VAR
         CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";

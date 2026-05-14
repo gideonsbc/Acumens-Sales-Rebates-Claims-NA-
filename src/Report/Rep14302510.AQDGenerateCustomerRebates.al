@@ -49,7 +49,7 @@ report 14302510 "AQD Generate Customer Rebates"
                 SummaryArray[7] := ByTerritoryCode;
 
                 Clear(RebateCalculationMgt);
-                RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebate, LastRecord);
+                RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebate, LastRecord, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo);
             end;
 
             trigger OnPostDataItem()
@@ -131,9 +131,28 @@ report 14302510 "AQD Generate Customer Rebates"
                         Caption = 'Shortcut Dimension 2 Code';
                     }
                 }
+                group("Catchup Rebate Processing")
+                {
+                    Caption = 'Catchup Rebate Processing';
+                    field("ProcessCatchUpRebate"; ProcessCatchUpRebate)
+                    {
+                        Caption = 'Process CatchUp Rebate';
+                    }
+                    field(RebateProgramCode; RebateProgramCodeFilter)
+                    {
+                        Caption = 'Rebate Program Code';
+                        TableRelation = "AQD Cust Rebate Program Code" where("Entity Type" = const("Vendor Commission"));
+                        Editable = ProcessCatchUpRebate;
+                    }
+                    field(VendorNo; BrokerVendorNo)
+                    {
+                        Caption = 'Vendor No.';
+                        TableRelation = Vendor;
+                        Editable = ProcessCatchUpRebate;
+                    }
+                }
             }
         }
-
         actions
         {
         }
@@ -152,6 +171,10 @@ report 14302510 "AQD Generate Customer Rebates"
             StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
             EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
         end;
+
+        if ProcessCatchUpRebate then
+            if RebateProgramCodeFilter = '' then
+                Error('Rebate Program Code is required if Process CatchUp Rebate is enabled!');
     end;
 
     procedure SetShptRcptNoAndInvCrMemoNo(BillToCustomerNoIn: Code[20]; ShptRcptNoIn: Code[20]; InvCrMemoNoIn: Code[20]; CalledFromGenerateVendorRebateIn: Boolean)
@@ -186,4 +209,7 @@ report 14302510 "AQD Generate Customer Rebates"
         CurrentCount: Integer;
         LastRecord: Boolean;
         CalledFromGenerateCustomerRebate: Boolean;
+        ProcessCatchUpRebate: Boolean;
+        RebateProgramCodeFilter: Code[20];
+        BrokerVendorNo: Code[20];
 }

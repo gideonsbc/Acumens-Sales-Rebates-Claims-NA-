@@ -160,7 +160,7 @@ tableextension 14302513 "AQD CustRbt Sales Header Ext" extends "Sales Header"
         {
             Caption = 'Customer Rebate Program Code';
             DataClassification = CustomerContent;
-            TableRelation = "AQD Cust Rebate Program Code" where("Specific Sales New" = filter("Rebate Program"));
+            TableRelation = "AQD Cust Rebate Program Code" where("Entity Type" = const("Vendor Commission"));
         }
     }
     LOCAL procedure CheckClaimStatus()

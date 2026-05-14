@@ -1,7 +1,7 @@
 page 14302516 "AQD CustRbt SalesRebates Setup"
 {
     ApplicationArea = All;
-    Caption = 'Customer Rebates Setup';
+    Caption = 'Customer Rebates Rates';
     DataCaptionExpression = GetCaption;
     DelayedInsert = true;
     PageType = List;
@@ -189,6 +189,10 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     Editable = CustomerNoControlEditable;
                     ToolTip = 'Specifies the Entity No. that belongs to the Entity Type.';
                 }
+                // field("Rate Priority"; Rec."Rate Priority")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("Customer Type Filter"; Rec."Customer Type Filter")
                 {
                     ApplicationArea = All;
@@ -291,21 +295,6 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                         END;
 
                         EXIT(TRUE);
-                    end;
-                }
-                field("SO Payment Term Filter"; Rec."SO Payment Term Filter")
-                {
-                    ApplicationArea = All;
-                    trigger OnLookup(var Text: Text): Boolean
-                    var
-                        PaymentTerms: Page "Payment Terms";
-                    begin
-                        PaymentTerms.LOOKUPMODE := TRUE;
-                        IF PaymentTerms.RUNMODAL = ACTION::LookupOK THEN
-                            Text := PaymentTerms.GetSelectionFilter
-                        ELSE
-                            EXIT(false);
-                        EXIT(true);
                     end;
                 }
                 field("Variant Code"; Rec."Variant Code")
@@ -486,12 +475,19 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                         Message(StrSubstNo(CompletionMsg, CopiedRow));
                 END;
             }
+            // action("Specific Rates")
+            // {
+            //     Caption = 'Specific Rates';
+            //     RunObject = page "AQD Specific Rate Setup";
+            //     RunPageLink = "Entry No." = field("Entry No.");
+            // }
         }
         area(Promoted)
         {
             actionref(SalesPricesFilter_Promoted; SalesPricesFilter) { }
             actionref(ClearFilter_Promoted; ClearFilter) { }
             actionref(CopySalesRebateRatesRef; CopySalesRebateRates) { }
+            //actionref(SpecificRates; "Specific Rates") { }
         }
     }
 

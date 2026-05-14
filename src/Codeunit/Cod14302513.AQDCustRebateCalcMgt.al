@@ -80,6 +80,10 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         StartPostingDate: Date;
         EndPostingDate: Date;
         RunBy: Enum "AQD Customer Rebate Posting";
+        GlobalProcessCatchUpRebate: Boolean;
+        GlobalRebateProgramCodeFilter: Code[20];
+        GlobalCalledFromGenerateCustomerRebateIn: Boolean;
+        GlobalBrokerVendorNo: Code[20];
 
     procedure UpdateOldDocumentsNonRebateEnable()
     var
@@ -113,7 +117,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 
-    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean)
+    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
     var
         LocalCustomer: Record Customer;
         //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
@@ -124,6 +128,11 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     begin
         RebateSetup.Get;
         RebateSetup.TestField("Customer Rebate Document Nos");
+
+        GlobalProcessCatchUpRebate := ProcessCatchUpRebate;
+        GlobalRebateProgramCodeFilter := RebateProgramCodeFilter;
+        GlobalCalledFromGenerateCustomerRebateIn := CalledFromGenerateCustomerRebateIn;
+        GlobalBrokerVendorNo := BrokerVendorNo;
 
         StartPostingDate := DateArray[1];
         EndPostingDate := DateArray[2];
@@ -212,7 +221,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         SalesInvoiceHeader.SetRange("Bill-to Customer No.", CustomerIn."No.");
         SalesInvoiceHeader.SetRange("AQD No Customer Rebate", false);
         SalesInvoiceHeader.SetRange("AQD Cust Rebate Entry Created", false);
-        SalesInvoiceHeader.SetRange("AQD Customer Rebate Status", SalesInvoiceHeader."AQD Customer Rebate Status"::" ");
+        if not GlobalProcessCatchUpRebate then
+            SalesInvoiceHeader.SetRange("AQD Customer Rebate Status", SalesInvoiceHeader."AQD Customer Rebate Status"::" ");
         SalesInvoiceHeader.SetFilter("Source Code", '<>%1', SourceCodeSetup."Deleted Document");
         SalesInvoiceHeader.SetRange("AQD Customer Rebate", FALSE);
         IF (StartDate <> 0D) OR (DateArray[2] <> 0D) then begin
@@ -220,14 +230,14 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                 CustomerIn."AQD CustRbt Calculation Date"::" ",
                 CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
                     begin
-                        if RebateSetup."Auto Process Customer Rebates" then
+                        if GlobalCalledFromGenerateCustomerRebateIn then
                             SalesInvoiceHeader.SetFilter("Posting Date", '%1..', StartDate)
                         else
                             SalesInvoiceHeader.SetFilter("Posting Date", '%1..%2', StartDate, DateArray[2]);
                     end;
                 CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
                     begin
-                        if RebateSetup."Auto Process Customer Rebates" then
+                        if GlobalCalledFromGenerateCustomerRebateIn then
                             SalesInvoiceHeader.SetFilter("AQD Customer Rebate Order Date", '%1..', StartDate)
                         else
                             SalesInvoiceHeader.SetFilter("AQD Customer Rebate Order Date", '%1..%2', StartDate, DateArray[2])
@@ -424,7 +434,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         END;
         SalesCrMemoHeader.SetRange("Bill-to Customer No.", CustomerIn."No.");
         SalesCrMemoHeader.SetRange("AQD No Customer Rebate", false);
-        SalesCrMemoHeader.SetRange("AQD Customer Rebate Status", SalesCrMemoHeader."AQD Customer Rebate Status"::" ");
+        if not GlobalProcessCatchUpRebate then
+            SalesCrMemoHeader.SetRange("AQD Customer Rebate Status", SalesCrMemoHeader."AQD Customer Rebate Status"::" ");
         SalesCrMemoHeader.SetRange("AQD Rebate Entry Created", false);
         SalesCrMemoHeader.SetFilter("Source Code", '<>%1', SourceCodeSetup."Deleted Document");
         SalesCrMemoHeader.SetRange("AQD Customer Rebate", FALSE);
@@ -433,14 +444,14 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                 CustomerIn."AQD CustRbt Calculation Date"::" ",
                 CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
                     begin
-                        if RebateSetup."Auto Process Customer Rebates" then
+                        if GlobalCalledFromGenerateCustomerRebateIn then
                             SalesCrMemoHeader.SetFilter("Posting Date", '%1..', StartDate)
                         else
                             SalesCrMemoHeader.SetFilter("Posting Date", '%1..%2', StartDate, DateArray[2]);
                     end;
                 CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
                     begin
-                        if RebateSetup."Auto Process Customer Rebates" then
+                        if GlobalCalledFromGenerateCustomerRebateIn then
                             SalesCrMemoHeader.SetFilter("AQD Customer Rebate Order Date", '%1..', StartDate)
                         else
                             SalesCrMemoHeader.SetFilter("AQD Customer Rebate Order Date", '%1..%2', StartDate, DateArray[2]);
@@ -1306,6 +1317,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
             CustomerRebateHeader.BatchID := GlobalBatchID;
             CustomerRebateHeader."Batch Entry No." := CustomerRebateBatch."Entry No.";
             CustomerRebateHeader."AQD Calculation Date" := CustomerIn."AQD CustRbt Calculation Date";
+            CustomerRebateHeader."Process CatchUp Rebate" := GlobalProcessCatchUpRebate;
             IsHandled := FALSE;
             OnBeforeInsertRebateHeader(CustomerRebateHeader, IsHandled);
             IF NOT IsHandled THEN
@@ -1525,6 +1537,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
 
             TempRebateCategoryLines.RESET;
             TempRebateCategoryLines.SetRange("Entity Type", RebateEntigyType);
+            OnSetFilterTempRebateCategoryLines(TempRebateCategoryLines, GlobalProcessCatchUpRebate, GlobalRebateProgramCodeFilter);
             IF TempRebateCategoryLines.FindFirst() THEN BEGIN
                 Repeat
                     CustomerRebateDetails.Init;
@@ -1683,7 +1696,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateDetails."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type";
                     IF CustomerRebateDetails."Rebate Type" <> CustomerRebateDetails."Rebate Type"::" " then begin
                         IsHandled := FALSE;
-                        OnBeforeInsertRebateDetail(CustomerRebateDetails, IsHandled);
+                        OnBeforeInsertRebateDetail(CustomerRebateDetails, GlobalProcessCatchUpRebate, GlobalBrokerVendorNo, IsHandled);
                         IF NOT IsHandled then begin
                             CustomerRebateDetails.Insert();
                             LineNo += 10000;
@@ -1964,7 +1977,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsertRebateDetail(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
+    local procedure OnBeforeInsertRebateDetail(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; GlobalBrokerVendorNo: Code[20]; var IsHandled: Boolean)
     begin
     end;
 
@@ -2027,6 +2040,11 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
 
     [IntegrationEvent(false, false)]
     local procedure OnBeforeInsertTempRebateCategoryLines(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate"; CustomerNo: Code[20])
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnSetFilterTempRebateCategoryLines(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalProcessCatchUpRebate: Boolean; GlobalRebateProgramCodeFilter: Code[20])
     begin
     end;
 }

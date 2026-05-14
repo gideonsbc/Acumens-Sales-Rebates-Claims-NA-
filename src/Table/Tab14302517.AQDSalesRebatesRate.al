@@ -123,15 +123,15 @@ table 14302517 "AQD Sales Rebates Rate"
                 RebateProgramCode: Record "AQD Cust Rebate Program Code";
             begin
                 IF RebateProgramCode.GET(Rec."Rebate Program Code") THEN BEGIN
-                    if RebateProgramCode."Specific Sales New" = RebateProgramCode."Specific Sales New"::Marketplace then
-                        RebateProgramCode.TestField("Marketplace Code");
+                    // if RebateProgramCode."Specific Sales New" = RebateProgramCode."Specific Sales New"::Marketplace then
+                    //     RebateProgramCode.TestField("Marketplace Code");
                     Rec."Rebate Type" := RebateProgramCode."Customer Default Rebate Type";
                     Rec."Rebate %" := RebateProgramCode."Customer Default Rebate %";
                     Rec."Rebate Per Unit" := RebateProgramCode."Customer Def Rebate Per Unit";
                     Rec."Entity Type" := RebateProgramCode."Entity Type";
                     Rec."Entity No." := RebateProgramCode."Entity No.";
-                    Rec.Validate("Specific Sales New", RebateProgramCode."Specific Sales New");
-                    Rec."Marketplace Code" := RebateProgramCode."Marketplace Code";
+                    // Rec.Validate("Specific Sales New", RebateProgramCode."Specific Sales New");
+                    // Rec."Marketplace Code" := RebateProgramCode."Marketplace Code";
                     Rec."Rebate Expense Type" := RebateProgramCode."Rebate Expense Type";
                 END;
             end;
@@ -226,10 +226,6 @@ table 14302517 "AQD Sales Rebates Rate"
         {
             DataClassification = CustomerContent;
         }
-        field(200; "SO Payment Term Filter"; Code[20])
-        {
-            DataClassification = CustomerContent;
-        }
         field(500; "Last Changed DataTime"; DateTime)
         {
             Caption = 'Last Changed DataTime';
@@ -293,6 +289,8 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'SO Rebate Program';
             DataClassification = CustomerContent;
             Editable = false;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
         }
         field(585; "Customer Type Filter"; Enum "AQD Rates Customer Type Filter")
         {
@@ -332,6 +330,8 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'SO Marketplace';
             DataClassification = CustomerContent;
             TableRelation = "AQD Marketplace";
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
         }
         field(700; "Is Rebate Program"; Boolean)
         {
@@ -345,6 +345,11 @@ table 14302517 "AQD Sales Rebates Rate"
             ObsoleteState = Pending;
             ObsoleteReason = 'Not in use';
         }
+        // field(810; "Rate Priority"; Enum "AQD Rate Priority")
+        // {
+        //     Caption = 'Rate Priority';
+        //     DataClassification = CustomerContent;
+        // }
     }
 
     keys
@@ -415,6 +420,9 @@ table 14302517 "AQD Sales Rebates Rate"
         CustomerRebateRate.SETRANGE("Unit of Measure Code", Rec."Unit of Measure Code");
         CustomerRebateRate.SetRange("Minimum Quantity", Rec."Minimum Quantity");
         CustomerRebateRate.SetRange("Minimum Amount", Rec."Minimum Amount");
+        // CustomerRebateRate.SetRange("Customer Type Filter", Rec."Customer Type Filter");
+        // CustomerRebateRate.SetRange("Customer No. Filter", Rec."Customer No. Filter");
+        // CustomerRebateRate.SetRange("Rate Priority", Rec."Rate Priority");
         IF CustomerRebateRate.FindFirst() THEN
             ERROR(Text002,
                 Rec.FieldCaption("CustRbt Rate Type"), Rec."CustRbt Rate Type",

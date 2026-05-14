@@ -8,6 +8,22 @@ codeunit 14302615 "AQD CR SelectionFilterMgt"
         exit(GetSelectionFilter(RecRef, PaymentTerms.FieldNo(Code)));
     end;
 
+    procedure GetSelectionFilterForRebateProgramCode(var RebateProgramCode: Record "AQD Cust Rebate Program Code"): Text
+    var
+        RecRef: RecordRef;
+    begin
+        RecRef.GetTable(RebateProgramCode);
+        exit(GetSelectionFilter(RecRef, RebateProgramCode.FieldNo(Code)));
+    end;
+
+    procedure GetSelectionFilterForMarketplaceCode(var MarketplaceCode: Record "AQD Marketplace"): Text
+    var
+        RecRef: RecordRef;
+    begin
+        RecRef.GetTable(MarketplaceCode);
+        exit(GetSelectionFilter(RecRef, MarketplaceCode.FieldNo(Code)));
+    end;
+
     procedure GetSelectionFilter(var TempRecRef: RecordRef; SelectionFieldID: Integer): Text
     var
         [SecurityFiltering(SecurityFilter::Ignored)]

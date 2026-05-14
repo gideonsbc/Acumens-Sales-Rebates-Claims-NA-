@@ -114,13 +114,8 @@ table 14302516 "AQD Cust Rebate Program Code"
         {
             Caption = 'SO Rebate Program';
             DataClassification = CustomerContent;
-            trigger OnValidate()
-            var
-                SalesRebateRate: Record "AQD Sales Rebates Rate";
-            begin
-                if Rec."Specific Sales New" <> xRec."Specific Sales New" then
-                    UpdateRates(FieldCaption("Specific Sales New"));
-            end;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
         }
         field(70; "Customer No."; Code[20])
         {
@@ -149,18 +144,8 @@ table 14302516 "AQD Cust Rebate Program Code"
             Caption = 'SO Marketplace';
             DataClassification = CustomerContent;
             TableRelation = "AQD Marketplace";
-            trigger OnValidate()
-            begin
-                if (xRec."Marketplace Code" <> '') and (Rec."Marketplace Code" = '') and ("Specific Sales New" = "Specific Sales New"::Marketplace) then begin
-                    SalesRebateRate.Reset();
-                    SalesRebateRate.SetRange("Rebate Program Code", Code);
-                    if SalesRebateRate.FindFirst() then
-                        Error('There are already existing rate(s) for this marketplace. Please delete the rate(s) before removing the value.');
-                end;
-
-                if Rec."Marketplace Code" <> xRec."Marketplace Code" then
-                    UpdateRates(FieldCaption("Marketplace Code"));
-            end;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
         }
         field(90; Blocked; Boolean)
         {
@@ -188,6 +173,19 @@ table 14302516 "AQD Cust Rebate Program Code"
                 end;
             end;
         }
+        field(150; "SO Rebate Program Filter"; Code[20])
+        {
+            DataClassification = CustomerContent;
+        }
+        field(160; "SO Marketplace Code Filter"; Code[20])
+        {
+            DataClassification = CustomerContent;
+        }
+        field(200; "SO Payment Term Filter"; Code[20])
+        {
+            DataClassification = CustomerContent;
+        }
+
     }
 
     keys
@@ -224,10 +222,6 @@ table 14302516 "AQD Cust Rebate Program Code"
         if SalesRebateRate.FindSet() then begin
             repeat
                 case ChangedFieldName of
-                    fieldcaption("Specific Sales New"):
-                        SalesRebateRate.Validate("Specific Sales New", Rec."Specific Sales New");
-                    FieldCaption("Marketplace Code"):
-                        SalesRebateRate.Validate("Marketplace Code", "Marketplace Code");
                     FieldCaption(Blocked):
                         SalesRebateRate.Validate(Blocked, Rec.Blocked);
                     FieldCaption("Rebate Expense Type"):

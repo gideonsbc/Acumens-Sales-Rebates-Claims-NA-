@@ -916,7 +916,6 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
 
         TempRebateCategoryLines.RESET;
         TempRebateCategoryLines.SetRange("Entity Type", RebateEntigyType);
-        //OnSetFilterTempRebateCategoryLines(TempRebateCategoryLines, SalesHeaderIn);
         IF TempRebateCategoryLines.FindFirst() THEN BEGIN
             Repeat
                 CustomerRebateDetails.INIT;

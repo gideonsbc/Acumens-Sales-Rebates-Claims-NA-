@@ -235,6 +235,11 @@ table 14302533 "AQD Posted Cust Rebate Header"
         {
             Caption = 'BatchId';
         }
+        field(5000; "Process CatchUp Rebate"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys

@@ -225,6 +225,11 @@ table 14302519 "AQD Customer Rebate Header"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(5000; "Process CatchUp Rebate"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys

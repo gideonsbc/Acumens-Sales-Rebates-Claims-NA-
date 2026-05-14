@@ -103,7 +103,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         //Add Filters Fields after getting  Rebate Rates
         CustomerRebateDetailsLocIn."Rebate Rate Entry No." := TempSalesRebatesRate."Entry No.";
         CustomerRebateDetailsLocIn."Customer Rebate Category" := BillToCustomer."AQD Cust Rebate Category";
-        CustomerRebateDetailsLocIn."Specific Sales New" := TempSalesRebatesRate."Specific Sales New";
+        //CustomerRebateDetailsLocIn."Specific Sales New" := TempSalesRebatesRate."Specific Sales New";
 
         CalcBestSalesRebateRate(CustomerRebateDetailsLocIn, TempSalesRebatesRate);
 
@@ -175,17 +175,17 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                 BEGIN
                     SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"All Customers");
                     SalesRebatesRate.SetRange("Entity No.");
-                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::Customer);
                     SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Bill-To Customer No.");
-                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     IF LocalCust.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.") THEN BEGIN
                         IF LocalCust."AQD Cust Rebate Category" <> '' then begin
                             SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"Customer Category");
                             SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', LocalCust."AQD Cust Rebate Category");
-                            CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
+                            CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
                         end;
                     END;
 
@@ -195,17 +195,17 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                     SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Rebate Item Category Code");
                     SalesRebatesRate.SetRange("Variant Code");
                     SalesRebatesRate.SetRange("Unit of Measure Code");
-                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::Customer);
                     SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Bill-To Customer No.");
-                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     IF LocalCust.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.") THEN BEGIN
                         IF LocalCust."AQD Cust Rebate Category" <> '' then begin
                             SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"Customer Category");
                             SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', LocalCust."AQD Cust Rebate Category");
-                            CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
+                            CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
                         end;
                     END;
                 END;
@@ -213,25 +213,25 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                 BEGIN
                     SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"Employee Commission");
                     SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Entity No.");
-                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Rebate Category");
                     SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Rebate Item Category Code");
                     SalesRebatesRate.SetRange("Variant Code");
                     SalesRebatesRate.SetRange("Unit of Measure Code");
-                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
                 END;
             CustomerRebateDetailsLocIn."Entity Type"::Vendor:
                 BEGIN
                     SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"Vendor Commission");
                     SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Entity No.");
-                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Rebate Category");
                     SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Rebate Item Category Code");
                     SalesRebatesRate.SetRange("Variant Code");
                     SalesRebatesRate.SetRange("Unit of Measure Code");
-                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate);
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
                 END;
         END;
     END;
@@ -433,7 +433,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         TempSalesRebatesRate := BestCustomerSalesRebate;
     end;
 
-    local procedure CopyCustomerSalesRebateToCustomerSalesRebate(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate" temporary)
+    local procedure CopyCustomerSalesRebateToCustomerSalesRebate(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     begin
         IF FromCustomerSalesRebateRate.FINDSET THEN
             REPEAT
