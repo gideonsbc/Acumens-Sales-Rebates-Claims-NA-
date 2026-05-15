@@ -394,6 +394,11 @@ table 14302521 "AQD Customer Rebate Details"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        // field(9030; "Customer No. Filter"; Code[20])
+        // {
+        //     Caption = 'Customer No. Filter';
+        //     DataClassification = CustomerContent;//AS Temporary Used
+        // }
     }
 
     keys

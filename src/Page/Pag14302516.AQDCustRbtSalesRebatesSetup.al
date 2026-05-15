@@ -189,10 +189,6 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     Editable = CustomerNoControlEditable;
                     ToolTip = 'Specifies the Entity No. that belongs to the Entity Type.';
                 }
-                // field("Rate Priority"; Rec."Rate Priority")
-                // {
-                //     ApplicationArea = All;
-                // }
                 field("Customer Type Filter"; Rec."Customer Type Filter")
                 {
                     ApplicationArea = All;
@@ -311,6 +307,10 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.';
+                }
+                field("Rate Priority"; Rec."Rate Priority")
+                {
+                    ApplicationArea = All;
                 }
                 field("Starting Date"; Rec."Starting Date")
                 {

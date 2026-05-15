@@ -9,4 +9,8 @@ enum 14302536 "AQD Rate Priority"
     {
         Caption = 'Level 1';
     }
+    value(2; "Level 2")
+    {
+        Caption = 'Level 2';
+    }
 }

@@ -160,11 +160,11 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         END;
         SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."No.");
         SalesRebatesRate.SETFILTER("Variant Code", '%1|%2', '', '');
-        SalesRebatesRate.SETFILTER("Ending Date", '%1|>=%2', 0D, DocumentDate);
+        SalesRebatesRate.SETFILTER("Starting Date", '%1|>=%2', 0D, DocumentDate);
         IF UOM <> '' THEN
             SalesRebatesRate.SETFILTER("Unit of Measure Code", '%1|%2', UOM, '');
         //SalesRebatesRate.SETRANGE("Starting Date", 0D, DocumentDate);
-        SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, DocumentDate);
+        SalesRebatesRate.SETFILTER("Ending Date", '%1|<=%2', 0D, DocumentDate);
         SalesRebatesRate.SETRANGE(Blocked, false);
         SalesRebatesRate.SetRange("Rebate Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');
@@ -434,11 +434,16 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
     end;
 
     local procedure CopyCustomerSalesRebateToCustomerSalesRebate(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    var
+        IsHandled: Boolean;
     begin
         IF FromCustomerSalesRebateRate.FINDSET THEN
             REPEAT
                 ToCustomerSalesRebateRate := FromCustomerSalesRebateRate;
-                ToCustomerSalesRebateRate.INSERT;
+                IsHandled := false;
+                OnBeforeInsertToCustomerSalesRebateRate(FromCustomerSalesRebateRate, ToCustomerSalesRebateRate, CustomerRebateDetailsLocIn, IsHandled);
+                if not IsHandled then
+                    ToCustomerSalesRebateRate.INSERT;
             UNTIL FromCustomerSalesRebateRate.NEXT = 0;
     end;
 
@@ -458,6 +463,11 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
 
     [IntegrationEvent(false, false)]
     local procedure OnSetSalesRebateRateFilter(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeInsertToCustomerSalesRebateRate(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
     begin
     end;
 

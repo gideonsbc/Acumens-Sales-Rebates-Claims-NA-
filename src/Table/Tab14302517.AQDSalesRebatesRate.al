@@ -352,11 +352,11 @@ table 14302517 "AQD Sales Rebates Rate"
             ObsoleteState = Pending;
             ObsoleteReason = 'Not in use';
         }
-        // field(810; "Rate Priority"; Enum "AQD Rate Priority")
-        // {
-        //     Caption = 'Rate Priority';
-        //     DataClassification = CustomerContent;
-        // }
+        field(810; "Rate Priority"; Enum "AQD Rate Priority")
+        {
+            Caption = 'Rate Priority';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
@@ -427,9 +427,9 @@ table 14302517 "AQD Sales Rebates Rate"
         CustomerRebateRate.SETRANGE("Unit of Measure Code", Rec."Unit of Measure Code");
         CustomerRebateRate.SetRange("Minimum Quantity", Rec."Minimum Quantity");
         CustomerRebateRate.SetRange("Minimum Amount", Rec."Minimum Amount");
-        // CustomerRebateRate.SetRange("Customer Type Filter", Rec."Customer Type Filter");
-        // CustomerRebateRate.SetRange("Customer No. Filter", Rec."Customer No. Filter");
-        // CustomerRebateRate.SetRange("Rate Priority", Rec."Rate Priority");
+        CustomerRebateRate.SetRange("Customer Type Filter", Rec."Customer Type Filter");
+        CustomerRebateRate.SetRange("Customer No. Filter", Rec."Customer No. Filter");
+        CustomerRebateRate.SetRange("Rate Priority", Rec."Rate Priority");
         IF CustomerRebateRate.FindFirst() THEN
             ERROR(Text002,
                 Rec.FieldCaption("CustRbt Rate Type"), Rec."CustRbt Rate Type",
