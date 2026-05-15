@@ -149,6 +149,18 @@ report 14302510 "AQD Generate Customer Rebates"
                         Caption = 'Vendor No.';
                         TableRelation = Vendor;
                         Editable = ProcessCatchUpRebate;
+                        trigger OnValidate()
+                        var
+                            Rates: Record "AQD Sales Rebates Rate";
+                        begin
+                            if RebateProgramCodeFilter = '' then
+                                Error('Please select the Rebate Program Code first.');
+                            Rates.Reset();
+                            Rates.SetRange("Rebate Program Code", RebateProgramCodeFilter);
+                            Rates.SetRange("Entity No.", BrokerVendorNo);
+                            if not Rates.FindFirst() then
+                                Error('The selected broker does not have a rate configured in the setup.');
+                        end;
                     }
                 }
             }
@@ -172,9 +184,13 @@ report 14302510 "AQD Generate Customer Rebates"
             EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
         end;
 
-        if ProcessCatchUpRebate then
+        if ProcessCatchUpRebate then begin
             if RebateProgramCodeFilter = '' then
-                Error('Rebate Program Code is required if Process CatchUp Rebate is enabled!');
+                Error('Rebate Program Code is required.');
+            if BrokerVendorNo = '' then
+                Error('Vendor No. (Broker) is required.');
+        end;
+
     end;
 
     procedure SetShptRcptNoAndInvCrMemoNo(BillToCustomerNoIn: Code[20]; ShptRcptNoIn: Code[20]; InvCrMemoNoIn: Code[20]; CalledFromGenerateVendorRebateIn: Boolean)
