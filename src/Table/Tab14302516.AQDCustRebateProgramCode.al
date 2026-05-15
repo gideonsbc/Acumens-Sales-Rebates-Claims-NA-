@@ -191,6 +191,12 @@ table 14302516 "AQD Cust Rebate Program Code"
         {
             DataClassification = CustomerContent;
         }
+        field(5000; "AQD Pay-to Vendor No."; Code[20])
+        {
+            Caption = 'Pay-to Vendor No.';
+            DataClassification = CustomerContent;
+            TableRelation = Vendor."No.";
+        }
 
     }
 

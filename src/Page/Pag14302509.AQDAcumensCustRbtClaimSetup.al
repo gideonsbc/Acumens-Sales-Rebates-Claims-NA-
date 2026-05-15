@@ -3270,6 +3270,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Insert();
             END;
 
+            OnAfterInitializeCustomerRebateDefaultSetups(Rec);
+
         END;
     END;
 
@@ -3339,6 +3341,11 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             Rates.DeleteAll();
             Rec.Delete();
         end;
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterInitializeCustomerRebateDefaultSetups(var Rec: Record "AQD Acumens CustRbtClaim Setup")
+    begin
     end;
 
     var

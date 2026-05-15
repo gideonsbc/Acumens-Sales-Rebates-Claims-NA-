@@ -91,6 +91,11 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     ApplicationArea = All;
                     Caption = 'Entity No.';
                 }
+                field("AQD Pay-to Vendor No."; Rec."AQD Pay-to Vendor No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Pay-to Vendor No.';
+                }
                 field("Specific Sales New"; Rec."Specific Sales New")
                 {
                     ApplicationArea = All;
