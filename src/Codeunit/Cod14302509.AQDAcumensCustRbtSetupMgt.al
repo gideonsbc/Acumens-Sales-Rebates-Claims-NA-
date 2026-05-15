@@ -17,6 +17,7 @@ codeunit 14302509 "AQD Acumens CustRbt Setup Mgt"
             Item.ModifyAll("AQD Customer Rebate Enabled", Rec."Item Rebate Enabled");
             Vendor.ModifyAll("AQD Customer Rebate", Rec."Item Rebate Enabled");
             Customer.ModifyAll("AQD Enroll for Cust Rebate", Rec."Item Rebate Enabled");
+            Customer.ModifyAll("AQD CustRbt Calculation Date", Customer."AQD CustRbt Calculation Date"::"Shipment Date");
             CustomerRec.Reset();
             if CustomerRec.FindSet() then begin
                 repeat

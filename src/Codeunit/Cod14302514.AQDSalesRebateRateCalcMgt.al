@@ -160,11 +160,11 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         END;
         SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."No.");
         SalesRebatesRate.SETFILTER("Variant Code", '%1|%2', '', '');
-        SalesRebatesRate.SETFILTER("Starting Date", '%1|>=%2', 0D, DocumentDate);
+        SalesRebatesRate.SETFILTER("Ending Date", '%1|>=%2', 0D, DocumentDate);
         IF UOM <> '' THEN
             SalesRebatesRate.SETFILTER("Unit of Measure Code", '%1|%2', UOM, '');
         //SalesRebatesRate.SETRANGE("Starting Date", 0D, DocumentDate);
-        SalesRebatesRate.SETFILTER("Ending Date", '%1|<=%2', 0D, DocumentDate);
+        SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, DocumentDate);
         SalesRebatesRate.SETRANGE(Blocked, false);
         SalesRebatesRate.SetRange("Rebate Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');
