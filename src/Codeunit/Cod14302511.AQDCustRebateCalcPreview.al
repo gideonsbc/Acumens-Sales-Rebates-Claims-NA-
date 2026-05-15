@@ -811,7 +811,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
         CustomerRebateLine."Order No." := SalesHeaderIn."No.";
         CustomerRebateLine.Description := SalesHeaderIn."Posting Description";
         CustomerRebateLine."Order Date" := SalesHeaderIn."Order Date";
-        CustomerRebateLine."Rebate Order Date" := SalesHeaderIn."Order Date";
+        CustomerRebateLine."Rebate Order Date" := SalesHeaderIn."AQD Customer Rebate Order Date";
         CustomerRebateLine."Posting Date" := SalesHeaderIn."Posting Date";
         CustomerRebateLine."External Document No." := SalesHeaderIn."External Document No.";
         CustomerRebateLine.Amount := SalesHeaderIn.Amount;

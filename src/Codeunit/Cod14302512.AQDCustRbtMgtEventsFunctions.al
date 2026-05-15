@@ -208,6 +208,27 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             UpdateOffInvoiceRebate(SalesHeader);
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Document-Print", OnBeforeDoPrintSalesHeader, '', false, false)]
+    local procedure "Document-Print_OnBeforeDoPrintSalesHeader"(var SalesHeader: Record "Sales Header"; ReportUsage: Integer; SendAsEmail: Boolean; var IsPrinted: Boolean)
+    begin
+        if not SalesHeader."AQD Disallow Off-Inv Rebate" then
+            UpdateOffInvoiceRebate(SalesHeader);
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterPrepareOpeningDocumentStatistics, '', false, false)]
+    local procedure "Sales Header_OnAfterPrepareOpeningDocumentStatistics"(var SalesHeader: Record "Sales Header")
+    begin
+        if not SalesHeader."AQD Disallow Off-Inv Rebate" then
+            UpdateOffInvoiceRebate(SalesHeader);
+    end;
+
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Document-Print", OnBeforeProcessPrintSalesOrder, '', false, false)]
+    // local procedure "Document-Print_OnBeforeProcessPrintSalesOrder"(var SalesHeader: Record "Sales Header"; Usage: Option; var IsHandled: Boolean)
+    // begin
+    //     if not SalesHeader."AQD Disallow Off-Inv Rebate" then
+    //         UpdateOffInvoiceRebate(SalesHeader);
+    // end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesShptHeaderInsert, '', false, false)]
     local procedure Cod80_SalesPost_OnBeforeSalesShptHeaderInsert(var SalesShptHeader: Record "Sales Shipment Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; var IsHandled: Boolean; var TempWhseRcptHeader: Record "Warehouse Receipt Header" temporary; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header" temporary; WhseShip: Boolean; InvtPickPutaway: Boolean)
     var
@@ -664,6 +685,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     begin
         if SalesHeader.Status <> SalesHeader.Status::Open then
             exit;
+
+        SalesHeader.TestField("AQD Customer Rebate Order Date");
 
         BillToCustomer.Get(SalesHeader."Bill-to Customer No.");
 
