@@ -237,6 +237,7 @@ table 14302533 "AQD Posted Cust Rebate Header"
         }
         field(5000; "Process CatchUp Rebate"; Boolean)
         {
+            Caption = 'CatchUp Rebate';
             DataClassification = CustomerContent;
             Editable = false;
         }

@@ -80,6 +80,10 @@ page 14302537 "AQD Posted Customer Rebates"
                     Caption = 'Sales Amount';
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                 }
+                field("Process CatchUp Rebate"; Rec."Process CatchUp Rebate")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

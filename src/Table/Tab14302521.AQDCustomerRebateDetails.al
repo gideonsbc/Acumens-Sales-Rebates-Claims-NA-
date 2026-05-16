@@ -384,21 +384,16 @@ table 14302521 "AQD Customer Rebate Details"
             DataClassification = CustomerContent;
             Editable = false;
         }
-        // field(9010; "Specific Sales New"; Enum "AQD Specific Sales")
-        // {
-        //     DataClassification = CustomerContent;
-        //     Editable = false;
-        // }
         field(9020; "Payment Terms Code"; code[20])
         {
             DataClassification = CustomerContent;
             Editable = false;
         }
-        // field(9030; "Customer No. Filter"; Code[20])
-        // {
-        //     Caption = 'Customer No. Filter';
-        //     DataClassification = CustomerContent;//AS Temporary Used
-        // }
+        field(9030; "CatchUp Rebate"; Boolean)
+        {
+            Caption = 'CatchUp Rebate';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

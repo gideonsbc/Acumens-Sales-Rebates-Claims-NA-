@@ -77,8 +77,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         //GlobalRebateBatchFrequency: Enum "AQD CustRebate Batch Frequency";
         GlobalShptRcptNo: Code[20];
         GlobalInvCrMemoNo: Code[20];
-        StartPostingDate: Date;
-        EndPostingDate: Date;
+        GlobalStartPostingDate: Date;
+        GlobalEndPostingDate: Date;
         RunBy: Enum "AQD Customer Rebate Posting";
         GlobalProcessCatchUpRebate: Boolean;
         GlobalRebateProgramCodeFilter: Code[20];
@@ -146,10 +146,10 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         GlobalCalledFromGenerateCustomerRebateIn := CalledFromGenerateCustomerRebateIn;
         GlobalBrokerVendorNo := BrokerVendorNo;
 
-        StartPostingDate := DateArray[1];
-        EndPostingDate := DateArray[2];
-        IF (StartPostingDate = 0D) or (StartPostingDate < RebateSetup."Customer Rebate Start Date") then
-            StartPostingDate := RebateSetup."Customer Rebate Start Date";
+        GlobalStartPostingDate := DateArray[1];
+        GlobalEndPostingDate := DateArray[2];
+        IF (GlobalStartPostingDate = 0D) or (GlobalStartPostingDate < RebateSetup."Customer Rebate Start Date") then
+            GlobalStartPostingDate := RebateSetup."Customer Rebate Start Date";
 
         GlobalShptRcptNo := ShptRcptNo;
         GlobalInvCrMemoNo := InvCrMemoNo;
@@ -315,6 +315,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         LocalEmployeeRebate: Boolean;
         LocalRecordFound: Boolean;
         LocalRebateEntigyType: Enum "AQD CR Rebate Entity Type";
+        LocalSourceDocType: Option "Posted Invoice","Posted Credit Memo";
     begin
         IsHandled := false;
         OnBeforeStartCalculatingInvoiceRebate(SalesInvHeaderIn, CustomerIn, Vendor, IsHandled);
@@ -530,6 +531,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         LocalEmployeeRebate: Boolean;
         LocalRecordFound: Boolean;
         LocalRebateEntigyType: Enum "AQD CR Rebate Entity Type";
+        LocalSourceDocType: Option "Posted Invoice","Posted Credit Memo";
     begin
         IsHandled := false;
         OnBeforeStartCalculatingCrMemoRebate(SalesCrMHeaderIn, CustomerIn, Vendor, IsHandled);
@@ -733,7 +735,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                 TempRebateCategoryLines.INSERT;
             END;
         end;
-        OnAfterCheckLineRebateEnabled(CustomerNo, DocumentLine_Type, DocumentLine_No, PostingDate, IsRebateEnabled);
+        OnAfterCheckLineRebateEnabled(CustomerNo, DocumentLine_Type, DocumentLine_No, PostingDate, GlobalSalesRebateRate, GlobalProcessCatchUpRebate, IsRebateEnabled);
         EXIT(IsRebateEnabled);
     end;
 
@@ -1141,7 +1143,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         DocumentPostingDate: Date;
     begin
         IsHandled := false;
-        OnBeforeInitRebateHeader(DocumentType, SalesInvHeaderIn, SalesCrMemoHeaderIn, IsHandled);
+        OnBeforeInitRebateHeader(DocumentType, SalesInvHeaderIn, SalesCrMemoHeaderIn, GlobalProcessCatchUpRebate, RebateNo, IsHandled);
         IF IsHandled then
             EXIT;
 
@@ -1253,7 +1255,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                 IF NOT CustomerRebateBatch.FindFirst() THEN BEGIN
                     CustomerRebateBatch.INIT;
                     CustomerRebateBatch.BatchID := GlobalBatchID;
-                    CustomerRebateBatch."Posting Date" := EndPostingDate;
+                    CustomerRebateBatch."Posting Date" := GlobalEndPostingDate;
                     CustomerRebateBatch."Created By" := UserId;
                     CustomerRebateBatch."Created Date" := Today;
                     CustomerRebateBatch."Start Date" := GlobalBatchStartDate;
@@ -1314,10 +1316,10 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
             CustomerRebateHeader."Rebate-To Post Code" := RebateCustomerRec."Post Code";
             CustomerRebateHeader."Rebate-To County" := RebateCustomerRec.County;
             CustomerRebateHeader."Rebate-To Country/Region Code" := RebateCustomerRec."Country/Region Code";
-            IF EndPostingDate = 0D THEN
-                PostingDescrptionText := StrSubstNo(RebatePeriodText, format(StartPostingDate))
+            IF GlobalEndPostingDate = 0D THEN
+                PostingDescrptionText := StrSubstNo(RebatePeriodText, format(GlobalStartPostingDate))
             ELSE
-                PostingDescrptionText := StrSubstNo(RebatePeriodText, format(StartPostingDate) + '..' + FORMAT(EndPostingDate));
+                PostingDescrptionText := StrSubstNo(RebatePeriodText, format(GlobalStartPostingDate) + '..' + FORMAT(GlobalEndPostingDate));
             CustomerRebateHeader."Posting Description" := PostingDescrptionText;
             IF GlobalBatchID <> '' THEN
                 CustomerRebateHeader."Posting Date" := CustomerRebateBatch."Posting Date"
@@ -1385,7 +1387,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Document Type" := CustomerRebateLine."Document Type"::Invoice;
                     CustomerRebateLine."Cust Rebate Program Code" := SalesInvHeaderIn."AQD Cust Rebate Program Code";
                     CustomerRebateLine."Marketplace Code" := SalesInvHeaderIn."AQD Marketplace Code";
-                    CustomerRebateLine."Off-Invoice Rebate" := CustMgtEvent.OffInvoiceRebateAmount(SalesInvHeaderIn);
+                    if not GlobalProcessCatchUpRebate then
+                        CustomerRebateLine."Off-Invoice Rebate" := CustMgtEvent.OffInvoiceRebateAmount(SalesInvHeaderIn);
                     CustomerRebateLine."Document No." := SalesInvHeaderIn."No.";
                     CustomerRebateLine."Order No." := SalesInvHeaderIn."Order No.";
                     CustomerRebateLine.Description := SalesInvHeaderIn."Posting Description";
@@ -1416,7 +1419,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Document Type" := CustomerRebateLine."Document Type"::"Credit Memo";
                     CustomerRebateLine."Cust Rebate Program Code" := SalesCrMemoHeaderIn."AQD Cust Rebate Program Code";
                     CustomerRebateLine."Marketplace Code" := SalesCrMemoHeaderIn."AQD Marketplace Code";
-                    CustomerRebateLine."Off-Invoice Rebate" := CustMgtEvent.OffInvoiceRebateCrAmount(SalesCrMemoHeaderIn);
+                    if not GlobalProcessCatchUpRebate then
+                        CustomerRebateLine."Off-Invoice Rebate" := CustMgtEvent.OffInvoiceRebateCrAmount(SalesCrMemoHeaderIn);
                     CustomerRebateLine."Document No." := SalesCrMemoHeaderIn."No.";
                     CustomerRebateLine."Order No." := SalesCrMemoHeaderIn."Return Order No.";
                     CustomerRebateLine.Description := SalesCrMemoHeaderIn."Posting Description";
@@ -1723,7 +1727,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                                 UNTIL TempItemLedgEntry.Next() = 0;
                             END;
                         end;
-                        OnAfterInsertRebateDetail(CustomerRebateDetails);
+                        OnAfterInsertRebateDetail(CustomerRebateDetails, GlobalProcessCatchUpRebate);
                     end;
                 Until (TempRebateCategoryLines.Next() = 0);
                 TempItemLedgEntry.RESET;
@@ -1752,13 +1756,13 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         DateRec: Record Date;
         LocalBatchID: Code[50];
     begin
-        LocalBatchID := FORMAT(Date2DMY(EndPostingDate, 3));
+        LocalBatchID := FORMAT(Date2DMY(GlobalEndPostingDate, 3));
         IF RebateSetup."Post Rebates by Bill-To Cust" THEN
-            LocalBatchID := FORMAT(EndPostingDate, 0, '<Month Text>') + ' ' + LocalBatchID + ' ' + CustomerIn."No."
+            LocalBatchID := FORMAT(GlobalEndPostingDate, 0, '<Month Text>') + ' ' + LocalBatchID + ' ' + CustomerIn."No."
         ELSE
-            LocalBatchID := FORMAT(EndPostingDate, 0, '<Month Text>') + ' ' + LocalBatchID;
-        GlobalBatchStartDate := StartPostingDate;
-        GlobalBatchEndDate := EndPostingDate;
+            LocalBatchID := FORMAT(GlobalEndPostingDate, 0, '<Month Text>') + ' ' + LocalBatchID;
+        GlobalBatchStartDate := GlobalStartPostingDate;
+        GlobalBatchEndDate := GlobalEndPostingDate;
         PostingDescrptionText := StrSubstNo(RebatePeriodText, LocalBatchID);
 
         LocalCustomerRebateBatch.RESET;
@@ -1811,7 +1815,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         IF IsHandled THEN
             EXIT;
 
-        SalesRebateCalcMgt.FindSalesLineRebateRate(CustomerRebateDetailsLocIn);
+        SalesRebateCalcMgt.FindSalesLineRebateRate(CustomerRebateDetailsLocIn, GlobalProcessCatchUpRebate, GlobalStartPostingDate, GlobalEndPostingDate);
 
         OnAfterGetSalesRebateDetail(CustomerRebateDetailsLocIn);
     end;
@@ -1954,7 +1958,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInitRebateHeader(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var IsHandled: Boolean)
+    local procedure OnBeforeInitRebateHeader(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header"; GlobalProcessCatchUpRebate: Boolean; var RebateNo: code[20]; var IsHandled: Boolean)
     begin
     end;
 
@@ -1994,7 +1998,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterInsertRebateDetail(var CustomerRebateDetails: Record "AQD Customer Rebate Details")
+    local procedure OnAfterInsertRebateDetail(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean)
     begin
     end;
 
@@ -2046,7 +2050,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
 
     [IntegrationEvent(false, false)]
     local procedure OnAfterCheckLineRebateEnabled(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20];
-                                                                                               PostingDate: Date; var IsRebateEnabled: Boolean)
+                                                                                               PostingDate: Date; var GlobalSalesRebateRate: Record "AQD Sales Rebates Rate"; GlobalProcessCatchUpRebate: Boolean; var IsRebateEnabled: Boolean)
     begin
     end;
 

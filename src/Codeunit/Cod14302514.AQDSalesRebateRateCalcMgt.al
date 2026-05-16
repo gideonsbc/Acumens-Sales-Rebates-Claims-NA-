@@ -4,7 +4,12 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
     begin
     end;
 
-    procedure FindSalesLineRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    var
+        GlobalProcessCatchUpRebate: Boolean;
+        GlobalStartPostingDate: Date;
+        GlobalEndPostingDate: Date;
+
+    procedure FindSalesLineRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebateIn: Boolean; GlobalStartPostingDateIn: Date; GlobalEndPostingDateIn: Date)
     var
         SalesLine: Record "Sales Line";
         SalesInvLine: Record "Sales Invoice Line";
@@ -13,6 +18,10 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         ReturnReceiptLine: Record "Return Receipt Line";
         IsHandled: Boolean;
     begin
+        GlobalProcessCatchUpRebate := GlobalProcessCatchUpRebateIn;
+        GlobalStartPostingDate := GlobalStartPostingDateIn;
+        GlobalEndPostingDate := GlobalEndPostingDateIn;
+
         TempSalesRebatesRate.RESET;
         IF TempSalesRebatesRate.IsTemporary THEN
             TempSalesRebatesRate.DeleteAll();
@@ -160,11 +169,17 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         END;
         SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."No.");
         SalesRebatesRate.SETFILTER("Variant Code", '%1|%2', '', '');
-        SalesRebatesRate.SETFILTER("Ending Date", '%1|>=%2', 0D, DocumentDate);
+
+        if GlobalProcessCatchUpRebate then begin
+            SalesRebatesRate.SETFILTER("Ending Date", '%1|>=%2', 0D, GlobalEndPostingDate);
+            SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, GlobalStartPostingDate);
+        end else begin
+            SalesRebatesRate.SETFILTER("Ending Date", '%1|>=%2', 0D, DocumentDate);
+            SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, DocumentDate);
+        end;
+
         IF UOM <> '' THEN
             SalesRebatesRate.SETFILTER("Unit of Measure Code", '%1|%2', UOM, '');
-        //SalesRebatesRate.SETRANGE("Starting Date", 0D, DocumentDate);
-        SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, DocumentDate);
         SalesRebatesRate.SETRANGE(Blocked, false);
         SalesRebatesRate.SetRange("Rebate Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');

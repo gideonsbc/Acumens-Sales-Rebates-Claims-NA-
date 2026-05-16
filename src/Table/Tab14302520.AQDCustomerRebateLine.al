@@ -261,6 +261,11 @@ table 14302520 "AQD Customer Rebate Line"
         {
             DataClassification = CustomerContent;
         }
+        field(9200; "CatchUp Rebate"; Boolean)
+        {
+            Caption = 'CatchUp Rebate';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

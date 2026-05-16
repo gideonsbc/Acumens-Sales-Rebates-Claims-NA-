@@ -140,26 +140,34 @@ report 14302510 "AQD Generate Customer Rebates"
                     }
                     field(RebateProgramCode; RebateProgramCodeFilter)
                     {
-                        Caption = 'Rebate Program Code';
-                        TableRelation = "AQD Cust Rebate Program Code" where("Entity Type" = const("Vendor Commission"));
+                        Caption = 'Rebate Program Code Filter';
                         Editable = ProcessCatchUpRebate;
+                        trigger OnLookup(var Text: Text): Boolean
+                        var
+                            RebateProgramCodes: Page "AQD Cust Rebate Program Codes";
+                        begin
+                            RebateProgramCodes.LOOKUPMODE := TRUE;
+                            IF RebateProgramCodes.RUNMODAL = ACTION::LookupOK THEN
+                                Text := RebateProgramCodes.GetSelectionFilter
+                            ELSE
+                                EXIT(false);
+                            EXIT(true);
+                        end;
                     }
                     field(VendorNo; BrokerVendorNo)
                     {
-                        Caption = 'Vendor No.';
-                        TableRelation = Vendor;
+                        Caption = 'Vendor No. Filter';
                         Editable = ProcessCatchUpRebate;
-                        trigger OnValidate()
+                        trigger OnLookup(var Text: Text): Boolean
                         var
-                            Rates: Record "AQD Sales Rebates Rate";
+                            Vendors: Page "Vendor List";
                         begin
-                            if RebateProgramCodeFilter = '' then
-                                Error('Please select the Rebate Program Code first.');
-                            Rates.Reset();
-                            Rates.SetRange("Rebate Program Code", RebateProgramCodeFilter);
-                            Rates.SetRange("Entity No.", BrokerVendorNo);
-                            if not Rates.FindFirst() then
-                                Error('The selected broker does not have a rate configured in the setup.');
+                            Vendors.LOOKUPMODE := TRUE;
+                            IF Vendors.RUNMODAL = ACTION::LookupOK THEN
+                                Text := Vendors.GetSelectionFilter
+                            ELSE
+                                EXIT(false);
+                            EXIT(true);
                         end;
                     }
                 }
@@ -184,12 +192,9 @@ report 14302510 "AQD Generate Customer Rebates"
             EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
         end;
 
-        if ProcessCatchUpRebate then begin
+        if ProcessCatchUpRebate then
             if RebateProgramCodeFilter = '' then
-                Error('Rebate Program Code is required.');
-            if BrokerVendorNo = '' then
-                Error('Vendor No. (Broker) is required.');
-        end;
+                Error('Please select the Rebate Program Code filter before proceeding.');
 
     end;
 

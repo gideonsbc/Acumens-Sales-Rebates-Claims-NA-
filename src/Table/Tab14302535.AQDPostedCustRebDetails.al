@@ -360,6 +360,26 @@ table 14302535 "AQD Posted Cust Reb Details"
             Caption = 'Document No.';
             Editable = false;
         }
+        field(8090; "Rebate Rate Entry No."; Integer)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(9000; "Customer Rebate Category"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(9020; "Payment Terms Code"; code[20])
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(9030; "CatchUp Rebate"; Boolean)
+        {
+            Caption = 'CatchUp Rebate';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

@@ -1036,7 +1036,7 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
         IF IsHandled THEN
             EXIT;
 
-        SalesRebateCalcMgt.FindSalesLineRebateRate(CustomerRebateDetailsLocIn);
+        SalesRebateCalcMgt.FindSalesLineRebateRate(CustomerRebateDetailsLocIn, false, 0D, 0D);
 
         OnAfterGetSalesRebateDetail(CustomerRebateDetailsLocIn);
     end;

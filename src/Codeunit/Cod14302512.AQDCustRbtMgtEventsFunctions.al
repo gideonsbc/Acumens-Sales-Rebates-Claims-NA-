@@ -496,7 +496,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     local procedure "AQD Cust Rebate Calc Mgt_OnSetFilterTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalProcessCatchUpRebate: Boolean; GlobalRebateProgramCodeFilter: Code[20])
     begin
         if GlobalProcessCatchUpRebate and (GlobalRebateProgramCodeFilter <> '') then
-            TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalRebateProgramCodeFilter);
+            TempRebateCategoryLines.SetFilter("Rebate Program Code", GlobalRebateProgramCodeFilter);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnSetSalesRebateRateFilter, '', false, false)]
@@ -607,13 +607,39 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     begin
         if not ApplyMoreRebateFilters(CustomerRebateDetails, false, '') then
             IsHandled := true;
+
+        if CustomerRebateDetails."Calculated Line Rebate Amount" = 0 then
+            IsHandled := true;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnBeforeInsertRebateDetail, '', false, false)]
     local procedure "AQD Cust Rebate Calc Mgt_OnBeforeInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; GlobalBrokerVendorNo: Code[20]; var IsHandled: Boolean)
+    var
+        PostedCustRebateDetails: Record "AQD Posted Cust Reb Details";
     begin
         if not ApplyMoreRebateFilters(CustomerRebateDetails, GlobalProcessCatchUpRebate, GlobalBrokerVendorNo) then
             IsHandled := true;
+
+        if CustomerRebateDetails."Calculated Line Rebate Amount" = 0 then
+            IsHandled := true;
+
+        CustomerRebateDetails."CatchUp Rebate" := false;
+
+        if GlobalProcessCatchUpRebate then begin
+
+            CustomerRebateDetails."CatchUp Rebate" := true;
+
+            PostedCustRebateDetails.Reset();
+            PostedCustRebateDetails.SetRange("Customer Rebate Status", PostedCustRebateDetails."Customer Rebate Status"::Posted);
+            PostedCustRebateDetails.SetRange("Document No.", CustomerRebateDetails."Document No.");
+            PostedCustRebateDetails.SetFilter("Rebate Program Code", CustomerRebateDetails."Rebate Program Code");
+            PostedCustRebateDetails.SetFilter("Entity No.", CustomerRebateDetails."Entity No.");
+            PostedCustRebateDetails.SetRange("Entity Type", CustomerRebateDetails."Entity Type");
+            PostedCustRebateDetails.SetRange("Document Type", CustomerRebateDetails."Document Type");
+            if PostedCustRebateDetails.FindFirst() then
+                IsHandled := true;
+        end;
+
     end;
 
     local procedure ApplyMoreRebateFilters(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; GlobalBrokerVendorNo: Code[20]): Boolean
@@ -645,7 +671,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             RebateDetailsTemp.SetFilter("Header Marketplace Code", RebatePrograms."SO Marketplace Code Filter");
 
         if GlobalProcessCatchUpRebate and (GlobalBrokerVendorNo <> '') then
-            RebateDetailsTemp.SetRange("Entity No.", GlobalBrokerVendorNo);
+            RebateDetailsTemp.SetFilter("Entity No.", GlobalBrokerVendorNo);
         exit(RebateDetailsTemp.FindFirst());
     end;
 
@@ -1066,10 +1092,22 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnAfterInsertRebateDetail, '', false, false)]
-    local procedure "AQD Cust Rebate Calc Mgt_OnAfterInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details")
+    local procedure "AQD Cust Rebate Calc Mgt_OnAfterInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean)
     var
         ItemLedgerEntry: Record "AQD CR Reb Item Ledger Entry";
+        CustomerRebateLine: Record "AQD Customer Rebate Line";
     begin
+        if GlobalProcessCatchUpRebate then begin
+            CustomerRebateLine.Reset();
+            CustomerRebateLine.SetRange("Rebate No.", CustomerRebateDetails."Rebate No.");
+            CustomerRebateLine.SetRange("Line No.", CustomerRebateDetails."Rebate Line No.");
+            if CustomerRebateLine.FindSet() then begin
+                CustomerRebateLine.CalcFields("Calculated Rebate Amount");
+                if CustomerRebateLine."Calculated Rebate Amount" = 0 then
+                    CustomerRebateLine.Delete();
+            end;
+        end;
+
         ItemLedgerEntry.Reset();
         ItemLedgerEntry.SetRange("AQD Bill-to Customer No.", CustomerRebateDetails."Bill-to Customer No.");
         case CustomerRebateDetails."Document Type" of
@@ -1101,4 +1139,19 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             Item."AQD Cust Rebate Category Code" := Item."Item Category Code";
     end;
 
+    procedure GetRebateProgramCode(PostedCustomerRebateLine: Record "AQD Posted Cust Rebate Line"; GenJnlLine: Record "Gen. Journal Line"): Code[20]
+    var
+        PostedCustomerRebateLineDetails: Record "AQD Posted Cust Reb Details";
+    begin
+        PostedCustomerRebateLineDetails.RESET;
+        PostedCustomerRebateLineDetails.SetRange("Rebate No.", PostedCustomerRebateLine."Rebate No.");
+        PostedCustomerRebateLineDetails.SetRange("Rebate Line No.", PostedCustomerRebateLine."Line No.");
+        PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
+        PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Expense);
+        PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);
+        PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Vendor);
+        PostedCustomerRebateLineDetails.SetRange("Entity No.", GenJnlLine."Account No.");
+        if PostedCustomerRebateLineDetails.FindFirst() then
+            exit(PostedCustomerRebateLineDetails."Rebate Program Code");
+    end;
 }

@@ -192,12 +192,9 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         begin
                             if SalesInvoiceHeader.Get(CustomerRebateLine."Document No.") then begin
                                 SalesInvoiceHeader."AQD Customer Rebate Status" := SalesInvoiceHeader."AQD Customer Rebate Status"::Posted;
-                                if SalesInvoiceHeader."AQD Customer Rebate No" = '' then
-                                    SalesInvoiceHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
-                                if SalesInvoiceHeader."AQD Cust Rebate Program Code" = '' then
-                                    SalesInvoiceHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
-                                if SalesInvoiceHeader."AQD Marketplace Code" = '' then
-                                    SalesInvoiceHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
+                                SalesInvoiceHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
+                                SalesInvoiceHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
+                                SalesInvoiceHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
                                 SalesInvoiceHeader.Modify(true);
                             end;
                         end;
@@ -205,12 +202,9 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         begin
                             if SalesCrMemoHeader.Get(CustomerRebateLine."Document No.") then begin
                                 SalesCrMemoHeader."AQD Customer Rebate Status" := SalesCrMemoHeader."AQD Customer Rebate Status"::Posted;
-                                if SalesCrMemoHeader."AQD Customer Rebate No" = '' then
-                                    SalesCrMemoHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
-                                if SalesCrMemoHeader."AQD Cust Rebate Program Code" = '' then
-                                    SalesCrMemoHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
-                                if SalesCrMemoHeader."AQD Marketplace Code" = '' then
-                                    SalesCrMemoHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
+                                SalesCrMemoHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
+                                SalesCrMemoHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
+                                SalesCrMemoHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
                                 SalesCrMemoHeader.Modify(true);
                             end;
                         end;
@@ -218,12 +212,9 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         begin
                             if SalesShipmentHeader.Get(CustomerRebateLine."Document No.") then begin
                                 SalesShipmentHeader."AQD Customer Rebate Status" := SalesShipmentHeader."AQD Customer Rebate Status"::Posted;
-                                if SalesShipmentHeader."AQD Customer Rebate No" = '' then
-                                    SalesShipmentHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
-                                if SalesShipmentHeader."AQD Cust Rebate Program Code" = '' then
-                                    SalesShipmentHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
-                                if SalesShipmentHeader."AQD Marketplace Code" = '' then
-                                    SalesShipmentHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
+                                SalesShipmentHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
+                                SalesShipmentHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
+                                SalesShipmentHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
                                 SalesShipmentHeader.Modify(true);
                             end;
                         end;
@@ -231,12 +222,9 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         begin
                             if ReturnReceiptHeader.Get(CustomerRebateLine."Document No.") then begin
                                 ReturnReceiptHeader."AQD Customer Rebate Status" := ReturnReceiptHeader."AQD Customer Rebate Status"::Posted;
-                                if ReturnReceiptHeader."AQD Customer Rebate No" = '' then
-                                    ReturnReceiptHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
-                                if ReturnReceiptHeader."AQD Cust Rebate Program Code" = '' then
-                                    ReturnReceiptHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
-                                if ReturnReceiptHeader."AQD Marketplace Code" = '' then
-                                    ReturnReceiptHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
+                                ReturnReceiptHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
+                                ReturnReceiptHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
+                                ReturnReceiptHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
                                 ReturnReceiptHeader.Modify(true);
                             end;
                         end;
@@ -310,104 +298,141 @@ codeunit 14302515 "AQD Customer Rebate Post"
         GenJnlLine: Record "Gen. Journal Line";
         RebateStatusError: Label 'Rebate Status must not be %1.';
     begin
-        GenJnlLine.Reset;
-        GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
-        GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
-        IF GenJnlLine.FindFirst() THEN
-            GenJnlLine.DeleteAll();
+        CustomerRebateHeader.CalcFields("Calculated Rebate Amount");
+        if CustomerRebateHeader."Calculated Rebate Amount" <> 0 then begin
 
-        CustomerRebateLine.Reset();
-        CustomerRebateLine.SetRange("Rebate No.", CustomerRebateHeader."No.");
-        if CustomerRebateLine.FindFirst() then begin
-            PostedCustRebateHeader.Init();
-            PostedCustRebateHeader.TransferFields(CustomerRebateHeader);
-            //PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Posted;
-            PostedCustRebateHeader.Insert();
+            GenJnlLine.Reset;
+            GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+            GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+            IF GenJnlLine.FindFirst() THEN
+                GenJnlLine.DeleteAll();
 
-            MoveCustomerRebateLine(CustomerRebateHeader);
-            MoveCustomerRebateComments(CustomerRebateHeader);
-            TmpPostCustomerRebateByBillTo.RESET;
+            CustomerRebateLine.Reset();
+            CustomerRebateLine.SetRange("Rebate No.", CustomerRebateHeader."No.");
+            if CustomerRebateLine.FindFirst() then begin
 
-            TmpInovoiceBuffer.RESET;
-            IF TmpInovoiceBuffer.IsTemporary then
-                TmpInovoiceBuffer.DeleteAll();
+                PostedCustRebateHeader.Init();
+                PostedCustRebateHeader.TransferFields(CustomerRebateHeader);
+                //PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::Posted;
+                PostedCustRebateHeader.Insert();
 
-            TmpCrMemoBuffer.RESET;
-            IF TmpCrMemoBuffer.IsTemporary then
-                TmpCrMemoBuffer.DeleteAll();
+                MoveCustomerRebateLine(CustomerRebateHeader);
+                MoveCustomerRebateComments(CustomerRebateHeader);
+                TmpPostCustomerRebateByBillTo.RESET;
 
-            IF TmpPostCustomerRebateByBillTo.FindFirst() THEN BEGIN
-                REPEAT
-                    BillToCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
-                    if not PostedCustRebateHeader."Process CatchUp Rebate" then begin
-                        Case RebateSetup."Rebate Payable Ac" OF
-                            RebateSetup."Rebate Payable Ac"::Customer:
-                                BEGIN
-                                    CreateSalesDocument(PostedCustRebateHeader, false);
-                                END;
-                            RebateSetup."Rebate Payable Ac"::"Rebate Payable AC":
-                                BEGIN
-                                    CreateSalesJournal(PostedCustRebateHeader);
-                                END;
+                TmpInovoiceBuffer.RESET;
+                IF TmpInovoiceBuffer.IsTemporary then
+                    TmpInovoiceBuffer.DeleteAll();
+
+                TmpCrMemoBuffer.RESET;
+                IF TmpCrMemoBuffer.IsTemporary then
+                    TmpCrMemoBuffer.DeleteAll();
+
+                IF TmpPostCustomerRebateByBillTo.FindFirst() THEN BEGIN
+                    REPEAT
+                        BillToCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
+                        if not PostedCustRebateHeader."Process CatchUp Rebate" then begin
+                            Case RebateSetup."Rebate Payable Ac" OF
+                                RebateSetup."Rebate Payable Ac"::Customer:
+                                    BEGIN
+                                        CreateSalesDocument(PostedCustRebateHeader, false);
+                                    END;
+                                RebateSetup."Rebate Payable Ac"::"Rebate Payable AC":
+                                    BEGIN
+                                        CreateSalesJournal(PostedCustRebateHeader);
+                                    END;
+                            END;
+                        end else begin
+                            CreateSalesJournal(PostedCustRebateHeader);
+                        end;
+                    UNTIL TmpPostCustomerRebateByBillTo.Next() = 0;
+                END;
+
+                Case RebateSetup."Rebate Payable Ac" OF
+                    RebateSetup."Rebate Payable Ac"::Customer:
+                        BEGIN
+                            TmpInovoiceBuffer.RESET;
+                            IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
+                                REPEAT
+                                    IF SalesHeader.GET(TmpInovoiceBuffer."Dimension Set ID", // Document Type
+                                                       TmpInovoiceBuffer."Job No.")          // Cr/Invoice No.
+                                    THEN BEGIN
+                                        SalesHeader.Ship := TRUE;
+                                        SalesHeader.Invoice := TRUE;
+                                        SalesPost.Run(SalesHeader);
+                                    END;
+                                UNTIL TmpInovoiceBuffer.Next() = 0;
+                            END;
+
+                            TmpCrMemoBuffer.RESET;
+                            IF TmpCrMemoBuffer.FindFirst() THEN BEGIN
+                                REPEAT
+                                    IF SalesHeader.GET(TmpCrMemoBuffer."Dimension Set ID", // Document Type
+                                                       TmpCrMemoBuffer."Job No.")          // Cr/Invoice No.
+                                    THEN BEGIN
+                                        SalesHeader.Receive := TRUE;
+                                        SalesHeader.Invoice := TRUE;
+                                        SalesPost.Run(SalesHeader);
+                                    END;
+                                UNTIL TmpCrMemoBuffer.Next() = 0;
+                            END;
+
+                            GenJnlLine.RESET;
+                            GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+                            GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                            GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
+                            IF GenJnlLine.FindFirst() THEN
+                                CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
                         END;
-                    end else begin
-                        CreateSalesJournal(PostedCustRebateHeader);
-                    end;
-                UNTIL TmpPostCustomerRebateByBillTo.Next() = 0;
+                    RebateSetup."Rebate Payable Ac"::"Rebate Payable AC":
+                        BEGIN
+                            GenJnlLine.RESET;
+                            GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+                            GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                            IF GenJnlLine.FindFirst() THEN
+                                CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+                        END;
+                END;
+                //END;
+                //END;
+
+                CustomerRebateDetails.RESET;
+                CustomerRebateDetails.SetRange("Rebate No.", CustomerRebateHeader."No.");
+                CustomerRebateDetails.DeleteAll();
+
+                CustomerRebateLine.DeleteAll();
+
+                CustomerRebatecomments.Reset();
+                CustomerRebatecomments.SetRange("Rebate No.", CustomerRebateHeader."No.");
+                CustomerRebatecomments.DeleteAll();
+
+                CustomerRebateHeader.Delete();
+
+                IF CustomerRebateHeader.BatchID <> '' THEN BEGIN
+                    LocalCustomerRebateHeader.RESET;
+                    LocalCustomerRebateHeader.SetRange("Batch Entry No.", CustomerRebateHeader."Batch Entry No.");
+                    LocalCustomerRebateHeader.SetRange(BatchID, CustomerRebateHeader.BatchID);
+                    IF NOT LocalCustomerRebateHeader.FindFirst() THEN begin
+                        CustomerRebateBatch.RESET;
+                        CustomerRebateBatch.SetRange("Entry No.", CustomerRebateHeader."Batch Entry No.");
+                        CustomerRebateBatch.SETRANGE(BatchID, CustomerRebateHeader.BatchID);
+                        IF CustomerRebateBatch.FindFirst() THEN BEGIN
+                            PostedCustomerRebateBatch.Init();
+                            PostedCustomerRebateBatch.TransferFields(CustomerRebateBatch);
+                            PostedCustomerRebateBatch.Insert();
+                            CustomerRebateBatch.Delete();
+                        END;
+                    END;
+                END;
             END;
 
-            Case RebateSetup."Rebate Payable Ac" OF
-                RebateSetup."Rebate Payable Ac"::Customer:
-                    BEGIN
-                        TmpInovoiceBuffer.RESET;
-                        IF TmpInovoiceBuffer.FindFirst() THEN BEGIN
-                            REPEAT
-                                IF SalesHeader.GET(TmpInovoiceBuffer."Dimension Set ID", // Document Type
-                                                   TmpInovoiceBuffer."Job No.")          // Cr/Invoice No.
-                                THEN BEGIN
-                                    SalesHeader.Ship := TRUE;
-                                    SalesHeader.Invoice := TRUE;
-                                    SalesPost.Run(SalesHeader);
-                                END;
-                            UNTIL TmpInovoiceBuffer.Next() = 0;
-                        END;
-
-                        TmpCrMemoBuffer.RESET;
-                        IF TmpCrMemoBuffer.FindFirst() THEN BEGIN
-                            REPEAT
-                                IF SalesHeader.GET(TmpCrMemoBuffer."Dimension Set ID", // Document Type
-                                                   TmpCrMemoBuffer."Job No.")          // Cr/Invoice No.
-                                THEN BEGIN
-                                    SalesHeader.Receive := TRUE;
-                                    SalesHeader.Invoice := TRUE;
-                                    SalesPost.Run(SalesHeader);
-                                END;
-                            UNTIL TmpCrMemoBuffer.Next() = 0;
-                        END;
-
-                        GenJnlLine.RESET;
-                        GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
-                        GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
-                        GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
-                        IF GenJnlLine.FindFirst() THEN
-                            CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
-                    END;
-                RebateSetup."Rebate Payable Ac"::"Rebate Payable AC":
-                    BEGIN
-                        GenJnlLine.RESET;
-                        GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
-                        GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
-                        IF GenJnlLine.FindFirst() THEN
-                            CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
-                    END;
-            END;
-            //END;
-            //END;
-
+        end else begin
             CustomerRebateDetails.RESET;
             CustomerRebateDetails.SetRange("Rebate No.", CustomerRebateHeader."No.");
             CustomerRebateDetails.DeleteAll();
 
+            CustomerRebateDetails.Reset();
+            CustomerRebateLine.SetRange("Rebate No.", CustomerRebateHeader."No.");
             CustomerRebateLine.DeleteAll();
 
             CustomerRebatecomments.Reset();
@@ -415,24 +440,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
             CustomerRebatecomments.DeleteAll();
 
             CustomerRebateHeader.Delete();
+        end;
 
-            IF CustomerRebateHeader.BatchID <> '' THEN BEGIN
-                LocalCustomerRebateHeader.RESET;
-                LocalCustomerRebateHeader.SetRange("Batch Entry No.", CustomerRebateHeader."Batch Entry No.");
-                LocalCustomerRebateHeader.SetRange(BatchID, CustomerRebateHeader.BatchID);
-                IF NOT LocalCustomerRebateHeader.FindFirst() THEN begin
-                    CustomerRebateBatch.RESET;
-                    CustomerRebateBatch.SetRange("Entry No.", CustomerRebateHeader."Batch Entry No.");
-                    CustomerRebateBatch.SETRANGE(BatchID, CustomerRebateHeader.BatchID);
-                    IF CustomerRebateBatch.FindFirst() THEN BEGIN
-                        PostedCustomerRebateBatch.Init();
-                        PostedCustomerRebateBatch.TransferFields(CustomerRebateBatch);
-                        PostedCustomerRebateBatch.Insert();
-                        CustomerRebateBatch.Delete();
-                    END;
-                END;
-            END;
-        END;
     END;
 
     procedure CreateSalesFromPostedRebateDocument(PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header"; ShowDialogue: Boolean)
@@ -671,6 +680,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         LineNo: Integer;
         ItemChargeNextLineNo: Integer;
         VendLocalRebateAmount, EmpLocalRebateAmount : Decimal;
+        CustRebateMgtFunction: Codeunit "AQD CustRbtMgt EventsFunctions";
     begin
         PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)",
                                             "Vendor Commission", "Employee Commission");
@@ -952,7 +962,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     GenJnlLine."AQD Cust Rebate Document Type" := PostedCustomerRebateLine."Document Type";
                     GenJnlLine."AQD Cust Rebate Document No." := PostedCustomerRebateLine."Rebate No.";
-                    GenJnlLine."AQD CR Rebate Program Code" := PostedCustomerRebateLine."Cust Rebate Program Code";
+                    GenJnlLine."AQD CR Rebate Program Code" := CustRebateMgtFunction.GetRebateProgramCode(PostedCustomerRebateLine, GenJnlLine);//PostedCustomerRebateLine."Cust Rebate Program Code";
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                     GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
@@ -1092,6 +1102,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         LineNo: Integer;
         ItemChargeNextLineNo: Integer;
         LocalRebateAmount: Decimal;
+        CustRebateMgtFunction: Codeunit "AQD CustRbtMgt EventsFunctions";
     begin
         PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)",
                                             "Vendor Commission", "Employee Commission");
@@ -1377,7 +1388,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     GenJnlLine."AQD Cust Rebate Document Type" := PostedCustomerRebateLine."Document Type";
                     GenJnlLine."AQD Cust Rebate Document No." := PostedCustomerRebateLine."Rebate No.";
-                    GenJnlLine."AQD CR Rebate Program Code" := PostedCustomerRebateLine."Cust Rebate Program Code";
+                    GenJnlLine."AQD CR Rebate Program Code" := CustRebateMgtFunction.GetRebateProgramCode(PostedCustomerRebateLine, GenJnlLine);//PostedCustomerRebateLine."Cust Rebate Program Code";
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                     GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
