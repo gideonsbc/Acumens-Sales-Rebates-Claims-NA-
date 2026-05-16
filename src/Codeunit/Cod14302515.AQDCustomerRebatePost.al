@@ -1596,9 +1596,9 @@ codeunit 14302515 "AQD Customer Rebate Post"
                                     GenJnlLine."Account Type" := GenJnlLine."Account Type"::Customer;
                                     LocalRebateAmount := InvoicePostingBuffer.Amount;
                                     if LocalRebateAmount > 0 then
-                                        GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
+                                        GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice)
                                     else
-                                        GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
+                                        GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo");
                                 end;
                             PostedCustRebateDetailLine."Entity Type"::Employee:
                                 BEGIN

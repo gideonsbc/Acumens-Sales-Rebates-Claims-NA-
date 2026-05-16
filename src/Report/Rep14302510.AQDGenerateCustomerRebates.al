@@ -192,9 +192,9 @@ report 14302510 "AQD Generate Customer Rebates"
             EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
         end;
 
-        if ProcessCatchUpRebate then
-            if RebateProgramCodeFilter = '' then
-                Error('Please select the Rebate Program Code filter before proceeding.');
+        // if ProcessCatchUpRebate then
+        //     if RebateProgramCodeFilter = '' then
+        //         Error('Please select the Rebate Program Code filter before proceeding.');
 
     end;
 

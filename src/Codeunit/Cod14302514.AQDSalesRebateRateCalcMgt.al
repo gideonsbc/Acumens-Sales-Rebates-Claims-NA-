@@ -9,6 +9,11 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         GlobalStartPostingDate: Date;
         GlobalEndPostingDate: Date;
 
+    [Obsolete('This function is deprecated. Use NewFunctionName instead.', '15.0')]
+    procedure FindSalesLineRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    begin
+    end;
+
     procedure FindSalesLineRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebateIn: Boolean; GlobalStartPostingDateIn: Date; GlobalEndPostingDateIn: Date)
     var
         SalesLine: Record "Sales Line";
