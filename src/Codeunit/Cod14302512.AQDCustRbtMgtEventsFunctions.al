@@ -1097,16 +1097,16 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         ItemLedgerEntry: Record "AQD CR Reb Item Ledger Entry";
         CustomerRebateLine: Record "AQD Customer Rebate Line";
     begin
-        if GlobalProcessCatchUpRebate then begin
-            CustomerRebateLine.Reset();
-            CustomerRebateLine.SetRange("Rebate No.", CustomerRebateDetails."Rebate No.");
-            CustomerRebateLine.SetRange("Line No.", CustomerRebateDetails."Rebate Line No.");
-            if CustomerRebateLine.FindSet() then begin
-                CustomerRebateLine.CalcFields("Calculated Rebate Amount");
-                if CustomerRebateLine."Calculated Rebate Amount" = 0 then
-                    CustomerRebateLine.Delete();
-            end;
-        end;
+        // if GlobalProcessCatchUpRebate then begin
+        //     CustomerRebateLine.Reset();
+        //     CustomerRebateLine.SetRange("Rebate No.", CustomerRebateDetails."Rebate No.");
+        //     CustomerRebateLine.SetRange("Line No.", CustomerRebateDetails."Rebate Line No.");
+        //     if CustomerRebateLine.FindSet() then begin
+        //         CustomerRebateLine.CalcFields("Calculated Rebate Amount");
+        //         if CustomerRebateLine."Calculated Rebate Amount" = 0 then
+        //             CustomerRebateLine.Delete();
+        //     end;
+        // end;
 
         ItemLedgerEntry.Reset();
         ItemLedgerEntry.SetRange("AQD Bill-to Customer No.", CustomerRebateDetails."Bill-to Customer No.");

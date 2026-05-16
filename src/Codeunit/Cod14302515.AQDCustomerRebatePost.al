@@ -300,7 +300,6 @@ codeunit 14302515 "AQD Customer Rebate Post"
     begin
         CustomerRebateHeader.CalcFields("Calculated Rebate Amount");
         if CustomerRebateHeader."Calculated Rebate Amount" <> 0 then begin
-
             GenJnlLine.Reset;
             GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
             GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
@@ -576,25 +575,28 @@ codeunit 14302515 "AQD Customer Rebate Post"
         CustomerRebateLine.SetRange("Rebate No.", CustomerRebateHeader."No.");
         IF CustomerRebateLine.FindFirst() THEN BEGIN
             repeat
-                TmpPostCustomerRebateByBillTo.RESET;
-                TmpPostCustomerRebateByBillTo.SetRange("G/L Account", CustomerRebateLine."Rebate No.");
-                TmpPostCustomerRebateByBillTo.SetRange("Gen. Bus. Posting Group", CustomerRebateLine."Bill-To Customer No.");
-                IF NOT TmpPostCustomerRebateByBillTo.FINDFIRST THEN BEGIN
-                    TmpPostCustomerRebateByBillTo.Init();
-                    TmpPostCustomerRebateByBillTo."Group ID" := GlobalGroupID;
-                    TmpPostCustomerRebateByBillTo."G/L Account" := CustomerRebateLine."Rebate No.";
-                    TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group" := CustomerRebateLine."Bill-To Customer No.";
-                    TmpPostCustomerRebateByBillTo.INSERT;
-                    GlobalGroupID := IncStr(GlobalGroupID);
-                END;
+                CustomerRebateLine.CalcFields("Calculated Rebate Amount");
+                if CustomerRebateLine."Calculated Rebate Amount" <> 0 then begin
+                    TmpPostCustomerRebateByBillTo.RESET;
+                    TmpPostCustomerRebateByBillTo.SetRange("G/L Account", CustomerRebateLine."Rebate No.");
+                    TmpPostCustomerRebateByBillTo.SetRange("Gen. Bus. Posting Group", CustomerRebateLine."Bill-To Customer No.");
+                    IF NOT TmpPostCustomerRebateByBillTo.FINDFIRST THEN BEGIN
+                        TmpPostCustomerRebateByBillTo.Init();
+                        TmpPostCustomerRebateByBillTo."Group ID" := GlobalGroupID;
+                        TmpPostCustomerRebateByBillTo."G/L Account" := CustomerRebateLine."Rebate No.";
+                        TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group" := CustomerRebateLine."Bill-To Customer No.";
+                        TmpPostCustomerRebateByBillTo.INSERT;
+                        GlobalGroupID := IncStr(GlobalGroupID);
+                    END;
 
-                MoveCustomerRebateDetails(CustomerRebateLine);
+                    MoveCustomerRebateDetails(CustomerRebateLine);
 
-                PostedCustomerRebateLine.Init();
-                PostedCustomerRebateLine.TransferFields(CustomerRebateLine);
-                //PostedCustomerRebateLine."Customer Rebate Status" := PostedCustomerRebateLine."Customer Rebate Status"::Posted;
-                PostedCustomerRebateLine.Insert();
-            //END;
+                    PostedCustomerRebateLine.Init();
+                    PostedCustomerRebateLine.TransferFields(CustomerRebateLine);
+                    //PostedCustomerRebateLine."Customer Rebate Status" := PostedCustomerRebateLine."Customer Rebate Status"::Posted;
+                    PostedCustomerRebateLine.Insert();
+                    //END;
+                end;
             until CustomerRebateLine.Next() = 0;
         END;
     END;
