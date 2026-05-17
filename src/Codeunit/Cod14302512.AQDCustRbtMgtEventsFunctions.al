@@ -658,16 +658,15 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         RebateRates.Get(CustomerRebateDetails."Rebate Rate Entry No.");
         RebatePrograms.Get(CustomerRebateDetails."Rebate Program Code");
 
-        //Payment Terms Filter
-        if not GlobalProcessCatchUpRebate and (RebatePrograms."SO Payment Term Filter" <> '') then
+        if RebatePrograms."SO Payment Term Filter" <> '' then
             RebateDetailsTemp.SetFilter("Payment Terms Code", RebatePrograms."SO Payment Term Filter");
 
         //Rebate Program Filter
-        if not GlobalProcessCatchUpRebate and (RebatePrograms."SO Rebate Program Filter" <> '') then
+        if RebatePrograms."SO Rebate Program Filter" <> '' then
             RebateDetailsTemp.SetFilter("Header Rebate Program Code", RebatePrograms."SO Rebate Program Filter");
 
         //Marketplace Filter
-        if not GlobalProcessCatchUpRebate and (RebatePrograms."SO Marketplace Code Filter" <> '') then
+        if RebatePrograms."SO Marketplace Code Filter" <> '' then
             RebateDetailsTemp.SetFilter("Header Marketplace Code", RebatePrograms."SO Marketplace Code Filter");
 
         if GlobalProcessCatchUpRebate and (GlobalBrokerVendorNo <> '') then
@@ -1097,17 +1096,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         ItemLedgerEntry: Record "AQD CR Reb Item Ledger Entry";
         CustomerRebateLine: Record "AQD Customer Rebate Line";
     begin
-        // if GlobalProcessCatchUpRebate then begin
-        //     CustomerRebateLine.Reset();
-        //     CustomerRebateLine.SetRange("Rebate No.", CustomerRebateDetails."Rebate No.");
-        //     CustomerRebateLine.SetRange("Line No.", CustomerRebateDetails."Rebate Line No.");
-        //     if CustomerRebateLine.FindSet() then begin
-        //         CustomerRebateLine.CalcFields("Calculated Rebate Amount");
-        //         if CustomerRebateLine."Calculated Rebate Amount" = 0 then
-        //             CustomerRebateLine.Delete();
-        //     end;
-        // end;
-
         ItemLedgerEntry.Reset();
         ItemLedgerEntry.SetRange("AQD Bill-to Customer No.", CustomerRebateDetails."Bill-to Customer No.");
         case CustomerRebateDetails."Document Type" of
