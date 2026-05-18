@@ -179,15 +179,15 @@ table 14302516 "AQD Cust Rebate Program Code"
                 end;
             end;
         }
-        field(150; "SO Rebate Program Filter"; Code[20])
+        field(150; "SO Rebate Program Filter"; Code[100])
         {
             DataClassification = CustomerContent;
         }
-        field(160; "SO Marketplace Code Filter"; Code[20])
+        field(160; "SO Marketplace Code Filter"; Code[100])
         {
             DataClassification = CustomerContent;
         }
-        field(200; "SO Payment Term Filter"; Code[20])
+        field(200; "SO Payment Term Filter"; Code[100])
         {
             DataClassification = CustomerContent;
         }

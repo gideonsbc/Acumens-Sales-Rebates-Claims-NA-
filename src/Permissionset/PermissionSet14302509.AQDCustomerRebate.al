@@ -146,5 +146,6 @@ permissionset 14302509 "AQD Customer Rebate"
         tabledata "AQD CR Reb Item Ledger Entry" = RIMD,
         table "AQD CR Reb Item Ledger Entry" = X,
         page "AQD CR Reb Item Ledger Entries" = X,
-        codeunit "AQD CR SelectionFilterMgt" = X;
+        codeunit "AQD CR SelectionFilterMgt" = X,
+        report "AQD Clear unprocessed Rebates" = X;
 }

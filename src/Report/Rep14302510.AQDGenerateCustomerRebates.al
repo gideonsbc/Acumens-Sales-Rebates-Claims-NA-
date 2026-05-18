@@ -183,19 +183,18 @@ report 14302510 "AQD Generate Customer Rebates"
     }
     trigger OnPreReport()
     begin
+        if ProcessCatchUpRebate then
+            if Customer.GETFILTER("Date Filter") = '' then
+                Error('Date Filter must have a value. It cannot be zero or empty.');
+
         CustomerRebateSetup.GET;
         IF Customer.GETFILTER("Date Filter") <> '' THEN BEGIN
             StartPostingDate := Customer.GetRangeMin("Date Filter");
             EndPostingDate := Customer.GetRangeMax("Date Filter");
         END ELSE begin
             StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
-            EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
+            EndPostingDate := DMY2Date(31, 12, Date2DMY(WorkDate(), 3));
         end;
-
-        // if ProcessCatchUpRebate then
-        //     if RebateProgramCodeFilter = '' then
-        //         Error('Please select the Rebate Program Code filter before proceeding.');
-
     end;
 
     procedure SetShptRcptNoAndInvCrMemoNo(BillToCustomerNoIn: Code[20]; ShptRcptNoIn: Code[20]; InvCrMemoNoIn: Code[20]; CalledFromGenerateVendorRebateIn: Boolean)
@@ -231,6 +230,6 @@ report 14302510 "AQD Generate Customer Rebates"
         LastRecord: Boolean;
         CalledFromGenerateCustomerRebate: Boolean;
         ProcessCatchUpRebate: Boolean;
-        RebateProgramCodeFilter: Code[20];
-        BrokerVendorNo: Code[20];
+        RebateProgramCodeFilter: Code[100];
+        BrokerVendorNo: Code[100];
 }

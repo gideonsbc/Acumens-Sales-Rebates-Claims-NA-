@@ -175,16 +175,19 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."No.");
         SalesRebatesRate.SETFILTER("Variant Code", '%1|%2', '', '');
 
-        if GlobalProcessCatchUpRebate then begin
-            SalesRebatesRate.SETFILTER("Ending Date", '%1|>=%2', 0D, GlobalEndPostingDate);
-            SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, GlobalStartPostingDate);
-        end else begin
-            SalesRebatesRate.SETFILTER("Ending Date", '%1|>=%2', 0D, DocumentDate);
-            SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, DocumentDate);
-        end;
+        // if GlobalProcessCatchUpRebate then begin
+        //     SalesRebatesRate.SETFILTER("Ending Date", '%1|>=%2', 0D, GlobalEndPostingDate);
+        //     SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, GlobalStartPostingDate);
+        // end else begin
+        //     SalesRebatesRate.SETFILTER("Ending Date", '%1|>=%2', 0D, DocumentDate);
+        //     SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, DocumentDate);
+        // end;
 
+        SalesRebatesRate.SETFILTER("Ending Date", '%1|>=%2', 0D, DocumentDate);
         IF UOM <> '' THEN
             SalesRebatesRate.SETFILTER("Unit of Measure Code", '%1|%2', UOM, '');
+        SalesRebatesRate.SETFILTER("Starting Date", '%1|<=%2', 0D, DocumentDate);
+
         SalesRebatesRate.SETRANGE(Blocked, false);
         SalesRebatesRate.SetRange("Rebate Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');

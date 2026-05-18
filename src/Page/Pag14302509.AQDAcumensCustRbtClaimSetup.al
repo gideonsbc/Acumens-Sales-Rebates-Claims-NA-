@@ -2305,6 +2305,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'AMAZONMKP';
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
                 //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::Marketplace;
                 //CustomerRebateProgramCode.Validate("Marketplace Code", 'AMAZONMKP');
                 CustomerRebateProgramCode.INSERT(TRUE);
@@ -2323,6 +2324,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'SHOPIFYMKP';
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '10000';
                 //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::Marketplace;
                 //CustomerRebateProgramCode.Validate("Marketplace Code", 'SHOPIFYMKP');
                 CustomerRebateProgramCode.INSERT(TRUE);
@@ -2341,6 +2343,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'WALMARTMKP';
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '50000';
                 //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::Marketplace;
                 //CustomerRebateProgramCode.Validate("Marketplace Code", 'WALMARTMKP');
                 CustomerRebateProgramCode.INSERT(TRUE);
@@ -2359,6 +2362,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'AMAZONALW';
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
                 //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
@@ -2376,6 +2380,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'SHOPIFYALW';
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '10000';
                 //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
@@ -2393,6 +2398,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'WALMARTALW';
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '50000';
                 //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
@@ -2409,6 +2415,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity No." := RoyaltyVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount;
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2424,6 +2431,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity No." := RoyaltyVendorCode2;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount2;
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2456,6 +2464,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity No." := BrokerVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
                 //CustomerRebateProgramCode."SO Rebate Program Filter" := '';
                 //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);
@@ -2473,6 +2482,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity No." := BrokerVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
                 //CustomerRebateProgramCode."SO Rebate Program Filter" := '';
                 //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
                 CustomerRebateProgramCode.INSERT(TRUE);

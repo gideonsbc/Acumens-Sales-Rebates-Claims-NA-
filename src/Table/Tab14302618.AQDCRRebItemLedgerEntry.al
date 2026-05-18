@@ -273,6 +273,13 @@ table 14302618 "AQD CR Reb Item Ledger Entry"
             Caption = 'Rebate Amount';
             Editable = false;
         }
+        field(14277025; "Rebate Amount 2"; Decimal)
+        {
+            Caption = 'Rebate Amount';
+            FieldClass = FlowField;
+            CalcFormula = sum("AQD Posted Cust Reb Details"."Calculated Line Rebate Amount" where("Rebate No." = field("AQD Rebate No"), "No." = field("Item No."), "Document Line No." = field("Document Line No.")));
+            Editable = false;
+        }
         field(14277030; "AQD Sell-to Customer No."; Code[20])
         {
             Caption = 'Sell-to customer No.';

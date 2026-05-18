@@ -261,7 +261,7 @@ table 14302517 "AQD Sales Rebates Rate"
         field(550; Blocked; Boolean)
         {
             Caption = 'Blocked';
-            Editable = false;
+            //Editable = false;
 
             trigger OnValidate()
             begin
@@ -309,7 +309,7 @@ table 14302517 "AQD Sales Rebates Rate"
                     Clear(Rec."Customer No. Filter");
             end;
         }
-        field(586; "Customer No. Filter"; Code[20])
+        field(586; "Customer No. Filter"; Code[100])
         {
             Caption = 'Customer No. Filter';
             DataClassification = CustomerContent;

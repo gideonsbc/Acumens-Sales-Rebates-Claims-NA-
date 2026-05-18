@@ -215,6 +215,14 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             UpdateOffInvoiceRebate(SalesHeader);
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Document-Print", OnBeforeProcessPrintSalesOrder, '', false, false)]
+    local procedure Cod229_OnBeforeProcessPrintSalesOrder(var SalesHeader: Record "Sales Header"; Usage: Option "Order Confirmation","Work Order","Pick Instruction"; var IsHandled: Boolean)
+    begin
+        if not SalesHeader."AQD Disallow Off-Inv Rebate" then
+            UpdateOffInvoiceRebate(SalesHeader);
+    end;
+
+
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterPrepareOpeningDocumentStatistics, '', false, false)]
     local procedure "Sales Header_OnAfterPrepareOpeningDocumentStatistics"(var SalesHeader: Record "Sales Header")
     begin
@@ -1105,6 +1113,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                 ItemLedgerEntry.SetRange("Customer Cr. Memo No.", CustomerRebateDetails."Document No.");
         end;
         ItemLedgerEntry.SetRange("Document Line No.", CustomerRebateDetails."Document Line No.");
+        ItemLedgerEntry.SetRange("Order No.", CustomerRebateDetails."Order No.");
         ItemLedgerEntry.SetRange("Item No.", CustomerRebateDetails."No.");
         if ItemLedgerEntry.FindFirst() then begin
             ItemLedgerEntry."AQD Rebate No" := CustomerRebateDetails."Rebate No.";

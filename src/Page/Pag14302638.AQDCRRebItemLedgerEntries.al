@@ -143,7 +143,6 @@ page 14302638 "AQD CR Reb Item Ledger Entries"
                 field("Rebate Amount"; Rec."Rebate Amount")
                 {
                     ToolTip = 'Specifies the value of the Rebate Amount field.', Comment = '%';
-
                     trigger OnDrillDown()
                     var
                         PostedRebateDetails: Record "AQD Posted Cust Reb Details";
@@ -157,6 +156,11 @@ page 14302638 "AQD CR Reb Item Ledger Entries"
                         PostedRebateDetailsPage.RunModal();
                     end;
                 }
+                field("Rebate Amount 2"; Rec."Rebate Amount 2")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
                 field("AQD Rebate No"; Rec."AQD Rebate No")
                 {
                     ToolTip = 'Specifies the value of the Rebate No. field.', Comment = '%';
@@ -167,9 +171,9 @@ page 14302638 "AQD CR Reb Item Ledger Entries"
                         CustomerRebateHeader: Record "AQD Customer Rebate Header";
                     begin
                         IF CustomerRebateHeader.GET(Rec."AQD Rebate No") THEN
-                            PAGE.RUN(PAGE::"AQD Customer Rebates Documents", CustomerRebateHeader)
+                            PAGE.RUN(PAGE::"AQD Customer Rebate Document", CustomerRebateHeader)
                         ELSE IF PostedCustomerRebateHeader.GET(Rec."AQD Rebate No") THEN
-                            PAGE.RUN(PAGE::"AQD Posted Customer Rebates", PostedCustomerRebateHeader);
+                            PAGE.RUN(PAGE::"AQD Posted Customer Rebate Doc", PostedCustomerRebateHeader);
                     end;
                 }
                 // field("AQD Rebate Line No"; Rec."AQD Rebate Line No")

@@ -117,18 +117,6 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 
-    [Obsolete('This function is deprecated. Use NewFunctionName instead.', '15.0')]
-    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean)
-    var
-        LocalCustomer: Record Customer;
-        //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
-        BatchPostCustomerRebate: Report "AQD Post Cust Rebate Batches";
-        LocalCustomerType: Record "AQD Rebate Customer Category";
-        CustomerRebatePostMgt: Codeunit "AQD Customer Rebate Post Mgt";
-        CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
-    begin
-    end;
-
     procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
     var
         LocalCustomer: Record Customer;
@@ -146,10 +134,14 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         GlobalCalledFromGenerateCustomerRebateIn := CalledFromGenerateCustomerRebateIn;
         GlobalBrokerVendorNo := BrokerVendorNo;
 
-        GlobalStartPostingDate := DateArray[1];
-        GlobalEndPostingDate := DateArray[2];
-        IF (GlobalStartPostingDate = 0D) or (GlobalStartPostingDate < RebateSetup."Customer Rebate Start Date") then
+        if DateArray[1] <> 0D then
+            GlobalStartPostingDate := DateArray[1];
+        if (GlobalStartPostingDate = 0D) or (GlobalStartPostingDate < RebateSetup."Customer Rebate Start Date") then
             GlobalStartPostingDate := RebateSetup."Customer Rebate Start Date";
+        if DateArray[2] <> 0D then
+            GlobalEndPostingDate := DateArray[2];
+        if GlobalEndPostingDate = 0D then
+            GlobalEndPostingDate := CalcDate('<CY>', WorkDate());
 
         GlobalShptRcptNo := ShptRcptNo;
         GlobalInvCrMemoNo := InvCrMemoNo;
@@ -217,10 +209,16 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         RebateCustomerRec: Record Customer;
     begin
         Clear(StartDate);
+        Clear(EndDate);
+
         if DateArray[1] <> 0D then
             StartDate := DateArray[1];
         IF (StartDate = 0D) or (StartDate < RebateSetup."Customer Rebate Start Date") then
             StartDate := RebateSetup."Customer Rebate Start Date";
+        if DateArray[2] <> 0D then
+            EndDate := DateArray[2];
+        if EndDate = 0D then
+            EndDate := CalcDate('<CY>', WorkDate());
 
         SalesInvoiceHeader.Reset;
         SalesInvoiceHeader.SetCurrentKey("Bill-to Customer No.", "Posting Date");
@@ -237,22 +235,31 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
             SalesInvoiceHeader.SetRange("AQD Customer Rebate Status", SalesInvoiceHeader."AQD Customer Rebate Status"::" ");
         SalesInvoiceHeader.SetFilter("Source Code", '<>%1', SourceCodeSetup."Deleted Document");
         SalesInvoiceHeader.SetRange("AQD Customer Rebate", FALSE);
-        IF (StartDate <> 0D) OR (DateArray[2] <> 0D) then begin
+        IF (StartDate <> 0D) OR (EndDate <> 0D) then begin
             CASE CustomerIn."AQD CustRbt Calculation Date" OF
                 CustomerIn."AQD CustRbt Calculation Date"::" ",
                 CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
                     begin
                         if GlobalCalledFromGenerateCustomerRebateIn then
                             SalesInvoiceHeader.SetFilter("Posting Date", '%1..', StartDate)
-                        else
-                            SalesInvoiceHeader.SetFilter("Posting Date", '%1..%2', StartDate, DateArray[2]);
+                        else begin
+                            if EndDate <> 0D then
+                                SalesInvoiceHeader.SetFilter("Posting Date", '%1..%2', StartDate, EndDate)
+                            else
+                                SalesInvoiceHeader.SetFilter("Posting Date", '%1..', StartDate)
+                        end;
                     end;
                 CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
                     begin
                         if GlobalCalledFromGenerateCustomerRebateIn then
                             SalesInvoiceHeader.SetFilter("AQD Customer Rebate Order Date", '%1..', StartDate)
-                        else
-                            SalesInvoiceHeader.SetFilter("AQD Customer Rebate Order Date", '%1..%2', StartDate, DateArray[2])
+                        else begin
+                            if EndDate <> 0D then
+                                SalesInvoiceHeader.SetFilter("AQD Customer Rebate Order Date", '%1..%2', StartDate, EndDate)
+                            else
+                                SalesInvoiceHeader.SetFilter("AQD Customer Rebate Order Date", '%1..', StartDate);
+                        end;
+
                     end;
             END;
         end;
@@ -432,10 +439,16 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         LocalSalesInvoiceHeader: Record "Sales Invoice Header";
     begin
         Clear(StartDate);
+        Clear(EndDate);
+
         if DateArray[1] <> 0D then
             StartDate := DateArray[1];
         IF (StartDate = 0D) or (StartDate < RebateSetup."Customer Rebate Start Date") then
             StartDate := RebateSetup."Customer Rebate Start Date";
+        if DateArray[2] <> 0D then
+            EndDate := DateArray[2];
+        if EndDate = 0D then
+            EndDate := CalcDate('<CY>', WorkDate());
 
         SalesCrMemoHeader.Reset;
         SalesCrMemoHeader.SetCurrentKey("Bill-to Customer No.", "Posting Date");
@@ -452,22 +465,31 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         SalesCrMemoHeader.SetRange("AQD Rebate Entry Created", false);
         SalesCrMemoHeader.SetFilter("Source Code", '<>%1', SourceCodeSetup."Deleted Document");
         SalesCrMemoHeader.SetRange("AQD Customer Rebate", FALSE);
-        IF (StartDate <> 0D) OR (DateArray[2] <> 0D) then begin
+        IF (StartDate <> 0D) OR (EndDate <> 0D) then begin
             CASE CustomerIn."AQD CustRbt Calculation Date" OF
                 CustomerIn."AQD CustRbt Calculation Date"::" ",
                 CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
                     begin
                         if GlobalCalledFromGenerateCustomerRebateIn then
                             SalesCrMemoHeader.SetFilter("Posting Date", '%1..', StartDate)
-                        else
-                            SalesCrMemoHeader.SetFilter("Posting Date", '%1..%2', StartDate, DateArray[2]);
+                        else begin
+                            if EndDate <> 0D then
+                                SalesCrMemoHeader.SetFilter("Posting Date", '%1..%2', StartDate, EndDate)
+                            else
+                                SalesCrMemoHeader.SetFilter("Posting Date", '%1..', StartDate)
+                        end;
                     end;
                 CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
                     begin
                         if GlobalCalledFromGenerateCustomerRebateIn then
                             SalesCrMemoHeader.SetFilter("AQD Customer Rebate Order Date", '%1..', StartDate)
-                        else
-                            SalesCrMemoHeader.SetFilter("AQD Customer Rebate Order Date", '%1..%2', StartDate, DateArray[2]);
+                        else begin
+                            if EndDate <> 0D then
+                                SalesCrMemoHeader.SetFilter("AQD Customer Rebate Order Date", '%1..%2', StartDate, EndDate)
+                            else
+                                SalesCrMemoHeader.SetFilter("AQD Customer Rebate Order Date", '%1..', StartDate);
+                        end;
+
                     end;
             END;
         end;
