@@ -14,6 +14,11 @@ table 14302617 "AQD Marketplace"
         {
             DataClassification = CustomerContent;
         }
+        field(9000; "Default Setup"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys

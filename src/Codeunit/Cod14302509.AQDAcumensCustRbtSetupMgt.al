@@ -9,26 +9,43 @@ codeunit 14302509 "AQD Acumens CustRbt Setup Mgt"
     var
         Item: Record Item;
         Vendor: Record Vendor;
-        Customer, CustomerRec : Record Customer;
+        Customer: Record Customer;
         UserConfirmMsg: Label 'Do you want to update all existing Items?';
+        SingleInstance: Codeunit "AQD CustRbtClaim SngleInstance";
     begin
         IF Rec."Item Rebate Enabled" THEN BEGIN
-            //IF CONFIRM(UserConfirmMsg) then BEGIN
+            if not SingleInstance.GetConfirmSuppressed() then
+                IF not CONFIRM(UserConfirmMsg) then
+                    exit;
+
             Item.ModifyAll("AQD Customer Rebate Enabled", Rec."Item Rebate Enabled");
             Vendor.ModifyAll("AQD Customer Rebate", Rec."Item Rebate Enabled");
             Customer.ModifyAll("AQD Enroll for Cust Rebate", Rec."Item Rebate Enabled");
-            Customer.ModifyAll("AQD CustRbt Calculation Date", Customer."AQD CustRbt Calculation Date"::"Shipment Date");
-            CustomerRec.Reset();
-            CustomerRec.SetFilter("AQD Cust Rebate Customer No.", '=%1', '');
-            if CustomerRec.FindSet() then begin
+
+            //Confirm and update Rebate Customer No.
+            Customer.Reset();
+            Customer.SetFilter("AQD Cust Rebate Customer No.", '=%1', '');
+            if Customer.FindSet() then begin
                 repeat
-                    IF CustomerRec."Bill-to Customer No." <> '' THEN
-                        CustomerRec."AQD Cust Rebate Customer No." := CustomerRec."Bill-to Customer No."
+                    IF Customer."Bill-to Customer No." <> '' THEN
+                        Customer."AQD Cust Rebate Customer No." := Customer."Bill-to Customer No."
                     ELSE
-                        CustomerRec."AQD Cust Rebate Customer No." := CustomerRec."No.";
-                    CustomerRec.Modify();
-                until CustomerRec.Next() = 0;
+                        Customer."AQD Cust Rebate Customer No." := Customer."No.";
+                    Customer.Modify();
+                until Customer.Next() = 0;
             end;
+
+            //Confirm and update Calculation Date
+            Customer.Reset();
+            Customer.SetFilter("AQD CustRbt Calculation Date", '=%1', Customer."AQD CustRbt Calculation Date"::" ");
+            if Customer.FindSet() then begin
+                repeat
+                    Customer."AQD CustRbt Calculation Date" := Customer."AQD CustRbt Calculation Date"::"Shipment Date";
+                    Customer.Modify();
+                until Customer.Next() = 0;
+            end;
+
+            //Confirm and update rebate item category
             Item.Reset();
             Item.SetFilter("AQD Cust Rebate Category Code", '=%1', '');
             Item.SetFilter("Item Category Code", '<>%1', '');
@@ -38,6 +55,7 @@ codeunit 14302509 "AQD Acumens CustRbt Setup Mgt"
                     Item.Modify();
                 until Item.Next() = 0;
             end;
+
         END;
     END;
 

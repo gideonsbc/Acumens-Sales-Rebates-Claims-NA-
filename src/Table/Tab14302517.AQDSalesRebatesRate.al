@@ -123,16 +123,13 @@ table 14302517 "AQD Sales Rebates Rate"
                 RebateProgramCode: Record "AQD Cust Rebate Program Code";
             begin
                 IF RebateProgramCode.GET(Rec."Rebate Program Code") THEN BEGIN
-                    // if RebateProgramCode."Specific Sales New" = RebateProgramCode."Specific Sales New"::Marketplace then
-                    //     RebateProgramCode.TestField("Marketplace Code");
                     Rec."Rebate Type" := RebateProgramCode."Customer Default Rebate Type";
                     Rec."Rebate %" := RebateProgramCode."Customer Default Rebate %";
                     Rec."Rebate Per Unit" := RebateProgramCode."Customer Def Rebate Per Unit";
                     Rec."Entity Type" := RebateProgramCode."Entity Type";
                     Rec."Entity No." := RebateProgramCode."Entity No.";
-                    // Rec.Validate("Specific Sales New", RebateProgramCode."Specific Sales New");
-                    // Rec."Marketplace Code" := RebateProgramCode."Marketplace Code";
                     Rec."Rebate Expense Type" := RebateProgramCode."Rebate Expense Type";
+                    Rec."Default Setup" := RebateProgramCode."Default Setup";
                 END;
             end;
         }
@@ -356,6 +353,11 @@ table 14302517 "AQD Sales Rebates Rate"
         {
             Caption = 'Rate Priority';
             DataClassification = CustomerContent;
+        }
+        field(9000; "Default Setup"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
         }
     }
 

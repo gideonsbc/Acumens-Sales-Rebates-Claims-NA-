@@ -101,7 +101,8 @@ codeunit 14302611 "AQD Cust Claim Event And Func"
         IF SalesHeader."AQD CustClaim Claim Type" = SalesHeader."AQD CustClaim Claim Type"::" " THEN
             EXIT;
 
-        ClaimSetup.GET;
+        if not ClaimSetup.GET then
+            exit;
 
         Case SalesHeader."AQD CustClaim Claim Type" OF
             SalesHeader."AQD CustClaim Claim Type"::"Full Price":
@@ -401,7 +402,9 @@ codeunit 14302611 "AQD Cust Claim Event And Func"
         NoSeries: Codeunit "No. Series";
         NoSeriesCode: Code[20];
     begin
-        ClaimSetup.GET;
+        if not ClaimSetup.GET then
+            exit;
+
         IF PurchaseHeader."AQD CustClaim Claim Type" = PurchaseHeader."AQD CustClaim Claim Type"::" " THEN
             EXIT;
 

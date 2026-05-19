@@ -197,6 +197,11 @@ table 14302516 "AQD Cust Rebate Program Code"
             DataClassification = CustomerContent;
             TableRelation = Vendor."No.";
         }
+        field(9000; "Default Setup"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
 
     }
 

@@ -10,6 +10,7 @@ codeunit 14302510 "AQD CustRbtClaim SngleInstance"
         CalledFromRebate: Boolean;
         CalledFromSalesOrderPosting: Boolean;
         ResultMessage: TEXT[250];
+        SuppressConfirm: Boolean;
 
     procedure SetCalledFromRebate(CalledFromRebateIn: Boolean)
     begin
@@ -49,5 +50,15 @@ codeunit 14302510 "AQD CustRbtClaim SngleInstance"
     procedure GetCalledFromSalesOrderPosting(var CalledFromSalesOrderPostingIn: Boolean)
     begin
         CalledFromSalesOrderPostingIn := CalledFromSalesOrderPosting;
+    end;
+
+    procedure SetSuppressConfirm(SuppressConfirmIn: Boolean)
+    begin
+        SuppressConfirm := SuppressConfirmIn;
+    end;
+
+    procedure GetConfirmSuppressed(): Boolean
+    begin
+        exit(SuppressConfirm);
     end;
 }

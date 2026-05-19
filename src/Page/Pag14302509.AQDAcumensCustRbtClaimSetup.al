@@ -541,6 +541,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
         BrokerRebateExpenseGLAccount, BrokerRebatePayableGLAccount, BrokerVendorCode, BrokerVendorCodeNew : Code[20];
         BrokerVendor, BrokerVendorNew : Record Vendor;
         PaymentTerms: Record "Payment Terms";
+        SingleInstance: Codeunit "AQD CustRbtClaim SngleInstance";
     begin
         if Confirm(LocalUserConfirmMsg) then begin
             ResetNoSeries();
@@ -591,7 +592,9 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF Rec."Customer Rebate Start Date" = 0D THEN
                 Rec."Customer Rebate Start Date" := WorkDate();
 
+            SingleInstance.SetSuppressConfirm(true);
             Rec.Validate("Item Rebate Enabled", true);
+            SingleInstance.SetSuppressConfirm(false);
 
             Rec.Modify(true);
 
@@ -1763,6 +1766,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 Marketplace.Init();
                 Marketplace.Code := 'AMAZONMKP';
                 Marketplace.Description := 'Amazon Marketplace';
+                Marketplace."Default Setup" := true;
                 Marketplace.Insert(true);
             end;
 
@@ -1770,6 +1774,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 Marketplace.Init();
                 Marketplace.Code := 'SHOPIFYMKP';
                 Marketplace.Description := 'Shopify Marketplace';
+                Marketplace."Default Setup" := true;
                 Marketplace.Insert(true);
             end;
 
@@ -1777,6 +1782,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 Marketplace.Init();
                 Marketplace.Code := 'WALMARTMKP';
                 Marketplace.Description := 'Walmart Marketplace';
+                Marketplace."Default Setup" := true;
                 Marketplace.Insert(true);
             end;
 
@@ -2229,6 +2235,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity No." := '';
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2244,6 +2251,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity No." := '';
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2259,6 +2267,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity No." := '';
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Off-Invoice Rebate";
                 CustomerRebateProgramCode.Validate("Rebate Expense AC", 'DAMAGE');
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2274,6 +2283,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity No." := '';
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Off-Invoice Rebate";
                 CustomerRebateProgramCode.Validate("Rebate Expense AC", 'DISTRIBUTION');
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2289,6 +2299,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity No." := '';
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Off-Invoice Rebate";
                 CustomerRebateProgramCode.Validate("Rebate Expense AC", 'ADVERTISING');
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2306,8 +2317,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'AMAZONMKP';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
-                //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::Marketplace;
-                //CustomerRebateProgramCode.Validate("Marketplace Code", 'AMAZONMKP');
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2325,8 +2335,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'SHOPIFYMKP';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '10000';
-                //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::Marketplace;
-                //CustomerRebateProgramCode.Validate("Marketplace Code", 'SHOPIFYMKP');
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2344,8 +2353,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'WALMARTMKP';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '50000';
-                //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::Marketplace;
-                //CustomerRebateProgramCode.Validate("Marketplace Code", 'WALMARTMKP');
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2363,7 +2371,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'AMAZONALW';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
-                //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2381,7 +2389,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'SHOPIFYALW';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '10000';
-                //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2399,7 +2407,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'WALMARTALW';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '50000';
-                //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2416,6 +2424,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2432,6 +2441,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2447,8 +2457,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Entity No." := CanadaVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CanadaRebateExpenseGLAccount;
-                //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::" ";
                 CustomerRebateProgramCode."SO Payment Term Filter" := 'COD';
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2465,8 +2475,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
-                //CustomerRebateProgramCode."SO Rebate Program Filter" := '';
-                //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2483,8 +2492,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
-                //CustomerRebateProgramCode."SO Rebate Program Filter" := '';
-                //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2539,6 +2547,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                     CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
                     CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
                 END;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2577,6 +2586,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                     CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
                     CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
                 END;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2613,6 +2623,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                     CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
                     CustomerSalesRebateSetup."Rebate %" := 5;
                 END;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2649,6 +2660,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                     CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
                     CustomerSalesRebateSetup."Rebate %" := 10;
                 END;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2685,6 +2697,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                     CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
                     CustomerSalesRebateSetup."Rebate %" := 15;
                 END;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2723,6 +2736,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                     CustomerSalesRebateSetup."Rebate Per Unit" := 10;
                     CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
                 END;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2761,6 +2775,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                     CustomerSalesRebateSetup."Rebate Per Unit" := 15;
                     CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
                 END;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2799,6 +2814,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                     CustomerSalesRebateSetup."Rebate Per Unit" := 20;
                     CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
                 END;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2828,6 +2844,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2857,6 +2874,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2886,6 +2904,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2915,6 +2934,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2944,6 +2964,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -2973,6 +2994,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3001,6 +3023,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3029,6 +3052,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3057,7 +3081,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                //CustomerSalesRebateSetup."SO Payment Term Filter" := 'COD';
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3086,6 +3110,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3114,6 +3139,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3142,6 +3168,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3175,6 +3202,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Entity No." := BrokerVendorCode;
                 CustomerSalesRebateSetup."Customer Type Filter" := CustomerSalesRebateSetup."Customer Type Filter"::Customer;
                 CustomerSalesRebateSetup."Customer No. Filter" := '10000';
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3209,6 +3237,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Entity No." := BrokerVendorCodeNew;
                 CustomerSalesRebateSetup."Customer Type Filter" := CustomerSalesRebateSetup."Customer Type Filter"::Customer;
                 CustomerSalesRebateSetup."Customer No. Filter" := '20000';
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3241,6 +3270,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer Type Filter" := CustomerSalesRebateSetup."Customer Type Filter"::Customer;
                 CustomerSalesRebateSetup."Customer No. Filter" := '10000';
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3277,6 +3307,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Customer Type Filter" := CustomerSalesRebateSetup."Customer Type Filter"::Customer;
                 CustomerSalesRebateSetup."Customer No. Filter" := '20000';
                 CustomerSalesRebateSetup."Rebate %" := 4;
+                CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
@@ -3346,9 +3377,20 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
         Rates: Record "AQD Sales Rebates Rate";
     begin
         if Confirm(LocalUserConfirmMsg) then begin
-            Marketplace.DeleteAll();
-            Programcode.DeleteAll();
-            Rates.DeleteAll();
+            if Confirm('Do you also want to delete default program codes and rates?') then begin
+                Marketplace.Reset();
+                Marketplace.SetRange("Default Setup", true);
+                if Marketplace.FindSet() then
+                    Marketplace.DeleteAll();
+                Programcode.Reset();
+                Programcode.SetRange("Default Setup", true);
+                if Programcode.FindSet() then
+                    Programcode.DeleteAll();
+                Rates.Reset();
+                Rates.SetRange("Default Setup", true);
+                if Rates.FindSet() then
+                    Rates.DeleteAll();
+            end;
             Rec.Delete();
         end;
     end;
