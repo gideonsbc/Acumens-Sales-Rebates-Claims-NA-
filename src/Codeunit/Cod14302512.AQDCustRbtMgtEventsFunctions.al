@@ -174,7 +174,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             EXIT;
 
         IF NOT CustomerRebateSetup.GET THEN
-            Error(CustomerRebateSetupDoesNotExist);
+            EXIT;
 
         //IF CustomerRebateSetup."Customer Rebate Document Nos" = '' THEN
         //    Error(CustomerRebateDefaultValuesMissing);

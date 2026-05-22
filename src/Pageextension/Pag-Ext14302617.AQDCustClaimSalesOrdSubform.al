@@ -62,7 +62,8 @@ pageextension 14302617 "AQD CustClaim SalesOrd Subform" extends "Sales Order Sub
 
     trigger OnOpenPage()
     begin
-        ClaimSetup.GET;
+        if not ClaimSetup.GET then
+            exit;
         ShowProgramCodeMandatory := ClaimSetup."Price Match ClaimProgCode Mand";
         ShowServiceCodeMandatory := ClaimSetup."Price Match ClaimServCode Mand";
     end;
