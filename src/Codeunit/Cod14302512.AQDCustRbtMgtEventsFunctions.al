@@ -561,50 +561,25 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             TempCustomerRebateDetailsLocIn.Insert();
 
             case FromCustomerSalesRebateRate."Line Type" of
-                FromCustomerSalesRebateRate."Line Type"::Item:
-                    begin
-                        TempCustomerRebateDetailsLocIn.Reset();
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
-                        TempCustomerRebateDetailsLocIn.SetRange(Type, TempCustomerRebateDetailsLocIn.Type::Item);
-                        TempCustomerRebateDetailsLocIn.SetFilter("No.", FromCustomerSalesRebateRate."No. Filter");
-                        if not TempCustomerRebateDetailsLocIn.FindFirst() then
-                            IsHandled := true;
-                    end;
-                FromCustomerSalesRebateRate."Line Type"::Resource:
-                    begin
-                        TempCustomerRebateDetailsLocIn.Reset();
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
-                        TempCustomerRebateDetailsLocIn.SetRange(Type, TempCustomerRebateDetailsLocIn.Type::Resource);
-                        TempCustomerRebateDetailsLocIn.SetFilter("No.", FromCustomerSalesRebateRate."No. Filter");
-                        if not TempCustomerRebateDetailsLocIn.FindFirst() then
-                            IsHandled := true;
-                    end;
-                FromCustomerSalesRebateRate."Line Type"::"G/L Account":
-                    begin
-                        TempCustomerRebateDetailsLocIn.Reset();
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
-                        TempCustomerRebateDetailsLocIn.SetRange(Type, TempCustomerRebateDetailsLocIn.Type::"G/L Account");
-                        TempCustomerRebateDetailsLocIn.SetFilter("No.", FromCustomerSalesRebateRate."No. Filter");
-                        if not TempCustomerRebateDetailsLocIn.FindFirst() then
-                            IsHandled := true;
-                    end;
                 FromCustomerSalesRebateRate."Line Type"::"Rebate Category":
                     begin
                         TempCustomerRebateDetailsLocIn.Reset();
                         TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
                         TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
                         TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
-                        TempCustomerRebateDetailsLocIn.SetRange(Type, TempCustomerRebateDetailsLocIn.Type::Item);
                         TempCustomerRebateDetailsLocIn.SetFilter("Rebate Item Category Code", FromCustomerSalesRebateRate."No. Filter");
                         if not TempCustomerRebateDetailsLocIn.FindFirst() then
                             IsHandled := true;
                     end;
+                else begin
+                    TempCustomerRebateDetailsLocIn.Reset();
+                    TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
+                    TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
+                    TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
+                    TempCustomerRebateDetailsLocIn.SetFilter("No.", FromCustomerSalesRebateRate."No. Filter");
+                    if not TempCustomerRebateDetailsLocIn.FindFirst() then
+                        IsHandled := true;
+                end;
             end;
         end;
 
