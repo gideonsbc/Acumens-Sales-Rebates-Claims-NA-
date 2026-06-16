@@ -140,11 +140,13 @@ tableextension 14302522 "AQD CustRbt Sales Line Ext" extends "Sales Line"
         {
             DataClassification = CustomerContent;
         }
-        // field(14302708; "AQD Rebate Item Category Code"; Code[20])
-        // {
-        //     Caption = 'Rebate Item Category Code';
-        //     DataClassification = CustomerContent;
-        //     TableRelation = "Item Category".Code;
-        // }
+        field(14302708; "AQD Rebate Item Category Code"; Code[20])
+        {
+            Caption = 'Rebate Item Category Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Item Category".Code;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
+        }
     }
 }
