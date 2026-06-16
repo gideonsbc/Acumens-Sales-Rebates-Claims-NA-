@@ -563,7 +563,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             case FromCustomerSalesRebateRate."Line Type" of
                 FromCustomerSalesRebateRate."Line Type"::"Rebate Category":
                     begin
-                        TempCustomerRebateDetailsLocIn.Reset();
                         TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
                         TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
                         TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
@@ -572,7 +571,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                             IsHandled := true;
                     end;
                 else begin
-                    TempCustomerRebateDetailsLocIn.Reset();
                     TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
                     TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
                     TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
@@ -858,12 +856,12 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                 begin
                     if RebateRates."No." <> '' then begin
                         SalesLine.SetRange(Type, SalesLine.Type::Item);
-                        SalesLine.SetRange("AQD Rebate Item Category Code", RebateRates."No.");
+                        SalesLine.SetRange("Item Category Code", RebateRates."No.");
                     end;
 
                     if RebateRates."No. Filter" <> '' then begin
                         SalesLine.SetRange(Type, SalesLine.Type::Item);
-                        SalesLine.SetFilter("AQD Rebate Item Category Code", RebateRates."No. Filter");
+                        SalesLine.SetFilter("Item Category Code", RebateRates."No. Filter");
                     end;
                 end;
         end;

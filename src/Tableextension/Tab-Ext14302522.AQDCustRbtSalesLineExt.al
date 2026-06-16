@@ -2,21 +2,21 @@ tableextension 14302522 "AQD CustRbt Sales Line Ext" extends "Sales Line"
 {
     fields
     {
-        modify("No.")
-        {
-            trigger OnAfterValidate()
-            var
-                Item: Record Item;
-            begin
-                case Type of
-                    Type::Item:
-                        begin
-                            if Item.Get("No.") then
-                                Rec."AQD Rebate Item Category Code" := Item."AQD Cust Rebate Category Code"
-                        end;
-                end;
-            end;
-        }
+        // modify("No.")
+        // {
+        //     trigger OnAfterValidate()
+        //     var
+        //         Item: Record Item;
+        //     begin
+        //         case Type of
+        //             Type::Item:
+        //                 begin
+        //                     if Item.Get("No.") then
+        //                         Rec."AQD Rebate Item Category Code" := Item."AQD Cust Rebate Category Code"
+        //                 end;
+        //         end;
+        //     end;
+        // }
         field(14302510; "AQD Cust Rebate Document No."; Code[20])
         {
             Caption = 'Customer Rebate Document No.';
@@ -140,11 +140,11 @@ tableextension 14302522 "AQD CustRbt Sales Line Ext" extends "Sales Line"
         {
             DataClassification = CustomerContent;
         }
-        field(14302708; "AQD Rebate Item Category Code"; Code[20])
-        {
-            Caption = 'Rebate Item Category Code';
-            DataClassification = CustomerContent;
-            TableRelation = "Item Category".Code;
-        }
+        // field(14302708; "AQD Rebate Item Category Code"; Code[20])
+        // {
+        //     Caption = 'Rebate Item Category Code';
+        //     DataClassification = CustomerContent;
+        //     TableRelation = "Item Category".Code;
+        // }
     }
 }
