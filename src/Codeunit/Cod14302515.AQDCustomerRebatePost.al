@@ -1884,7 +1884,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
     var
         RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
     begin
-        RebateSetup.GET;
+        if not RebateSetup.GET() then
+            exit;
         IF SalesHeader."AQD Customer Rebate" then
             SrcCode := RebateSetup."Customer Rebate Source Code";
     end;

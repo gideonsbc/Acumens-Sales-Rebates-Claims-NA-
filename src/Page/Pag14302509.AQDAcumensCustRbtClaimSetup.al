@@ -3377,20 +3377,18 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
         Rates: Record "AQD Sales Rebates Rate";
     begin
         if Confirm(LocalUserConfirmMsg) then begin
-            if Confirm('Do you also want to delete default program codes and rates?') then begin
-                Marketplace.Reset();
-                Marketplace.SetRange("Default Setup", true);
-                if Marketplace.FindSet() then
-                    Marketplace.DeleteAll();
-                Programcode.Reset();
-                Programcode.SetRange("Default Setup", true);
-                if Programcode.FindSet() then
-                    Programcode.DeleteAll();
-                Rates.Reset();
-                Rates.SetRange("Default Setup", true);
-                if Rates.FindSet() then
-                    Rates.DeleteAll();
-            end;
+            Marketplace.Reset();
+            Marketplace.SetRange("Default Setup", true);
+            if Marketplace.FindSet() then
+                Marketplace.DeleteAll();
+            Programcode.Reset();
+            Programcode.SetRange("Default Setup", true);
+            if Programcode.FindSet() then
+                Programcode.DeleteAll();
+            Rates.Reset();
+            Rates.SetRange("Default Setup", true);
+            if Rates.FindSet() then
+                Rates.DeleteAll();
             Rec.Delete();
         end;
     end;
