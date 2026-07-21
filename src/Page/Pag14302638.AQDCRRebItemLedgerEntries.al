@@ -148,7 +148,10 @@ page 14302638 "AQD CR Reb Item Ledger Entries"
                         PostedRebateDetails: Record "AQD Posted Cust Reb Details";
                         PostedRebateDetailsPage: Page "AQD Posted CustRbtDetail List";
                     begin
-                        PostedRebateDetails.SetRange("Rebate No.", Rec."AQD Rebate No");
+                        if Rec."Customer Invoice No." <> '' then
+                            PostedRebateDetails.SetRange("Document No.", Rec."Customer Invoice No.");
+                        if Rec."Customer Cr. Memo No." <> '' then
+                            PostedRebateDetails.SetRange("Document No.", Rec."Customer Cr. Memo No.");
                         PostedRebateDetails.SetRange("No.", Rec."Item No.");
                         PostedRebateDetails.SetRange("Document Line No.", Rec."Document Line No.");
 
@@ -160,6 +163,8 @@ page 14302638 "AQD CR Reb Item Ledger Entries"
                 {
                     ApplicationArea = All;
                     Visible = false;
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Not in use';
                 }
                 field("AQD Rebate No"; Rec."AQD Rebate No")
                 {

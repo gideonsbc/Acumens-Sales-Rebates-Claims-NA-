@@ -1,6 +1,6 @@
 table 14302539 "AQD Customer Rebate Buffer"
 {
-    Caption = 'Customer Rebate Buffer';
+    Caption = 'Sales Rebate Buffer';
     DataClassification = CustomerContent;
 
     fields

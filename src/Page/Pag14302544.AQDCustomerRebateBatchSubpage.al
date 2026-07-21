@@ -3,7 +3,7 @@ namespace AcumenseRebatesBC.AcumenseRebatesBC;
 page 14302544 "AQD Customer Rebate Subpg"
 {
     ApplicationArea = All;
-    Caption = 'Customer Rebates';
+    Caption = 'Sales Rebates';
     PageType = ListPart;
     SourceTable = "AQD Customer Rebate Header";
 

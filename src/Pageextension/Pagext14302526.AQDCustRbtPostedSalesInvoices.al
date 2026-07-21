@@ -15,7 +15,7 @@ pageextension 14302526 "AQDCustRbt PostedSalesInvoices" extends "Posted Sales In
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
                 actionref("AQD DoNotPayRebate_AER"; "AQD DoNotPayRebate") { }
             }
         }

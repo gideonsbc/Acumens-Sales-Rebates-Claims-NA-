@@ -6,7 +6,7 @@ pageextension 14302539 "AQD CustRbt Employee Card" extends "Employee Card"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
 
                 field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
                 {

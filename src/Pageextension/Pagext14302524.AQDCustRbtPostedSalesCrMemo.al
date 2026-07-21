@@ -6,7 +6,7 @@ pageextension 14302524 "AQD CustRbt Posted SalesCrMemo" extends "Posted Sales Cr
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
                 Editable = false;
 
                 field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")

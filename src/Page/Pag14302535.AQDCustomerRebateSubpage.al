@@ -1,6 +1,6 @@
 page 14302535 "AQD Customer Rebate Subpage"
 {
-    Caption = 'Customer Rebate Documents Subpage';
+    Caption = 'Sales Rebate Documents Subpage';
     PageType = ListPart;
     ApplicationArea = All;
     UsageCategory = Lists;

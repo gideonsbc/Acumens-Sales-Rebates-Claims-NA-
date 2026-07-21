@@ -1,7 +1,7 @@
 page 14302533 "AQD Customer Rebate Document"
 {
     ApplicationArea = All;
-    Caption = 'Customer Rebate Document';
+    Caption = 'Sales Rebate Document';
     //DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Document;

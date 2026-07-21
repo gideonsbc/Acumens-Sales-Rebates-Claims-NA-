@@ -518,6 +518,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     var
         TempCustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details" temporary;
     begin
+        IsHandled := false;
         //Filter using Customer No. Filter
         if FromCustomerSalesRebateRate."Customer No. Filter" <> '' then begin
             TempCustomerRebateDetailsLocIn.Reset();
@@ -993,23 +994,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         IF NOT RebateSetup.GET THEN
             EXIT;
 
-        // ExitFunction := FALSE;
-        // Case Rec."Document Type" OF
-        //     Rec."Document Type"::"Sales Invoice":
-        //         BEGIN
-        //             IF RebateSetup."Start Rebate After SO-Invoice No." >= Rec."Document No." THEN
-        //                 ExitFunction := TRUE;
-        //         END;
-        //     Rec."Document Type"::"Sales Credit Memo":
-        //         BEGIN
-        //             IF RebateSetup."Start Rebate After SO-Credit Memo No." >= Rec."Document No." THEN
-        //                 ExitFunction := TRUE;
-        //         END;
-        // END;
-
-        // IF ExitFunction THEN
-        //     EXIT;
-
         RebateItemLdgrEntry.Init();
         RebateItemLdgrEntry.TransferFields(Rec);
         Case Rec."Document Type" OF
@@ -1072,33 +1056,18 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnAfterInsertRebateDetail, '', false, false)]
-    local procedure "AQD Cust Rebate Calc Mgt_OnAfterInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean)
+    local procedure "AQD Cust Rebate Calc Mgt_OnAfterInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; TempItemLedgEntry: Record "Item Ledger Entry" temporary)
     var
-        ItemLedgerEntry: Record "AQD CR Reb Item Ledger Entry";
+        CusRebItemLedgerEntry: Record "AQD CR Reb Item Ledger Entry";
         CustomerRebateLine: Record "AQD Customer Rebate Line";
     begin
-        ItemLedgerEntry.Reset();
-        ItemLedgerEntry.SetRange("AQD Bill-to Customer No.", CustomerRebateDetails."Bill-to Customer No.");
-        case CustomerRebateDetails."Document Type" of
-            CustomerRebateDetails."Document Type"::Invoice:
-                ItemLedgerEntry.SetRange("Customer Invoice No.", CustomerRebateDetails."Document No.");
-            CustomerRebateDetails."Document Type"::"Credit Memo":
-                ItemLedgerEntry.SetRange("Customer Cr. Memo No.", CustomerRebateDetails."Document No.");
-        end;
-        ItemLedgerEntry.SetRange("Document Line No.", CustomerRebateDetails."Document Line No.");
-        ItemLedgerEntry.SetRange("Order No.", CustomerRebateDetails."Order No.");
-        ItemLedgerEntry.SetRange("Item No.", CustomerRebateDetails."No.");
-        if ItemLedgerEntry.FindFirst() then begin
-            ItemLedgerEntry."AQD Rebate No" := CustomerRebateDetails."Rebate No.";
-            // ItemLedgerEntry."AQD Rebate Line No" := CustomerRebateDetails."Rebate Line No.";
-            // ItemLedgerEntry."AQD Rebate Detail Line No." := CustomerRebateDetails."Line No.";
-            // ItemLedgerEntry."AQD Rebate %" := CustomerRebateDetails."Rebate %";
-            // ItemLedgerEntry."Rebate Per Quantity" := CustomerRebateDetails."Rebate Per Unit";
-            // ItemLedgerEntry."AQD Rebate Type" := CustomerRebateDetails."Rebate Type";
-            // ItemLedgerEntry."AQD Rebate Type" := CustomerRebateDetails."Rebate Type";
-            ItemLedgerEntry."Rebate Amount" += CustomerRebateDetails."Calculated Line Rebate Amount";
-            ItemLedgerEntry."AQD Rebate Entry Created" := true;
-            ItemLedgerEntry.Modify();
+        if GlobalProcessCatchUpRebate then
+            exit;
+
+        if CusRebItemLedgerEntry.Get(TempItemLedgEntry."Entry No.") then begin
+            CusRebItemLedgerEntry."AQD Rebate No" := CustomerRebateDetails."Rebate No.";
+            CusRebItemLedgerEntry."AQD Rebate Entry Created" := true;
+            CusRebItemLedgerEntry.Modify();
         end;
     end;
 

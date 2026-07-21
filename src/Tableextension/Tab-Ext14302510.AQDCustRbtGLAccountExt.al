@@ -4,18 +4,18 @@ tableextension 14302510 "AQD CustRbt G/L Account Ext" extends "G/L Account"
     {
         field(14302510; "AQD Customer Rebate Enabled"; Boolean)
         {
-            Caption = 'Customer Rebate Enabled';
+            Caption = 'Sales Rebate Enabled';
             DataClassification = CustomerContent;
         }
         field(14302520; "AQD Cust Rebate Category Code"; Code[20])
         {
-            Caption = 'Customer Rebate Category Code';
+            Caption = 'Sales Rebate Category Code';
             DataClassification = CustomerContent;
             TableRelation = "Item Category".Code;
         }
         field(14302530; "AQD Cust Rebate G/LAcct Type"; Enum "AQD Cust Rebate G/L Acc Type")
         {
-            Caption = 'Customer Rebate G/L Account Type (Internal UseOnly)';
+            Caption = 'Sales Rebate G/L Account Type (Internal UseOnly)';
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
@@ -26,7 +26,7 @@ tableextension 14302510 "AQD CustRbt G/L Account Ext" extends "G/L Account"
         }
         field(14302620; "AQD Cust Rebate Acct Group"; Enum "AQD Cust Rebate Acct Group")
         {
-            Caption = 'Customer Rebate Account Group';
+            Caption = 'Sales Rebate Account Group';
             DataClassification = CustomerContent;
         }
     }

@@ -156,14 +156,14 @@ page 14302539 "AQD Posted Cust Reb Subpage"
                 field("Cust Rebate Amt(Item Charge)"; Rec."Cust Rebate Amt(Item Charge)")
                 {
                     ApplicationArea = All;
-                    Caption = 'Customer Rebate Amt(Item Charge)';
+                    Caption = 'Sales Rebate Amt(Item Charge)';
                     Editable = false;
                     Visible = false;
                 }
                 field("Customer Rebate Amt (GL)"; Rec."Customer Rebate Amt (GL)")
                 {
                     ApplicationArea = All;
-                    Caption = 'Customer Rebate Amt (GL)';
+                    Caption = 'Sales Rebate Amt (GL)';
                     Editable = false;
                     Visible = false;
                 }

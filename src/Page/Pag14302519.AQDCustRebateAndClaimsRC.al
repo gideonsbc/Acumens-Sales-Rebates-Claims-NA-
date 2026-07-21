@@ -1,7 +1,7 @@
 page 14302519 "AQD Cust Rebate And Claims RC"
 {
     ApplicationArea = All;
-    Caption = 'Customer Rebate & Claims Role Center', Comment = '';
+    Caption = 'Sales Rebates & Claims Role Center', Comment = '';
     UsageCategory = Tasks;
     PageType = RoleCenter;
 
@@ -97,7 +97,7 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             action("Customer Rebate Program Codes")
             {
                 ApplicationArea = All;
-                Caption = 'Customer Rebate Program Codes';
+                Caption = 'Sales Rebate Program Codes';
                 RunObject = page "AQD Cust Rebate Program Codes";
             }
             action("AQD CR Item Categories")
@@ -173,13 +173,13 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             action("Customer Rebate Batches")
             {
                 ApplicationArea = All;
-                Caption = 'Customer Rebate Batches';
+                Caption = 'Sales Rebate Batches';
                 RunObject = page "AQD Customer Rebate Batches";
             }
             action("Customer Rebates")
             {
                 ApplicationArea = All;
-                Caption = 'Customer Rebates';
+                Caption = 'Sales Rebates';
                 RunObject = page "AQD Customer Rebates Documents";
             }
             action("AQD Full Price Cust Claim List")
@@ -253,14 +253,14 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             action("Generate Customer Rebate")
             {
                 ApplicationArea = All;
-                Caption = 'Generate and Post Customer Rebates';
+                Caption = 'Generate and Post Sales Rebates';
                 Image = CalculateSalesTax;
                 RunObject = Report "AQD Generate Customer Rebates";
             }
             action("Post Customer Rebate Batches")
             {
                 ApplicationArea = All;
-                Caption = 'Post Customer Rebate Batches';
+                Caption = 'Post Sales Rebate Batches';
                 Image = CalculateSalesTax;
                 RunObject = Report "AQD Post Cust Rebate Batches";
                 Visible = false;
@@ -268,14 +268,14 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             action("Generate Customer Full Claim Claims")
             {
                 ApplicationArea = All;
-                Caption = 'Create Customer Full Price Claims';
+                Caption = 'Create Sales Full Price Claims';
                 Image = CalculateSalesTax;
                 RunObject = Report "AQD Create CustFullPriceClaims";
             }
             action("Generate Customer Price Match Claims")
             {
                 ApplicationArea = All;
-                Caption = 'Create Customer Price Match Claims';
+                Caption = 'Create Sales Price Match Claims';
                 Image = CalculateSalesTax;
                 RunObject = Report "AQD Create CustPriceMatchClaim";
             }
@@ -284,7 +284,7 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 // action("Customer Rebate Journal")
                 // {
                 //     ApplicationArea = All;
-                //     Caption = 'Customer Rebate Journal';
+                //     Caption = 'Sales Rebate Journal';
                 //     Image = ConsumptionJournal;
                 //     RunObject = Page "AQD Customer Rebate Journal";
                 // }
@@ -357,31 +357,17 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Image = InventoryCalculation;
                     RunObject = Report "AQD POD Cust/Item Sales New 2";
                 }
-                // action("AQD Udt Rebate Customer Type")
-                // {
-                //     Caption = 'Update Rebate Customer Type';
-                //     ApplicationArea = All;
-                //     Image = CustomerGroup;
-                //     RunObject = Report "AQD Udt Rebate Customer Type";
-                // }
             }
         }
         area(Processing)
         {
             group(CustomerRebateSetup)
             {
-                Caption = 'Customer Rebate Setup';
+                Caption = 'Sales Rebate Setup';
                 Image = Setup;
-                action("Acumens Customer Rebates Claims Setup")
-                {
-                    Caption = 'Acumens Customer Rebates & Claims Setup';
-                    ApplicationArea = All;
-                    Image = CostAccountingSetup;
-                    RunObject = Page "AQD Acumens CustRbtClaim Setup";
-                }
                 action("Acumens Rebate Setup")
                 {
-                    Caption = 'Acumens Customer Rebates & Claims Setup';
+                    Caption = 'Acumens Sales Rebates & Claims Setup';
                     ApplicationArea = All;
                     Image = CostAccountingSetup;
                     RunObject = Page "AQD Acumens CustRbtClaim Setup";
@@ -403,13 +389,6 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Image = UserSetup;
                     RunObject = Page "AQD Marketplace";
                 }
-                action("Customer Rebate Program Codes2")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Customer Rebate Program Codes';
-                    RunObject = page "AQD Cust Rebate Program Codes";
-                    Image = Customer;
-                }
                 action("AQD CR Item Categories2")
                 {
                     Caption = 'Item Categories';
@@ -424,10 +403,24 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Image = CampaignEntries;
                     RunObject = Page "AQD Rebate Customer Categories";
                 }
+                action("Acumens Customer Rebates Claims Setup")
+                {
+                    Caption = 'Acumens Sales Rebates & Claims Setup';
+                    ApplicationArea = All;
+                    Image = CostAccountingSetup;
+                    RunObject = Page "AQD Acumens CustRbtClaim Setup";
+                }
+                action("Customer Rebate Program Codes2")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Sales Rebate Program Codes';
+                    RunObject = page "AQD Cust Rebate Program Codes";
+                    Image = Customer;
+                }
                 action("Customer Rebates Rates")
                 {
                     ApplicationArea = All;
-                    Caption = 'Customer Rebates Rates';
+                    Caption = 'Sales Rebates Rates';
                     Image = Setup;
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
                 }
@@ -438,7 +431,7 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 Image = Setup;
                 action("Acumens Customer Rebates Claims Setup2")
                 {
-                    Caption = 'Acumens Customer Rebates & Claims Setup';
+                    Caption = 'Acumens Sales Rebates & Claims Setup';
                     ApplicationArea = All;
                     Image = CostAccountingSetup;
                     RunObject = Page "AQD Acumens CustRbtClaim Setup";
@@ -494,14 +487,14 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 action("Customer Rebates Documents")
                 {
                     ApplicationArea = All;
-                    Caption = 'Customer Rebates Documents';
+                    Caption = 'Sales Rebates Documents';
                     RunObject = page "AQD Customer Rebates Documents";
                     Image = PostedCreditMemo;
                 }
                 action("Posted Customer Rebates")
                 {
                     ApplicationArea = All;
-                    Caption = 'Posted Customer Rebates';
+                    Caption = 'Posted Customer Rebates Documents';
                     RunObject = page "AQD Posted Customer Rebates";
                     Image = PostedCreditMemo;
                 }

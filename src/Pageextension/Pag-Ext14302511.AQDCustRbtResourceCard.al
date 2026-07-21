@@ -6,11 +6,11 @@ pageextension 14302511 "AQD CustRbt Resource Card" extends "Resource Card"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
 
                 Group("AQD AcumensCustomerRebate")
                 {
-                    Caption = 'Customer Rebate';
+                    Caption = 'Sales Rebate';
                     field("AQD Customer Rebatable"; Rec."AQD Customer Rebate Enabled")
                     {
                         ApplicationArea = All;

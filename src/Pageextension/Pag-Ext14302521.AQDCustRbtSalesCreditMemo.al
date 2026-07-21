@@ -14,7 +14,7 @@ pageextension 14302521 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Mem
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
 
                 field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
                 {
@@ -49,7 +49,7 @@ pageextension 14302521 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Mem
         {
             group("AQD Customer Rebate Group")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
                 action("AQD Customer Rebate Info")
                 {
                     ApplicationArea = All;
@@ -72,7 +72,7 @@ pageextension 14302521 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Mem
         {
             group("AQD Customer Rebate GroupRef")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
                 actionref("AQD Customer Rebate Info_Promoted"; "AQD Customer Rebate Info")
                 {
                 }

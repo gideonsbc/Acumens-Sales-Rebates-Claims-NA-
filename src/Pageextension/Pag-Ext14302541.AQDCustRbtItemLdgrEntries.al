@@ -8,6 +8,7 @@ pageextension 14302541 "AQD CustRbt ItemLdgrEntries" extends "Item Ledger Entrie
             {
                 ApplicationArea = All;
                 Editable = false;
+                Visible = false;
             }
         }
     }

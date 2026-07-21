@@ -11,12 +11,12 @@ pageextension 14302514 "AQD CustRbt Item List" extends "Item List"
         {
             group("AQD Customer Rebate Group")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
 
                 action("AQD Customer Rebate Rates")
                 {
                     ApplicationArea = All;
-                    Caption = 'Customer Rebate Rates';
+                    Caption = 'Sales Rebate Rates';
                     Image = Setup;
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
                     RunPageLink = "Line Type" = CONST(Item),
@@ -29,7 +29,7 @@ pageextension 14302514 "AQD CustRbt Item List" extends "Item List"
         {
             group("AQD Customer Rebate GroupRef")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
                 actionref(AQDCustomerRebateRatesRef; "AQD Customer Rebate Rates") { }
             }
         }

@@ -30,7 +30,7 @@ tableextension 14302516 "AQD CustRbt Return RcptHdr Ext" extends "Return Receipt
         }
         field(14302560; "AQD Customer Rebate Status"; Enum "AQD Customer Rebate Status")
         {
-            Caption = 'Customer Rebate Status';
+            Caption = 'Sales Rebate Status';
             DataClassification = CustomerContent;
         }
         field(14302570; "AQD Customer Rebate Order Date"; Date)
@@ -40,7 +40,7 @@ tableextension 14302516 "AQD CustRbt Return RcptHdr Ext" extends "Return Receipt
         }
         field(14302580; "AQD Customer Rebate No"; Code[20])
         {
-            Caption = 'Customer Rebate No.';
+            Caption = 'Sales Rebate No.';
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
@@ -59,7 +59,7 @@ tableextension 14302516 "AQD CustRbt Return RcptHdr Ext" extends "Return Receipt
         }
         field(14302707; "AQD Cust Rebate Program Code"; Code[10])
         {
-            Caption = 'Customer Rebate Program Code';
+            Caption = 'Sales Rebate Program Code';
             DataClassification = CustomerContent;
             TableRelation = "AQD Cust Rebate Program Code";
         }

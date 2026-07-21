@@ -13,11 +13,11 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
 
                 Group("AQD AcumensCustomerRebate")
                 {
-                    Caption = 'Customer Rebate';
+                    Caption = 'Sales Rebate';
                     field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
                     {
                         ApplicationArea = All;
@@ -135,7 +135,7 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
         {
             group("AQD Customer Rebate Group")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
                 action("AQD Customer Rebate Info")
                 {
                     ApplicationArea = All;
@@ -192,7 +192,7 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
         {
             group("AQD Customer Rebate GroupRef")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
                 actionref("AQD Customer Rebate Info_Promoted"; "AQD Customer Rebate Info")
                 {
                 }

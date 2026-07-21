@@ -1,7 +1,7 @@
 page 14302554 "AQD Customer Rebate Preview"
 {
     ApplicationArea = All;
-    Caption = 'Customer Rebate Preview';
+    Caption = 'Sales Rebate Preview';
     DeleteAllowed = false;
     ModifyAllowed = false;
     InsertAllowed = false;

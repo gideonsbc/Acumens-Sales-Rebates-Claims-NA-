@@ -8,6 +8,6 @@ enum 14302523 "AQD Bill-To Rebate Customer"
     }
     value(1; "Customer Rebate Category Setup")
     {
-        Caption = 'Customer Rebate Category Setup';
+        Caption = 'Sales Rebate Category Setup';
     }
 }

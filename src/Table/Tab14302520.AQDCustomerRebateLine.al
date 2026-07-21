@@ -1,6 +1,6 @@
 table 14302520 "AQD Customer Rebate Line"
 {
-    Caption = 'Customer Rebate Line';
+    Caption = 'Sales Rebate Line';
     DataClassification = CustomerContent;
     Permissions = tabledata "Sales Invoice Header" = rm,
                   tabledata "Sales Cr.Memo Header" = rm;
@@ -101,7 +101,7 @@ table 14302520 "AQD Customer Rebate Line"
         }
         field(180; "Customer Rebate Amount"; Decimal)
         {
-            Caption = 'Customer Rebate Amount';
+            Caption = 'Sales Rebate Amount';
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Do Not Credit" = filter(false),
                                                                                            "Rebate Line No." = field("Line No."),
@@ -111,7 +111,7 @@ table 14302520 "AQD Customer Rebate Line"
         }
         field(181; "Cust Rebate Amt(Item Charge)"; Decimal)
         {
-            Caption = 'Customer Rebate Amount (Item Charge)';
+            Caption = 'Sales Rebate Amount (Item Charge)';
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
                                                                                            "AQD Cust Rebate Posting Type" = const(Inventory),
@@ -122,7 +122,7 @@ table 14302520 "AQD Customer Rebate Line"
         }
         field(182; "Customer Rebate Amt (GL)"; Decimal)
         {
-            Caption = 'Customer Rebate Amt (GL)';
+            Caption = 'Sales Rebate Amt (GL)';
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
                                                                                            "AQD Cust Rebate Posting Type" = const(Expense),
@@ -247,7 +247,7 @@ table 14302520 "AQD Customer Rebate Line"
         }
         field(970; "Cust Rebate Program Code"; Code[10])
         {
-            Caption = 'Customer Rebate Program Code';
+            Caption = 'Sales Rebate Program Code';
             DataClassification = CustomerContent;
             TableRelation = "AQD Cust Rebate Program Code";
         }

@@ -1,6 +1,6 @@
 table 14302521 "AQD Customer Rebate Details"
 {
-    Caption = 'Customer Rebate Details';
+    Caption = 'Sales Rebate Details';
     DataClassification = CustomerContent;
     DrillDownPageID = "AQD Customer Rebate Details";
     LookupPageID = "AQD Customer Rebate Details";
@@ -169,7 +169,7 @@ table 14302521 "AQD Customer Rebate Details"
         }
         field(180; "Customer Rebate Amount"; Decimal)
         {
-            Caption = 'Customer Rebate Amount';
+            Caption = 'Sales Rebate Amount';
             trigger OnValidate()
             begin
                 UpdateChangedBy();
@@ -274,7 +274,7 @@ table 14302521 "AQD Customer Rebate Details"
         }
         field(560; "Customer Rebate Status"; Enum "AQD Customer Rebate Status")
         {
-            Caption = 'Customer Rebate Status';
+            Caption = 'Sales Rebate Status';
             DataClassification = CustomerContent;
         }
         field(570; "Applies-to Doc. Type"; Enum "Sales Applies-to Document Type")

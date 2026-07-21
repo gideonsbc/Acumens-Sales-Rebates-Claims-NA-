@@ -2,7 +2,7 @@ page 14302532 "AQD Customer Rebates Documents"
 {
     ApplicationArea = All;
     AnalysisModeEnabled = false;
-    Caption = 'Customer Rebate Documents';
+    Caption = 'Sales Rebate Documents';
     CardPageId = "AQD Customer Rebate Document";
     DeleteAllowed = false;
     InsertAllowed = false;
@@ -63,7 +63,7 @@ page 14302532 "AQD Customer Rebates Documents"
                 field("Customer Rebate Amount"; Rec."Customer Rebate Amount")
                 {
                     ApplicationArea = All;
-                    Caption = 'Customer Rebate Amount';
+                    Caption = 'Sales Rebate Amount';
                     ToolTip = 'Specifies the value of the Customer Rebate Amount field.';
                 }
                 field("Salesperson Code"; Rec."Salesperson Code")

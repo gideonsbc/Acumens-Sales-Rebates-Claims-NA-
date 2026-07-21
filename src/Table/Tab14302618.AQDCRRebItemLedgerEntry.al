@@ -2,6 +2,8 @@ table 14302618 "AQD CR Reb Item Ledger Entry"
 {
     Caption = 'Rebate Item Ledger Entry';
     DataClassification = CustomerContent;
+    DrillDownPageId = "AQD CR Reb Item Ledger Entries";
+    LookupPageId = "AQD CR Reb Item Ledger Entries";
 
     fields
     {
@@ -279,6 +281,8 @@ table 14302618 "AQD CR Reb Item Ledger Entry"
             FieldClass = FlowField;
             CalcFormula = sum("AQD Posted Cust Reb Details"."Calculated Line Rebate Amount" where("Rebate No." = field("AQD Rebate No"), "No." = field("Item No."), "Document Line No." = field("Document Line No.")));
             Editable = false;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Not in use';
         }
         field(14277030; "AQD Sell-to Customer No."; Code[20])
         {
@@ -342,9 +346,15 @@ table 14302618 "AQD CR Reb Item Ledger Entry"
         }
         field(14277160; "AQD customer Rebate Order Date"; Date)
         {
-            Caption = 'Customer Rebate Order Date';
+            Caption = 'Sales Rebate Order Date';
             DataClassification = CustomerContent;
         }
+        // field(14302510; "AQD Cust Rebate Amount"; Decimal)
+        // {
+        //     BlankZero = TRUE;
+        //     Caption = 'Sales Rebate Amount';
+        //     DataClassification = CustomerContent;
+        // }
     }
 
     keys

@@ -1,6 +1,6 @@
 table 14302518 "AQD Customer Rebate Batch"
 {
-    Caption = 'Customer Rebate Batch';
+    Caption = 'Sales Rebate Batch';
     DataClassification = CustomerContent;
     DataCaptionFields = BatchID;
 
@@ -55,7 +55,7 @@ table 14302518 "AQD Customer Rebate Batch"
         }
         field(90; "Customer Rebate Amount"; Decimal)
         {
-            Caption = 'Customer Rebate Amount';
+            Caption = 'Sales Rebate Amount';
             FieldClass = FlowField;
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Batch Entry No." = field("Entry No."), "Do Not Credit" = filter(false)));
             Editable = false;

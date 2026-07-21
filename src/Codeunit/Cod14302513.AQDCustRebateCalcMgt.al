@@ -178,7 +178,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
 
         // //Remove end date for autoposting
         // if CustomerRebateSetup.Get() then
-        //     if CustomerRebateSetup."Auto Process Customer Rebates" then
+        //     if CustomerRebateSetup."Auto Process Sales Rebates" then
         //         DateArray[2] := CalcDate('CY', WorkDate);
 
         // Calculate Rebate for Posted Sales Credit memos
@@ -1494,7 +1494,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         ReturnReceiptLine: Record "Return Receipt Line";
         RebateProgramCodeRec: Record "AQD Cust Rebate Program Code";
         TempItemLedgEntry: Record "Item Ledger Entry" temporary;
-        ItemLedgEntry: Record "Item Ledger Entry";
+        //ItemLedgEntry: Record "Item Ledger Entry";
+        CustRebItemLedgEntry: Record "AQD CR Reb Item Ledger Entry";
         LocalRebateCategoryCode: Code[20];
         IsRebateEnabled: Boolean;
     begin
@@ -1749,21 +1750,21 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                                 UNTIL TempItemLedgEntry.Next() = 0;
                             END;
                         end;
-                        OnAfterInsertRebateDetail(CustomerRebateDetails, GlobalProcessCatchUpRebate);
+                        OnAfterInsertRebateDetail(CustomerRebateDetails, GlobalProcessCatchUpRebate, TempItemLedgEntry);
                     end;
                 Until (TempRebateCategoryLines.Next() = 0);
                 TempItemLedgEntry.RESET;
                 IF TempItemLedgEntry.FindFirst() THEN BEGIN
                     REPEAT
-                        IF ItemLedgEntry.GET(TempItemLedgEntry."Entry No.") THEN BEGIN
-                            IF ItemLedgEntry."AQD Cust Rebate Amount" <> TempItemLedgEntry."AQD Cust Rebate Amount" THEN BEGIN
+                        IF CustRebItemLedgEntry.GET(TempItemLedgEntry."Entry No.") THEN BEGIN
+                            IF CustRebItemLedgEntry."Rebate Amount" <> TempItemLedgEntry."AQD Cust Rebate Amount" THEN BEGIN
                                 CASE DocumentTypeIn OF
                                     DocumentTypeIn::Invoice:
-                                        ItemLedgEntry."AQD Cust Rebate Amount" += -1 * TempItemLedgEntry."AQD Cust Rebate Amount";
+                                        CustRebItemLedgEntry."Rebate Amount" += TempItemLedgEntry."AQD Cust Rebate Amount";
                                     DocumentTypeIn::"Credit Memo":
-                                        ItemLedgEntry."AQD Cust Rebate Amount" += TempItemLedgEntry."AQD Cust Rebate Amount";
+                                        CustRebItemLedgEntry."Rebate Amount" += -1 * TempItemLedgEntry."AQD Cust Rebate Amount";
                                 END;
-                                ItemLedgEntry.Modify();
+                                CustRebItemLedgEntry.Modify();
                             END;
                         END;
                     UNTIL TempItemLedgEntry.Next() = 0;
@@ -2020,7 +2021,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterInsertRebateDetail(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean)
+    local procedure OnAfterInsertRebateDetail(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; TempItemLedgEntry: Record "Item Ledger Entry" temporary)
     begin
     end;
 

@@ -4,7 +4,7 @@ using System.Security.User;
 page 14302543 "AQD Customer Rebate Batch"
 {
     ApplicationArea = All;
-    Caption = 'Customer Rebate Batch';
+    Caption = 'Sales Rebate Batch';
     InsertAllowed = false;
     PageType = Document;
     SourceTable = "AQD Customer Rebate Batch";
@@ -59,7 +59,7 @@ page 14302543 "AQD Customer Rebate Batch"
             part("AQD Customer Rebate Subpg"; "AQD Customer Rebate Subpg")
             {
                 ApplicationArea = All;
-                Caption = 'Customer Rebate Documents';
+                Caption = 'Sales Rebate Documents';
                 SubPageLink = "Batch Entry No." = field("Entry No.");
                 UpdatePropagation = Both;
             }

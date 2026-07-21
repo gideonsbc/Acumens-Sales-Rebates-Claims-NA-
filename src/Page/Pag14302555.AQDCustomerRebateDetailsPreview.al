@@ -1,6 +1,6 @@
 page 14302555 "AQD CustRebate Details Preview"
 {
-    Caption = 'Customer Rebate Details Preview';
+    Caption = 'Sales Rebate Details Preview';
     PageType = Listpart;
     ApplicationArea = All;
     UsageCategory = Lists;

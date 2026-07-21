@@ -7,7 +7,7 @@ pageextension 14302622 "AQD CustClm Purch Credit Memo" extends "Purchase Credit 
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
                 Editable = false;
 
                 field("AQD CustClaim Claim Type"; Rec."AQD CustClaim Claim Type")

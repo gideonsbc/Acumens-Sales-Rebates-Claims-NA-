@@ -6,11 +6,11 @@ pageextension 14302538 "AQD CustRbt Vendor Card" extends "Vendor Card"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
 
                 Group("AQD AcumensCustomerRebate")
                 {
-                    Caption = 'Customer Rebate';
+                    Caption = 'Sales Rebate';
                     field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
                     {
                         ApplicationArea = All;

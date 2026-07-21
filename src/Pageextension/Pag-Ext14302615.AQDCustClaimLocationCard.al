@@ -6,7 +6,7 @@ pageextension 14302615 "AQD Cust Claim Location Card" extends "Location Card"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
                 field("AQD Vendor Claim Enabled"; Rec."AQD CustFullPriceClaim Enabled")
                 {
                     ApplicationArea = All;

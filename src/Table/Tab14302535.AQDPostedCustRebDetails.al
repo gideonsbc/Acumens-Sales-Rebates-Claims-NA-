@@ -284,7 +284,7 @@ table 14302535 "AQD Posted Cust Reb Details"
         }
         field(560; "Customer Rebate Status"; Enum "AQD Customer Rebate Status")
         {
-            Caption = 'Customer Rebate Status';
+            Caption = 'Sales Rebate Status';
             DataClassification = CustomerContent;
         }
         field(570; "Applies-to Doc. Type"; Enum "Sales Applies-to Document Type")

@@ -13,10 +13,10 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
                 Group(AQDCustomerRebate)
                 {
-                    Caption = 'Customer Rebate';
+                    Caption = 'Sales Rebate';
                     field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
                     {
                         ApplicationArea = All;
@@ -66,7 +66,7 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
                 }
                 Group(AQDCustomerClaim)
                 {
-                    Caption = 'Customer Rebate';
+                    Caption = 'Sales Rebate';
                     field("AQD CustClaim Sales Order No."; Rec."AQD CustClaim Sales Order No.")
                     {
                         ApplicationArea = All;
@@ -86,7 +86,7 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
         {
             group("AQD Customer Rebate Group")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
                 action("AQD Customer Rebate Info")
                 {
                     ApplicationArea = All;
@@ -110,7 +110,7 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
         {
             group("AQD Customer Rebate GroupRef")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
                 actionref("AQD Customer Rebate Info_Promoted"; "AQD Customer Rebate Info")
                 {
                 }

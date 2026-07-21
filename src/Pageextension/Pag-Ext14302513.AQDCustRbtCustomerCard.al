@@ -6,11 +6,11 @@ pageextension 14302513 "AQD CustRbt Customer Card" extends "Customer Card"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
 
                 Group("AQD AcumensCustomerRebate")
                 {
-                    Caption = 'Customer Rebate';
+                    Caption = 'Sales Rebate';
                     field("AQD Enroll for Rebate"; Rec."AQD Enroll for Cust Rebate")
                     {
                         ApplicationArea = All;
@@ -61,12 +61,12 @@ pageextension 14302513 "AQD CustRbt Customer Card" extends "Customer Card"
         {
             group("AQD Customer Rebate Group")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
 
                 action("AQD Customer Rebate Setup")
                 {
                     ApplicationArea = All;
-                    Caption = 'Customer Rebates Rates';
+                    Caption = 'Sales Rebates Rates';
                     Image = LineDiscount;
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
                     RunPageLink = "Entity Type" = CONST(Customer),
@@ -87,7 +87,7 @@ pageextension 14302513 "AQD CustRbt Customer Card" extends "Customer Card"
         {
             group("AQD Customer Rebate GroupRef")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
                 actionref("AQD CustomerRebateSetup_Promoted"; "AQD Customer Rebate Setup") { }
             }
         }

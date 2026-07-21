@@ -6,7 +6,7 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
                 Editable = false;
 
                 Group("AQD AcumensCustomerClaim")
@@ -45,7 +45,7 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                 }
                 Group("AQD AcumensCustomerRebate")
                 {
-                    Caption = 'Customer Rebate';
+                    Caption = 'Sales Rebate';
                     field("AQD Claim Type"; Rec."AQD CustClaim Claim Type")
                     {
                         ApplicationArea = All;

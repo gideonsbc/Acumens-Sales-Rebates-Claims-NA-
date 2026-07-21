@@ -1,6 +1,6 @@
 table 14302509 "AQD Acumens CustRbtClaim Setup"
 {
-    Caption = 'Acumens Customer Rebates & Claims Setup';
+    Caption = 'Acumens Sales Rebates & Claims Setup';
     DrillDownPageId = "AQD Acumens CustRbtClaim Setup";
     LookupPageId = "AQD Acumens CustRbtClaim Setup";
     DataClassification = CustomerContent;
@@ -57,7 +57,7 @@ table 14302509 "AQD Acumens CustRbtClaim Setup"
         }
         field(240; "Customer Rebate Document Nos"; Code[20])
         {
-            Caption = 'Customer Rebate Document Nos';
+            Caption = 'Sales Rebate Document Nos';
             TableRelation = "No. Series";
         }
         field(270; "Post Customer Rebates for"; Enum "AQD Post Customer Rebates for")
@@ -80,7 +80,7 @@ table 14302509 "AQD Acumens CustRbtClaim Setup"
         }
         field(375; "Auto Process Customer Rebates"; Boolean)
         {
-            Caption = 'Auto Process Customer Rebates';
+            Caption = 'Auto Process Sales Rebates';
             InitValue = true;
         }
         field(378; "Post Rebates by Bill-To Cust"; Boolean)
@@ -109,7 +109,7 @@ table 14302509 "AQD Acumens CustRbtClaim Setup"
         }
         field(420; "Customer Rebate Source Code"; Code[10])
         {
-            Caption = 'Customer Rebate Source Code';
+            Caption = 'Sales Rebate Source Code';
             TableRelation = "Source Code";
         }
         field(490; "Bill-To Rebate Customer"; Enum "AQD Bill-To Rebate Customer")

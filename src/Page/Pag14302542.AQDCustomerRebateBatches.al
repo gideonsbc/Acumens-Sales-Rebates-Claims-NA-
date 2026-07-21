@@ -2,7 +2,7 @@ namespace AcumenseRebatesBC.AcumenseRebatesBC;
 page 14302542 "AQD Customer Rebate Batches"
 {
     ApplicationArea = All;
-    Caption = 'Customer Rebate Batches';
+    Caption = 'Sales Rebate Batches';
     CardPageId = "AQD Customer Rebate Batch";
     Editable = false;
     InsertAllowed = false;

@@ -111,7 +111,7 @@ table 14302534 "AQD Posted Cust Rebate Line"
         }
         field(180; "Customer Rebate Amount"; Decimal)
         {
-            Caption = 'Customer Rebate Amount';
+            Caption = 'Sales Rebate Amount';
             CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
                                                                                            "Entity Type" = const(Customer)));
@@ -120,7 +120,7 @@ table 14302534 "AQD Posted Cust Rebate Line"
         }
         field(181; "Cust Rebate Amt(Item Charge)"; Decimal)
         {
-            Caption = 'Customer Rebate Amount (Item Charge)';
+            Caption = 'Sales Rebate Amount (Item Charge)';
             CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
                                                                                            "AQD Cust Rebate Posting Type" = const(Inventory),
@@ -130,7 +130,7 @@ table 14302534 "AQD Posted Cust Rebate Line"
         }
         field(182; "Customer Rebate Amt (GL)"; Decimal)
         {
-            Caption = 'Customer Rebate Amt (GL)';
+            Caption = 'Sales Rebate Amt (GL)';
             CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Rebate No." = field("Rebate No."),
                                                                                            "Rebate Line No." = field("Line No."),
                                                                                            "AQD Cust Rebate Posting Type" = const(Expense),
@@ -270,7 +270,7 @@ table 14302534 "AQD Posted Cust Rebate Line"
         }
         field(970; "Cust Rebate Program Code"; Code[10])
         {
-            Caption = 'Customer Rebate Program Code';
+            Caption = 'Sales Rebate Program Code';
             DataClassification = CustomerContent;
             TableRelation = "AQD Cust Rebate Program Code";
         }

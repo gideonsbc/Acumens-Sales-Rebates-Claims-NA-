@@ -109,7 +109,7 @@ page 14302538 "AQD Posted Customer Rebate Doc"
                 field("Customer Rebate Amount"; Rec."Customer Rebate Amount")
                 {
                     ApplicationArea = All;
-                    Caption = 'Customer Rebate Amount';
+                    Caption = 'Sales Rebate Amount';
                     ToolTip = 'Specifies the value of the Customer Rebate Amount field.';
                 }
                 field("Vendor Commission"; Rec."Vendor Commission")

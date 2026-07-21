@@ -21,7 +21,7 @@ tableextension 14302513 "AQD CustRbt Sales Header Ext" extends "Sales Header"
         }
         field(14302520; "AQD Customer Rebate"; Boolean)
         {
-            Caption = 'Customer Rebate';
+            Caption = 'Sales Rebate';
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
@@ -46,7 +46,7 @@ tableextension 14302513 "AQD CustRbt Sales Header Ext" extends "Sales Header"
         }
         field(14302580; "AQD Customer Rebate No"; Code[20])
         {
-            Caption = 'Customer Rebate No.';
+            Caption = 'Sales Rebate No.';
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
@@ -141,7 +141,7 @@ tableextension 14302513 "AQD CustRbt Sales Header Ext" extends "Sales Header"
         }
         field(14302704; "AQD Cust Rebate Category"; Code[20])
         {
-            Caption = 'Customer Rebate Category';
+            Caption = 'Sales Rebate Category';
             DataClassification = CustomerContent;
             TableRelation = "AQD Rebate Customer Category";
         }
@@ -158,7 +158,7 @@ tableextension 14302513 "AQD CustRbt Sales Header Ext" extends "Sales Header"
         }
         field(14302707; "AQD Cust Rebate Program Code"; Code[10])
         {
-            Caption = 'Customer Rebate Program Code';
+            Caption = 'Sales Rebate Program Code';
             DataClassification = CustomerContent;
             TableRelation = "AQD Cust Rebate Program Code" where("Entity Type" = const("Vendor Commission"));
         }

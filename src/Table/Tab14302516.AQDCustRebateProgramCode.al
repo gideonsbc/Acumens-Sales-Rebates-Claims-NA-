@@ -1,6 +1,6 @@
 table 14302516 "AQD Cust Rebate Program Code"
 {
-    Caption = 'Customer Rebate Program Codes';
+    Caption = 'Sales Rebate Program Codes';
     LookupPageID = "AQD Cust Rebate Program Codes";
     DrillDownPageId = "AQD Cust Rebate Program Codes";
     DataClassification = CustomerContent;
@@ -26,7 +26,7 @@ table 14302516 "AQD Cust Rebate Program Code"
         }
         field(4; "Customer Rebate Posting Type"; enum "AQD CustRebate CostPostingType")
         {
-            Caption = 'Customer Rebate Posting Type';
+            Caption = 'Sales Rebate Posting Type';
         }
         field(5; "Customer Default Rebate %"; Decimal)
         {

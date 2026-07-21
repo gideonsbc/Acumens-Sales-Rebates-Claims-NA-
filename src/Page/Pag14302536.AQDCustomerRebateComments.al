@@ -1,6 +1,6 @@
 page 14302536 "AQD Customer Rebate Comments"
 {
-    Caption = 'Customer Rebate Comments';
+    Caption = 'Sales Rebate Comments';
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Lists;

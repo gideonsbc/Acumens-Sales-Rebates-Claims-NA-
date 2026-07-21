@@ -52,7 +52,7 @@ table 14302532 "AQD Posted Cust Rebate Batch"
         }
         field(90; "Customer Rebate Amount"; Decimal)
         {
-            Caption = 'Customer Rebate Amount';
+            Caption = 'Sales Rebate Amount';
             FieldClass = FlowField;
             CalcFormula = sum("AQD Posted Cust Reb Details"."Customer Rebate Amount" where("Batch Entry No." = field("Entry No."), "Do Not Credit" = filter(false)));
             Editable = false;

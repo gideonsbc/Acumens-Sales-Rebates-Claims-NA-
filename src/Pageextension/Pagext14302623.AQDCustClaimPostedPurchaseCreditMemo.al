@@ -7,7 +7,7 @@ pageextension 14302623 "AQD CustClm Posted PurchCrMemo" extends "Posted Purchase
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Customer Rebates & Claims';
+                Caption = 'Acumens Sales Rebates & Claims';
                 Editable = false;
 
                 field("AQD CustClaim Claim Type"; Rec."AQD CustClaim Claim Type")

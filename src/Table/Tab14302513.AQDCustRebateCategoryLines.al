@@ -1,6 +1,6 @@
 table 14302513 "AQD Cust Rebate Category Lines"
 {
-    Caption = 'Customer Rebate Category Lines';
+    Caption = 'Sales Rebate Category Lines';
     DataClassification = CustomerContent;
 
     fields

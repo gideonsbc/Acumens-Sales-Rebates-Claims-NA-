@@ -14,7 +14,13 @@ page 14302518 "AQD Customer Rebate Cues"
                 Caption = 'Rebate';
                 field("Rebate Document"; Rec."Rebate Documents")
                 {
-                    Caption = 'Rebate Documents';
+                    Caption = 'Sales Rebate Documents';
+                    ApplicationArea = All;
+                    DrillDownPageId = "AQD Customer Rebates Documents";
+                }
+                field("Posted Rebate Document"; Rec."Posted Rebate Documents")
+                {
+                    Caption = 'Posted Sales Rebate Documents';
                     ApplicationArea = All;
                     DrillDownPageId = "AQD Customer Rebates Documents";
                 }

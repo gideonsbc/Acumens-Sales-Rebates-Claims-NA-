@@ -4,18 +4,18 @@ tableextension 14302509 "AQD CustRbt Item Ext" extends Item
     {
         field(14302510; "AQD Customer Rebate Enabled"; Boolean)
         {
-            Caption = 'Customer Rebate Enabled';
+            Caption = 'Sales Rebate Enabled';
             DataClassification = CustomerContent;
         }
         field(14302520; "AQD Cust Rebate Category Code"; Code[20])
         {
-            Caption = 'Customer Rebate Item Category';
+            Caption = 'Sales Rebate Item Category';
             DataClassification = CustomerContent;
             TableRelation = "Item Category".Code;
         }
         field(14302530; "AQD CustRbt Source No. Filter"; Code[20])
         {
-            Caption = 'Customer Rebate Source No. Filter';
+            Caption = 'Sales Rebate Source No. Filter';
             FieldClass = FlowFilter;
             TableRelation = Customer."No.";
         }

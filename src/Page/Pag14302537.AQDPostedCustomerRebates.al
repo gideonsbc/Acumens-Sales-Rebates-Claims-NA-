@@ -109,7 +109,7 @@ page 14302537 "AQD Posted Customer Rebates"
             // action("Customer Rebate Details")
             // {
             //     ApplicationArea = All;
-            //     Caption = 'Customer Rebate Details';
+            //     Caption = 'Sales Rebate Details';
             //     Image = Report;
             //     trigger OnAction()
             //     var

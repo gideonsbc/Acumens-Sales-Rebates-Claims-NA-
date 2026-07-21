@@ -1,6 +1,6 @@
 table 14302511 "AQD Customer Rebate Cues"
 {
-    Caption = 'Customer Rebate Cues';
+    Caption = 'Sales Rebate Cues';
     DataClassification = CustomerContent;
 
     fields
@@ -13,6 +13,13 @@ table 14302511 "AQD Customer Rebate Cues"
         {
             Caption = 'Rebate Document';
             CalcFormula = count("AQD Customer Rebate Header" where("Salesperson Code" = field("Salesperson Code Filter"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), "Territory Code" = field("State Filter")));
+            FieldClass = FlowField;
+            Editable = false;
+        }
+        field(25; "Posted Rebate Documents"; Integer)
+        {
+            Caption = 'Posted Rebate Document';
+            CalcFormula = count("AQD Posted Cust Rebate Header" where("Salesperson Code" = field("Salesperson Code Filter"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), "Territory Code" = field("State Filter")));
             FieldClass = FlowField;
             Editable = false;
         }

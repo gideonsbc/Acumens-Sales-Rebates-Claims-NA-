@@ -4,12 +4,12 @@ tableextension 14302511 "AQD CustRbt Resource Ext" extends Resource
     {
         field(14302510; "AQD Customer Rebate Enabled"; Boolean)
         {
-            Caption = 'Customer Rebate Enabled';
+            Caption = 'Sales Rebate Enabled';
             DataClassification = CustomerContent;
         }
         field(14302520; "AQD Cust Rebate Category Code"; Code[20])
         {
-            Caption = 'Customer Rebate Category Code';
+            Caption = 'Sales Rebate Category Code';
             DataClassification = CustomerContent;
             TableRelation = "Item Category".Code;
         }

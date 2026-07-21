@@ -1,7 +1,7 @@
 page 14302509 "AQD Acumens CustRbtClaim Setup"
 {
     ApplicationArea = All;
-    Caption = 'Acumens Customer Rebates & Claims Setup';
+    Caption = 'Acumens Sales Rebates & Claims Setup';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
@@ -15,7 +15,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
         {
             group("Customer Rebate")
             {
-                Caption = 'Customer Rebate';
+                Caption = 'Sales Rebate';
                 Editable = AllowToEdit;
 
                 group(RebateEnabled)
@@ -80,7 +80,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 {
                     ApplicationArea = All;
                 }
-                field("Auto Process Customer Rebates"; Rec."Auto Process Customer Rebates")
+                field("Auto Process Sales Rebates"; Rec."Auto Process Customer Rebates")
                 {
                     ApplicationArea = All;
                 }
@@ -283,7 +283,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 Editable = AllowToEdit;
                 Group("AQD AcumensCustomerRebate")
                 {
-                    Caption = 'Customer Rebate';
+                    Caption = 'Sales Rebate';
 
                     field("Customer Rebate Nos"; Rec."Customer Rebate Document Nos")
                     {
@@ -399,7 +399,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             action("Customer Rebate Program Codes")
             {
                 ApplicationArea = All;
-                Caption = 'Customer Rebate Program Codes';
+                Caption = 'Sales Rebate Program Codes';
                 RunObject = page "AQD Cust Rebate Program Codes";
                 Image = Customer;
             }

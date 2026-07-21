@@ -1,6 +1,6 @@
 table 14302519 "AQD Customer Rebate Header"
 {
-    Caption = 'Customer Rebate Header';
+    Caption = 'Sales Rebate Header';
     DataCaptionFields = "No.", "Rebate-To Name";
     DataClassification = CustomerContent;
     DrillDownPageId = "AQD Customer Rebates Documents";
@@ -140,7 +140,7 @@ table 14302519 "AQD Customer Rebate Header"
         }
         field(530; "Customer Rebate Amount"; Decimal)
         {
-            Caption = 'Customer Rebate Amount';
+            Caption = 'Sales Rebate Amount';
             CalcFormula = sum("AQD Customer Rebate Details"."Customer Rebate Amount" where("Rebate No." = field("No."),
                                                                                            "Do Not Credit" = filter(false),
                                                                                            "Entity Type" = const(Customer)));

@@ -1,5 +1,5 @@
 profile "AQDAcumensCustRebatesAndClaims"
 {
-    Caption = 'Acumens Customer Rebates & Claims';
+    Caption = 'Acumens Sales Rebates & Claims';
     RoleCenter = "AQD Cust Rebate And Claims RC";
 }
