@@ -1,7 +1,7 @@
 page 14302516 "AQD CustRbt SalesRebates Setup"
 {
     ApplicationArea = All;
-    Caption = 'Sales Rebates Rates';
+    Caption = 'Sales Rebate Rates';
     DataCaptionExpression = GetCaption;
     DelayedInsert = true;
     PageType = List;
