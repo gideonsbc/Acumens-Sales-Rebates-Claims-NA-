@@ -235,6 +235,11 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the Territory Code that belongs to the Entity Type.';
                 }
+                field("AQD Trade Agreement"; Rec."AQD Trade Agreement")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Trade Agreement field.';
+                }
                 field("Line Type"; Rec."Line Type")
                 {
                     ApplicationArea = All;

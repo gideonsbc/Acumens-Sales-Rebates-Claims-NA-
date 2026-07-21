@@ -147,5 +147,17 @@ permissionset 14302509 "AQD Customer Rebate"
         table "AQD CR Reb Item Ledger Entry" = X,
         page "AQD CR Reb Item Ledger Entries" = X,
         codeunit "AQD CR SelectionFilterMgt" = X,
-        report "AQD Clear unprocessed Rebates" = X;
+        report "AQD Clear unprocessed Rebates" = X,
+        tabledata "AQD CRC Workflow Cue" = RIMD,
+        tabledata "AQD Trade Agreement" = RIMD,
+        table "AQD CRC Workflow Cue" = X,
+        table "AQD Trade Agreement" = X,
+        report "AQD Suggest Vendor Commissions" = X,
+        codeunit "AQD Claims and Rebates Events" = X,
+        codeunit "AQD CR Single Instance Ext" = X,
+        codeunit "AQD Cust. Claims_Rebates Appr." = X,
+        codeunit "AQD Suggest Vendor Commissions" = X,
+        page "AQD CRC Workflow Cue" = X,
+        page "AQD Sales Rebate Approvals" = X,
+        page "AQD Trade Agreements" = X;
 }

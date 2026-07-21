@@ -96,6 +96,11 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     ApplicationArea = All;
                     Caption = 'Pay-to Vendor No.';
                 }
+                field("AQD Default Trade Agreement"; Rec."AQD Default Trade Agreement")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Default Trade Agreement field.';
+                }
                 field("Specific Sales New"; Rec."Specific Sales New")
                 {
                     ApplicationArea = All;

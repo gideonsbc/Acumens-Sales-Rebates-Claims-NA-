@@ -394,16 +394,12 @@ table 14302521 "AQD Customer Rebate Details"
             Caption = 'CatchUp Rebate';
             DataClassification = CustomerContent;
         }
-        // field(9530; "Customer Type Filter"; Enum "AQD Rates Customer Type Filter")
-        // {
-        //     Caption = 'Customer Type Filter';
-        //     DataClassification = CustomerContent;//As Temporary Used
-        // }
-        // field(9531; "Customer No. Filter"; Code[20])
-        // {
-        //     Caption = 'Customer No. Filter';
-        //     DataClassification = CustomerContent;//As Temporary Used
-        // }
+        field(9040; "AQD Default Trade Agreement"; Code[10])
+        {
+            Caption = 'Default Trade Agreement';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD CF Trade Agreement";
+        }
     }
 
     keys

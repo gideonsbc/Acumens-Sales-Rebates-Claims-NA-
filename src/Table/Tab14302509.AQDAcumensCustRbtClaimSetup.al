@@ -340,6 +340,12 @@ table 14302509 "AQD Acumens CustRbtClaim Setup"
             TableRelation = "No. Series";
         }
         //<< Customer Claims
+        field(3000; "Enable Rebate Approvals"; Boolean)
+        {
+            Caption = 'Enable Sales Rebate Line Approvals';
+            DataClassification = CustomerContent;
+            InitValue = true;
+        }
     }
     keys
     {

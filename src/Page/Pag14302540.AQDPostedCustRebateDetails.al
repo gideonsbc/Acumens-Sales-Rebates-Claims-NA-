@@ -160,6 +160,11 @@ page 14302540 "AQD Posted Cust Rebate Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Exclude field.', Comment = '%';
                 }
+                field("AQD Trade Agreement"; Rec."AQD Default Trade Agreement")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Trade Agreement field.';
+                }
                 field("Rebate Amount Changed By"; Rec."Rebate Amount Changed By")
                 {
                     ApplicationArea = All;

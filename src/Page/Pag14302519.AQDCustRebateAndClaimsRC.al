@@ -14,6 +14,11 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 Caption = 'Rebate Activities';
                 ApplicationArea = All;
             }
+            part("AQD Sales Rebate Cues"; "AQD CRC Workflow Cue")
+            {
+                ApplicationArea = All;
+                Caption = 'Sales Rebate Cues';
+            }
         }
     }
 
@@ -361,6 +366,27 @@ page 14302519 "AQD Cust Rebate And Claims RC"
         }
         area(Processing)
         {
+            action("AQD Customer Rebate Approvals_Processing")
+            {
+                ApplicationArea = All;
+                Caption = 'Sales Rebate Approvals';
+                RunObject = page "AQD Sales Rebate Approvals";
+                Image = Approvals;
+            }
+            action("AQD Payment Journal")
+            {
+                ApplicationArea = All;
+                Caption = 'Payment Journal';
+                RunObject = page "Payment Journal";
+                Image = Journals;
+            }
+            action("AQD Purchase Journal")
+            {
+                ApplicationArea = All;
+                Caption = 'Purchase Journal';
+                RunObject = page "Purchase Journal";
+                Image = Journals;
+            }
             group(CustomerRebateSetup)
             {
                 Caption = 'Sales Rebate Setup';
@@ -423,6 +449,13 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Caption = 'Sales Rebates Rates';
                     Image = Setup;
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
+                }
+                action("AQD Trade Agreements")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Trade Agreements';
+                    RunObject = page "AQD CF Trade Agreements";
+                    Image = CodesList;
                 }
             }
             group(CustomerClaimSetup)
@@ -504,6 +537,13 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Caption = 'Posted Customer Rebate Details';
                     RunObject = page "AQD Posted CustRbtDetail List";
                     Image = PostedCreditMemo;
+                }
+                action("AQD Sales Rebate Approvals")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Sales Rebate Approvals';
+                    RunObject = page "AQD Sales Rebate Approvals";
+                    Image = Approvals;
                 }
                 action("AQD Completed Full Price Cust Claim List2")
                 {

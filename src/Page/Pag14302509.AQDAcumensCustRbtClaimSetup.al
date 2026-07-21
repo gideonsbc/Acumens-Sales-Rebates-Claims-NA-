@@ -138,6 +138,15 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                         ApplicationArea = All;
                     }
                 }
+                group("AQD Rebate & Claims approvals")
+                {
+                    Caption = 'Rebate & Claims approvals';
+                    Field("Enable Claims Approvals"; Rec."Enable Rebate Approvals")
+                    {
+                        ToolTip = 'Specifies the value of the Enable Sales Rebate Line Approvals Setup field.';
+                        ApplicationArea = all;
+                    }
+                }
             }
             group("Customer Claim")
             {

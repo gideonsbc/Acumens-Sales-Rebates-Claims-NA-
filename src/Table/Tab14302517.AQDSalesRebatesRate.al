@@ -130,6 +130,7 @@ table 14302517 "AQD Sales Rebates Rate"
                     Rec."Entity No." := RebateProgramCode."Entity No.";
                     Rec."Rebate Expense Type" := RebateProgramCode."Rebate Expense Type";
                     Rec."Default Setup" := RebateProgramCode."Default Setup";
+                    Rec.Validate("AQD Trade Agreement", RebateProgramCode."AQD Default Trade Agreement");
                 END;
             end;
         }
@@ -353,6 +354,12 @@ table 14302517 "AQD Sales Rebates Rate"
         {
             Caption = 'Rate Priority';
             DataClassification = CustomerContent;
+        }
+        field(850; "AQD Trade Agreement"; Code[10])
+        {
+            Caption = 'Trade Agreement';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD CF Trade Agreement";
         }
         field(9000; "Default Setup"; Boolean)
         {

@@ -380,6 +380,12 @@ table 14302535 "AQD Posted Cust Reb Details"
             Caption = 'CatchUp Rebate';
             DataClassification = CustomerContent;
         }
+        field(9040; "AQD Default Trade Agreement"; Code[10])
+        {
+            Caption = 'Default Trade Agreement';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD CF Trade Agreement";
+        }
     }
 
     keys
