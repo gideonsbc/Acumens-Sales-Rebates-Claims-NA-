@@ -479,7 +479,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnBeforeInsertTempRebateCategoryLines, '', false, false)]
     local procedure "AQD Cust Rebate Calc Preview_OnBeforeInsertTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate"; CustomerNo: Code[20])
     begin
-        //TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
         TempRebateCategoryLines."Bill-to Customer No." := CustomerNo;
         TempRebateCategoryLines."Customer Rebate Category" := CustomerRebateCategory(CustomerNo);
     end;
@@ -487,7 +486,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnBeforeInsertTempRebateCategoryLines, '', false, false)]
     local procedure "AQD Cust Rebate Calc Mgt_OnBeforeInsertTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate"; CustomerNo: Code[20])
     begin
-        //TempRebateCategoryLines."Marketplace Code" := GlobalSalesRebateRate."Marketplace Code";
         TempRebateCategoryLines."Bill-to Customer No." := CustomerNo;
         TempRebateCategoryLines."Customer Rebate Category" := CustomerRebateCategory(CustomerNo);
     end;
@@ -516,72 +514,51 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnBeforeInsertToCustomerSalesRebateRate, '', false, false)]
     local procedure "AQD Sales Rebate Rate Calc Mgt_OnBeforeInsertToCustomerSalesRebateRate"(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
     var
-        TempCustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details" temporary;
+        SalesRebateCalcMgt: Codeunit "AQD Cust Rebate Calc Mgt";
     begin
         IsHandled := false;
-        //Filter using Customer No. Filter
+
+        // Customer No. Filter
         if FromCustomerSalesRebateRate."Customer No. Filter" <> '' then begin
-            TempCustomerRebateDetailsLocIn.Reset();
-            if TempCustomerRebateDetailsLocIn.IsTemporary then
-                TempCustomerRebateDetailsLocIn.DeleteAll();
-
-            TempCustomerRebateDetailsLocIn := CustomerRebateDetailsLocIn;
-            TempCustomerRebateDetailsLocIn.Insert();
-
-            case FromCustomerSalesRebateRate."Customer Type Filter" of
-                FromCustomerSalesRebateRate."Customer Type Filter"::Customer:
+            case FromCustomerSalesRebateRate."Entity Type" of
+                FromCustomerSalesRebateRate."Entity Type"::Customer:
                     begin
-                        TempCustomerRebateDetailsLocIn.Reset();
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
-                        TempCustomerRebateDetailsLocIn.SetFilter("Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter");
-                        if not TempCustomerRebateDetailsLocIn.FindFirst() then
+                        if not SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
                             IsHandled := true;
                     end;
-                FromCustomerSalesRebateRate."Customer Type Filter"::"Customer Category":
+                FromCustomerSalesRebateRate."Entity Type"::"Customer Category":
                     begin
-                        TempCustomerRebateDetailsLocIn.Reset();
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
-                        TempCustomerRebateDetailsLocIn.SetFilter("Customer Rebate Category", FromCustomerSalesRebateRate."Customer No. Filter");
-                        if not TempCustomerRebateDetailsLocIn.FindFirst() then
+                        if not SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
                             IsHandled := true;
                     end;
             end;
         end;
 
-        //Filter using No. Filter
+        //No. Filter
         if FromCustomerSalesRebateRate."No. Filter" <> '' then begin
-            TempCustomerRebateDetailsLocIn.Reset();
-            if TempCustomerRebateDetailsLocIn.IsTemporary then
-                TempCustomerRebateDetailsLocIn.DeleteAll();
-
-            TempCustomerRebateDetailsLocIn := CustomerRebateDetailsLocIn;
-            TempCustomerRebateDetailsLocIn.Insert();
-
             case FromCustomerSalesRebateRate."Line Type" of
+                FromCustomerSalesRebateRate."Line Type"::Item:
+                    begin
+                        if not SalesRebateCalcMgt.IsItemMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+                            IsHandled := true;
+                    end;
+                FromCustomerSalesRebateRate."Line Type"::"G/L Account":
+                    begin
+                        if not SalesRebateCalcMgt.IsGLMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+                            IsHandled := true;
+                    end;
+                FromCustomerSalesRebateRate."Line Type"::Resource:
+                    begin
+                        if not SalesRebateCalcMgt.IsRsMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+                            IsHandled := true;
+                    end;
                 FromCustomerSalesRebateRate."Line Type"::"Rebate Category":
                     begin
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
-                        TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
-                        TempCustomerRebateDetailsLocIn.SetFilter("Rebate Item Category Code", FromCustomerSalesRebateRate."No. Filter");
-                        if not TempCustomerRebateDetailsLocIn.FindFirst() then
+                        if not SalesRebateCalcMgt.IsItemTypeMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
                             IsHandled := true;
                     end;
-                else begin
-                    TempCustomerRebateDetailsLocIn.SetRange("Rebate No.", CustomerRebateDetailsLocIn."Rebate No.");
-                    TempCustomerRebateDetailsLocIn.SetRange("Rebate Line No.", CustomerRebateDetailsLocIn."Rebate Line No.");
-                    TempCustomerRebateDetailsLocIn.SetRange("Line No.", CustomerRebateDetailsLocIn."Line No.");
-                    TempCustomerRebateDetailsLocIn.SetFilter("No.", FromCustomerSalesRebateRate."No. Filter");
-                    if not TempCustomerRebateDetailsLocIn.FindFirst() then
-                        IsHandled := true;
-                end;
             end;
         end;
-
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnBeforeInsertRebateDetail, '', false, false)]
@@ -789,20 +766,20 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         SalesHeader.SetRange("No.", SalesHeaderIn."No.");
         case RebateRates."Entity Type" of
             RebateRates."Entity Type"::Customer:
-                if RebateRates."Entity No." <> '' then
-                    SalesHeader.SetRange("Bill-to Customer No.", RebateRates."Entity No.");
-            RebateRates."Entity Type"::"Customer Category":
-                if RebateRates."Entity No." <> '' then
-                    SalesHeader.SetRange("AQD Cust Rebate Category", RebateRates."Entity No.");
-        end;
-        case RebateRates."Customer Type Filter" of
-            RebateRates."Customer Type Filter"::Customer:
                 if RebateRates."Customer No. Filter" <> '' then
                     SalesHeader.SetFilter("Bill-to Customer No.", RebateRates."Customer No. Filter");
-            RebateRates."Customer Type Filter"::"Customer Category":
+            RebateRates."Entity Type"::"Customer Category":
                 if RebateRates."Customer No. Filter" <> '' then
                     SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter");
         end;
+        // case RebateRates."Entity Type" of
+        //     RebateRates."Entity Type"::Customer:
+        //         if RebateRates."Customer No. Filter" <> '' then
+        //             SalesHeader.SetFilter("Bill-to Customer No.", RebateRates."Customer No. Filter");
+        //     RebateRates."Entity Type"::"Customer Category":
+        //         if RebateRates."Customer No. Filter" <> '' then
+        //             SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter");
+        // end;
 
         //Set Payment Term Filter
         ProgramCode.Get(RebateRates."Rebate Program Code");

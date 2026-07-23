@@ -9,7 +9,7 @@ report 14302617 "AQD Suggest Vendor Commissions"
     {
         dataitem("AQD Cust Rebate Program Code"; "AQD Cust Rebate Program Code")
         {
-            DataItemTableView = where("Entity Type" = filter("Vendor Commission"), "AQD Pay-to Vendor No." = filter(<> ''));
+            DataItemTableView = where("Payee Type" = filter("Vendor Commission"), "AQD Pay-to Vendor No." = filter(<> ''));
             RequestFilterFields = Code;
 
             trigger OnPreDataItem()

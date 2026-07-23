@@ -196,46 +196,52 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         CASE CustomerRebateDetailsLocIn."Entity Type" OF
             CustomerRebateDetailsLocIn."Entity Type"::Customer:
                 BEGIN
-                    SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"All Customers");
-                    SalesRebatesRate.SetRange("Entity No.");
-                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
+                    // SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"All Customers");
+                    // SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
+                    // SalesRebatesRate.SetRange("Customer No. Filter");
+                    // CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::Customer);
-                    SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Bill-To Customer No.");
+                    SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
+                    //SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Bill-To Customer No.");
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     IF LocalCust.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.") THEN BEGIN
                         IF LocalCust."AQD Cust Rebate Category" <> '' then begin
                             SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"Customer Category");
-                            SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', LocalCust."AQD Cust Rebate Category");
+                            SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
+                            //SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', LocalCust."AQD Cust Rebate Category");
                             CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
                         end;
                     END;
 
-                    SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"All Customers");
-                    SalesRebatesRate.SetRange("Entity No.");
+                    // SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"All Customers");
+                    // SalesRebatesRate.SetRange("Customer No. Filter");
                     SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Rebate Category");
                     SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Rebate Item Category Code");
                     SalesRebatesRate.SetRange("Variant Code");
                     SalesRebatesRate.SetRange("Unit of Measure Code");
+                    SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::Customer);
-                    SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Bill-To Customer No.");
+                    SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
+                    //SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Bill-To Customer No.");
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     IF LocalCust.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.") THEN BEGIN
                         IF LocalCust."AQD Cust Rebate Category" <> '' then begin
                             SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"Customer Category");
-                            SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', LocalCust."AQD Cust Rebate Category");
+                            SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
+                            //SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', LocalCust."AQD Cust Rebate Category");
                             CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
                         end;
                     END;
                 END;
             CustomerRebateDetailsLocIn."Entity Type"::Employee:
                 BEGIN
-                    SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"Employee Commission");
-                    SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Entity No.");
+                    SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::"Employee Commission");
+                    SalesRebatesRate.SetFilter("Payee No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Entity No.");
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Rebate Category");
@@ -246,8 +252,8 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                 END;
             CustomerRebateDetailsLocIn."Entity Type"::Vendor:
                 BEGIN
-                    SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"Vendor Commission");
-                    SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Entity No.");
+                    SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::"Vendor Commission");
+                    SalesRebatesRate.SetFilter("Payee No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Entity No.");
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Rebate Category");
@@ -285,160 +291,228 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                     IF RebateDateFilter <> '' THEN
                         RebateDateFilter := RebateDateFilter + '..';
 
-                //IF CustomerRebateDetailsLocIn.Preview THEN begin
-                //SalesQty += CustomerRebateDetailsLocIn.Quantity;
-                //SalesAmount += CustomerRebateDetailsLocIn.Amount;
-                //end;
                 SalesQty := CustomerRebateDetailsLocIn.Quantity;
                 SalesAmount := CustomerRebateDetailsLocIn.Amount;
 
-                CASE CustomerSalesRebateRate."Entity Type" OF
-                    CustomerSalesRebateRate."Entity Type"::Customer,
-                    CustomerSalesRebateRate."Entity Type"::"Employee Commission",
-                    CustomerSalesRebateRate."Entity Type"::"Vendor Commission":
-                        BEGIN
-                            IF CustomerSalesRebateRate."CustRbt Rate Type" = CustomerSalesRebateRate."CustRbt Rate Type"::"Volume Rebate" THEN BEGIN
-                                Case CustomerSalesRebateRate."Line Type" OF
-                                    CustomerSalesRebateRate."Line Type"::Item:
-                                        BEGIN
-                                            ItemRec.GET(CustomerRebateDetailsLocIn."No.");
-                                            ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
-                                            ItemRec.SetFilter("Date Filter", RebateDateFilter);
-
-                                            ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
-                                            SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
-                                            SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
-                                        END;
-                                    CustomerSalesRebateRate."Line Type"::"Rebate Category":
-                                        BEGIN
-                                            ItemRec.RESET;
-                                            ItemRec.SETRANGE("AQD Cust Rebate Category Code", CustomerRebateDetailsLocIn."Rebate Item Category Code");
-                                            IF ItemRec.FINDFIRST THEN BEGIN
-                                                REPEAT
-                                                    ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
-                                                    ItemRec.SetFilter("Date Filter", RebateDateFilter);
-
-                                                    ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
-                                                    SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
-                                                    SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
-                                                UNTIL ItemRec.Next() = 0;
-                                            END;
-                                        END;
-                                End;
-                            END;
-
-                            Case TRUE of
-                                (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
-                                (CustomerSalesRebateRate."Minimum Amount" <> 0):
+                CASE CustomerSalesRebateRate."Payee Type" OF
+                    CustomerSalesRebateRate."Payee Type"::CustomerRebate:
+                        begin
+                            CASE CustomerSalesRebateRate."Entity Type" OF
+                                CustomerSalesRebateRate."Entity Type"::Customer:
                                     BEGIN
-                                        IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") AND
-                                           (SalesAmount >= CustomerSalesRebateRate."Minimum Amount")
-                                        THEN BEGIN
-                                            BestCustomerSalesRebate := CustomerSalesRebateRate;
-                                            BestSalesRebateFound := TRUE;
-                                        END;
-                                    END;
-                                (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
-                                (CustomerSalesRebateRate."Minimum Amount" = 0):
-                                    BEGIN
-                                        IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") THEN BEGIN
-                                            BestCustomerSalesRebate := CustomerSalesRebateRate;
-                                            BestSalesRebateFound := TRUE;
-                                        END;
-                                    END;
-                                (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
-                                (CustomerSalesRebateRate."Minimum Amount" <> 0):
-                                    BEGIN
-                                        IF (SalesAmount >= CustomerSalesRebateRate."Minimum Amount") THEN BEGIN
-                                            BestCustomerSalesRebate := CustomerSalesRebateRate;
-                                            BestSalesRebateFound := TRUE;
-                                        END;
-                                    END;
-                                (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
-                                (CustomerSalesRebateRate."Minimum Amount" = 0):
-                                    BEGIN
-                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
-                                        BestSalesRebateFound := TRUE;
-                                    END;
-                            End;
-                        END;
-                    CustomerSalesRebateRate."Entity Type"::"Customer Category":
-                        BEGIN
-                            CustomerRec.RESET;
-                            CustomerRec.SetRange("AQD Cust Rebate Category", CustomerSalesRebateRate."No.");
-                            IF CustomerRec.FINDFIRST THEN BEGIN
-                                REPEAT
-                                    Case CustomerSalesRebateRate."Line Type" OF
-                                        CustomerSalesRebateRate."Line Type"::Item:
-                                            BEGIN
-                                                ItemRec.GET(CustomerRebateDetailsLocIn."No.");
-                                                ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
-                                                ItemRec.SetFilter("Date Filter", RebateDateFilter);
-
-                                                ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
-                                                SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
-                                                SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
-                                            END;
-                                        CustomerSalesRebateRate."Line Type"::"Rebate Category":
-                                            BEGIN
-                                                ItemRec.RESET;
-                                                ItemRec.SETRANGE("AQD Cust Rebate Category Code", CustomerRebateDetailsLocIn."Rebate Item Category Code");
-                                                IF ItemRec.FINDFIRST THEN BEGIN
-                                                    REPEAT
+                                        IF CustomerSalesRebateRate."CustRbt Rate Type" = CustomerSalesRebateRate."CustRbt Rate Type"::"Volume Rebate" THEN BEGIN
+                                            Case CustomerSalesRebateRate."Line Type" OF
+                                                CustomerSalesRebateRate."Line Type"::Item:
+                                                    BEGIN
+                                                        ItemRec.GET(CustomerRebateDetailsLocIn."No.");
                                                         ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
                                                         ItemRec.SetFilter("Date Filter", RebateDateFilter);
 
                                                         ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
                                                         SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
                                                         SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
-                                                    UNTIL ItemRec.Next() = 0;
-                                                END;
-                                            END;
-                                    End;
-                                UNTIL CustomerRec.NEXT = 0;
-                            END;
+                                                    END;
+                                                CustomerSalesRebateRate."Line Type"::"Rebate Category":
+                                                    BEGIN
+                                                        ItemRec.RESET;
+                                                        ItemRec.SETRANGE("AQD Cust Rebate Category Code", CustomerRebateDetailsLocIn."Rebate Item Category Code");
+                                                        IF ItemRec.FINDFIRST THEN BEGIN
+                                                            REPEAT
+                                                                ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                                                ItemRec.SetFilter("Date Filter", RebateDateFilter);
 
-                            Case TRUE of
-                                (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
-                                (CustomerSalesRebateRate."Minimum Amount" <> 0):
-                                    BEGIN
-                                        IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") AND
-                                           (SalesAmount >= CustomerSalesRebateRate."Minimum Amount")
-                                        THEN BEGIN
-                                            BestCustomerSalesRebate := CustomerSalesRebateRate;
-                                            BestSalesRebateFound := TRUE;
+                                                                ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
+                                                                SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
+                                                                SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
+                                                            UNTIL ItemRec.Next() = 0;
+                                                        END;
+                                                    END;
+                                            End;
                                         END;
+
+                                        Case TRUE of
+                                            (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" <> 0):
+                                                BEGIN
+                                                    IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") AND
+                                                       (SalesAmount >= CustomerSalesRebateRate."Minimum Amount")
+                                                    THEN BEGIN
+                                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                        BestSalesRebateFound := TRUE;
+                                                    END;
+                                                END;
+                                            (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" = 0):
+                                                BEGIN
+                                                    IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") THEN BEGIN
+                                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                        BestSalesRebateFound := TRUE;
+                                                    END;
+                                                END;
+                                            (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" <> 0):
+                                                BEGIN
+                                                    IF (SalesAmount >= CustomerSalesRebateRate."Minimum Amount") THEN BEGIN
+                                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                        BestSalesRebateFound := TRUE;
+                                                    END;
+                                                END;
+                                            (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" = 0):
+                                                BEGIN
+                                                    BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                    BestSalesRebateFound := TRUE;
+                                                END;
+                                        End;
                                     END;
-                                (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
-                                (CustomerSalesRebateRate."Minimum Amount" = 0):
+                                CustomerSalesRebateRate."Entity Type"::"Customer Category":
                                     BEGIN
-                                        IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") THEN BEGIN
-                                            BestCustomerSalesRebate := CustomerSalesRebateRate;
-                                            BestSalesRebateFound := TRUE;
+                                        CustomerRec.RESET;
+                                        CustomerRec.SetRange("AQD Cust Rebate Category", CustomerSalesRebateRate."No.");
+                                        IF CustomerRec.FINDFIRST THEN BEGIN
+                                            REPEAT
+                                                Case CustomerSalesRebateRate."Line Type" OF
+                                                    CustomerSalesRebateRate."Line Type"::Item:
+                                                        BEGIN
+                                                            ItemRec.GET(CustomerRebateDetailsLocIn."No.");
+                                                            ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                                            ItemRec.SetFilter("Date Filter", RebateDateFilter);
+
+                                                            ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
+                                                            SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
+                                                            SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
+                                                        END;
+                                                    CustomerSalesRebateRate."Line Type"::"Rebate Category":
+                                                        BEGIN
+                                                            ItemRec.RESET;
+                                                            ItemRec.SETRANGE("AQD Cust Rebate Category Code", CustomerRebateDetailsLocIn."Rebate Item Category Code");
+                                                            IF ItemRec.FINDFIRST THEN BEGIN
+                                                                REPEAT
+                                                                    ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                                                    ItemRec.SetFilter("Date Filter", RebateDateFilter);
+
+                                                                    ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
+                                                                    SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
+                                                                    SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
+                                                                UNTIL ItemRec.Next() = 0;
+                                                            END;
+                                                        END;
+                                                End;
+                                            UNTIL CustomerRec.NEXT = 0;
                                         END;
+
+                                        Case TRUE of
+                                            (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" <> 0):
+                                                BEGIN
+                                                    IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") AND
+                                                       (SalesAmount >= CustomerSalesRebateRate."Minimum Amount")
+                                                    THEN BEGIN
+                                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                        BestSalesRebateFound := TRUE;
+                                                    END;
+                                                END;
+                                            (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" = 0):
+                                                BEGIN
+                                                    IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") THEN BEGIN
+                                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                        BestSalesRebateFound := TRUE;
+                                                    END;
+                                                END;
+                                            (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" <> 0):
+                                                BEGIN
+                                                    IF (SalesAmount >= CustomerSalesRebateRate."Minimum Amount") THEN BEGIN
+                                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                        BestSalesRebateFound := TRUE;
+                                                    END;
+                                                END;
+                                            (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" = 0):
+                                                BEGIN
+                                                    BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                    BestSalesRebateFound := TRUE;
+                                                END;
+                                        End;
                                     END;
-                                (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
-                                (CustomerSalesRebateRate."Minimum Amount" <> 0):
+                            // CustomerSalesRebateRate."Entity Type"::"All Customers":
+                            //     BEGIN
+                            //         BestCustomerSalesRebate := CustomerSalesRebateRate;
+                            //         BestSalesRebateFound := TRUE;
+                            //     END;
+                            END;
+                        end;
+                    else begin
+                        IF CustomerSalesRebateRate."CustRbt Rate Type" = CustomerSalesRebateRate."CustRbt Rate Type"::"Volume Rebate" THEN BEGIN
+                            Case CustomerSalesRebateRate."Line Type" OF
+                                CustomerSalesRebateRate."Line Type"::Item:
                                     BEGIN
-                                        IF (SalesAmount >= CustomerSalesRebateRate."Minimum Amount") THEN BEGIN
-                                            BestCustomerSalesRebate := CustomerSalesRebateRate;
-                                            BestSalesRebateFound := TRUE;
+                                        ItemRec.GET(CustomerRebateDetailsLocIn."No.");
+                                        ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                        ItemRec.SetFilter("Date Filter", RebateDateFilter);
+
+                                        ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
+                                        SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
+                                        SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
+                                    END;
+                                CustomerSalesRebateRate."Line Type"::"Rebate Category":
+                                    BEGIN
+                                        ItemRec.RESET;
+                                        ItemRec.SETRANGE("AQD Cust Rebate Category Code", CustomerRebateDetailsLocIn."Rebate Item Category Code");
+                                        IF ItemRec.FINDFIRST THEN BEGIN
+                                            REPEAT
+                                                ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                                ItemRec.SetFilter("Date Filter", RebateDateFilter);
+
+                                                ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
+                                                SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
+                                                SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
+                                            UNTIL ItemRec.Next() = 0;
                                         END;
-                                    END;
-                                (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
-                                (CustomerSalesRebateRate."Minimum Amount" = 0):
-                                    BEGIN
-                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
-                                        BestSalesRebateFound := TRUE;
                                     END;
                             End;
                         END;
-                    CustomerSalesRebateRate."Entity Type"::"All Customers":
-                        BEGIN
-                            BestCustomerSalesRebate := CustomerSalesRebateRate;
-                            BestSalesRebateFound := TRUE;
-                        END;
-                END;
+
+                        Case TRUE of
+                            (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
+                            (CustomerSalesRebateRate."Minimum Amount" <> 0):
+                                BEGIN
+                                    IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") AND
+                                       (SalesAmount >= CustomerSalesRebateRate."Minimum Amount")
+                                    THEN BEGIN
+                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                        BestSalesRebateFound := TRUE;
+                                    END;
+                                END;
+                            (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
+                            (CustomerSalesRebateRate."Minimum Amount" = 0):
+                                BEGIN
+                                    IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") THEN BEGIN
+                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                        BestSalesRebateFound := TRUE;
+                                    END;
+                                END;
+                            (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
+                            (CustomerSalesRebateRate."Minimum Amount" <> 0):
+                                BEGIN
+                                    IF (SalesAmount >= CustomerSalesRebateRate."Minimum Amount") THEN BEGIN
+                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                        BestSalesRebateFound := TRUE;
+                                    END;
+                                END;
+                            (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
+                            (CustomerSalesRebateRate."Minimum Amount" = 0):
+                                BEGIN
+                                    BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                    BestSalesRebateFound := TRUE;
+                                END;
+                        End;
+                    end;
+                end;
+
+
+
             UNTIL CustomerSalesRebateRate.NEXT = 0;
         END;
         CustomerRebateDetailsLocIn.Ineligible := NOT BestSalesRebateFound;

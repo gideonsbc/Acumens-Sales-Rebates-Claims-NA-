@@ -78,7 +78,7 @@ pageextension 14302522 "AQD CustRbt Sales Return Order" extends "Sales Return Or
                 action("AQD Customer Rebate Info")
                 {
                     ApplicationArea = All;
-                    Caption = 'Preview Customer Rebate';
+                    Caption = 'Preview Sales Rebate';
                     Image = Statistics;
 
                     trigger OnAction()

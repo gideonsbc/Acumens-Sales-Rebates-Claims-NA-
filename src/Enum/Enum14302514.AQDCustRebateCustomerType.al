@@ -1,6 +1,8 @@
 enum 14302514 "AQD Cust Rebate Customer Type"
 {
     Extensible = true;
+    ObsoleteState = Pending;
+    ObsoleteReason = 'Replaced with AQD Sales Rebate Customer Type';
 
     value(0; Customer)
     {

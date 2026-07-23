@@ -401,6 +401,13 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Replaced with Acumens Customer Rebates Claims Setup';
                 }
+                action("Acumens Customer Rebates Claims Setup")
+                {
+                    Caption = 'Acumens Sales Rebates & Claims Setup';
+                    ApplicationArea = All;
+                    Image = CostAccountingSetup;
+                    RunObject = Page "AQD Acumens CustRbtClaim Setup";
+                }
                 action("User Setup")
                 {
                     Caption = 'User Setup';
@@ -429,13 +436,14 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Image = CampaignEntries;
                     RunObject = Page "AQD Rebate Customer Categories";
                 }
-                action("Acumens Customer Rebates Claims Setup")
+                action("AQD Trade Agreements")
                 {
-                    Caption = 'Acumens Sales Rebates & Claims Setup';
                     ApplicationArea = All;
-                    Image = CostAccountingSetup;
-                    RunObject = Page "AQD Acumens CustRbtClaim Setup";
+                    Caption = 'Trade Agreements';
+                    RunObject = page "AQD CF Trade Agreements";
+                    Image = CodesList;
                 }
+
                 action("Customer Rebate Program Codes2")
                 {
                     ApplicationArea = All;
@@ -449,13 +457,6 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Caption = 'Sales Rebates Rates';
                     Image = Setup;
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
-                }
-                action("AQD Trade Agreements")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Trade Agreements';
-                    RunObject = page "AQD CF Trade Agreements";
-                    Image = CodesList;
                 }
             }
             group(CustomerClaimSetup)

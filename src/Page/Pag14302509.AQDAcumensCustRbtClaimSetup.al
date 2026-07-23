@@ -2240,8 +2240,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 10;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
-                CustomerRebateProgramCode."Entity No." := '';
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::CustomerRebate;
+                CustomerRebateProgramCode."Payee No." := '';
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -2256,8 +2256,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::"Per Quantity";
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 20;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 0;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
-                CustomerRebateProgramCode."Entity No." := '';
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::CustomerRebate;
+                CustomerRebateProgramCode."Payee No." := '';
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CustomerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -2272,8 +2272,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
-                CustomerRebateProgramCode."Entity No." := '';
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::CustomerRebate;
+                CustomerRebateProgramCode."Payee No." := '';
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Off-Invoice Rebate";
                 CustomerRebateProgramCode.Validate("Rebate Expense AC", 'DAMAGE');
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -2288,8 +2288,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
-                CustomerRebateProgramCode."Entity No." := '';
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::CustomerRebate;
+                CustomerRebateProgramCode."Payee No." := '';
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Off-Invoice Rebate";
                 CustomerRebateProgramCode.Validate("Rebate Expense AC", 'DISTRIBUTION');
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -2304,8 +2304,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::Customer;
-                CustomerRebateProgramCode."Entity No." := '';
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::CustomerRebate;
+                CustomerRebateProgramCode."Payee No." := '';
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Off-Invoice Rebate";
                 CustomerRebateProgramCode.Validate("Rebate Expense AC", 'ADVERTISING');
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -2320,8 +2320,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := AmazonVendorCode;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := AmazonVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'AMAZONMKP';
@@ -2338,8 +2338,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := ShopifyVendorCode;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := ShopifyVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'SHOPIFYMKP';
@@ -2356,8 +2356,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := WalmartVendorCode;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := WalmartVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'WALMARTMKP';
@@ -2374,8 +2374,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := AmazonVendorCode2;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := AmazonVendorCode2;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'AMAZONALW';
@@ -2392,8 +2392,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := ShopifyVendorCode2;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := ShopifyVendorCode2;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'SHOPIFYALW';
@@ -2410,8 +2410,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := WalmartVendorCode2;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := WalmartVendorCode2;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'WALMARTALW';
@@ -2428,8 +2428,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::"Per Quantity";
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 1;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 0;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := RoyaltyVendorCode;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := RoyaltyVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
@@ -2445,8 +2445,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := RoyaltyVendorCode2;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := RoyaltyVendorCode2;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
@@ -2462,8 +2462,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 2;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := CanadaVendorCode;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := CanadaVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CanadaRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Payment Term Filter" := 'COD';
@@ -2479,8 +2479,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 1;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := BrokerVendorCode;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
@@ -2496,8 +2496,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 3;
-                CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Entity No." := BrokerVendorCode;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
@@ -2513,8 +2513,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             //     CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
             //     CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
             //     CustomerRebateProgramCode."Customer Default Rebate %" := 4;
-            //     CustomerRebateProgramCode."Entity Type" := CustomerRebateProgramCode."Entity Type"::"Vendor Commission";
-            //     CustomerRebateProgramCode."Entity No." := BrokerVendorCodeNew;
+            //     CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+            //     CustomerRebateProgramCode."Payee No." := BrokerVendorCodeNew;
             //     CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
             //     CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
             //     //CustomerRebateProgramCode."SO Rebate Program Filter" := '';
@@ -2526,7 +2526,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETRANGE("Entity No.", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2541,7 +2541,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -2563,7 +2563,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETRANGE("Entity No.", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2578,13 +2578,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-PCT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -2602,7 +2602,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETRANGE("Entity No.", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2617,7 +2617,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -2639,7 +2639,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETRANGE("Entity No.", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2654,7 +2654,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -2676,7 +2676,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETRANGE("Entity No.", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2691,7 +2691,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -2713,7 +2713,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETRANGE("Entity No.", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2728,13 +2728,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-PCT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -2752,7 +2752,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETRANGE("Entity No.", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2767,13 +2767,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-PCT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -2791,7 +2791,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETRANGE("Entity No.", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2806,13 +2806,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Entity Type" := CustomerSalesRebateSetup."Entity Type"::Customer;
-                CustomerSalesRebateSetup."Entity No." := '';
+                CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-PCT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -2829,8 +2829,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2859,8 +2859,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2889,8 +2889,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2919,8 +2919,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2949,8 +2949,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -2979,8 +2979,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
@@ -3009,8 +3009,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3038,8 +3038,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3067,8 +3067,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3097,7 +3097,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3126,7 +3126,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3155,7 +3155,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::Customer);
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3183,8 +3183,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3193,7 +3193,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
             CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
-            CustomerSalesRebateSetup.SetRange("Entity No.", BrokerVendorCode);
+            //CustomerSalesRebateSetup.SetRange("Entity No.", BrokerVendorCode);
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
@@ -3208,8 +3208,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
-                CustomerSalesRebateSetup."Entity No." := BrokerVendorCode;
-                CustomerSalesRebateSetup."Customer Type Filter" := CustomerSalesRebateSetup."Customer Type Filter"::Customer;
+                CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
                 CustomerSalesRebateSetup."Customer No. Filter" := '10000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
@@ -3217,8 +3216,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3227,7 +3226,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
             CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
-            CustomerSalesRebateSetup.SetRange("Entity No.", BrokerVendorCodeNew);
+            //CustomerSalesRebateSetup.SetRange("Entity No.", BrokerVendorCodeNew);
             CustomerSalesRebateSetup.SetRange("Rate Priority", CustomerSalesRebateSetup."Rate Priority"::"Level 0");
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
@@ -3243,8 +3242,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
-                CustomerSalesRebateSetup."Entity No." := BrokerVendorCodeNew;
-                CustomerSalesRebateSetup."Customer Type Filter" := CustomerSalesRebateSetup."Customer Type Filter"::Customer;
+                CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCodeNew;
                 CustomerSalesRebateSetup."Customer No. Filter" := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
@@ -3252,8 +3250,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3277,7 +3275,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
-                CustomerSalesRebateSetup."Customer Type Filter" := CustomerSalesRebateSetup."Customer Type Filter"::Customer;
                 CustomerSalesRebateSetup."Customer No. Filter" := '10000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
@@ -3285,8 +3282,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Entity Type", CustomerSalesRebateSetup."Entity Type"::"Vendor Commission");
-            CustomerSalesRebateSetup.SETFILTER("Entity No.", '<>%1', '');
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3295,7 +3292,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
             CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
-            CustomerSalesRebateSetup.SetRange("Entity No.", BrokerVendorCodeNew);
+            //CustomerSalesRebateSetup.SetRange("Entity No.", BrokerVendorCodeNew);
             CustomerSalesRebateSetup.SetRange("Rate Priority", CustomerSalesRebateSetup."Rate Priority"::"Level 1");
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
@@ -3312,8 +3309,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 1";
-                CustomerSalesRebateSetup."Entity No." := BrokerVendorCodeNew;
-                CustomerSalesRebateSetup."Customer Type Filter" := CustomerSalesRebateSetup."Customer Type Filter"::Customer;
+                CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCodeNew;
                 CustomerSalesRebateSetup."Customer No. Filter" := '20000';
                 CustomerSalesRebateSetup."Rebate %" := 4;
                 CustomerRebateProgramCode."Default Setup" := true;

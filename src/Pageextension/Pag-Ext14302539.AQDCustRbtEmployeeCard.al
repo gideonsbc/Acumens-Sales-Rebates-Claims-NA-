@@ -67,9 +67,9 @@ pageextension 14302539 "AQD CustRbt Employee Card" extends "Employee Card"
                 Caption = 'Sales Rebates';
                 Image = LineDiscount;
                 RunObject = Page "AQD CustRbt SalesRebates Setup";
-                RunPageLink = "Entity Type" = CONST("Employee Commission"),
-                              "Entity No." = FIELD("No.");
-                RunPageView = SORTING("Entity Type", "Entity No.");
+                RunPageLink = "Payee Type" = CONST("Employee Commission"),
+                              "Payee No." = FIELD("No.");
+                RunPageView = SORTING("Payee Type", "Payee No.");
             }
         }
         addlast(Category_Process)

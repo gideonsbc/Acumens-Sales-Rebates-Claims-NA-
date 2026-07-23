@@ -90,7 +90,7 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
                 action("AQD Customer Rebate Info")
                 {
                     ApplicationArea = All;
-                    Caption = 'Preview Customer Rebate';
+                    Caption = 'Preview Sales Rebate';
                     Image = Statistics;
 
                     trigger OnAction()

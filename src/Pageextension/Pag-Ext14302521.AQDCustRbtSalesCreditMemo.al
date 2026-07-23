@@ -53,7 +53,7 @@ pageextension 14302521 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Mem
                 action("AQD Customer Rebate Info")
                 {
                     ApplicationArea = All;
-                    Caption = 'Preview Customer Rebate';
+                    Caption = 'Preview Sales Rebate';
                     Image = Statistics;
 
                     trigger OnAction()

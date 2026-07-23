@@ -5,7 +5,7 @@ table 14302537 "AQD Cust Rbt Include Cust Loc"
 
     fields
     {
-        field(1; "Customer Type"; Enum "AQD Cust Rebate Customer Type")
+        field(1; "Customer Type"; Enum "AQD Sales Rebate Customer Type")
         {
             Caption = 'Customer Type';
         }

@@ -80,35 +80,49 @@ table 14302516 "AQD Cust Rebate Program Code"
             ObsoleteReason = 'Used Customer Vendor Employee No.';
             ObsoleteTag = 'Discontinued 25.1023.0.2';
         }
-        field(40; "Entity Type"; Enum "AQD Cust Rebate Customer Type")
+        field(40; "Entity Type"; Enum "AQD Sales Rebate Customer Type")
         {
-            Caption = 'Entity Type';
+            Caption = 'Default Entity Type';
+            DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Replaced with Payee Type';
+        }
+        field(45; "Payee Type"; Enum "AQD Sales Rebate Payee Type")
+        {
+            Caption = 'Default Payee Type';
 
             trigger OnValidate()
             begin
-                if (Rec."Entity Type" in [Rec."Entity Type"::"Employee Commission", Rec."Entity Type"::"Vendor Commission"]) and (Rec."Rebate Expense Type" = Rec."Rebate Expense Type"::"Off-Invoice Rebate") then
+                if (Rec."Payee Type" in [Rec."Payee Type"::"Employee Commission", Rec."Payee Type"::"Vendor Commission"]) and (Rec."Rebate Expense Type" = Rec."Rebate Expense Type"::"Off-Invoice Rebate") then
                     Error('Off-Invoice Rebate is not applicable for Employee Commission or Vendor Commission.');
 
-                IF Rec."Entity Type" <> xRec."Entity Type" THEN begin
-                    Rec."Entity No." := '';
+                IF Rec."Payee Type" <> xRec."Payee Type" THEN begin
+                    Rec."Payee No." := '';
 
-                    UpdateRates(FieldCaption("Entity Type"));
+                    UpdateRates(FieldCaption("Payee Type"));
                 end;
             end;
         }
-        field(50; "Entity No."; Code[20])
+
+        field(47; "Payee No."; Code[20])
         {
-            Caption = 'Entity No.';
-            TableRelation = if ("Entity Type" = const("Customer Category")) "AQD Rebate Customer Category"
-            else if ("Entity Type" = const(Customer)) Customer
-            else if ("Entity Type" = const("Employee Commission")) Employee where(Status = const(Active))
-            else if ("Entity Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
+            Caption = 'Default Payee No.';
+            TableRelation = if ("Payee Type" = const("Employee Commission")) Employee where(Status = const(Active))
+            else if ("Payee Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
 
             trigger onvalidate()
             begin
-                if Rec."Entity No." <> xRec."Entity No." then
-                    UpdateRates(FieldCaption("Entity No."));
+                if Rec."Payee No." <> xRec."Payee No." then
+                    UpdateRates(FieldCaption("Payee No."));
             end;
+        }
+
+        field(50; "Entity No."; Code[20])
+        {
+            Caption = 'Default Entity No.';
+            DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Replaced with Payee No';
         }
         field(60; "Specific Sales"; Boolean)
         {
@@ -170,7 +184,7 @@ table 14302516 "AQD Cust Rebate Program Code"
             trigger OnValidate()
             begin
                 if Rec."Rebate Expense Type" = Rec."Rebate Expense Type"::"Off-Invoice Rebate" then
-                    Rec.Validate("Entity Type");
+                    Rec.Validate("Payee Type");
 
                 if Rec."Rebate Expense Type" <> xRec."Rebate Expense Type" then begin
                     Rec."Rebate Expense AC" := '';
@@ -249,10 +263,10 @@ table 14302516 "AQD Cust Rebate Program Code"
                         SalesRebateRate.Validate(Blocked, Rec.Blocked);
                     FieldCaption("Rebate Expense Type"):
                         SalesRebateRate.Validate("Rebate Expense Type", Rec."Rebate Expense Type");
-                    FieldCaption("Entity Type"):
-                        SalesRebateRate.Validate("Entity Type", Rec."Entity Type");
-                    FieldCaption("Entity No."):
-                        SalesRebateRate.Validate("Entity No.", Rec."Entity No.");
+                    FieldCaption("Payee Type"):
+                        SalesRebateRate.Validate("Payee Type", Rec."Payee Type");
+                    FieldCaption("Payee No."):
+                        SalesRebateRate.Validate("Payee No.", Rec."Payee No.");
                 end;
                 SalesRebateRate.Modify();
             until SalesRebateRate.Next() = 0;

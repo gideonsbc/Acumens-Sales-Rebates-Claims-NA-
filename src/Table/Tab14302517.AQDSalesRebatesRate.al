@@ -10,27 +10,37 @@ table 14302517 "AQD Sales Rebates Rate"
             AutoIncrement = TRUE;
             Caption = 'Entry No.';
         }
+        field(5; "Payee Type"; Enum "AQD Sales Rebate Payee Type")
+        {
+            Caption = 'Payee Type';
+            DataClassification = CustomerContent;
+        }
+        field(6; "Payee No."; Code[20])
+        {
+            Caption = 'Payee No.';
+            TableRelation = if ("Payee Type" = const("Employee Commission")) Employee where(Status = const(Active))
+            else if ("Payee Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
+        }
         field(10; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
         {
             Caption = 'Rebate Rate Type';
         }
-        field(11; "Entity Type"; Enum "AQD Cust Rebate Customer Type")
+        field(11; "Entity Type"; Enum "AQD Sales Rebate Customer Type")
         {
-            Caption = 'Entity Type';
+            Caption = 'Customer Type';
 
             trigger onvalidate()
             begin
                 IF Rec."Entity Type" <> xRec."Entity Type" THEN
-                    Rec."Entity No." := '';
+                    Clear("Customer No. Filter");
             end;
         }
         field(12; "Entity No."; Code[20])
         {
             Caption = 'Entity No.';
-            TableRelation = if ("Entity Type" = const("Customer Category")) "AQD Rebate Customer Category"
-            else if ("Entity Type" = const(Customer)) Customer
-            else if ("Entity Type" = const("Employee Commission")) Employee where(Status = const(Active))
-            else if ("Entity Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
+            DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Replaced with Customer No. filter';
         }
         field(13; "Territory Code"; Code[10])
         {
@@ -103,6 +113,7 @@ table 14302517 "AQD Sales Rebates Rate"
                                 Rec."Variant Code" := '';
                             END;
                     END;
+                    Clear("No. Filter");
                 END;
             END;
         }
@@ -126,8 +137,8 @@ table 14302517 "AQD Sales Rebates Rate"
                     Rec."Rebate Type" := RebateProgramCode."Customer Default Rebate Type";
                     Rec."Rebate %" := RebateProgramCode."Customer Default Rebate %";
                     Rec."Rebate Per Unit" := RebateProgramCode."Customer Def Rebate Per Unit";
-                    Rec."Entity Type" := RebateProgramCode."Entity Type";
-                    Rec."Entity No." := RebateProgramCode."Entity No.";
+                    Rec."Payee Type" := RebateProgramCode."Payee Type";
+                    Rec."Payee No." := RebateProgramCode."Payee No.";
                     Rec."Rebate Expense Type" := RebateProgramCode."Rebate Expense Type";
                     Rec."Default Setup" := RebateProgramCode."Default Setup";
                     Rec.Validate("AQD Trade Agreement", RebateProgramCode."AQD Default Trade Agreement");
@@ -301,11 +312,8 @@ table 14302517 "AQD Sales Rebates Rate"
         {
             Caption = 'Customer Type Filter';
             DataClassification = CustomerContent;
-            trigger OnValidate()
-            begin
-                if Rec."Customer Type Filter" <> xRec."Customer Type Filter" then
-                    Clear(Rec."Customer No. Filter");
-            end;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Replaced with Entity Type';
         }
         field(586; "Customer No. Filter"; Code[100])
         {
@@ -374,17 +382,20 @@ table 14302517 "AQD Sales Rebates Rate"
         {
             Clustered = true;
         }
-        key(Key2; "CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        key(Key2; "CustRbt Rate Type", "Entity Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        {
+        }
+        key(Key3; "Payee Type", "Payee No.")
         {
         }
     }
 
     fieldgroups
     {
-        fieldgroup(DropDown; "CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        fieldgroup(DropDown; "CustRbt Rate Type", "Entity Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
         }
-        fieldgroup(Brick; "CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        fieldgroup(Brick; "CustRbt Rate Type", "Entity Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
         }
     }
@@ -419,14 +430,11 @@ table 14302517 "AQD Sales Rebates Rate"
 
     procedure CheckRecordAlreadyExist()
     BEGIN
-        //"CustRbt Rate Type", "Entity Type", "Entity No.", "Territory Code", "Line Type", 
-        //"No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", 
-        //"Minimum Quantity", "Minimum Amount"
         CustomerRebateRate.RESET;
         CustomerRebateRate.SETFILTER("Entry No.", '<>%1', Rec."Entry No.");
         CustomerRebateRate.SETRANGE("CustRbt Rate Type", Rec."CustRbt Rate Type");
         CustomerRebateRate.SETRANGE("Entity Type", Rec."Entity Type");
-        CustomerRebateRate.SETRANGE("Entity No.", Rec."Entity No.");
+        // CustomerRebateRate.SETRANGE("Customer No. Filter", Rec."Customer No. Filter");
         CustomerRebateRate.SETRANGE("Territory Code", Rec."Territory Code");
         CustomerRebateRate.SETRANGE("Line Type", Rec."Line Type");
         CustomerRebateRate.SETRANGE("No.", Rec."No.");
@@ -436,14 +444,13 @@ table 14302517 "AQD Sales Rebates Rate"
         CustomerRebateRate.SETRANGE("Unit of Measure Code", Rec."Unit of Measure Code");
         CustomerRebateRate.SetRange("Minimum Quantity", Rec."Minimum Quantity");
         CustomerRebateRate.SetRange("Minimum Amount", Rec."Minimum Amount");
-        CustomerRebateRate.SetRange("Customer Type Filter", Rec."Customer Type Filter");
         CustomerRebateRate.SetRange("Customer No. Filter", Rec."Customer No. Filter");
         CustomerRebateRate.SetRange("Rate Priority", Rec."Rate Priority");
         IF CustomerRebateRate.FindFirst() THEN
             ERROR(Text002,
                 Rec.FieldCaption("CustRbt Rate Type"), Rec."CustRbt Rate Type",
                 Rec.FieldCaption("Entity Type"), Rec."Entity Type",
-                Rec.FieldCaption("Entity No."), Rec."Entity No.",
+                Rec.FieldCaption("Customer No. Filter"), Rec."Customer No. Filter",
                 Rec.FieldCaption("Territory Code"), Rec."Territory Code",
                 Rec.FieldCaption("Line Type"), Rec."Line Type",
                 Rec.FieldCaption("No."), Rec."No.",

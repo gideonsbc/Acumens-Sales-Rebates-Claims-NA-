@@ -70,8 +70,8 @@ pageextension 14302513 "AQD CustRbt Customer Card" extends "Customer Card"
                     Image = LineDiscount;
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
                     RunPageLink = "Entity Type" = CONST(Customer),
-                                  "Entity No." = FIELD("No.");
-                    RunPageView = SORTING("Entity Type", "Entity No.");
+                                  "Customer No. Filter" = FIELD("No.");
+                    RunPageView = SORTING("Entity Type", "Customer No. Filter");
                 }
                 action("AQD Customer Contract Prices")
                 {

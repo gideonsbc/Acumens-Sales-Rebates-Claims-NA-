@@ -65,14 +65,6 @@ page 14302515 "AQD Cust Rebate Program Codes"
                 {
                     ApplicationArea = All;
                     Caption = 'Rebate Payable A/C';
-                    // Editable = ControlEditable;
-                    // Enabled = ControlEditable;
-                    // ShowMandatory = ControlEditable;
-                    // Visible = ControlVisible;
-                    //Editable = ControlEditable;
-                    //Enabled = ControlEditable;
-                    //ShowMandatory = ControlEditable;
-                    //Visible = ControlVisible;
                     Editable = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
                     Enabled = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
                     ShowMandatory = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
@@ -81,15 +73,27 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     ObsoleteTag = 'Discontinued 25.1023.0.2';
                     Visible = false;
                 }
+                field("Payee Type"; Rec."Payee Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("Payee No."; Rec."Payee No.")
+                {
+                    ApplicationArea = All;
+                }
                 field("Entity Type"; Rec."Entity Type")
                 {
                     ApplicationArea = All;
-                    Caption = 'Entity Type';
+                    Caption = 'Default Entity Type';
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Replaced with Payee Type';
                 }
                 field("Entity No."; Rec."Entity No.")
                 {
                     ApplicationArea = All;
-                    Caption = 'Entity No.';
+                    Caption = 'Default Entity No.';
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Replaced with Payee No';
                 }
                 field("AQD Pay-to Vendor No."; Rec."AQD Pay-to Vendor No.")
                 {
@@ -115,7 +119,6 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     ObsoleteReason = 'Not in use';
                     Visible = false;
                 }
-
                 field("SO Rebate Program Filter"; Rec."SO Rebate Program Filter")
                 {
                     ApplicationArea = All;

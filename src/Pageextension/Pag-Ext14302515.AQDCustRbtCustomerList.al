@@ -1,10 +1,5 @@
 pageextension 14302515 "AQD CustRbt Customer List" extends "Customer List"
 {
-    layout
-    {
-        // Add changes to page layout here
-    }
-
     actions
     {
         addafter(ActionGroupCRM)
@@ -20,8 +15,8 @@ pageextension 14302515 "AQD CustRbt Customer List" extends "Customer List"
                     Image = LineDiscount;
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
                     RunPageLink = "Entity Type" = CONST(Customer),
-                                  "Entity No." = FIELD("No.");
-                    RunPageView = SORTING("Entity Type", "Entity No.");
+                                  "Customer No. Filter" = FIELD("No.");
+                    RunPageView = SORTING("Entity Type", "Customer No. Filter");
                 }
             }
         }

@@ -83,9 +83,9 @@ pageextension 14302538 "AQD CustRbt Vendor Card" extends "Vendor Card"
                 Caption = 'Sales Rebates';
                 Image = LineDiscount;
                 RunObject = Page "AQD CustRbt SalesRebates Setup";
-                RunPageLink = "Entity Type" = CONST("Vendor Commission"),
-                              "Entity No." = FIELD("No.");
-                RunPageView = SORTING("Entity Type", "Entity No.");
+                RunPageLink = "Payee Type" = CONST("Vendor Commission"),
+                              "Payee No." = FIELD("No.");
+                RunPageView = SORTING("Payee Type", "Payee No.");
             }
         }
         addlast("Category_Prices & Discounts")

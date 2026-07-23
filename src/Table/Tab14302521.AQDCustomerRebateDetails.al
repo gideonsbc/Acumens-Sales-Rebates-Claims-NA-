@@ -42,12 +42,12 @@ table 14302521 "AQD Customer Rebate Details"
         }
         field(45; "Entity Type"; Enum "AQD CR Rebate Entity Type")
         {
-            Caption = 'Entity Type';
+            Caption = 'Payee Type';
             Editable = false;
         }
         field(46; "Entity No."; Code[20])
         {
-            Caption = 'Entity No.';
+            Caption = 'Payee No.';
             Editable = false;
             TableRelation = if ("Entity Type" = const(Customer)) Customer."No."
             else if ("Entity Type" = const(Employee)) Employee."No."
