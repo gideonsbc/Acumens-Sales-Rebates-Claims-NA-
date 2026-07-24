@@ -2,6 +2,8 @@ table 14302517 "AQD Sales Rebates Rate"
 {
     Caption = 'Sales Rebates Setup';
     DataClassification = CustomerContent;
+    DrillDownPageId = "AQD CustRbt SalesRebates Setup";
+    LookupPageId = "AQD CustRbt SalesRebates Setup";
 
     fields
     {
@@ -21,26 +23,19 @@ table 14302517 "AQD Sales Rebates Rate"
             TableRelation = if ("Payee Type" = const("Employee Commission")) Employee where(Status = const(Active))
             else if ("Payee Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
         }
-        field(10; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
-        {
-            Caption = 'Rebate Rate Type';
-        }
-        field(11; "Entity Type"; Enum "AQD Sales Rebate Customer Type")
+        field(8; "Customer Type"; Enum "AQD Sales Rebate Customer Type")
         {
             Caption = 'Customer Type';
 
             trigger onvalidate()
             begin
-                IF Rec."Entity Type" <> xRec."Entity Type" THEN
+                IF Rec."Customer Type" <> xRec."Customer Type" THEN
                     Clear("Customer No. Filter");
             end;
         }
-        field(12; "Entity No."; Code[20])
+        field(10; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
         {
-            Caption = 'Entity No.';
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Replaced with Customer No. filter';
+            Caption = 'Rebate Rate Type';
         }
         field(13; "Territory Code"; Code[10])
         {
@@ -293,70 +288,10 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Blocked Date Time';
             Editable = false;
         }
-        field(580; "Specific Sales"; Boolean)
-        {
-            DataClassification = CustomerContent;
-            Editable = false;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Not in use';
-        }
-        field(581; "Specific Sales New"; Enum "AQD Specific Sales")
-        {
-            Caption = 'SO Rebate Program';
-            DataClassification = CustomerContent;
-            Editable = false;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Not in use';
-        }
-        field(585; "Customer Type Filter"; Enum "AQD Rates Customer Type Filter")
-        {
-            Caption = 'Customer Type Filter';
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Replaced with Entity Type';
-        }
         field(586; "Customer No. Filter"; Code[100])
         {
             Caption = 'Customer No. Filter';
             DataClassification = CustomerContent;
-        }
-        field(590; "Customer No."; Code[20])
-        {
-            Caption = 'Customer No.';
-            DataClassification = CustomerContent;
-            TableRelation = Customer;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Replaced by Customer No. Filter';
-            trigger OnValidate()
-            var
-                RebateProgramCode: Record "AQD Cust Rebate Program Code";
-            begin
-                if Rec."Customer No." <> xRec."Customer No." then
-                    if RebateProgramCode.Get("Rebate Program Code") then begin
-                        RebateProgramCode."Customer No." := Rec."Customer No.";
-                        RebateProgramCode.Modify(false);
-                    end;
-            end;
-        }
-        field(600; "Marketplace Code"; Code[20])
-        {
-            Caption = 'SO Marketplace';
-            DataClassification = CustomerContent;
-            TableRelation = "AQD Marketplace";
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Not in use';
-        }
-        field(700; "Is Rebate Program"; Boolean)
-        {
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Not in use';
-        }
-        field(800; "Is Marketplace"; Boolean)
-        {
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Not in use';
         }
         field(810; "Rate Priority"; Enum "AQD Rate Priority")
         {
@@ -382,7 +317,7 @@ table 14302517 "AQD Sales Rebates Rate"
         {
             Clustered = true;
         }
-        key(Key2; "CustRbt Rate Type", "Entity Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        key(Key2; "CustRbt Rate Type", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
         }
         key(Key3; "Payee Type", "Payee No.")
@@ -392,10 +327,10 @@ table 14302517 "AQD Sales Rebates Rate"
 
     fieldgroups
     {
-        fieldgroup(DropDown; "CustRbt Rate Type", "Entity Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        fieldgroup(DropDown; "CustRbt Rate Type", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
         }
-        fieldgroup(Brick; "CustRbt Rate Type", "Entity Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        fieldgroup(Brick; "CustRbt Rate Type", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
         }
     }
@@ -433,8 +368,7 @@ table 14302517 "AQD Sales Rebates Rate"
         CustomerRebateRate.RESET;
         CustomerRebateRate.SETFILTER("Entry No.", '<>%1', Rec."Entry No.");
         CustomerRebateRate.SETRANGE("CustRbt Rate Type", Rec."CustRbt Rate Type");
-        CustomerRebateRate.SETRANGE("Entity Type", Rec."Entity Type");
-        // CustomerRebateRate.SETRANGE("Customer No. Filter", Rec."Customer No. Filter");
+        CustomerRebateRate.SETRANGE("Customer Type", Rec."Customer Type");
         CustomerRebateRate.SETRANGE("Territory Code", Rec."Territory Code");
         CustomerRebateRate.SETRANGE("Line Type", Rec."Line Type");
         CustomerRebateRate.SETRANGE("No.", Rec."No.");
@@ -449,7 +383,7 @@ table 14302517 "AQD Sales Rebates Rate"
         IF CustomerRebateRate.FindFirst() THEN
             ERROR(Text002,
                 Rec.FieldCaption("CustRbt Rate Type"), Rec."CustRbt Rate Type",
-                Rec.FieldCaption("Entity Type"), Rec."Entity Type",
+                Rec.FieldCaption("Customer Type"), Rec."Customer Type",
                 Rec.FieldCaption("Customer No. Filter"), Rec."Customer No. Filter",
                 Rec.FieldCaption("Territory Code"), Rec."Territory Code",
                 Rec.FieldCaption("Line Type"), Rec."Line Type",

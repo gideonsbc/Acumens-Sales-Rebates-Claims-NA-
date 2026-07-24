@@ -32,13 +32,13 @@ table 14302509 "AQD Acumens CustRbtClaim Setup"
         {
             Caption = 'Exclude Credit Memo';
         }
-        field(90; "Start Date"; Date)
-        {
-            Caption = 'Start Date';
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Duplicate Field';
-            ObsoleteTag = 'Discontined from 25.1023.0.7';
-        }
+        // field(90; "Start Date"; Date)
+        // {
+        //     Caption = 'Start Date';
+        //     ObsoleteState = Pending;
+        //     ObsoleteReason = 'Duplicate Field';
+        //     ObsoleteTag = 'Discontined from 25.1023.0.7';
+        // }
         field(180; "Sales Journal Template Name"; Code[10])
         {
             Caption = 'Rebate Sales Jnl Template Name';

@@ -206,6 +206,22 @@ page 14302538 "AQD Posted Customer Rebate Doc"
     {
         area(Processing)
         {
+            action("Cancel Sales Rebate")
+            {
+                ApplicationArea = All;
+                Caption = 'Cancel Sales Rebate';
+                Image = Cancel;
+                ToolTip = 'Cancel this posted sales rebate, reverse rebate-only transactions, and reopen the source sales documents for recalculation.';
+
+                trigger OnAction()
+                var
+                    CancelPostedCustRebate: Codeunit "AQD Cancel Posted Cust Rebate";
+                begin
+                    CancelPostedCustRebate.CancelPostedCustomerRebate(Rec, true);
+                    CurrPage.Update(false);
+                end;
+            }
+
             action(Comments)
             {
                 ApplicationArea = All;
@@ -242,6 +258,9 @@ page 14302538 "AQD Posted Customer Rebate Doc"
             group(Category_Category4)
             {
                 Caption = 'Rebates';
+                actionref(CancelSalesRebate_Promoted; "Cancel Sales Rebate")
+                {
+                }
                 actionref(Comments_Promoted; Comments)
                 {
                 }

@@ -229,16 +229,6 @@ codeunit 14302515 "AQD Customer Rebate Post"
                             end;
                         end;
                 end;
-
-            // RebateItemLdgrEntry.RESET;
-            // RebateItemLdgrEntry.SetRange("AQD Rebate No", CustomerRebateLine."Rebate No.");
-            // RebateItemLdgrEntry.SetRange("AQD Rebate Line No", CustomerRebateLine."Line No.");
-            // IF RebateItemLdgrEntry.FindFirst() THEN begin
-            //     repeat
-            //         RebateItemLdgrEntry."AQD Rebate Status" := RebateItemLdgrEntry."AQD Rebate Status"::Posted;
-            //         RebateItemLdgrEntry.Modify();
-            //     until RebateItemLdgrEntry.Next() = 0;
-            // end;
             until CustomerRebateLine.Next() = 0;
         end;
     end;
@@ -270,16 +260,6 @@ codeunit 14302515 "AQD Customer Rebate Post"
                             end;
                         end;
                 end;
-
-            // RebateItemLdgrEntry.RESET;
-            // RebateItemLdgrEntry.SetRange("AQD Rebate No", CustomerRebateLine."Rebate No.");
-            // RebateItemLdgrEntry.SetRange("AQD Rebate Line No", CustomerRebateLine."Line No.");
-            // IF RebateItemLdgrEntry.FindFirst() THEN begin
-            //     repeat
-            //         RebateItemLdgrEntry."AQD Do Not Pay Rebate" := CustomerRebateLine.Exclude;
-            //         RebateItemLdgrEntry.Modify();
-            //     until RebateItemLdgrEntry.Next() = 0;
-            // end;
             until CustomerRebateLine.Next() = 0;
         end;
     end;

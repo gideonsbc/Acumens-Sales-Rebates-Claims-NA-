@@ -23,11 +23,6 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     ApplicationArea = All;
                     ToolTip = 'Specifies a description of what the code stands for.';
                 }
-                // field("Customer Rebate Posting Type"; Rec."Customer Rebate Posting Type")
-                // {
-                //     ApplicationArea = All;
-                //     ToolTip = 'Specifies a Customer Rebate Posting Type.';
-                // }
                 field("Customer Default Rebate Type"; Rec."Customer Default Rebate Type")
                 {
                     ApplicationArea = All;
@@ -61,18 +56,6 @@ page 14302515 "AQD Cust Rebate Program Codes"
                     Enabled = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
                     ShowMandatory = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
                 }
-                field("Rebate Payable AC"; Rec."Rebate Payable AC")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Rebate Payable A/C';
-                    Editable = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
-                    Enabled = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
-                    ShowMandatory = Rec."Customer Rebate Posting Type" = Rec."Customer Rebate Posting Type"::Expense;
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'Used Customer Vendor Employee No.';
-                    ObsoleteTag = 'Discontinued 25.1023.0.2';
-                    Visible = false;
-                }
                 field("Payee Type"; Rec."Payee Type")
                 {
                     ApplicationArea = All;
@@ -80,20 +63,6 @@ page 14302515 "AQD Cust Rebate Program Codes"
                 field("Payee No."; Rec."Payee No.")
                 {
                     ApplicationArea = All;
-                }
-                field("Entity Type"; Rec."Entity Type")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Default Entity Type';
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'Replaced with Payee Type';
-                }
-                field("Entity No."; Rec."Entity No.")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Default Entity No.';
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'Replaced with Payee No';
                 }
                 field("AQD Pay-to Vendor No."; Rec."AQD Pay-to Vendor No.")
                 {
@@ -104,20 +73,6 @@ page 14302515 "AQD Cust Rebate Program Codes"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Default Trade Agreement field.';
-                }
-                field("Specific Sales New"; Rec."Specific Sales New")
-                {
-                    ApplicationArea = All;
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'Not in use';
-                    Visible = false;
-                }
-                field("Marketplace Code"; Rec."Marketplace Code")
-                {
-                    ApplicationArea = All;
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'Not in use';
-                    Visible = false;
                 }
                 field("SO Rebate Program Filter"; Rec."SO Rebate Program Filter")
                 {

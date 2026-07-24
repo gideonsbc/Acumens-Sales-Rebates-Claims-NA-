@@ -8,7 +8,7 @@ tableextension 14302631 "AQD CR Vendor Ledger Entry Ext" extends "Vendor Ledger 
             DataClassification = CustomerContent;
             TableRelation = "AQD Cust Rebate Program Code";
         }
-        field(14277098; "AQD CR Rebate Approval Status"; Enum "AQD Rebate Approval Status")
+        field(14302510; "AQD CR Rebate Approval Status"; Enum "AQD Rebate Approval Status")
         {
             Caption = 'Sales Rebate Approval Status';
             FieldClass = FlowField;

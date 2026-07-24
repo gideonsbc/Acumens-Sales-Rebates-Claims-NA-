@@ -176,12 +176,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         IF NOT CustomerRebateSetup.GET THEN
             EXIT;
 
-        //IF CustomerRebateSetup."Customer Rebate Document Nos" = '' THEN
-        //    Error(CustomerRebateDefaultValuesMissing);
-
-        //IF BillToCustomer."AQD Cust Rebate Customer No." = '' THEN
-        //    Error(CustomerRebateCardDefaultValuesMissing, BillToCustomer."No.", BillToCustomer."AQD Cust Rebate Customer No.");
-
         CustomerRebateSetup.TestField("Customer Rebate Document Nos");
         CustomerRebateSetup.TESTFIELD("Sales Journal Template Name");
         CustomerRebateSetup.TESTFIELD("Sales Journal Batch Name");
@@ -229,13 +223,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         if not SalesHeader."AQD Disallow Off-Inv Rebate" then
             UpdateOffInvoiceRebate(SalesHeader);
     end;
-
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Document-Print", OnBeforeProcessPrintSalesOrder, '', false, false)]
-    // local procedure "Document-Print_OnBeforeProcessPrintSalesOrder"(var SalesHeader: Record "Sales Header"; Usage: Option; var IsHandled: Boolean)
-    // begin
-    //     if not SalesHeader."AQD Disallow Off-Inv Rebate" then
-    //         UpdateOffInvoiceRebate(SalesHeader);
-    // end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforeSalesShptHeaderInsert, '', false, false)]
     local procedure Cod80_SalesPost_OnBeforeSalesShptHeaderInsert(var SalesShptHeader: Record "Sales Shipment Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; var IsHandled: Boolean; var TempWhseRcptHeader: Record "Warehouse Receipt Header" temporary; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header" temporary; WhseShip: Boolean; InvtPickPutaway: Boolean)
@@ -520,13 +507,13 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
 
         // Customer No. Filter
         if FromCustomerSalesRebateRate."Customer No. Filter" <> '' then begin
-            case FromCustomerSalesRebateRate."Entity Type" of
-                FromCustomerSalesRebateRate."Entity Type"::Customer:
+            case FromCustomerSalesRebateRate."Customer Type" of
+                FromCustomerSalesRebateRate."Customer Type"::Customer:
                     begin
                         if not SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
                             IsHandled := true;
                     end;
-                FromCustomerSalesRebateRate."Entity Type"::"Customer Category":
+                FromCustomerSalesRebateRate."Customer Type"::"Customer Category":
                     begin
                         if not SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
                             IsHandled := true;
@@ -764,22 +751,14 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         SalesHeader.Reset();
         SalesHeader.SetRange("Document Type", SalesHeaderIn."Document Type");
         SalesHeader.SetRange("No.", SalesHeaderIn."No.");
-        case RebateRates."Entity Type" of
-            RebateRates."Entity Type"::Customer:
+        case RebateRates."Customer Type" of
+            RebateRates."Customer Type"::Customer:
                 if RebateRates."Customer No. Filter" <> '' then
                     SalesHeader.SetFilter("Bill-to Customer No.", RebateRates."Customer No. Filter");
-            RebateRates."Entity Type"::"Customer Category":
+            RebateRates."Customer Type"::"Customer Category":
                 if RebateRates."Customer No. Filter" <> '' then
                     SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter");
         end;
-        // case RebateRates."Entity Type" of
-        //     RebateRates."Entity Type"::Customer:
-        //         if RebateRates."Customer No. Filter" <> '' then
-        //             SalesHeader.SetFilter("Bill-to Customer No.", RebateRates."Customer No. Filter");
-        //     RebateRates."Entity Type"::"Customer Category":
-        //         if RebateRates."Customer No. Filter" <> '' then
-        //             SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter");
-        // end;
 
         //Set Payment Term Filter
         ProgramCode.Get(RebateRates."Rebate Program Code");

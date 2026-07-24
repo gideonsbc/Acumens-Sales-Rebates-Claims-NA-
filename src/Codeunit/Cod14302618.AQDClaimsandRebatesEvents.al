@@ -109,21 +109,6 @@ codeunit 14302618 "AQD Claims and Rebates Events"
         end;
     end;
 
-    /* [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", 'OnBeforeVendLedgEntryInsert', '', false, false)]
-     local procedure CodU12_OnBeforeVendLedgEntryInsert(var VendorLedgerEntry: Record "Vendor Ledger Entry"; var GenJournalLine: Record "Gen. Journal Line"; GLRegister: Record "G/L Register")
-     var
-         SalesRebateApprovals: Record "AQD Posted Cust Reb Details";
-         RebateJournalBatch: Code[10];
-     begin
-         if not CustClaimsRebatesAppr.IsSalesClaimsandRebatesApprovalsEnabled() then
-             exit;
-         if AcumensRebateSetup.Get() then
-             RebateJournalBatch := AcumensRebateSetup."Sales Journal Batch Name";
-
-         if (GenJournalLine."Journal Batch Name" = RebateJournalBatch) AND (GenJournalLine."Account Type" = GenJournalLine."Account Type"::Vendor) then
-             VendorLedgerEntry.Open := false;
-     end; */
-
     [EventSubscriber(ObjectType::Page, Page::"Apply Vendor Entries", OnBeforeOnQueryClosePage, '', false, false)]
     local procedure Page233_Apply_Vendor_Payment_OnBeforeOnQueryClosePage(CloseAction: Action; ApplyingVendorLedgerEntry: Record "Vendor Ledger Entry"; ApplnType: Enum "Vendor Apply-to Type"; VendorLedgerEntry: Record "Vendor Ledger Entry"; CalcType: Enum "Vendor Apply Calculation Type"; var IsHandled: Boolean)
     var
@@ -289,18 +274,6 @@ codeunit 14302618 "AQD Claims and Rebates Events"
 
     end;
 
-    // [EventSubscriber(ObjectType::Table, Database::"AQD Rebate Item Ledger Entry", OnAfterInsertEvent, '', false, false)]
-    // local procedure Tab14277022_AQDRebateItemLedgerEntry_OnAfterInsertEvent(var Rec: Record "AQD Rebate Item Ledger Entry"; RunTrigger: Boolean)
-    // begin
-    //     if Rec.IsTemporary then
-    //         exit;
-
-    //     IF Rec.IsEmpty then
-    //         exit;
-
-
-    // end;
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnBeforeInsertRebateDetail, '', false, false)]
     local procedure CU14302513_AQDCustRebateCalcMgt_OnBeforeInsertRebateDetail(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; GlobalBrokerVendorNo: Code[20]; var IsHandled: Boolean)
     var
@@ -363,8 +336,8 @@ codeunit 14302618 "AQD Claims and Rebates Events"
                 CASE CustomerSalesRebateRate."Payee Type" OF
                     CustomerSalesRebateRate."Payee Type"::CustomerRebate:
                         begin
-                            CASE CustomerSalesRebateRate."Entity Type" OF
-                                CustomerSalesRebateRate."Entity Type"::Customer:
+                            CASE CustomerSalesRebateRate."Customer Type" OF
+                                CustomerSalesRebateRate."Customer Type"::Customer:
                                     BEGIN
                                         IF CustomerSalesRebateRate."CustRbt Rate Type" = CustomerSalesRebateRate."CustRbt Rate Type"::"Volume Rebate" THEN BEGIN
                                             Case CustomerSalesRebateRate."Line Type" OF
@@ -431,7 +404,7 @@ codeunit 14302618 "AQD Claims and Rebates Events"
                                                 END;
                                         End;
                                     END;
-                                CustomerSalesRebateRate."Entity Type"::"Customer Category":
+                                CustomerSalesRebateRate."Customer Type"::"Customer Category":
                                     BEGIN
                                         CustomerRec.RESET;
                                         CustomerRec.SetRange("AQD Cust Rebate Category", CustomerSalesRebateRate."No.");
@@ -502,11 +475,6 @@ codeunit 14302618 "AQD Claims and Rebates Events"
                                                 END;
                                         End;
                                     END;
-                            // CustomerSalesRebateRate."Entity Type"::"All Customers":
-                            //     BEGIN
-                            //         BestCustomerSalesRebate := CustomerSalesRebateRate;
-                            //         BestSalesRebateFound := TRUE;
-                            //     END;
                             END;
                         end;
                     else begin

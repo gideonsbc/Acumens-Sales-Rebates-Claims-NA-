@@ -70,23 +70,6 @@ table 14302516 "AQD Cust Rebate Program Code"
                                                 Blocked = CONST(false))
             else if ("Rebate Expense Type" = const("Off-Invoice Rebate")) Resource where(Blocked = const(false));
         }
-        field(30; "Rebate Payable AC"; Code[20])
-        {
-            Caption = 'Rebate Payable A/C';
-            TableRelation = "G/L Account" WHERE("Direct Posting" = CONST(true),
-                                                "Account Type" = CONST(Posting),
-                                                Blocked = CONST(false));
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Used Customer Vendor Employee No.';
-            ObsoleteTag = 'Discontinued 25.1023.0.2';
-        }
-        field(40; "Entity Type"; Enum "AQD Sales Rebate Customer Type")
-        {
-            Caption = 'Default Entity Type';
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Replaced with Payee Type';
-        }
         field(45; "Payee Type"; Enum "AQD Sales Rebate Payee Type")
         {
             Caption = 'Default Payee Type';
@@ -115,57 +98,6 @@ table 14302516 "AQD Cust Rebate Program Code"
                 if Rec."Payee No." <> xRec."Payee No." then
                     UpdateRates(FieldCaption("Payee No."));
             end;
-        }
-
-        field(50; "Entity No."; Code[20])
-        {
-            Caption = 'Default Entity No.';
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Replaced with Payee No';
-        }
-        field(60; "Specific Sales"; Boolean)
-        {
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Not in use';
-        }
-        field(61; "Specific Sales New"; Enum "AQD Specific Sales")
-        {
-            Caption = 'SO Rebate Program';
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Not in use';
-        }
-        field(70; "Customer No."; Code[20])
-        {
-            Caption = 'Customer No.';
-            DataClassification = CustomerContent;
-            TableRelation = Customer;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Used for specific customer filter, replaced by Customer Type Filter and Customer';
-        }
-        field(71; "Customer Type Filter"; Enum "AQD Rates Customer Type Filter")
-        {
-            Caption = 'Customer Type Filter';
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Not in use';
-        }
-        field(72; "Customer No. Filter"; Code[20])
-        {
-            Caption = 'Customer No. Filter';
-            DataClassification = CustomerContent;
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Not in use';
-        }
-        field(80; "Marketplace Code"; Code[20])
-        {
-            Caption = 'SO Marketplace';
-            DataClassification = CustomerContent;
-            TableRelation = "AQD Marketplace";
-            ObsoleteState = Pending;
-            ObsoleteReason = 'Not in use';
         }
         field(90; Blocked; Boolean)
         {

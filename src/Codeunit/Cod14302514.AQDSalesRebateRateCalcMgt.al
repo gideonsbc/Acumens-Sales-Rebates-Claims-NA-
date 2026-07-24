@@ -9,11 +9,6 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         GlobalStartPostingDate: Date;
         GlobalEndPostingDate: Date;
 
-    [Obsolete('This function is deprecated. Use NewFunctionName instead.', '15.0')]
-    procedure FindSalesLineRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
-    begin
-    end;
-
     procedure FindSalesLineRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebateIn: Boolean; GlobalStartPostingDateIn: Date; GlobalEndPostingDateIn: Date)
     var
         SalesLine: Record "Sales Line";
@@ -32,13 +27,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
             TempSalesRebatesRate.DeleteAll();
 
         BillToCustomer.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.");
-        // Case BillToCustomer."AQD CustRbt Calculation Date" OF
-        //     BillToCustomer."AQD CustRbt Calculation Date"::" ",
-        //     BillToCustomer."AQD CustRbt Calculation Date"::"Shipment Date":
-        //         DocumentDate := CustomerRebateDetailsLocIn."Posting Date";
-        //     BillToCustomer."AQD CustRbt Calculation Date"::"Rebate Order Date":
-        //         DocumentDate := CustomerRebateDetailsLocIn."Rebate Order Date";
-        // END;
+
         DocumentDate := CustomerRebateDetailsLocIn."Rebate Order Date";
 
         Case CustomerRebateDetailsLocIn."Document Type" OF
@@ -201,14 +190,14 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                     // SalesRebatesRate.SetRange("Customer No. Filter");
                     // CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
-                    SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::Customer);
+                    SalesRebatesRate.SetRange("Customer Type", SalesRebatesRate."Customer Type"::Customer);
                     SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
                     //SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Bill-To Customer No.");
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     IF LocalCust.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.") THEN BEGIN
                         IF LocalCust."AQD Cust Rebate Category" <> '' then begin
-                            SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"Customer Category");
+                            SalesRebatesRate.SetRange("Customer Type", SalesRebatesRate."Customer Type"::"Customer Category");
                             SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
                             //SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', LocalCust."AQD Cust Rebate Category");
                             CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
@@ -224,14 +213,14 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                     SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
-                    SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::Customer);
+                    SalesRebatesRate.SetRange("Customer Type", SalesRebatesRate."Customer Type"::Customer);
                     SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
                     //SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Bill-To Customer No.");
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     IF LocalCust.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.") THEN BEGIN
                         IF LocalCust."AQD Cust Rebate Category" <> '' then begin
-                            SalesRebatesRate.SetRange("Entity Type", SalesRebatesRate."Entity Type"::"Customer Category");
+                            SalesRebatesRate.SetRange("Customer Type", SalesRebatesRate."Customer Type"::"Customer Category");
                             SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
                             //SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', LocalCust."AQD Cust Rebate Category");
                             CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
@@ -297,8 +286,8 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                 CASE CustomerSalesRebateRate."Payee Type" OF
                     CustomerSalesRebateRate."Payee Type"::CustomerRebate:
                         begin
-                            CASE CustomerSalesRebateRate."Entity Type" OF
-                                CustomerSalesRebateRate."Entity Type"::Customer:
+                            CASE CustomerSalesRebateRate."Customer Type" OF
+                                CustomerSalesRebateRate."Customer Type"::Customer:
                                     BEGIN
                                         IF CustomerSalesRebateRate."CustRbt Rate Type" = CustomerSalesRebateRate."CustRbt Rate Type"::"Volume Rebate" THEN BEGIN
                                             Case CustomerSalesRebateRate."Line Type" OF
@@ -365,7 +354,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                                                 END;
                                         End;
                                     END;
-                                CustomerSalesRebateRate."Entity Type"::"Customer Category":
+                                CustomerSalesRebateRate."Customer Type"::"Customer Category":
                                     BEGIN
                                         CustomerRec.RESET;
                                         CustomerRec.SetRange("AQD Cust Rebate Category", CustomerSalesRebateRate."No.");
@@ -436,11 +425,6 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                                                 END;
                                         End;
                                     END;
-                            // CustomerSalesRebateRate."Entity Type"::"All Customers":
-                            //     BEGIN
-                            //         BestCustomerSalesRebate := CustomerSalesRebateRate;
-                            //         BestSalesRebateFound := TRUE;
-                            //     END;
                             END;
                         end;
                     else begin
