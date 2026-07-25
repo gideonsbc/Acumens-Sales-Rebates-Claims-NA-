@@ -1,6 +1,6 @@
 table 14302517 "AQD Sales Rebates Rate"
 {
-    Caption = 'Sales Rebates Setup';
+    Caption = 'Sales Rebates & Commission Rates';
     DataClassification = CustomerContent;
     DrillDownPageId = "AQD CustRbt SalesRebates Setup";
     LookupPageId = "AQD CustRbt SalesRebates Setup";
@@ -35,7 +35,7 @@ table 14302517 "AQD Sales Rebates Rate"
         }
         field(10; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
         {
-            Caption = 'Rebate Rate Type';
+            Caption = 'Rate Type';
         }
         field(13; "Territory Code"; Code[10])
         {
@@ -120,7 +120,7 @@ table 14302517 "AQD Sales Rebates Rate"
 
         field(17; "Rebate Program Code"; Code[20])
         {
-            Caption = 'Rebate Program Code';
+            Caption = 'Program Code';
             NotBlank = true;
             TableRelation = "AQD Cust Rebate Program Code";
 
@@ -172,6 +172,13 @@ table 14302517 "AQD Sales Rebates Rate"
         field(30; Description; Text[100])
         {
             Caption = 'Description';
+            Editable = false;
+        }
+        field(35; "Program Description"; Text[100])
+        {
+            Caption = 'Program Description';
+            FieldClass = FlowField;
+            CalcFormula = lookup("AQD Cust Claim Program Code".Description where(Code = field("Rebate Program Code")));
             Editable = false;
         }
         field(40; "Rebate Type"; Option)

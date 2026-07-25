@@ -2317,7 +2317,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := AmazonVendorCode;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Commission Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'AMAZONMKP';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
@@ -2335,7 +2335,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := ShopifyVendorCode;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Commission Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'SHOPIFYMKP';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '10000';
@@ -2353,7 +2353,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := WalmartVendorCode;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Commission Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'WALMARTMKP';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '50000';
@@ -2371,7 +2371,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := AmazonVendorCode2;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Commission Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'AMAZONALW';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
@@ -2389,7 +2389,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := ShopifyVendorCode2;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Commission Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'SHOPIFYALW';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '10000';
@@ -2407,7 +2407,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := WalmartVendorCode2;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Commission Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'WALMARTALW';
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '50000';
@@ -2425,7 +2425,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 0;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := RoyaltyVendorCode;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Royalty Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -2442,7 +2442,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := RoyaltyVendorCode2;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Royalty Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -2459,7 +2459,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 2;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := CanadaVendorCode;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Commission Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CanadaRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Payment Term Filter" := 'COD';
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -2476,7 +2476,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 1;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := BrokerVendorCode;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Commission Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -2493,7 +2493,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Default Rebate %" := 3;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
                 CustomerRebateProgramCode."Payee No." := BrokerVendorCode;
-                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Commission Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;

@@ -4,10 +4,10 @@ enum 14302529 "AQD CustRbt Rate Type"
 
     value(0; "Simple Rebate")
     {
-        Caption = 'Simple Rebate';
+        Caption = 'Invoice Rate';
     }
     value(1; "Volume Rebate")
     {
-        Caption = 'Volume Rebate';
+        Caption = 'Volume Rate';
     }
 }
