@@ -1,6 +1,6 @@
 page 14302540 "AQD Posted Cust Rebate Details"
 {
-    Caption = 'Posted Customer Rebate Details';
+    Caption = 'Posted Sales Rebate Details';
     PageType = ListPart;
     ApplicationArea = All;
     UsageCategory = Lists;

@@ -22,7 +22,7 @@ page 14302518 "AQD Customer Rebate Cues"
                 {
                     Caption = 'Posted Sales Rebate Documents';
                     ApplicationArea = All;
-                    DrillDownPageId = "AQD Customer Rebates Documents";
+                    DrillDownPageId = "AQD Posted Customer Rebates";
                 }
             }
             cuegroup("Full Price Claims")

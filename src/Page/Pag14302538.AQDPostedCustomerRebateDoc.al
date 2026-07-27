@@ -1,7 +1,7 @@
 page 14302538 "AQD Posted Customer Rebate Doc"
 {
     ApplicationArea = All;
-    Caption = 'Posted Customer Rebate Document';
+    Caption = 'Posted Sales Rebate Document';
     DeleteAllowed = false;
     Editable = false;
     InsertAllowed = false;

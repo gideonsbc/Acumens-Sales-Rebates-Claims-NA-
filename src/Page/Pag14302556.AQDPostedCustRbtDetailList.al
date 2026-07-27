@@ -1,7 +1,7 @@
 page 14302556 "AQD Posted CustRbtDetail List"
 {
     ApplicationArea = All;
-    Caption = 'Posted Customer Rebate Details';
+    Caption = 'Posted Sales Rebate Details';
     DeleteAllowed = false;
     Editable = false;
     InsertAllowed = false;

@@ -1,7 +1,7 @@
 page 14302539 "AQD Posted Cust Reb Subpage"
 {
     ApplicationArea = All;
-    Caption = 'Posted Customer Rebate Subpage';
+    Caption = 'Posted Sales Rebate Subpage';
     Editable = false;
     InsertAllowed = false;
     PageType = ListPart;

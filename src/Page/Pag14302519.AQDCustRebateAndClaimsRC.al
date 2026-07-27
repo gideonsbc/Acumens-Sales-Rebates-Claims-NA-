@@ -514,7 +514,7 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 action("Posted Customer Rebate Batches")
                 {
                     ApplicationArea = All;
-                    Caption = 'Posted Customer Rebate Batches';
+                    Caption = 'Posted Sales Rebate Batches';
                     RunObject = page "AQD Posted Cust Rebate Batches";
                     Image = PostedCreditMemo;
                 }
@@ -528,14 +528,14 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 action("Posted Customer Rebates")
                 {
                     ApplicationArea = All;
-                    Caption = 'Posted Customer Rebates Documents';
+                    Caption = 'Posted Sales Rebates Documents';
                     RunObject = page "AQD Posted Customer Rebates";
                     Image = PostedCreditMemo;
                 }
                 action("AQD Posted CustRbtDetail List")
                 {
                     ApplicationArea = All;
-                    Caption = 'Posted Customer Rebate Details';
+                    Caption = 'Posted Sales Rebate Details';
                     RunObject = page "AQD Posted CustRbtDetail List";
                     Image = PostedCreditMemo;
                 }

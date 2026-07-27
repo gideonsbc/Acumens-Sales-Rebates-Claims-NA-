@@ -3,7 +3,7 @@ namespace AcumenseRebatesBC.AcumenseRebatesBC;
 page 14302547 "AQD Posted Cust Rebate Subpage"
 {
     ApplicationArea = All;
-    Caption = 'Posted Customer Rebate Batches';
+    Caption = 'Posted Sales Rebate Batches';
     PageType = ListPart;
     SourceTable = "AQD Posted Cust Rebate Header";
 

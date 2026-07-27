@@ -1,6 +1,6 @@
 page 14302537 "AQD Posted Customer Rebates"
 {
-    Caption = 'Posted Customer Rebate Documents';
+    Caption = 'Posted Sales Rebate Documents';
     DeleteAllowed = false;
     Editable = false;
     InsertAllowed = false;
