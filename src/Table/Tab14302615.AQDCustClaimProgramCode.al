@@ -41,6 +41,9 @@ table 14302615 "AQD Cust Claim Program Code"
         {
             Clustered = true;
         }
+        key(Key2; Description)
+        {
+        }
     }
 
     fieldgroups

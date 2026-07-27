@@ -6,6 +6,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
     DelayedInsert = true;
     PageType = List;
     SourceTable = "AQD Sales Rebates Rate";
+    RefreshOnActivate = true;
 
     layout
     {
@@ -169,6 +170,13 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     ToolTip = 'Specifies the the Sales Rebate Program Code applies to Line Item.';
                     ShowMandatory = TRUE;
                     QuickEntry = TRUE;
+                }
+                field("Program Description"; Rec."Program Description")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Program Description field.', Comment = '%';
+                    Editable = false;
+                    Importance = Additional;
                 }
                 field("Payee Type"; Rec."Payee Type")
                 {

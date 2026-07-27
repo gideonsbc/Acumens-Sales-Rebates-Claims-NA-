@@ -178,8 +178,8 @@ table 14302517 "AQD Sales Rebates Rate"
         {
             Caption = 'Program Description';
             FieldClass = FlowField;
-            CalcFormula = lookup("AQD Cust Claim Program Code".Description where(Code = field("Rebate Program Code")));
             Editable = false;
+            CalcFormula = lookup("AQD Cust Rebate Program Code".Description where("Code" = field("Rebate Program Code")));
         }
         field(40; "Rebate Type"; Option)
         {

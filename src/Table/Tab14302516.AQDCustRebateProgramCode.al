@@ -163,6 +163,9 @@ table 14302516 "AQD Cust Rebate Program Code"
         {
             Clustered = true;
         }
+        key(Key2; Description)
+        {
+        }
     }
 
     fieldgroups
