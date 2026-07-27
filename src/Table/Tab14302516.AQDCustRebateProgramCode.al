@@ -65,7 +65,7 @@ table 14302516 "AQD Cust Rebate Program Code"
         field(20; "Rebate Expense AC"; Code[20])
         {
             Caption = 'Rebate Expense A/C';
-            TableRelation = if ("Rebate Expense Type" = filter("Rebate Accrual" | "Commission Accrual" | "Royalty Accrual")) "G/L Account" WHERE("Direct Posting" = CONST(true),
+            TableRelation = if ("Rebate Expense Type" = const("Rebate Accrual")) "G/L Account" WHERE("Direct Posting" = CONST(true),
                                                 "Account Type" = CONST(Posting),
                                                 Blocked = CONST(false))
             else if ("Rebate Expense Type" = const("Off-Invoice Rebate")) Resource where(Blocked = const(false));
@@ -89,7 +89,7 @@ table 14302516 "AQD Cust Rebate Program Code"
 
         field(47; "Payee No."; Code[20])
         {
-            Caption = 'Default Payee No.';
+            Caption = 'Default Accrual Payee No.';
             TableRelation = if ("Payee Type" = const("Employee Commission")) Employee where(Status = const(Active))
             else if ("Payee Type" = const("Vendor Commission")) Vendor where(Blocked = filter(''));
 

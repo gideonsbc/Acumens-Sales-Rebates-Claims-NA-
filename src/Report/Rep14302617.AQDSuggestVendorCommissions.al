@@ -1,10 +1,9 @@
 report 14302617 "AQD Suggest Vendor Commissions"
 {
     ApplicationArea = All;
-    Caption = 'Move Vendor Commissions';
+    Caption = 'Suggest Vendor Commissions & Rebates';
     UsageCategory = None;
     ProcessingOnly = true;
-    //Permissions = tabledata "Restricted Record" = rd;
     dataset
     {
         dataitem("AQD Cust Rebate Program Code"; "AQD Cust Rebate Program Code")

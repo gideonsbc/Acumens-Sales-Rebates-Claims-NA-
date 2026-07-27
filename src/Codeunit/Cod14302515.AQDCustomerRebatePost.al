@@ -636,7 +636,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         If PostedCustomerRebateLine.FindFirst() Then Begin
             Repeat
                 PostedCustomerRebateLine.CalcFields("Customer Rebate Amount");
-                IF PostedCustomerRebateLine."Customer Rebate Amount" > 0 THEN Begin
+                IF PostedCustomerRebateLine."Customer Rebate Amount" >= 0 THEN Begin
                     //Create Sales Credit Memo
                     CreateSalesCrMemoLine(PostedCustomerRebateHeader, PostedCustomerRebateLine);
                 END ELSE IF PostedCustomerRebateLine."Customer Rebate Amount" < 0 THEN Begin
@@ -667,41 +667,42 @@ codeunit 14302515 "AQD Customer Rebate Post"
         PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)",
                                             "Vendor Commission", "Employee Commission");
 
-        TmpCrMemoBuffer.RESET;
-        TmpCrMemoBuffer.SetRange("G/L Account", TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
-        IF NOT TmpCrMemoBuffer.FindFirst() THEN begin
-            //Create Sales Credit Memo Header
-            SalesCredirMemo.INIT;
-            SalesCredirMemo.SetHideValidationDialog(TRUE);
-            SalesCredirMemo."Document Type" := SalesCredirMemo."Document Type"::"Credit Memo";
-            SalesCredirMemo."No." := '';
-            SalesCredirMemo.Insert(TRUE);
-            SalesCredirMemo.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
-            SalesCredirMemo.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Rebate Pay-To Customer No.");
-            SalesCredirMemo.validate("Location Code", PostedCustomerRebateHeader."Location Code");
-            SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
-            SalesCredirMemo."Posting Description" := PostedCustomerRebateHeader."Posting Description";
-            SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
-            SalesCredirMemo."External Document No." := PostedCustomerRebateHeader."No.";
-            SalesCredirMemo."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
-            SalesCredirMemo."AQD Customer Rebate" := TRUE;
-            SalesCredirMemo.Modify(TRUE);
+        IF PostedCustomerRebateLine."Customer Rebate Amount" <> 0 THEN Begin
+            TmpCrMemoBuffer.RESET;
+            TmpCrMemoBuffer.SetRange("G/L Account", TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
+            IF NOT TmpCrMemoBuffer.FindFirst() THEN begin
+                //Create Sales Credit Memo Header
+                SalesCredirMemo.INIT;
+                SalesCredirMemo.SetHideValidationDialog(TRUE);
+                SalesCredirMemo."Document Type" := SalesCredirMemo."Document Type"::"Credit Memo";
+                SalesCredirMemo."No." := '';
+                SalesCredirMemo.Insert(TRUE);
+                SalesCredirMemo.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
+                SalesCredirMemo.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Rebate Pay-To Customer No.");
+                SalesCredirMemo.validate("Location Code", PostedCustomerRebateHeader."Location Code");
+                SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
+                SalesCredirMemo."Posting Description" := PostedCustomerRebateHeader."Posting Description";
+                SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
+                SalesCredirMemo."External Document No." := PostedCustomerRebateHeader."No.";
+                SalesCredirMemo."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
+                SalesCredirMemo."AQD Customer Rebate" := TRUE;
+                SalesCredirMemo.Modify(TRUE);
 
-            PostedCustomerRebateHeader."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
-            PostedCustomerRebateHeader.Modify;
+                PostedCustomerRebateHeader."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
+                PostedCustomerRebateHeader.Modify;
 
-            TmpCrMemoBuffer.INIT;
-            TmpCrMemoBuffer."Group ID" := GlobalGroupID;
-            //BillTo Customer No.
-            TmpCrMemoBuffer."G/L Account" := TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group";
-            //Credit Memo No
-            TmpCrMemoBuffer."Job No." := SalesCredirMemo."No.";
-            //Document Type
-            TmpCrMemoBuffer."Dimension Set ID" := SalesCredirMemo."Document Type".AsInteger();
-            TmpCrMemoBuffer.INSERT;
-            GlobalGroupID := IncStr(GlobalGroupID);
+                TmpCrMemoBuffer.INIT;
+                TmpCrMemoBuffer."Group ID" := GlobalGroupID;
+                //BillTo Customer No.
+                TmpCrMemoBuffer."G/L Account" := TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group";
+                //Credit Memo No
+                TmpCrMemoBuffer."Job No." := SalesCredirMemo."No.";
+                //Document Type
+                TmpCrMemoBuffer."Dimension Set ID" := SalesCredirMemo."Document Type".AsInteger();
+                TmpCrMemoBuffer.INSERT;
+                GlobalGroupID := IncStr(GlobalGroupID);
+            end;
         end;
-
         NextLineNo := 0;
         ItemChargeNextLineNo := 0;
         SalesCrMemoLine.RESET;
@@ -944,7 +945,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     GenJnlLine."AQD Cust Rebate Document Type" := PostedCustomerRebateLine."Document Type";
                     GenJnlLine."AQD Cust Rebate Document No." := PostedCustomerRebateLine."Rebate No.";
-                    GenJnlLine."AQD CR Rebate Program Code" := CustRebateMgtFunction.GetRebateProgramCode(PostedCustomerRebateLine, GenJnlLine);//PostedCustomerRebateLine."Cust Rebate Program Code";
+                    GenJnlLine."AQD CR Rebate Program Code" := InvoicePostingBuffer."AQD Program Code";//CustRebateMgtFunction.GetRebateProgramCode(PostedCustomerRebateLine, GenJnlLine);//PostedCustomerRebateLine."Cust Rebate Program Code";
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                     GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
@@ -1088,46 +1089,46 @@ codeunit 14302515 "AQD Customer Rebate Post"
     begin
         PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)",
                                             "Vendor Commission", "Employee Commission");
+        IF PostedCustomerRebateLine."Customer Rebate Amount" <> 0 THEN Begin
+            TmpInovoiceBuffer.RESET;
+            TmpInovoiceBuffer.SetRange("G/L Account", TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
+            IF NOT TmpInovoiceBuffer.FindFirst() THEN begin
+                //Create Sales Invoice Header
+                SalesInvoice.INIT;
+                SalesInvoice."Document Type" := SalesInvoice."Document Type"::Invoice;
+                SalesInvoice."No." := '';
+                SalesInvoice.Insert(TRUE);
 
-        TmpInovoiceBuffer.RESET;
-        TmpInovoiceBuffer.SetRange("G/L Account", TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
-        IF NOT TmpInovoiceBuffer.FindFirst() THEN begin
-            //Create Sales Invoice Header
-            SalesInvoice.INIT;
-            SalesInvoice."Document Type" := SalesInvoice."Document Type"::Invoice;
-            SalesInvoice."No." := '';
-            SalesInvoice.Insert(TRUE);
+                SalesInvoice.SetHideValidationDialog(TRUE);
+                SalesInvoice.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
+                SalesInvoice.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Rebate Pay-To Customer No.");
+                SalesInvoice.validate("Location Code", PostedCustomerRebateHeader."Location Code");
+                SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
+                SalesInvoice."Posting Description" := PostedCustomerRebateHeader."Posting Description";
+                SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
+                SalesInvoice."External Document No." := PostedCustomerRebateHeader."No.";
+                SalesInvoice."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
+                SalesInvoice."AQD Customer Rebate" := TRUE;
+                SalesInvoice.Modify(TRUE);
 
-            SalesInvoice.SetHideValidationDialog(TRUE);
-            SalesInvoice.Validate("Sell-To Customer No.", PostedCustomerRebateLine."Bill-To Customer No.");
-            SalesInvoice.VALIDATE("Bill-To Customer No.", PostedCustomerRebateLine."Rebate Pay-To Customer No.");
-            SalesInvoice.validate("Location Code", PostedCustomerRebateHeader."Location Code");
-            SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
-            SalesInvoice."Posting Description" := PostedCustomerRebateHeader."Posting Description";
-            SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
-            SalesInvoice."External Document No." := PostedCustomerRebateHeader."No.";
-            SalesInvoice."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
-            SalesInvoice."AQD Customer Rebate" := TRUE;
-            SalesInvoice.Modify(TRUE);
+                PostedCustomerRebateHeader."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
+                PostedCustomerRebateHeader.Modify;
 
-            PostedCustomerRebateHeader."Customer Rebate Status" := PostedCustomerRebateHeader."Customer Rebate Status"::Created;
-            PostedCustomerRebateHeader.Modify;
-
-            //"G/L Account"		    - Bill Customer No.
-            //"Dimension Set ID" 	- Sales Document Typ
-            //"Job No."		        - Sales Order No.
-            TmpInovoiceBuffer.INIT;
-            TmpInovoiceBuffer."G/L Account" := GlobalGroupID;
-            // Bill-To CCustomer No.
-            TmpInovoiceBuffer."G/L Account" := TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group";
-            // Document Type
-            TmpInovoiceBuffer."Dimension Set ID" := SalesInvoice."Document Type".AsInteger();
-            // Document No.
-            TmpInovoiceBuffer."Job No." := SalesInvoice."No.";
-            TmpInovoiceBuffer.INSERT;
-            GlobalGroupID := IncStr(GlobalGroupID);
+                //"G/L Account"		    - Bill Customer No.
+                //"Dimension Set ID" 	- Sales Document Typ
+                //"Job No."		        - Sales Order No.
+                TmpInovoiceBuffer.INIT;
+                TmpInovoiceBuffer."G/L Account" := GlobalGroupID;
+                // Bill-To CCustomer No.
+                TmpInovoiceBuffer."G/L Account" := TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group";
+                // Document Type
+                TmpInovoiceBuffer."Dimension Set ID" := SalesInvoice."Document Type".AsInteger();
+                // Document No.
+                TmpInovoiceBuffer."Job No." := SalesInvoice."No.";
+                TmpInovoiceBuffer.INSERT;
+                GlobalGroupID := IncStr(GlobalGroupID);
+            end;
         end;
-
         NextLineNo := 0;
         ItemChargeNextLineNo := 0;
         SalesInvoiceLine.RESET;
@@ -1370,7 +1371,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     GenJnlLine."AQD Cust Rebate Document Type" := PostedCustomerRebateLine."Document Type";
                     GenJnlLine."AQD Cust Rebate Document No." := PostedCustomerRebateLine."Rebate No.";
-                    GenJnlLine."AQD CR Rebate Program Code" := CustRebateMgtFunction.GetRebateProgramCode(PostedCustomerRebateLine, GenJnlLine);//PostedCustomerRebateLine."Cust Rebate Program Code";
+                    GenJnlLine."AQD CR Rebate Program Code" := InvoicePostingBuffer."AQD Program Code";//CustRebateMgtFunction.GetRebateProgramCode(PostedCustomerRebateLine, GenJnlLine);//PostedCustomerRebateLine."Cust Rebate Program Code";
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                     GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
@@ -1730,8 +1731,11 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     InvoicePostingBuffer.SetRange("Dimension Set ID", LocalPostedCustRebateLineDetail."Entity Type".AsInteger());
                     //IF CalledFromSalesJournal THEN
                     //    InvoicePostingBuffer.SetRange("Job No.", LocalRebateProgramCode."Rebate Payable AC");
-                    IF CalledFromSalesJournal THEN
+                    IF CalledFromSalesJournal THEN begin
                         InvoicePostingBuffer.SetRange("Job No.", LocalPostedCustRebateLineDetail."Entity No.");
+                        InvoicePostingBuffer.SetRange("AQD Program Code", LocalPostedCustRebateLineDetail."Rebate Program Code");
+                    end;
+
                     IF InvoicePostingBuffer.FindFirst() THEN BEGIN
                         InvoicePostingBuffer.Amount += LocalPostedCustRebateLineDetail."Customer Rebate Amount";
                         InvoicePostingBuffer.Modify();
@@ -1742,8 +1746,11 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         InvoicePostingBuffer."G/L Account" := LocalRebateProgramCode."Rebate Expense AC";
                         //IF CalledFromSalesJournal THEN
                         //    InvoicePostingBuffer."Job No." := LocalRebateProgramCode."Rebate Payable AC";
-                        IF CalledFromSalesJournal THEN
+                        IF CalledFromSalesJournal THEN begin
                             InvoicePostingBuffer."Job No." := LocalPostedCustRebateLineDetail."Entity No.";
+                            InvoicePostingBuffer."AQD Program Code" := LocalPostedCustRebateLineDetail."Rebate Program Code";
+                        end;
+
                         InvoicePostingBuffer.Amount := LocalPostedCustRebateLineDetail."Customer Rebate Amount";
                         InvoicePostingBuffer.Insert();
                         LocalGroupID := IncStr(LocalGroupID);

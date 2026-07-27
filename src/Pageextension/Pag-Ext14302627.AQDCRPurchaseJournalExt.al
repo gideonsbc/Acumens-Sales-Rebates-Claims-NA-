@@ -19,13 +19,12 @@ pageextension 14302627 "AQD CR Purchase Journal Ext." extends "Purchase Journal"
         {
             group("AQD AQDSuggestVendorPayments_Group")
             {
-                Caption = 'Acumens Customer Rebate';
+                Caption = 'Acumens Sales Rebate';
                 Image = Payment;
                 action("AQD SuggestVendorPayments")
                 {
                     ApplicationArea = All;
-                    Caption = 'Suggest Vendor Commissions';
-                    //Ellipsis = true;
+                    Caption = 'Suggest Vendor Commissions & Rebates';
                     Image = SuggestVendorPayments;
                     ToolTip = 'Create Vendor Commissions as lines in the Purchase journal.';
 
