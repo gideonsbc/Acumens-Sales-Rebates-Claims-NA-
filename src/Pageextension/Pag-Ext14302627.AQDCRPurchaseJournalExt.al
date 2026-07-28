@@ -50,7 +50,7 @@ pageextension 14302627 "AQD CR Purchase Journal Ext." extends "Purchase Journal"
         {
             group("AQD AQDAcumesCustomerRebates_Category8")
             {
-                Caption = 'Acumens Customer Rebate', Comment = 'Generated from the PromotedActionCategories property index 8.';
+                Caption = 'Acumens Sales Rebate', Comment = 'Generated from the PromotedActionCategories property index 8.';
 
                 actionref(AQDSuggestVendorPayments_Promoted; "AQD SuggestVendorPayments")
                 {

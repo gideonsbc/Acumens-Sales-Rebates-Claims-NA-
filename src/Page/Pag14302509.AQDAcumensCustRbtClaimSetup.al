@@ -496,6 +496,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                     Rec."Sales Journal Batch Name" := GenJournalBatch.Name;
                 end;
             end;
+            // ResetNoSeriesStandard();
+            // Rec."Customer Rebate Document Nos" := 'CRB';
             Rec.Insert();
             InitializeDefaultSetups();
             AllowToEdit := FALSE;
@@ -2316,7 +2318,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Payee No." := AmazonVendorCode;
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;//AmazonVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'AMAZONMKP';
@@ -2334,7 +2336,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Payee No." := ShopifyVendorCode;
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;//ShopifyVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'SHOPIFYMKP';
@@ -2352,7 +2354,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Payee No." := WalmartVendorCode;
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;//WalmartVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount;
                 CustomerRebateProgramCode."SO Marketplace Code Filter" := 'WALMARTMKP';
@@ -2370,7 +2372,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Payee No." := AmazonVendorCode2;
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;//AmazonVendorCode2;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := AmazonRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'AMAZONALW';
@@ -2388,7 +2390,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Payee No." := ShopifyVendorCode2;
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;//ShopifyVendorCode2;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := ShopifyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'SHOPIFYALW';
@@ -2406,7 +2408,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Payee No." := WalmartVendorCode2;
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;//WalmartVendorCode2;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := WalmartRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."SO Rebate Program Filter" := 'WALMARTALW';
@@ -2424,7 +2426,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 1;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 0;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Payee No." := RoyaltyVendorCode;
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;//RoyaltyVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
@@ -2441,7 +2443,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 5;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Payee No." := RoyaltyVendorCode2;
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;//RoyaltyVendorCode2;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := RoyaltyRebateExpenseGLAccount2;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
@@ -2458,18 +2460,53 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
                 CustomerRebateProgramCode."Customer Default Rebate %" := 2;
                 CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
-                CustomerRebateProgramCode."Payee No." := CanadaVendorCode;
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;//CanadaVendorCode;
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := CanadaRebateExpenseGLAccount;
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '40000';
                 CustomerRebateProgramCode."SO Payment Term Filter" := 'COD';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
-            IF NOT CustomerRebateProgramCode.GET('BROKERS') THEN BEGIN
+            IF NOT CustomerRebateProgramCode.GET('BROKER01S') THEN BEGIN
                 CustomerRebateProgramCode.INIT;
-                CustomerRebateProgramCode.Code := 'BROKERS';
-                CustomerRebateProgramCode.Description := 'Standard Broker Commisssion';
+                CustomerRebateProgramCode.Code := 'BROKER01S';
+                CustomerRebateProgramCode.Description := 'Broker 01 S';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 1;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '10000';
+                CustomerRebateProgramCode."Default Setup" := true;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+
+            IF NOT CustomerRebateProgramCode.GET('BROKER01A') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'BROKER01A';
+                CustomerRebateProgramCode.Description := 'Broker 01 A';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 3;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '10000';
+                CustomerRebateProgramCode."Default Setup" := true;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+
+            IF NOT CustomerRebateProgramCode.GET('BROKER02S') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'BROKER02S';
+                CustomerRebateProgramCode.Description := 'Broker 02 S';
                 CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
@@ -2483,10 +2520,10 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
-            IF NOT CustomerRebateProgramCode.GET('BROKERA') THEN BEGIN
+            IF NOT CustomerRebateProgramCode.GET('BROKER02A') THEN BEGIN
                 CustomerRebateProgramCode.INIT;
-                CustomerRebateProgramCode.Code := 'BROKERA';
-                CustomerRebateProgramCode.Description := 'Addition New Product Commission';
+                CustomerRebateProgramCode.Code := 'BROKER02A';
+                CustomerRebateProgramCode.Description := 'Broker 02 A';
                 CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
                 CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
                 CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
@@ -2496,6 +2533,40 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
+                CustomerRebateProgramCode."Default Setup" := true;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+
+            IF NOT CustomerRebateProgramCode.GET('BROKER03S') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'BROKER03S';
+                CustomerRebateProgramCode.Description := 'Broker 03 S';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 1;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
+                CustomerRebateProgramCode."Default Setup" := true;
+                CustomerRebateProgramCode.INSERT(TRUE);
+            END;
+
+            IF NOT CustomerRebateProgramCode.GET('BROKER03A') THEN BEGIN
+                CustomerRebateProgramCode.INIT;
+                CustomerRebateProgramCode.Code := 'BROKER03A';
+                CustomerRebateProgramCode.Description := 'Broker 03 A';
+                CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
+                CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
+                CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
+                CustomerRebateProgramCode."Customer Default Rebate %" := 3;
+                CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
+                CustomerRebateProgramCode."Payee No." := BrokerVendorCode;
+                CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
+                CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
+                CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
@@ -3179,21 +3250,19 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKERS');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER01S');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
             CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
-            //CustomerSalesRebateSetup.SetRange("Entity No.", BrokerVendorCode);
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKERS');
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER01S');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3212,45 +3281,10 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKERS');
-            CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
-            CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
-            CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
-            CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
-            //CustomerSalesRebateSetup.SetRange("Entity No.", BrokerVendorCodeNew);
-            CustomerSalesRebateSetup.SetRange("Rate Priority", CustomerSalesRebateSetup."Rate Priority"::"Level 0");
-            IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
-                CustomerSalesRebateSetup.Init();
-                CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKERS');
-                CustomerSalesRebateSetup."Territory Code" := '';
-                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
-                CustomerSalesRebateSetup."Variant Code" := '';
-                CustomerSalesRebateSetup."Starting Date" := 0D;
-                CustomerSalesRebateSetup."Unit of Measure Code" := '';
-                CustomerSalesRebateSetup."Minimum Quantity" := 0;
-                CustomerSalesRebateSetup."Minimum Amount" := 0;
-                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
-                CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCodeNew;
-                CustomerSalesRebateSetup."Customer No. Filter" := '20000';
-                CustomerRebateProgramCode."Default Setup" := true;
-                CustomerSalesRebateSetup.Insert();
-            END;
-
-            CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
-            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
-            CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKERA');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER01A');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3259,7 +3293,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKERA');
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER01A');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup.Validate("No.", '1968-S');
@@ -3278,22 +3312,50 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKERS');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER02S');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
             CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
-            //CustomerSalesRebateSetup.SetRange("Entity No.", BrokerVendorCodeNew);
-            CustomerSalesRebateSetup.SetRange("Rate Priority", CustomerSalesRebateSetup."Rate Priority"::"Level 1");
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
                 CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKERS');
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER02S');
+                CustomerSalesRebateSetup."Territory Code" := '';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Starting Date" := 0D;
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
+                CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
+                CustomerSalesRebateSetup."Customer No. Filter" := '20000';
+                CustomerRebateProgramCode."Default Setup" := true;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
+            CustomerSalesRebateSetup.RESET;
+            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
+            CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER02A');
+            CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
+            CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
+            CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
+            CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
+            IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entry No." := 0;
+                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER02A');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup.Validate("No.", '1968-S');
@@ -3303,10 +3365,70 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 1";
-                CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCodeNew;
+                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := '20000';
-                CustomerSalesRebateSetup."Rebate %" := 4;
+                CustomerRebateProgramCode."Default Setup" := true;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
+            CustomerSalesRebateSetup.RESET;
+            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
+            CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER03S');
+            CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
+            CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
+            CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
+            CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
+            IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entry No." := 0;
+                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER03S');
+                CustomerSalesRebateSetup."Territory Code" := '';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Starting Date" := 0D;
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
+                CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
+                CustomerSalesRebateSetup."Customer No. Filter" := '30000';
+                CustomerRebateProgramCode."Default Setup" := true;
+                CustomerSalesRebateSetup.Insert();
+            END;
+
+            CustomerSalesRebateSetup.RESET;
+            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
+            CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
+            CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
+            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER03A');
+            CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
+            CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
+            CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
+            CustomerSalesRebateSetup.SetRange("Minimum Amount", 0);
+            IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
+                CustomerSalesRebateSetup.Init();
+                CustomerSalesRebateSetup."Entry No." := 0;
+                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER03A');
+                CustomerSalesRebateSetup."Territory Code" := '';
+                CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
+                CustomerSalesRebateSetup.Validate("No.", '1968-S');
+                CustomerSalesRebateSetup."Variant Code" := '';
+                CustomerSalesRebateSetup."Starting Date" := DMY2Date(1, 1, 2026);
+                CustomerSalesRebateSetup."Ending Date" := DMY2Date(30, 6, 2027);
+                CustomerSalesRebateSetup."Unit of Measure Code" := '';
+                CustomerSalesRebateSetup."Minimum Quantity" := 0;
+                CustomerSalesRebateSetup."Minimum Amount" := 0;
+                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
+                CustomerSalesRebateSetup."Customer No. Filter" := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
@@ -3368,6 +3490,28 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NoSeriesLine.Insert() THEN;
         END;
     end;
+
+    // local procedure ResetNoSeriesStandard()
+    // var
+    //     NoSeries: Record "No. Series";
+    //     NoSeriesLine: Record "No. Series Line";
+    // begin
+    //     NoSeries.Reset();
+    //     if not NoSeries.Get('CRB') then begin
+    //         NoSeries.Init();
+    //         NoSeries.Code := 'CRB';
+    //         NoSeries.Description := 'Customer Rebate Nos';
+    //         NoSeries."Default Nos." := true;
+    //         NoSeries."Manual Nos." := true;
+    //         NoSeries.Insert();
+    //         NoSeriesLine.Reset();
+    //         NoSeriesLine.Init();
+    //         NoSeriesLine."Series Code" := 'CRB';
+    //         NoSeriesLine."Line No." := 10000;
+    //         NoSeriesLine."Starting No." := 'CRB00001';
+    //         if NoSeriesLine.Insert() then;
+    //     end;
+    // end;
 
     local procedure DeleteDefaultSetups()
     var

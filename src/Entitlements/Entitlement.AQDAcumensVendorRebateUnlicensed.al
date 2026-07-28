@@ -3,7 +3,7 @@
 entitlement "AQD Acumens Vendor Rebate Unlicensed"
 {
     Type = Unlicensed;
-    ObjectEntitlements = "AQD Customer Rebate";
+    ObjectEntitlements = "AQD SRebate Admin";
 }
 // entitlement "AQD Acumens Customer Rebate 10Userpack"
 // {
@@ -33,6 +33,6 @@ entitlement "AQD Acumens Customer Rebate Unlimited"
 {
     Type = PerUserOfferPlan;
     Id = 'sbcdynamicserp1637715412860.acumenscustomerrebatemanagement2.acumenscustomerrebatesclaimsunlimitedusers';
-    ObjectEntitlements = "AQD Customer Rebate";
+    ObjectEntitlements = "AQD SRebate Admin";
 }
 

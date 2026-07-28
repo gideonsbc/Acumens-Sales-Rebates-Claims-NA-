@@ -1049,4 +1049,14 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         if PostedCustomerRebateLineDetails.FindFirst() then
             exit(PostedCustomerRebateLineDetails."Rebate Program Code");
     end;
+
+    [EventSubscriber(ObjectType::Table, Database::"AQD Acumens CustRbtClaim Setup", OnBeforeInsertEvent, '', false, false)]
+    local procedure AcumensVendorRebateSetup_OnBeforeInsertEvent(var Rec: Record "AQD Acumens CustRbtClaim Setup"; RunTrigger: Boolean)
+    var
+        CFBaseEvents: Codeunit "AQD Acumens Base Events";
+    BEGIN
+        CFBaseEvents.AssignAppPermissionSetToAllUsers('ad778411-e5f3-4d7e-9077-37cde7758cdb', 'AQD Acumens CashFlow', true);
+        CFBaseEvents.AssignAppPermissionSetToAllUsers('6fe07eb4-80c8-48b7-8afb-298cc3af0a0c', 'AQD SRebate Users', true);
+        CFBaseEvents.AssignAppPermissionSetToAllUsers('6fe07eb4-80c8-48b7-8afb-298cc3af0a0c', 'AQD SRebate Admin', true);
+    END;
 }
