@@ -76,10 +76,24 @@ codeunit 14302618 "AQD Claims and Rebates Events"
             SalesRebateApprovalsII.SetSkipStatusCheck(true);
             SalesRebateApprovalsII.Insert();
 
-            if RebateClaimsWorkflowMgmt.CheckPostedCustRebateLineApprovalsWorkflowEnabled(SalesRebateApprovalsII) then
+            if CheckPostedCustRebateLineApprovalsWorkflowEnabled(SalesRebateApprovalsII) then
                 RebateClaimsWorkflowMgmt.OnSendPostedCustRebateLineForApproval(SalesRebateApprovalsII);
 
         end;
+    end;
+
+    procedure CheckPostedCustRebateLineApprovalsWorkflowEnabled(var PostedCustRebateLine: Record "AQD Sales Rebate Approvals"): Boolean
+    var
+        WorkflowManagement: Codeunit "Workflow Management";
+    begin
+        if not RebateClaimsWorkflowMgmt.IsSalesClaimsandRebatesApprovalsEnabled() then
+            exit(false);
+
+        if not WorkflowManagement.CanExecuteWorkflow(PostedCustRebateLine, RebateClaimsWorkflowMgmt.RunWorkflowOnSendPostedCustRebateLineForApprovalCode())
+        then
+            exit(false);
+
+        exit(true);
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"AQD Posted Cust Reb Details", 'OnAfterModifyEvent', '', false, false)]
