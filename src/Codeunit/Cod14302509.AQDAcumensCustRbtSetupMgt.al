@@ -9,7 +9,7 @@ codeunit 14302509 "AQD Acumens CustRbt Setup Mgt"
     var
         Item: Record Item;
         Vendor: Record Vendor;
-        Customer: Record Customer;
+        Customer, Customer2 : Record Customer;
         UserConfirmMsg: Label 'Do you want to update all existing Items?';
         SingleInstance: Codeunit "AQD CustRbtClaim SngleInstance";
     begin
@@ -19,43 +19,18 @@ codeunit 14302509 "AQD Acumens CustRbt Setup Mgt"
                     exit;
 
             Item.ModifyAll("AQD Customer Rebate Enabled", Rec."Item Rebate Enabled");
-            Vendor.ModifyAll("AQD Customer Rebate", Rec."Item Rebate Enabled");
-            Customer.ModifyAll("AQD Enroll for Cust Rebate", Rec."Item Rebate Enabled");
+            // Vendor.ModifyAll("AQD Customer Rebate", Rec."Item Rebate Enabled");
+            // Customer.ModifyAll("AQD Enroll for Cust Rebate", Rec."Item Rebate Enabled");
+            // Customer.ModifyAll("AQD CustRbt Calculation Date", Customer."AQD CustRbt Calculation Date"::"Shipment Date");
 
-            //Confirm and update Rebate Customer No.
-            Customer.Reset();
-            Customer.SetFilter("AQD Cust Rebate Customer No.", '=%1', '');
-            if Customer.FindSet() then begin
-                repeat
-                    IF Customer."Bill-to Customer No." <> '' THEN
-                        Customer."AQD Cust Rebate Customer No." := Customer."Bill-to Customer No."
-                    ELSE
-                        Customer."AQD Cust Rebate Customer No." := Customer."No.";
-                    Customer.Modify();
-                until Customer.Next() = 0;
-            end;
-
-            //Confirm and update Calculation Date
-            Customer.Reset();
-            Customer.SetFilter("AQD CustRbt Calculation Date", '=%1', Customer."AQD CustRbt Calculation Date"::" ");
-            if Customer.FindSet() then begin
-                repeat
-                    Customer."AQD CustRbt Calculation Date" := Customer."AQD CustRbt Calculation Date"::"Shipment Date";
-                    Customer.Modify();
-                until Customer.Next() = 0;
-            end;
-
-            //Confirm and update rebate item category
-            Item.Reset();
-            Item.SetFilter("AQD Cust Rebate Category Code", '=%1', '');
-            Item.SetFilter("Item Category Code", '<>%1', '');
-            if Item.FindSet() then begin
-                repeat
-                    Item."AQD Cust Rebate Category Code" := Item."Item Category Code";
-                    Item.Modify();
-                until Item.Next() = 0;
-            end;
-
+            // Customer2.Reset();
+            // Customer2.SetFilter("AQD Cust Rebate Customer No.", '%1', '');
+            // if Customer2.FindSet() then begin
+            //     repeat
+            //         Customer2."AQD Cust Rebate Customer No." := Customer2."No.";
+            //         Customer2.Modify(false);
+            //     until Customer2.Next() = 0;
+            // end;
         END;
     END;
 

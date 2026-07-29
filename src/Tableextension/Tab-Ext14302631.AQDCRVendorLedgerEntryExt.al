@@ -15,5 +15,12 @@ tableextension 14302631 "AQD CR Vendor Ledger Entry Ext" extends "Vendor Ledger 
             CalcFormula = Lookup("AQD Sales Rebate Approvals"."Approval Status" where("Vendor Document No." = field("Document No."), "Rebate Program Code" = field("AQD CR Rebate Program Code")));
             Editable = false;
         }
+        field(14302511; "AQD CR Pay-to Vendor No."; Code[20])
+        {
+            Caption = 'Pay-to Vendor No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+            TableRelation = Vendor;
+        }
     }
 }

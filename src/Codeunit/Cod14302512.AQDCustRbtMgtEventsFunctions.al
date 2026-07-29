@@ -919,6 +919,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     local procedure "Vendor Ledger Entry_OnAfterCopyVendLedgerEntryFromGenJnlLine"(var VendorLedgerEntry: Record "Vendor Ledger Entry"; GenJournalLine: Record "Gen. Journal Line")
     begin
         VendorLedgerEntry."AQD CR Rebate Program Code" := GenJournalLine."AQD CR Rebate Program Code";
+        VendorLedgerEntry."AQD CR Pay-to Vendor No." := GenJournalLine."AQD CR Pay-to Vendor No.";
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Item Ledger Entry", OnAfterInsertEvent, '', false, false)]

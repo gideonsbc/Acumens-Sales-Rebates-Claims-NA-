@@ -324,20 +324,17 @@ table 14302517 "AQD Sales Rebates Rate"
         {
             Clustered = true;
         }
-        key(Key2; "CustRbt Rate Type", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
-        {
-        }
-        key(Key3; "Payee Type", "Payee No.")
+        key(Key2; "CustRbt Rate Type", "Customer Type", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Ending Date", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount", "Payee Type", "Payee No.")
         {
         }
     }
 
     fieldgroups
     {
-        fieldgroup(DropDown; "CustRbt Rate Type", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        fieldgroup(DropDown; "CustRbt Rate Type", "Customer Type", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Ending Date", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
         }
-        fieldgroup(Brick; "CustRbt Rate Type", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        fieldgroup(Brick; "CustRbt Rate Type", "Customer Type", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Ending Date", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
         }
     }

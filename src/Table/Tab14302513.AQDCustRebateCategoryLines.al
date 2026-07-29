@@ -57,5 +57,8 @@ table 14302513 "AQD Cust Rebate Category Lines"
         {
             Clustered = true;
         }
+        key(Key2; "Entity Type")
+        {
+        }
     }
 }

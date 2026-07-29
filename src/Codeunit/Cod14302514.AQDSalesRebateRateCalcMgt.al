@@ -213,10 +213,10 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                     SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
-                    SalesRebatesRate.SetRange("Customer Type", SalesRebatesRate."Customer Type"::Customer);
-                    SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
-                    //SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Bill-To Customer No.");
-                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
+                    // SalesRebatesRate.SetRange("Customer Type", SalesRebatesRate."Customer Type"::Customer);
+                    // SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
+                    // //SalesRebatesRate.SetFilter("Entity No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Bill-To Customer No.");
+                    // CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     IF LocalCust.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.") THEN BEGIN
                         IF LocalCust."AQD Cust Rebate Category" <> '' then begin

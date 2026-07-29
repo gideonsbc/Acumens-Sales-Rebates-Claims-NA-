@@ -121,6 +121,7 @@ codeunit 14302617 "AQD Suggest Vendor Commissions"
                                         GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
                                         GenJnlLine.SetRange("Account Type", GenJnlLine."Account Type"::Vendor);
                                         GenJnlLine.SetRange("Account No.", TempProgrameCodesRec."Payee No.");
+                                        GenJnlLine.SetRange("AQD CR Pay-to Vendor No.", VendLedgEntry."AQD CR Pay-to Vendor No.");
                                         GenJnlLine.SetRange("AQD CR Rebate Program Code", '');
                                         GenJnlLine.SetRange("AQD Cust Rebate Journal", true);
                                         if GenJnlLine.FindFirst() then begin
@@ -144,9 +145,11 @@ codeunit 14302617 "AQD Suggest Vendor Commissions"
                                             GenJnlLine.Validate("Posting Date", DefaultPostingDate);
                                             GenJnlLine."Document Type" := GenJnlLine."Document Type"::"Credit Memo";
                                             GenJnlLine."Document No." := BalancingDocumentNo;
+                                            GenJnlLine."External Document No." := BalancingDocumentNo;
                                             RunIncrementDocumentNo(GenJnlLine);
                                             GenJnlLine."Account Type" := GenJnlLine."Account Type"::Vendor;
                                             GenJnlLine.Validate("Account No.", TempProgrameCodesRec."Payee No.");
+                                            GenJnlLine."AQD CR Pay-to Vendor No." := VendLedgEntry."AQD CR Pay-to Vendor No.";
                                             GenJnlLine.Validate(Amount, -VendLedgEntry."Remaining Amount");
                                             FormartedDescription := 'Commission ' + Format(EndingDate, 0, '<Month Text>') + ' ' + Format(EndingDate, 0, '<Year4>');
                                             GenJnlLine.Description := FormartedDescription;
@@ -181,6 +184,7 @@ codeunit 14302617 "AQD Suggest Vendor Commissions"
                     GenJnlLine.Validate("Posting Date", DefaultPostingDate);
                     GenJnlLine."Document Type" := GenJnlLine."Document Type"::Invoice;
                     GenJnlLine."Document No." := BalancingDocumentNo;
+                    GenJnlLine."External Document No." := BalancingDocumentNo;
                     RunIncrementDocumentNo(GenJnlLine);
                     //  GenJnlLine."External Document No." := TempVendorBuffer."Vendor No.";
                     GenJnlLine."Account Type" := GenJnlLine."Account Type"::Vendor;

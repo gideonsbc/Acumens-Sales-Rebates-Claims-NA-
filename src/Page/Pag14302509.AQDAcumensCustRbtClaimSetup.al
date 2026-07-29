@@ -1881,18 +1881,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 Customer.Modify();
             end;
 
-            //Resource
-            // if not ResourceRec.Get('COUPON') then begin
-            //     ResourceRec.Init();
-            //     ResourceRec.Validate("No.", 'COUPON');
-            //     ResourceRec.Validate(Name, 'Coupon');
-            //     ResourceRec.Type := ResourceRec.Type::Person;
-            //     ResourceRec.Validate("Gen. Prod. Posting Group", 'COUPON');
-            //     ResourceRec.Insert(true);
-            //     ResourceRec.Validate("Base Unit of Measure", 'HOUR');
-            //     ResourceRec.Modify(true);
-            // end;
-
             if not ResourceRec.Get('DAMAGE') then begin
                 ResourceRec.Init();
                 ResourceRec.Validate("No.", 'DAMAGE');
@@ -1900,7 +1888,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 ResourceRec.Type := ResourceRec.Type::Person;
                 ResourceRec.Validate("Gen. Prod. Posting Group", 'DAMAGE');
                 ResourceRec.Insert(true);
-                ResourceRec.Validate("Base Unit of Measure", 'HOUR');
+                //ResourceRec.Validate("Base Unit of Measure", 'HOUR');
                 ResourceRec.Modify(true);
             end;
 
@@ -1911,7 +1899,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 ResourceRec.Type := ResourceRec.Type::Person;
                 ResourceRec.Validate("Gen. Prod. Posting Group", 'DISTRIBUTION');
                 ResourceRec.Insert(true);
-                ResourceRec.Validate("Base Unit of Measure", 'HOUR');
+                //ResourceRec.Validate("Base Unit of Measure", 'HOUR');
                 ResourceRec.Modify(true);
             end;
 
@@ -1922,7 +1910,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 ResourceRec.Type := ResourceRec.Type::Person;
                 ResourceRec.Validate("Gen. Prod. Posting Group", 'ADVERTISING');
                 ResourceRec.Insert(true);
-                ResourceRec.Validate("Base Unit of Measure", 'HOUR');
+                //ResourceRec.Validate("Base Unit of Measure", 'HOUR');
                 ResourceRec.Modify(true);
             end;
 

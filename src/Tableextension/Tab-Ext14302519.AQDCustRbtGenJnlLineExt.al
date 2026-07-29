@@ -36,6 +36,12 @@ tableextension 14302519 "AQD CustRbt Gen. Jnl Line Ext" extends "Gen. Journal Li
             DataClassification = CustomerContent;
             TableRelation = "AQD Cust Rebate Program Code";
         }
+        field(14302870; "AQD CR Pay-to Vendor No."; Code[20])
+        {
+            Caption = 'Pay-to Vendor No.';
+            DataClassification = CustomerContent;
+            TableRelation = Vendor;
+        }
     }
 }
 

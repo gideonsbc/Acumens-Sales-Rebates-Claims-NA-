@@ -52,6 +52,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         GlobalGroupID: Text[20];
         PurchaseRebateForText: Label 'Purchase Rebate for ';
         SalesRebateForText: Label 'Sales Rebate For';
+        ProgramCodeSetup: Record "AQD Cust Rebate Program Code";
 
     procedure SetCustomerRebateBatchParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateBatchIn: Record "AQD Customer Rebate Batch"; CalledFromGenerateCustomerRebateIn: Boolean)
     begin
@@ -946,6 +947,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine."AQD Cust Rebate Document Type" := PostedCustomerRebateLine."Document Type";
                     GenJnlLine."AQD Cust Rebate Document No." := PostedCustomerRebateLine."Rebate No.";
                     GenJnlLine."AQD CR Rebate Program Code" := InvoicePostingBuffer."AQD Program Code";//CustRebateMgtFunction.GetRebateProgramCode(PostedCustomerRebateLine, GenJnlLine);//PostedCustomerRebateLine."Cust Rebate Program Code";
+                    if ProgramCodeSetup.Get(GenJnlLine."AQD CR Rebate Program Code") then
+                        GenJnlLine."AQD CR Pay-to Vendor No." := ProgramCodeSetup."AQD Pay-to Vendor No.";
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                     GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
@@ -1373,6 +1376,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine."AQD Cust Rebate Document Type" := PostedCustomerRebateLine."Document Type";
                     GenJnlLine."AQD Cust Rebate Document No." := PostedCustomerRebateLine."Rebate No.";
                     GenJnlLine."AQD CR Rebate Program Code" := InvoicePostingBuffer."AQD Program Code";//CustRebateMgtFunction.GetRebateProgramCode(PostedCustomerRebateLine, GenJnlLine);//PostedCustomerRebateLine."Cust Rebate Program Code";
+                    if ProgramCodeSetup.Get(GenJnlLine."AQD CR Rebate Program Code") then
+                        GenJnlLine."AQD CR Pay-to Vendor No." := ProgramCodeSetup."AQD Pay-to Vendor No.";
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                     GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
@@ -1622,6 +1627,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         GenJnlLine."AQD Cust Rebate Document Type" := PostedCustRebateLine."Document Type";
                         GenJnlLine."AQD Cust Rebate Document No." := PostedCustRebateLine."Rebate No.";
                         GenJnlLine."AQD CR Rebate Program Code" := InvoicePostingBuffer."AQD Program Code";
+                        if ProgramCodeSetup.Get(GenJnlLine."AQD CR Rebate Program Code") then
+                            GenJnlLine."AQD CR Pay-to Vendor No." := ProgramCodeSetup."AQD Pay-to Vendor No.";
                         GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                         GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                         GenJnlLine."AQD Cust Rebate Journal" := TRUE;

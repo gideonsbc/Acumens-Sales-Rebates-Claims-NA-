@@ -29,8 +29,6 @@ report 14302617 "AQD Suggest Vendor Commissions"
             DataItemTableView = where("AQD CR Rebate Program Code" = filter(<> ''), Open = filter(true), "Document Type" = filter(Invoice));
             RequestFilterFields = "Vendor No.", "Posting Date";
         }
-
-
     }
     requestpage
     {
@@ -106,6 +104,11 @@ report 14302617 "AQD Suggest Vendor Commissions"
             }
 
         }
+
+        trigger OnInit()
+        begin
+            SummarizeByProgramCode := false;
+        end;
 
         trigger OnOpenPage()
         var
