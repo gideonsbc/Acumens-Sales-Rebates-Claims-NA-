@@ -579,8 +579,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             PostedCustRebateDetails.SetRange("Customer Rebate Status", PostedCustRebateDetails."Customer Rebate Status"::Posted);
             PostedCustRebateDetails.SetRange("Document No.", CustomerRebateDetails."Document No.");
             PostedCustRebateDetails.SetFilter("Rebate Program Code", CustomerRebateDetails."Rebate Program Code");
-            PostedCustRebateDetails.SetFilter("Entity No.", CustomerRebateDetails."Entity No.");
-            PostedCustRebateDetails.SetRange("Entity Type", CustomerRebateDetails."Entity Type");
+            //PostedCustRebateDetails.SetFilter("Entity No.", CustomerRebateDetails."Entity No.");
+            //PostedCustRebateDetails.SetRange("Entity Type", CustomerRebateDetails."Entity Type");
             PostedCustRebateDetails.SetRange("Document Type", CustomerRebateDetails."Document Type");
             if PostedCustRebateDetails.FindFirst() then
                 IsHandled := true;
@@ -660,6 +660,12 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         SalesHeader.TestField("AQD Customer Rebate Order Date");
 
         BillToCustomer.Get(SalesHeader."Bill-to Customer No.");
+
+        SalesLine.Reset();
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        SalesLine.SetRange("AQD Off-Invoice Rebate", true);
+        SalesLine.DeleteAll();
 
         RebateRates.Reset();
         RebateRates.SetRange("Rebate Expense Type", RebateRates."Rebate Expense Type"::"Off-Invoice Rebate");
@@ -1051,13 +1057,13 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             exit(PostedCustomerRebateLineDetails."Rebate Program Code");
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"AQD Acumens CustRbtClaim Setup", OnBeforeInsertEvent, '', false, false)]
-    local procedure AcumensVendorRebateSetup_OnBeforeInsertEvent(var Rec: Record "AQD Acumens CustRbtClaim Setup"; RunTrigger: Boolean)
-    var
-        CFBaseEvents: Codeunit "AQD Acumens Base Events";
-    BEGIN
-        CFBaseEvents.AssignAppPermissionSetToAllUsers('ad778411-e5f3-4d7e-9077-37cde7758cdb', 'AQD Acumens CashFlow', true);
-        CFBaseEvents.AssignAppPermissionSetToAllUsers('6fe07eb4-80c8-48b7-8afb-298cc3af0a0c', 'AQD SRebate Users', true);
-        CFBaseEvents.AssignAppPermissionSetToAllUsers('6fe07eb4-80c8-48b7-8afb-298cc3af0a0c', 'AQD SRebate Admin', true);
-    END;
+    // [EventSubscriber(ObjectType::Table, Database::"AQD Acumens CustRbtClaim Setup", OnBeforeInsertEvent, '', false, false)]
+    // local procedure AcumensVendorRebateSetup_OnBeforeInsertEvent(var Rec: Record "AQD Acumens CustRbtClaim Setup"; RunTrigger: Boolean)
+    // var
+    //     CFBaseEvents: Codeunit "AQD Acumens Base Events";
+    // BEGIN
+    //     CFBaseEvents.AssignAppPermissionSetToAllUsers('ad778411-e5f3-4d7e-9077-37cde7758cdb', 'AQD Acumens CashFlow', true);
+    //     CFBaseEvents.AssignAppPermissionSetToAllUsers('6fe07eb4-80c8-48b7-8afb-298cc3af0a0c', 'AQD SRebate Users', true);
+    //     CFBaseEvents.AssignAppPermissionSetToAllUsers('6fe07eb4-80c8-48b7-8afb-298cc3af0a0c', 'AQD SRebate Admin', true);
+    // END;
 }

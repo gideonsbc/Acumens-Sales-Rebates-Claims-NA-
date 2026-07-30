@@ -80,7 +80,6 @@ permissionset 14302511 "AQD SRebate Users"
         codeunit "AQD Cust Claim Event And Func" = X,
         codeunit "AQD Cust Rebate Calc Mgt" = X,
         codeunit "AQD Cust Rebate Calc Preview" = X,
-        codeunit "AQD Cust. Claims_Rebates Appr." = X,
         codeunit "AQD Customer Claim Management" = X,
         codeunit "AQD Customer Claim Process" = X,
         codeunit "AQD Customer Rebate Access Mgt" = X,
@@ -153,5 +152,6 @@ permissionset 14302511 "AQD SRebate Users"
         page "AQD Select Items" = X,
         page "AQD Select Ship-To Codes" = X,
         page "AQD Select Vendors" = X,
-        page AQDCmpltedFullPriceCustClmList = X;
+        page AQDCmpltedFullPriceCustClmList = X,
+        codeunit "AQD Cust. Claims_Rebates Appr." = X;
 }

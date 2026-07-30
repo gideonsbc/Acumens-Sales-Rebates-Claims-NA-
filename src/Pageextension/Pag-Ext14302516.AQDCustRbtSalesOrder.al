@@ -43,11 +43,7 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                             SalesLine.SetRange("Document Type", Rec."Document Type");
                             SalesLine.SetRange("Document No.", Rec."No.");
                             SalesLine.SetRange("AQD Off-Invoice Rebate", true);
-                            if SalesLine.FindSet() then begin
-                                repeat
-                                    SalesLine.Delete();
-                                until SalesLine.Next() = 0;
-                            end;
+                            SalesLine.DeleteAll();
                             CurrPage.Update();
                         end;
                     }

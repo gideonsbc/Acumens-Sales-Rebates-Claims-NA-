@@ -297,6 +297,8 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
     end;
 
     local procedure DeleteSalesRebateApproval(PostedCustRebateDetail: Record "AQD Posted Cust Reb Details")
+    var
+        ApprovalsMgmt: Codeunit "Approvals Mgmt.";
     begin
         SalesRebateApprovals.Reset();
         SetSalesRebateApprovalDocumentTypeFilter(SalesRebateApprovals, PostedCustRebateDetail."Document Type");
@@ -304,7 +306,11 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
         SalesRebateApprovals.SetRange("Rebate Program Code", PostedCustRebateDetail."Rebate Program Code");
         SalesRebateApprovals.SetRange("Entity No.", PostedCustRebateDetail."Entity No.");
         SalesRebateApprovals.SetSkipStatusCheck(true);
-        SalesRebateApprovals.DeleteAll(true);
+        if SalesRebateApprovals.FindSet(true) then
+            repeat
+                ApprovalsMgmt.DeleteApprovalEntries(SalesRebateApprovals.RecordId);
+                SalesRebateApprovals.Delete(true);
+            until SalesRebateApprovals.Next() = 0;
         SalesRebateApprovals.SetSkipStatusCheck(false);
     end;
 
