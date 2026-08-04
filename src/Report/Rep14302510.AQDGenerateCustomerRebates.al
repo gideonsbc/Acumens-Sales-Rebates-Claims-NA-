@@ -11,51 +11,20 @@ report 14302510 "AQD Generate Customer Rebates"
             DataItemTableView = SORTING("No.") ORDER(Ascending) WHERE("AQD Enroll for Cust Rebate" = CONST(true));
             RequestFilterFields = "No.", "Date Filter";
 
-            trigger OnAfterGetRecord()
+            trigger OnPostDataItem()
             begin
-                CurrentCount += 1;
-                IF CurrentCount = TotalCount then
-                    LastRecord := TRUE;
-
-                if GuiAllowed then
-                    Window.Update(1, "No.");
-
-                Clear(DateArray);
-                CustomerRebateSetup.GET;
-                IF Customer.GETFILTER("Date Filter") <> '' THEN BEGIN
-                    StartPostingDate := Customer.GetRangeMin("Date Filter");
-                    EndPostingDate := Customer.GetRangeMax("Date Filter");
-                END ELSE begin
-                    StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
-                    //EndPostingDate := DMY2Date(31, 12, Date2DMY(TODAY, 3));
-                    //EndPostingDate := Today;
-                end;
-                DateArray[1] := StartPostingDate;
-                DateArray[2] := EndPostingDate;
-
-                //Summary
                 Clear(SummaryArray);
-                //SummaryArray[1] := SellToCust;
-                // SummaryArray[2] := RespCenter;
-                // SummaryArray[3] := Location;
-                // SummaryArray[4] := ShortDim1;
-                // SummaryArray[5] := ShortDim2;
-                // SummaryArray[6] := BillToCust;
-
                 SummaryArray[1] := RespCenter;
                 SummaryArray[2] := Location;
                 SummaryArray[3] := ShortDim1;
                 SummaryArray[4] := ShortDim2;
                 SummaryArray[7] := ByTerritoryCode;
 
-                Clear(RebateCalculationMgt);
-                RebateCalculationMgt.CalculateRebate(Customer, DateArray, SummaryArray, false, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebate, LastRecord, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo);
-            end;
+                RebateCalculationMgt.GenerateCustomerRebates(Customer, SummaryArray, false, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebate, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo, Window, Text50001);
 
-            trigger OnPostDataItem()
-            begin
                 if GuiAllowed then
                     Window.Close;
+
                 CreatedCustomerRebate.RESET;
                 CreatedCustomerRebate.DeleteAll();
             end;
@@ -64,9 +33,6 @@ report 14302510 "AQD Generate Customer Rebates"
             begin
                 IF BillToCustomerNo <> '' THEN
                     Customer.SetRange("No.", BillToCustomerNo);
-
-                TotalCount := Customer.COUNT;
-                CurrentCount := 0;
 
                 if GuiAllowed then
                     Window.Open(Text50001);
@@ -88,21 +54,6 @@ report 14302510 "AQD Generate Customer Rebates"
                 group("Create Rebate Summary By")
                 {
                     Caption = 'Create Rebate Summary By';
-                    // field(SellToCust; SellToCust)
-                    // {
-                    //     ApplicationArea = All;
-                    //     Caption = 'Sell-To Customer No.';
-                    //     trigger OnValidate()
-                    //     begin
-                    //         BillToCust := SellToCust;
-                    //     end;
-                    // }
-                    // field(BillToCust; BillToCust)
-                    // {
-                    //     ApplicationArea = All;
-                    //     Caption = 'Bill-To Customer No.';
-                    //     Editable = NOT SellToCust;
-                    // }
                     field(RespCenter; RespCenter)
                     {
                         ApplicationArea = All;
@@ -214,8 +165,6 @@ report 14302510 "AQD Generate Customer Rebates"
         Location: Boolean;
         ShortDim1: Boolean;
         ShortDim2: Boolean;
-        // SellToCust: Boolean;
-        // BillToCust: Boolean;
         RespCenter: Boolean;
         ByTerritoryCode: Boolean;
         SummaryArray: array[7] of Boolean;

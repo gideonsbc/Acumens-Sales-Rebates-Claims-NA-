@@ -26,6 +26,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         SalesPerson: Record "Salesperson/Purchaser";
         Vendor: Record Vendor;
         Customer: Record Customer;
+        FilterCustomer: Record Customer;
         CreatedCustomerRebate: Record "AQD Created Customer Rebate";
         TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary;
         GlobalSalesRebateRate: Record "AQD Sales Rebates Rate";
@@ -74,7 +75,6 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         GlobalBatchEntryNo: Integer;
         GlobalBatchStartDate: Date;
         GlobalBatchEndDate: Date;
-        //GlobalRebateBatchFrequency: Enum "AQD CustRebate Batch Frequency";
         GlobalShptRcptNo: Code[20];
         GlobalInvCrMemoNo: Code[20];
         GlobalStartPostingDate: Date;
@@ -84,6 +84,9 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         GlobalRebateProgramCodeFilter: Code[20];
         GlobalCalledFromGenerateCustomerRebateIn: Boolean;
         GlobalBrokerVendorNo: Code[20];
+        TotalCount: Integer;
+        CurrentCount: Integer;
+        LastRecord: Boolean;
 
     procedure UpdateOldDocumentsNonRebateEnable()
     var
@@ -117,18 +120,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
     begin
     end;
 
-    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
-    var
-        LocalCustomer: Record Customer;
-        //UpdateRebateCustomerType: Report "AQD Udt Rebate Customer Type";
-        BatchPostCustomerRebate: Report "AQD Post Cust Rebate Batches";
-        LocalCustomerType: Record "AQD Rebate Customer Category";
-        CustomerRebatePostMgt: Codeunit "AQD Customer Rebate Post Mgt";
-        CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+    procedure SetCustomerRebateParameters(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
     begin
-        RebateSetup.Get;
-        RebateSetup.TestField("Customer Rebate Document Nos");
-
         GlobalProcessCatchUpRebate := ProcessCatchUpRebate;
         GlobalRebateProgramCodeFilter := RebateProgramCodeFilter;
         GlobalCalledFromGenerateCustomerRebateIn := CalledFromGenerateCustomerRebateIn;
@@ -146,6 +139,58 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         GlobalShptRcptNo := ShptRcptNo;
         GlobalInvCrMemoNo := InvCrMemoNo;
 
+        CalculateRebate(CustomerIn, DateArray, SummaryArray, RegenerateEntries, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebateIn, LastRecord, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo);
+    end;
+
+    procedure GenerateCustomerRebates(var CustomerIn: Record Customer; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20]; var Window: Dialog; ProgressText: Text[250])
+    var
+        CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+        DateArray: array[2] of Date;
+        StartPostingDate: Date;
+        EndPostingDate: Date;
+    begin
+        RebateSetup.Get;
+        RebateSetup.TestField("Customer Rebate Document Nos");
+
+        CustomerRebateSetup.Get;
+        TotalCount := CustomerIn.Count;
+        CurrentCount := 0;
+        LastRecord := FALSE;
+
+        if CustomerIn.FindSet() then begin
+            repeat
+                CurrentCount += 1;
+                LastRecord := (CurrentCount = TotalCount);
+
+                if GuiAllowed then
+                    Window.Update(1, CustomerIn."No.");
+
+                Clear(DateArray);
+                if CustomerIn.GetFilter("Date Filter") <> '' then begin
+                    StartPostingDate := CustomerIn.GetRangeMin("Date Filter");
+                    EndPostingDate := CustomerIn.GetRangeMax("Date Filter");
+                end else begin
+                    StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
+                end;
+                DateArray[1] := StartPostingDate;
+                DateArray[2] := EndPostingDate;
+
+                SetCustomerRebateParameters(CustomerIn, DateArray, SummaryArray, RegenerateEntries, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebateIn, LastRecord, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo);
+            until CustomerIn.Next() = 0;
+        end;
+    end;
+
+    procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
+    var
+        LocalCustomer: Record Customer;
+        BatchPostCustomerRebate: Report "AQD Post Cust Rebate Batches";
+        LocalCustomerType: Record "AQD Rebate Customer Category";
+        CustomerRebatePostMgt: Codeunit "AQD Customer Rebate Post Mgt";
+        CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+    begin
+        RebateSetup.Get;
+        RebateSetup.TestField("Customer Rebate Document Nos");
+
         if not CustomerIn."AQD Enroll for Cust Rebate" then
             exit;
 
@@ -156,30 +201,12 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         END ELSE IF RebateSetup."Bill-To Rebate Customer" = RebateSetup."Bill-To Rebate Customer"::"Customer Card Setup" THEN
                 CustomerIn.TestField("AQD Cust Rebate Customer No.");
 
-        // IF RebateSetup."Auto Update Rebate Cust Type" THEN BEGIN
-        //     Commit();  // There is nothing to Commit
-        //     LocalCustomer.GET(CustomerIn."No.");
-        //     LocalCustomer.SetRecFilter();
-
-        //     CLEAR(UpdateRebateCustomerType);
-        //     UpdateRebateCustomerType.SetTableView(LocalCustomer);
-        //     UpdateRebateCustomerType.SetDoNotShowDialog(TRUE);
-        //     UpdateRebateCustomerType.UseRequestPage(FALSE);
-        //     UpdateRebateCustomerType.Run();
-        //     COMMIT;
-        // END;
-
         Clear(PostingDescrptionText);
 
         SourceCodeSetup.Get;
 
         // Calculate Rebate for Posted Sales Invoices
         BuildInvoiceRebate(CustomerIn, DateArray, SummaryArray, ShptRcptNo, InvCrMemoNo);
-
-        // //Remove end date for autoposting
-        // if CustomerRebateSetup.Get() then
-        //     if CustomerRebateSetup."Auto Process Sales Rebates" then
-        //         DateArray[2] := CalcDate('CY', WorkDate);
 
         // Calculate Rebate for Posted Sales Credit memos
         if not RebateSetup."Exclude Credit Memo" then

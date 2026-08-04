@@ -7,6 +7,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
     PageType = List;
     SourceTable = "AQD Sales Rebates Rate";
     RefreshOnActivate = true;
+    SourceTableView = sorting("Entry No.") order(ascending);
 
     layout
     {
@@ -507,7 +508,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
         RebateSetup.GET;
         SetCaption();
 
-        Rec.SetCurrentKey("CustRbt Rate Type", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount");
+        Rec.SetCurrentKey("Entry No.", "CustRbt Rate Type", "Rebate Program Code", "Payee Type", "Payee No.", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount");
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)
