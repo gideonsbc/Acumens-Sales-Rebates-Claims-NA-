@@ -576,11 +576,9 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             CustomerRebateDetails."CatchUp Rebate" := true;
 
             PostedCustRebateDetails.Reset();
-            PostedCustRebateDetails.SetRange("Customer Rebate Status", PostedCustRebateDetails."Customer Rebate Status"::Posted);
             PostedCustRebateDetails.SetRange("Document No.", CustomerRebateDetails."Document No.");
             PostedCustRebateDetails.SetFilter("Rebate Program Code", CustomerRebateDetails."Rebate Program Code");
-            //PostedCustRebateDetails.SetFilter("Entity No.", CustomerRebateDetails."Entity No.");
-            //PostedCustRebateDetails.SetRange("Entity Type", CustomerRebateDetails."Entity Type");
+            PostedCustRebateDetails.SetRange("Document Line No.", CustomerRebateDetails."Document Line No.");
             PostedCustRebateDetails.SetRange("Document Type", CustomerRebateDetails."Document Type");
             if PostedCustRebateDetails.FindFirst() then
                 IsHandled := true;
