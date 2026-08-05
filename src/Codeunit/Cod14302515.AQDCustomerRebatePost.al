@@ -917,6 +917,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.SetHideValidation(true);
                     GenJnlLine."Posting Date" := PostedCustomerRebateHeader."Posting Date";
                     GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Vendor Commission ' + PostedCustomerRebateLine."Order No.";
+                    if PostedCustomerRebateLine."Customer Invoice No." <> '' THEN
+                        GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Vendor Commission ' + PostedCustomerRebateLine."Customer Invoice No.";
                     VendLocalRebateAmount := -InvoicePostingBuffer.Amount;
                     if VendLocalRebateAmount > 0 then
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
@@ -934,13 +936,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.Validate("Shortcut Dimension 1 Code");
                     GenJnlLine."Shortcut Dimension 2 Code" := PostedCustomerRebateLine."Shortcut Dimension 2 Code";
                     GenJnlLine.Validate("Shortcut Dimension 2 Code");
-                    IF PostedCustomerRebateHeader."External Document No." <> '' THEN
-                        GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(GenJnlLine."Line No.");
-                    if GenJnlLine."External Document No." = '' then
-                        GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    // IF PostedCustomerRebateHeader."External Document No." <> '' THEN
+                    //     GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    // if GenJnlLine."External Document No." = '' then
+                    //     GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
 
-                    //GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                    //GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                     GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
 
@@ -1030,13 +1031,10 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.SetHideValidation(true);
                     GenJnlLine."Posting Date" := PostedCustomerRebateHeader."Posting Date";
                     GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Employee Commission ' + PostedCustomerRebateLine."Order No.";
-                    //if PostedCustomerRebateHeader."Employee Commission" > 0 then
+                    if PostedCustomerRebateLine."Customer Invoice No." <> '' THEN
+                        GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Employee Commission ' + PostedCustomerRebateLine."Customer Invoice No.";
                     GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::" ");
-                    //else
-                    //    GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
 
-                    //GenJnlLine."Account Type" := GenJnlLine."Account Type"::"G/L Account";
-                    //GenJnlLine.Validate("Account No.", InvoicePostingBuffer."G/L Account");
                     GenJnlLine."Account Type" := GenJnlLine."Account Type"::Employee;
                     GenJnlLine.Validate("Account No.", InvoicePostingBuffer."Job No.");
 
@@ -1048,13 +1046,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.Validate("Shortcut Dimension 1 Code");
                     GenJnlLine."Shortcut Dimension 2 Code" := PostedCustomerRebateLine."Shortcut Dimension 2 Code";
                     GenJnlLine.Validate("Shortcut Dimension 2 Code");
-                    IF PostedCustomerRebateHeader."External Document No." <> '' THEN
-                        GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(GenJnlLine."Line No.");
-                    if GenJnlLine."External Document No." = '' then
-                        GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    // IF PostedCustomerRebateHeader."External Document No." <> '' THEN
+                    //     GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    // if GenJnlLine."External Document No." = '' then
+                    //     GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
 
-                    //GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                    //GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                     GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
 
@@ -1345,6 +1342,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.SetHideValidation(true);
                     GenJnlLine."Posting Date" := PostedCustomerRebateHeader."Posting Date";
                     GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Vendor Commission ' + PostedCustomerRebateLine."Order No.";
+                    if PostedCustomerRebateLine."Customer Invoice No." <> '' THEN
+                        GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Vendor Commission ' + PostedCustomerRebateLine."Customer Invoice No.";
                     LocalRebateAmount := -InvoicePostingBuffer.Amount;
                     if LocalRebateAmount > 0 then
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
@@ -1363,13 +1362,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.Validate("Shortcut Dimension 1 Code");
                     GenJnlLine."Shortcut Dimension 2 Code" := PostedCustomerRebateLine."Shortcut Dimension 2 Code";
                     GenJnlLine.Validate("Shortcut Dimension 2 Code");
-                    IF PostedCustomerRebateHeader."External Document No." <> '' THEN
-                        GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(GenJnlLine."Line No.");
-                    if GenJnlLine."External Document No." = '' then
-                        GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    // IF PostedCustomerRebateHeader."External Document No." <> '' THEN
+                    //     GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    // if GenJnlLine."External Document No." = '' then
+                    //     GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
 
-                    //GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                    //GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                     GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
 
@@ -1459,6 +1457,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.SetHideValidation(true);
                     GenJnlLine."Posting Date" := PostedCustomerRebateHeader."Posting Date";
                     GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Employee Commission ' + PostedCustomerRebateLine."Order No.";
+                    if PostedCustomerRebateLine."Customer Invoice No." <> '' THEN
+                        GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Employee Commission ' + PostedCustomerRebateLine."Customer Invoice No.";
                     //if PostedCustomerRebateHeader."Employee Commission" > 0 then
                     //    GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
                     //else
@@ -1475,13 +1475,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.Validate("Shortcut Dimension 1 Code");
                     GenJnlLine."Shortcut Dimension 2 Code" := PostedCustomerRebateLine."Shortcut Dimension 2 Code";
                     GenJnlLine.Validate("Shortcut Dimension 2 Code");
-                    IF PostedCustomerRebateHeader."External Document No." <> '' THEN
-                        GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(GenJnlLine."Line No.");
-                    if GenJnlLine."External Document No." = '' then
-                        GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    // IF PostedCustomerRebateHeader."External Document No." <> '' THEN
+                    //     GenJnlLine."External Document No." := PostedCustomerRebateHeader."External Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    // if GenJnlLine."External Document No." = '' then
+                    //     GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
 
-                    //GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                    //GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                     GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
 
@@ -1614,13 +1613,12 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         GenJnlLine.Validate("Shortcut Dimension 1 Code");
                         GenJnlLine."Shortcut Dimension 2 Code" := PostedCustRebateLine."Shortcut Dimension 2 Code";
                         GenJnlLine.Validate("Shortcut Dimension 2 Code");
-                        IF PostedCustRebateHeader."External Document No." <> '' THEN
-                            GenJnlLine."External Document No." := PostedCustRebateHeader."External Document No." + '-' + FORMAT(GenJnlLine."Line No.");
-                        if GenJnlLine."External Document No." = '' then
-                            GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                        GenJnlLine."External Document No." := PostedCustRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                        // IF PostedCustRebateHeader."External Document No." <> '' THEN
+                        //     GenJnlLine."External Document No." := PostedCustRebateHeader."External Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                        // if GenJnlLine."External Document No." = '' then
+                        //     GenJnlLine."External Document No." := GenJnlLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
 
-                        //GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
-                        //GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."Job No.");
                         GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                         GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
 
