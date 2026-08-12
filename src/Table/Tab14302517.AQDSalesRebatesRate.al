@@ -1,6 +1,6 @@
 table 14302517 "AQD Sales Rebates Rate"
 {
-    Caption = 'Sales Rebates & Commission Rates';
+    Caption = 'Sales Rebate & Commission Rates';
     DataClassification = CustomerContent;
     DrillDownPageId = "AQD CustRbt SalesRebates Setup";
     LookupPageId = "AQD CustRbt SalesRebates Setup";

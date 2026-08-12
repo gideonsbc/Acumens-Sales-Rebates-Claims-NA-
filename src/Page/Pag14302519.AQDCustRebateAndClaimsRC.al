@@ -102,7 +102,7 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             action("Customer Rebate Program Codes")
             {
                 ApplicationArea = All;
-                Caption = 'Sales Rebate Program Codes';
+                Caption = 'Sales Rebate & Commission Programs';
                 RunObject = page "AQD Cust Rebate Program Codes";
             }
             action("AQD CR Item Categories")
@@ -447,14 +447,14 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 action("Customer Rebate Program Codes2")
                 {
                     ApplicationArea = All;
-                    Caption = 'Sales Rebate Program Codes';
+                    Caption = 'Sales Rebate & Commission Programs';
                     RunObject = page "AQD Cust Rebate Program Codes";
                     Image = Customer;
                 }
                 action("Customer Rebates Rates")
                 {
                     ApplicationArea = All;
-                    Caption = 'Sales Rebates & Commission Rates';
+                    Caption = 'Sales Rebate & Commission Rates';
                     Image = Setup;
                     RunObject = Page "AQD CustRbt SalesRebates Setup";
                 }

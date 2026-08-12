@@ -1,6 +1,6 @@
 table 14302516 "AQD Cust Rebate Program Code"
 {
-    Caption = 'Sales Rebate Program Codes';
+    Caption = 'Sales Rebate & Commission Programs';
     LookupPageID = "AQD Cust Rebate Program Codes";
     DrillDownPageId = "AQD Cust Rebate Program Codes";
     DataClassification = CustomerContent;

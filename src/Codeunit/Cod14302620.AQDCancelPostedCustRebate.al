@@ -52,14 +52,12 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
     local procedure EnsureCancelPermission()
     var
         UserSetup: Record "User Setup";
-        NoPermissionErr: Label 'Only Sales Manager or Admin users can cancel posted sales rebates.';
+        NoPermissionErr: Label 'Only Admin users can cancel posted sales rebates.';
     begin
         if not UserSetup.Get(UserId) then
             Error(NoPermissionErr);
 
-        if not (UserSetup."AQD Cust Rebate Rebate Role" in
-                [UserSetup."AQD Cust Rebate Rebate Role"::"Sales Manager",
-                 UserSetup."AQD Cust Rebate Rebate Role"::Admin])
+        if not (UserSetup."AQD Cust Rebate Rebate Role" in [UserSetup."AQD Cust Rebate Rebate Role"::Admin])
         then
             Error(NoPermissionErr);
     end;

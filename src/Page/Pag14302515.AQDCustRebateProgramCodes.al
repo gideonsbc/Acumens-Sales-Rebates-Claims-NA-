@@ -1,7 +1,7 @@
 page 14302515 "AQD Cust Rebate Program Codes"
 {
     ApplicationArea = All;
-    Caption = 'Sales Rebate Program Codes';
+    Caption = 'Sales Rebate & Commission Programs';
     PageType = List;
     SourceTable = "AQD Cust Rebate Program Code";
     UsageCategory = Administration;

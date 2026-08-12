@@ -403,7 +403,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             action("Customer Rebate Program Codes")
             {
                 ApplicationArea = All;
-                Caption = 'Sales Rebate Program Codes';
+                Caption = 'Sales Rebate & Commission Programs';
                 RunObject = page "AQD Cust Rebate Program Codes";
                 Image = Customer;
             }
