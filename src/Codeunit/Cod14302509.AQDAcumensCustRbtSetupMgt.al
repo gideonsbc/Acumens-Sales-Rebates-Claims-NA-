@@ -17,7 +17,6 @@ codeunit 14302509 "AQD Acumens CustRbt Setup Mgt"
             if not SingleInstance.GetConfirmSuppressed() then
                 IF not CONFIRM(UserConfirmMsg) then
                     exit;
-
             Item.ModifyAll("AQD Customer Rebate Enabled", Rec."Item Rebate Enabled");
             // Vendor.ModifyAll("AQD Customer Rebate", Rec."Item Rebate Enabled");
             // Customer.ModifyAll("AQD Enroll for Cust Rebate", Rec."Item Rebate Enabled");
