@@ -327,6 +327,9 @@ table 14302517 "AQD Sales Rebates Rate"
         key(Key2; "CustRbt Rate Type", "Customer Type", "Territory Code", "Line Type", "No.", "Variant Code", "Rebate Program Code", "Ending Date", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount", "Payee Type", "Payee No.")
         {
         }
+        key(Key3; "Payee Type", "Payee No.")
+        {
+        }
     }
 
     fieldgroups

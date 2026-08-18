@@ -11,12 +11,15 @@ pageextension 14302539 "AQD CustRbt Employee Card" extends "Employee Card"
                 field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
                 {
                     ApplicationArea = All;
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'To be removed';
+                    Visible = false;
                 }
                 field("AQD Territory Filter"; Rec."AQD Territory Filter")
                 {
                     ApplicationArea = All;
-                    Editable = Rec."AQD Customer Rebate";
-                    Enabled = Rec."AQD Customer Rebate";
+                    // Editable = Rec."AQD Customer Rebate";
+                    // Enabled = Rec."AQD Customer Rebate";
 
                     trigger OnDrillDown()
                     var
@@ -36,8 +39,8 @@ pageextension 14302539 "AQD CustRbt Employee Card" extends "Employee Card"
                 field("AQD Customer Filter"; Rec."AQD Customer Filter")
                 {
                     ApplicationArea = All;
-                    Editable = Rec."AQD Customer Rebate";
-                    Enabled = Rec."AQD Customer Rebate";
+                    // Editable = Rec."AQD Customer Rebate";
+                    // Enabled = Rec."AQD Customer Rebate";
 
                     trigger OnDrillDown()
                     var

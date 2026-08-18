@@ -7,6 +7,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
 
     trigger OnRun()
     begin
+        GenerateAndProcessBatchPosting();
     end;
 
     var
@@ -15,7 +16,6 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         TempCustomerRebateHeader: Record "AQD Customer Rebate Header";
         CustomerRebateLine: Record "AQD Customer Rebate Line";
         CustomerRebateDetails: Record "AQD Customer Rebate Details";
-
         SalesInvoiceHeader: Record "Sales Invoice Header";
         SalesInvLine: Record "Sales Invoice Line";
         SalesCrMemoHeader: Record "Sales Cr.Memo Header";
@@ -84,100 +84,147 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         GlobalRebateProgramCodeFilter: Code[20];
         GlobalCalledFromGenerateCustomerRebateIn: Boolean;
         GlobalBrokerVendorNo: Code[20];
+        GlobalCustomer: Record Customer;
         TotalCount: Integer;
         CurrentCount: Integer;
         LastRecord: Boolean;
-
-    procedure UpdateOldDocumentsNonRebateEnable()
-    var
-        UserConfirmMsg: Label 'Do you want to update Old Posted Invoices and Credit Memo non-rebatable?';
-        OldDocAlreadyUpdatedError: Label 'Old Posted Invoices and Credit Memos are already updated.';
-        OldDocAlreadyUpdatedSuccessfully: Label 'Old Posted Invoices and Credit Memos are updated successfully.';
-    begin
-        RebateSetup.Get;
-        RebateSetup.TestField("Customer Rebate Start Date");
-
-        if RebateSetup."Old Documents Updated" then
-            Error(OldDocAlreadyUpdatedError);
-
-        if not Confirm(UserConfirmMsg) then
-            exit;
-
-        SalesInvoiceHeader.Reset;
-        SalesInvoiceHeader.SetFilter("Posting Date", '<%1', RebateSetup."Customer Rebate Start Date");
-        SalesInvoiceHeader.ModifyAll("AQD No Customer Rebate", true);
-
-        SalesCrMemoHeader.Reset;
-        SalesCrMemoHeader.SetFilter("Posting Date", '<%1', RebateSetup."Customer Rebate Start Date");
-        SalesCrMemoHeader.ModifyAll("AQD No Customer Rebate", true);
-
-        RebateSetup."Old Documents Updated" := true;
-        RebateSetup.Modify;
-        Message(OldDocAlreadyUpdatedSuccessfully);
-    end;
+        GlobalSummaryArray: array[7] of Boolean;
+        GlobalRegenerateEntries: Boolean;
 
     local procedure "===Calculation==="()
     begin
     end;
 
-    procedure SetCustomerRebateParameters(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
+    procedure SetCustomerRebateParameters(var CustomerIn: Record Customer; SummaryArray: array[7] of Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
+    var
+        z: Integer;
     begin
-        GlobalProcessCatchUpRebate := ProcessCatchUpRebate;
-        GlobalRebateProgramCodeFilter := RebateProgramCodeFilter;
-        GlobalCalledFromGenerateCustomerRebateIn := CalledFromGenerateCustomerRebateIn;
-        GlobalBrokerVendorNo := BrokerVendorNo;
+        GlobalCustomer.CopyFilters(CustomerIn);
 
-        if DateArray[1] <> 0D then
-            GlobalStartPostingDate := DateArray[1];
-        if (GlobalStartPostingDate = 0D) or (GlobalStartPostingDate < RebateSetup."Customer Rebate Start Date") then
-            GlobalStartPostingDate := RebateSetup."Customer Rebate Start Date";
-        if DateArray[2] <> 0D then
-            GlobalEndPostingDate := DateArray[2];
-        if GlobalEndPostingDate = 0D then
-            GlobalEndPostingDate := CalcDate('<CY>', WorkDate());
+        for z := 1 to ArrayLen(SummaryArray) do
+            GlobalSummaryArray[z] := SummaryArray[z];
 
+        GlobalRegenerateEntries := false;
         GlobalShptRcptNo := ShptRcptNo;
         GlobalInvCrMemoNo := InvCrMemoNo;
-
-        CalculateRebate(CustomerIn, DateArray, SummaryArray, RegenerateEntries, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebateIn, LastRecord, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo);
+        GlobalCalledFromGenerateCustomerRebateIn := CalledFromGenerateCustomerRebateIn;
+        GlobalProcessCatchUpRebate := ProcessCatchUpRebate;
+        GlobalRebateProgramCodeFilter := RebateProgramCodeFilter;
+        GlobalBrokerVendorNo := BrokerVendorNo;
     end;
 
-    procedure GenerateCustomerRebates(var CustomerIn: Record Customer; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20]; var Window: Dialog; ProgressText: Text[250])
+    [Obsolete('Replaced by the new function', 'v25.1023.1.25')]
+    procedure SetCustomerRebateParameters(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
+    begin
+        // GlobalProcessCatchUpRebate := ProcessCatchUpRebate;
+        // GlobalRebateProgramCodeFilter := RebateProgramCodeFilter;
+        // GlobalCalledFromGenerateCustomerRebateIn := CalledFromGenerateCustomerRebateIn;
+        // GlobalBrokerVendorNo := BrokerVendorNo;
+        // GlobalCustomer.CopyFilters(CustomerIn);
+
+        // if DateArray[1] <> 0D then
+        //     GlobalStartPostingDate := DateArray[1];
+        // if (GlobalStartPostingDate = 0D) or (GlobalStartPostingDate < RebateSetup."Customer Rebate Start Date") then
+        //     GlobalStartPostingDate := RebateSetup."Customer Rebate Start Date";
+        // if DateArray[2] <> 0D then
+        //     GlobalEndPostingDate := DateArray[2];
+        // if GlobalEndPostingDate = 0D then
+        //     GlobalEndPostingDate := CalcDate('<CY>', WorkDate());
+
+        // GlobalShptRcptNo := ShptRcptNo;
+        // GlobalInvCrMemoNo := InvCrMemoNo;
+
+        // CalculateRebate(GlobalCustomer, DateArray, SummaryArray, RegenerateEntries, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebateIn, LastRecord, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo);
+    end;
+
+    local procedure GenerateAndProcessBatchPosting()
     var
         CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         DateArray: array[2] of Date;
         StartPostingDate: Date;
         EndPostingDate: Date;
+        Text50001: Label 'Calculating Rebate for Customer No. #1########';
+        Window: Dialog;
     begin
         RebateSetup.Get;
         RebateSetup.TestField("Customer Rebate Document Nos");
 
         CustomerRebateSetup.Get;
-        TotalCount := CustomerIn.Count;
+        TotalCount := GlobalCustomer.Count;
         CurrentCount := 0;
-        LastRecord := FALSE;
+        LastRecord := false;
 
-        if CustomerIn.FindSet() then begin
+        if GuiAllowed then
+            Window.Open(Text50001);
+
+        if GlobalCustomer.FindSet() then begin
             repeat
                 CurrentCount += 1;
                 LastRecord := (CurrentCount = TotalCount);
 
                 if GuiAllowed then
-                    Window.Update(1, CustomerIn."No.");
+                    Window.Update(1, GlobalCustomer."No.");
 
                 Clear(DateArray);
-                if CustomerIn.GetFilter("Date Filter") <> '' then begin
-                    StartPostingDate := CustomerIn.GetRangeMin("Date Filter");
-                    EndPostingDate := CustomerIn.GetRangeMax("Date Filter");
+                if GlobalCustomer.GetFilter("Date Filter") <> '' then begin
+                    StartPostingDate := GlobalCustomer.GetRangeMin("Date Filter");
+                    EndPostingDate := GlobalCustomer.GetRangeMax("Date Filter");
                 end else begin
                     StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
                 end;
                 DateArray[1] := StartPostingDate;
                 DateArray[2] := EndPostingDate;
 
-                SetCustomerRebateParameters(CustomerIn, DateArray, SummaryArray, RegenerateEntries, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebateIn, LastRecord, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo);
-            until CustomerIn.Next() = 0;
+                if DateArray[1] <> 0D then
+                    GlobalStartPostingDate := DateArray[1];
+                if (GlobalStartPostingDate = 0D) or (GlobalStartPostingDate < RebateSetup."Customer Rebate Start Date") then
+                    GlobalStartPostingDate := RebateSetup."Customer Rebate Start Date";
+                if DateArray[2] <> 0D then
+                    GlobalEndPostingDate := DateArray[2];
+                if GlobalEndPostingDate = 0D then
+                    GlobalEndPostingDate := CalcDate('<CY>', WorkDate());
+
+                CalculateRebate(GlobalCustomer, DateArray, GlobalSummaryArray, GlobalRegenerateEntries, GlobalShptRcptNo, GlobalInvCrMemoNo, GlobalCalledFromGenerateCustomerRebateIn, LastRecord, GlobalProcessCatchUpRebate, GlobalRebateProgramCodeFilter, GlobalBrokerVendorNo);
+
+            until GlobalCustomer.Next() = 0;
         end;
+
+        if GuiAllowed then
+            Window.Close;
+    end;
+
+    [Obsolete('Replaced by GenerateAndProcessBatchPosting() function', 'v25.1023.1.25')]
+    procedure GenerateCustomerRebates(var CustomerIn: Record Customer; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20]; var Window: Dialog; ProgressText: Text[250])
+    begin
+        // RebateSetup.Get;
+        // RebateSetup.TestField("Customer Rebate Document Nos");
+
+        // CustomerRebateSetup.Get;
+        // TotalCount := CustomerIn.Count;
+        // CurrentCount := 0;
+        // LastRecord := FALSE;
+
+        // if CustomerIn.FindSet() then begin
+        //     repeat
+        //         CurrentCount += 1;
+        //         LastRecord := (CurrentCount = TotalCount);
+
+        //         if GuiAllowed then
+        //             Window.Update(1, CustomerIn."No.");
+
+        //         Clear(DateArray);
+        //         if CustomerIn.GetFilter("Date Filter") <> '' then begin
+        //             StartPostingDate := CustomerIn.GetRangeMin("Date Filter");
+        //             EndPostingDate := CustomerIn.GetRangeMax("Date Filter");
+        //         end else begin
+        //             StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
+        //         end;
+        //         DateArray[1] := StartPostingDate;
+        //         DateArray[2] := EndPostingDate;
+
+        //         SetCustomerRebateParameters(CustomerIn, DateArray, SummaryArray, RegenerateEntries, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebateIn, LastRecord, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo);
+        //     until CustomerIn.Next() = 0;
+        // end;
     end;
 
     procedure CalculateRebate(var CustomerIn: Record Customer; DateArray: array[2] of Date; SummaryArray: array[7] of Boolean; RegenerateEntries: Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; LastRecord: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
@@ -341,8 +388,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         IsHandled: Boolean;
         RebateNo: Code[20];
         RebateLineNo: Integer;
-        LocalVendor: Record Vendor;
-        LocalEmployee: Record Employee;
+        //LocalVendor: Record Vendor;
+        //LocalEmployee: Record Employee;
         LocalEmpVenCustomerFilter: Record "AQD CR Vend Emp Customer Filt";
         LocalEmpVenTerritoryFilter: Record "AQD CR Vend Emp Territory Filt";
         LocalVendorRebate: Boolean;
@@ -350,6 +397,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         LocalRecordFound: Boolean;
         LocalRebateEntigyType: Enum "AQD CR Rebate Entity Type";
         LocalSourceDocType: Option "Posted Invoice","Posted Credit Memo";
+        LocaSalesRebateRate: Record "AQD Sales Rebates Rate";
+        SeenPayees: Dictionary of [Code[20], Boolean];
     begin
         IsHandled := false;
         OnBeforeStartCalculatingInvoiceRebate(SalesInvHeaderIn, CustomerIn, Vendor, IsHandled);
@@ -383,76 +432,164 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                         InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, CustomerIn."No.");
 
                         LocalRebateEntigyType := LocalRebateEntigyType::Vendor;
-                        LocalVendor.RESET;
-                        LocalVendor.SetRange("AQD Customer Rebate", TRUE);
-                        IF LocalVendor.FINDFIRST THEN BEGIN
-                            REPEAT
-                                LocalVendorRebate := FALSE;
-                                LocalRecordFound := FALSE;
+                        Clear(SeenPayees);
+                        LocaSalesRebateRate.Reset();
+                        LocaSalesRebateRate.SetCurrentKey("Payee Type", "Payee No.");
+                        LocaSalesRebateRate.SetRange("Payee Type", LocaSalesRebateRate."Payee Type"::"Vendor Commission");
+                        LocaSalesRebateRate.SetFilter("Payee No.", '<>%1', '');
+                        if LocaSalesRebateRate.FindSet() then begin
+                            repeat
+                                if not SeenPayees.ContainsKey(LocaSalesRebateRate."Payee No.") then begin
+                                    SeenPayees.Add(LocaSalesRebateRate."Payee No.", true);
 
-                                LocalEmpVenTerritoryFilter.RESET;
-                                LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Vendor);
-                                LocalEmpVenTerritoryFilter.SetRange("No.", LocalVendor."No.");
-                                IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
-                                    LocalRecordFound := TRUE;
-                                    LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesInvHeaderIn."AQD CR Territory Code", '');
-                                    IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                                    LocalVendorRebate := FALSE;
+                                    LocalRecordFound := FALSE;
+
+                                    LocalEmpVenTerritoryFilter.RESET;
+                                    LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Vendor);
+                                    LocalEmpVenTerritoryFilter.SetRange("No.", LocaSalesRebateRate."Payee No.");
+                                    IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
+                                        LocalRecordFound := TRUE;
+                                        LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesInvHeaderIn."AQD CR Territory Code", '');
+                                        IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                                            LocalVendorRebate := TRUE;
+                                    END;
+
+                                    LocalEmpVenCustomerFilter.RESET;
+                                    LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Vendor);
+                                    LocalEmpVenCustomerFilter.SetRange("No.", LocaSalesRebateRate."Payee No.");
+                                    IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
+                                        LocalRecordFound := TRUE;
+                                        LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
+                                        IF LocalEmpVenCustomerFilter.FINDFIRST THEN
+                                            LocalVendorRebate := TRUE;
+                                    END;
+
+                                    IF NOT LocalRecordFound THEN
                                         LocalVendorRebate := TRUE;
-                                END;
 
-                                LocalEmpVenCustomerFilter.RESET;
-                                LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Vendor);
-                                LocalEmpVenCustomerFilter.SetRange("No.", LocalVendor."No.");
-                                IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
-                                    LocalRecordFound := TRUE;
-                                    LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
-                                    IF LocalEmpVenCustomerFilter.FINDFIRST THEN
-                                        LocalVendorRebate := TRUE;
-                                END;
+                                    IF LocalVendorRebate THEN
+                                        InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocaSalesRebateRate."Payee No.");
 
-                                IF NOT LocalRecordFound THEN
-                                    LocalVendorRebate := TRUE;
-
-                                IF LocalVendorRebate THEN
-                                    InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalVendor."No.");
-                            until LocalVendor.Next() = 0;
-                        END;
+                                end;
+                            until LocaSalesRebateRate.Next() = 0;
+                        end;
 
                         LocalRebateEntigyType := LocalRebateEntigyType::Employee;
-                        LocalEmployee.RESET;
-                        LocalEmployee.SetRange("AQD Customer Rebate", TRUE);
-                        IF LocalEmployee.FINDFIRST THEN BEGIN
-                            REPEAT
-                                LocalEmployeeRebate := FALSE;
-                                LocalRecordFound := FALSE;
+                        Clear(SeenPayees);
+                        LocaSalesRebateRate.Reset();
+                        LocaSalesRebateRate.SetCurrentKey("Payee Type", "Payee No.");
+                        LocaSalesRebateRate.SetRange("Payee Type", LocaSalesRebateRate."Payee Type"::"Employee Commission");
+                        LocaSalesRebateRate.SetFilter("Payee No.", '<>%1', '');
+                        if LocaSalesRebateRate.FindSet() then begin
+                            repeat
+                                if not SeenPayees.ContainsKey(LocaSalesRebateRate."Payee No.") then begin
+                                    SeenPayees.Add(LocaSalesRebateRate."Payee No.", true);
 
-                                LocalEmpVenTerritoryFilter.RESET;
-                                LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Employee);
-                                LocalEmpVenTerritoryFilter.SetRange("No.", LocalEmployee."No.");
-                                IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
-                                    LocalRecordFound := TRUE;
-                                    LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesInvHeaderIn."AQD CR Territory Code", '');
-                                    IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                                    LocalEmployeeRebate := FALSE;
+                                    LocalRecordFound := FALSE;
+
+                                    LocalEmpVenTerritoryFilter.RESET;
+                                    LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Employee);
+                                    LocalEmpVenTerritoryFilter.SetRange("No.", LocaSalesRebateRate."Payee No.");
+                                    IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
+                                        LocalRecordFound := TRUE;
+                                        LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesInvHeaderIn."AQD CR Territory Code", '');
+                                        IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                                            LocalEmployeeRebate := TRUE;
+                                    END;
+
+                                    LocalEmpVenCustomerFilter.RESET;
+                                    LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Employee);
+                                    LocalEmpVenCustomerFilter.SetRange("No.", LocaSalesRebateRate."Payee No.");
+                                    IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
+                                        LocalRecordFound := TRUE;
+                                        LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
+                                        IF LocalEmpVenCustomerFilter.FINDFIRST THEN
+                                            LocalEmployeeRebate := TRUE;
+                                    END;
+
+                                    IF NOT LocalRecordFound THEN
                                         LocalEmployeeRebate := TRUE;
-                                END;
 
-                                LocalEmpVenCustomerFilter.RESET;
-                                LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Employee);
-                                LocalEmpVenCustomerFilter.SetRange("No.", LocalEmployee."No.");
-                                IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
-                                    LocalRecordFound := TRUE;
-                                    LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
-                                    IF LocalEmpVenCustomerFilter.FINDFIRST THEN
-                                        LocalEmployeeRebate := TRUE;
-                                END;
+                                    IF LocalEmployeeRebate THEN
+                                        InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocaSalesRebateRate."Payee No.");
 
-                                IF NOT LocalRecordFound THEN
-                                    LocalEmployeeRebate := TRUE;
+                                end;
+                            until LocaSalesRebateRate.Next() = 0;
+                        end;
 
-                                IF LocalEmployeeRebate THEN
-                                    InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalEmployee."No.");
-                            until LocalEmployee.Next() = 0;
-                        END;
+                        // LocalRebateEntigyType := LocalRebateEntigyType::Vendor;
+                        // LocalVendor.RESET;
+                        // LocalVendor.SetRange("AQD Customer Rebate", TRUE);
+                        // IF LocalVendor.FINDFIRST THEN BEGIN
+                        //     REPEAT
+                        //         LocalVendorRebate := FALSE;
+                        //         LocalRecordFound := FALSE;
+
+                        //         LocalEmpVenTerritoryFilter.RESET;
+                        //         LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Vendor);
+                        //         LocalEmpVenTerritoryFilter.SetRange("No.", LocalVendor."No.");
+                        //         IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
+                        //             LocalRecordFound := TRUE;
+                        //             LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesInvHeaderIn."AQD CR Territory Code", '');
+                        //             IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                        //                 LocalVendorRebate := TRUE;
+                        //         END;
+
+                        //         LocalEmpVenCustomerFilter.RESET;
+                        //         LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Vendor);
+                        //         LocalEmpVenCustomerFilter.SetRange("No.", LocalVendor."No.");
+                        //         IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
+                        //             LocalRecordFound := TRUE;
+                        //             LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
+                        //             IF LocalEmpVenCustomerFilter.FINDFIRST THEN
+                        //                 LocalVendorRebate := TRUE;
+                        //         END;
+
+                        //         IF NOT LocalRecordFound THEN
+                        //             LocalVendorRebate := TRUE;
+
+                        //         IF LocalVendorRebate THEN
+                        //             InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalVendor."No.");
+                        //     until LocalVendor.Next() = 0;
+                        // END;
+
+                        // LocalRebateEntigyType := LocalRebateEntigyType::Employee;
+                        // LocalEmployee.RESET;
+                        // LocalEmployee.SetRange("AQD Customer Rebate", TRUE);
+                        // IF LocalEmployee.FINDFIRST THEN BEGIN
+                        //     REPEAT
+                        //         LocalEmployeeRebate := FALSE;
+                        //         LocalRecordFound := FALSE;
+
+                        //         LocalEmpVenTerritoryFilter.RESET;
+                        //         LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Employee);
+                        //         LocalEmpVenTerritoryFilter.SetRange("No.", LocalEmployee."No.");
+                        //         IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
+                        //             LocalRecordFound := TRUE;
+                        //             LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesInvHeaderIn."AQD CR Territory Code", '');
+                        //             IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                        //                 LocalEmployeeRebate := TRUE;
+                        //         END;
+
+                        //         LocalEmpVenCustomerFilter.RESET;
+                        //         LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Employee);
+                        //         LocalEmpVenCustomerFilter.SetRange("No.", LocalEmployee."No.");
+                        //         IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
+                        //             LocalRecordFound := TRUE;
+                        //             LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
+                        //             IF LocalEmpVenCustomerFilter.FINDFIRST THEN
+                        //                 LocalEmployeeRebate := TRUE;
+                        //         END;
+
+                        //         IF NOT LocalRecordFound THEN
+                        //             LocalEmployeeRebate := TRUE;
+
+                        //         IF LocalEmployeeRebate THEN
+                        //             InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalEmployee."No.");
+                        //     until LocalEmployee.Next() = 0;
+                        // END;
                     END;
                 until SalesInvLine.Next = 0;
             end;
@@ -572,8 +709,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         RebateNo: Code[20];
         RebateLineNo: Integer;
         VendorTypeError: Label 'Vendor Type must be %1.';
-        LocalVendor: Record Vendor;
-        LocalEmployee: Record Employee;
+        //LocalVendor: Record Vendor;
+        //LocalEmployee: Record Employee;
         LocalEmpVenCustomerFilter: Record "AQD CR Vend Emp Customer Filt";
         LocalEmpVenTerritoryFilter: Record "AQD CR Vend Emp Territory Filt";
         LocalVendorRebate: Boolean;
@@ -581,6 +718,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         LocalRecordFound: Boolean;
         LocalRebateEntigyType: Enum "AQD CR Rebate Entity Type";
         LocalSourceDocType: Option "Posted Invoice","Posted Credit Memo";
+        LocaSalesRebateRate: Record "AQD Sales Rebates Rate";
+        SeenPayees: Dictionary of [Code[20], Boolean];
     begin
         IsHandled := false;
         OnBeforeStartCalculatingCrMemoRebate(SalesCrMHeaderIn, CustomerIn, Vendor, IsHandled);
@@ -616,76 +755,164 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                         InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, CustomerIn."No.");
 
                         LocalRebateEntigyType := LocalRebateEntigyType::Vendor;
-                        LocalVendor.RESET;
-                        LocalVendor.SetRange("AQD Customer Rebate", TRUE);
-                        IF LocalVendor.FINDFIRST THEN BEGIN
-                            REPEAT
-                                LocalVendorRebate := FALSE;
-                                LocalRecordFound := FALSE;
+                        Clear(SeenPayees);
+                        LocaSalesRebateRate.Reset();
+                        LocaSalesRebateRate.SetCurrentKey("Payee Type", "Payee No.");
+                        LocaSalesRebateRate.SetRange("Payee Type", LocaSalesRebateRate."Payee Type"::"Vendor Commission");
+                        LocaSalesRebateRate.SetFilter("Payee No.", '<>%1', '');
+                        if LocaSalesRebateRate.FindSet() then begin
+                            repeat
+                                if not SeenPayees.ContainsKey(LocaSalesRebateRate."Payee No.") then begin
+                                    SeenPayees.Add(LocaSalesRebateRate."Payee No.", true);
 
-                                LocalEmpVenTerritoryFilter.RESET;
-                                LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Vendor);
-                                LocalEmpVenTerritoryFilter.SetRange("No.", LocalVendor."No.");
-                                IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
-                                    LocalRecordFound := TRUE;
-                                    LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesCrMHeaderIn."AQD CR Territory Code", '');
-                                    IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                                    LocalVendorRebate := FALSE;
+                                    LocalRecordFound := FALSE;
+
+                                    LocalEmpVenTerritoryFilter.RESET;
+                                    LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Vendor);
+                                    LocalEmpVenTerritoryFilter.SetRange("No.", LocaSalesRebateRate."Payee No.");
+                                    IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
+                                        LocalRecordFound := TRUE;
+                                        LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesCrMHeaderIn."AQD CR Territory Code", '');
+                                        IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                                            LocalVendorRebate := TRUE;
+                                    END;
+
+                                    LocalEmpVenCustomerFilter.RESET;
+                                    LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Vendor);
+                                    LocalEmpVenCustomerFilter.SetRange("No.", LocaSalesRebateRate."Payee No.");
+                                    IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
+                                        LocalRecordFound := TRUE;
+                                        LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
+                                        IF LocalEmpVenCustomerFilter.FINDFIRST THEN
+                                            LocalVendorRebate := TRUE;
+                                    END;
+
+                                    IF NOT LocalRecordFound THEN
                                         LocalVendorRebate := TRUE;
-                                END;
 
-                                LocalEmpVenCustomerFilter.RESET;
-                                LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Vendor);
-                                LocalEmpVenCustomerFilter.SetRange("No.", LocalVendor."No.");
-                                IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
-                                    LocalRecordFound := TRUE;
-                                    LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
-                                    IF LocalEmpVenCustomerFilter.FINDFIRST THEN
-                                        LocalVendorRebate := TRUE;
-                                END;
+                                    IF LocalVendorRebate THEN
+                                        InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocaSalesRebateRate."Payee No.");
 
-                                IF NOT LocalRecordFound THEN
-                                    LocalVendorRebate := TRUE;
-
-                                IF LocalVendorRebate THEN
-                                    InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalVendor."No.");
-                            until LocalVendor.Next() = 0;
-                        END;
+                                end;
+                            until LocaSalesRebateRate.Next() = 0;
+                        end;
 
                         LocalRebateEntigyType := LocalRebateEntigyType::Employee;
-                        LocalEmployee.RESET;
-                        LocalEmployee.SetRange("AQD Customer Rebate", TRUE);
-                        IF LocalEmployee.FINDFIRST THEN BEGIN
-                            REPEAT
-                                LocalEmployeeRebate := FALSE;
-                                LocalRecordFound := FALSE;
+                        Clear(SeenPayees);
+                        LocaSalesRebateRate.Reset();
+                        LocaSalesRebateRate.SetCurrentKey("Payee Type", "Payee No.");
+                        LocaSalesRebateRate.SetRange("Payee Type", LocaSalesRebateRate."Payee Type"::"Employee Commission");
+                        LocaSalesRebateRate.SetFilter("Payee No.", '<>%1', '');
+                        if LocaSalesRebateRate.FindSet() then begin
+                            repeat
+                                if not SeenPayees.ContainsKey(LocaSalesRebateRate."Payee No.") then begin
+                                    SeenPayees.Add(LocaSalesRebateRate."Payee No.", true);
 
-                                LocalEmpVenTerritoryFilter.RESET;
-                                LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Employee);
-                                LocalEmpVenTerritoryFilter.SetRange("No.", LocalEmployee."No.");
-                                IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
-                                    LocalRecordFound := TRUE;
-                                    LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesCrMHeaderIn."AQD CR Territory Code", '');
-                                    IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                                    LocalEmployeeRebate := FALSE;
+                                    LocalRecordFound := FALSE;
+
+                                    LocalEmpVenTerritoryFilter.RESET;
+                                    LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Employee);
+                                    LocalEmpVenTerritoryFilter.SetRange("No.", LocaSalesRebateRate."Payee No.");
+                                    IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
+                                        LocalRecordFound := TRUE;
+                                        LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesCrMHeaderIn."AQD CR Territory Code", '');
+                                        IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                                            LocalEmployeeRebate := TRUE;
+                                    END;
+
+                                    LocalEmpVenCustomerFilter.RESET;
+                                    LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Employee);
+                                    LocalEmpVenCustomerFilter.SetRange("No.", LocaSalesRebateRate."Payee No.");
+                                    IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
+                                        LocalRecordFound := TRUE;
+                                        LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
+                                        IF LocalEmpVenCustomerFilter.FINDFIRST THEN
+                                            LocalEmployeeRebate := TRUE;
+                                    END;
+
+                                    IF NOT LocalRecordFound THEN
                                         LocalEmployeeRebate := TRUE;
-                                END;
 
-                                LocalEmpVenCustomerFilter.RESET;
-                                LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Employee);
-                                LocalEmpVenCustomerFilter.SetRange("No.", LocalEmployee."No.");
-                                IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
-                                    LocalRecordFound := TRUE;
-                                    LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
-                                    IF LocalEmpVenCustomerFilter.FINDFIRST THEN
-                                        LocalEmployeeRebate := TRUE;
-                                END;
+                                    IF LocalEmployeeRebate THEN
+                                        InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocaSalesRebateRate."Payee No.");
 
-                                IF NOT LocalRecordFound THEN
-                                    LocalEmployeeRebate := TRUE;
+                                end;
+                            until LocaSalesRebateRate.Next() = 0;
+                        end;
 
-                                IF LocalEmployeeRebate THEN
-                                    InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalEmployee."No.");
-                            until LocalEmployee.Next() = 0;
-                        END;
+                        // LocalRebateEntigyType := LocalRebateEntigyType::Vendor;
+                        // LocalVendor.RESET;
+                        // LocalVendor.SetRange("AQD Customer Rebate", TRUE);
+                        // IF LocalVendor.FINDFIRST THEN BEGIN
+                        //     REPEAT
+                        //         LocalVendorRebate := FALSE;
+                        //         LocalRecordFound := FALSE;
+
+                        //         LocalEmpVenTerritoryFilter.RESET;
+                        //         LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Vendor);
+                        //         LocalEmpVenTerritoryFilter.SetRange("No.", LocalVendor."No.");
+                        //         IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
+                        //             LocalRecordFound := TRUE;
+                        //             LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesCrMHeaderIn."AQD CR Territory Code", '');
+                        //             IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                        //                 LocalVendorRebate := TRUE;
+                        //         END;
+
+                        //         LocalEmpVenCustomerFilter.RESET;
+                        //         LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Vendor);
+                        //         LocalEmpVenCustomerFilter.SetRange("No.", LocalVendor."No.");
+                        //         IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
+                        //             LocalRecordFound := TRUE;
+                        //             LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
+                        //             IF LocalEmpVenCustomerFilter.FINDFIRST THEN
+                        //                 LocalVendorRebate := TRUE;
+                        //         END;
+
+                        //         IF NOT LocalRecordFound THEN
+                        //             LocalVendorRebate := TRUE;
+
+                        //         IF LocalVendorRebate THEN
+                        //             InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalVendor."No.");
+                        //     until LocalVendor.Next() = 0;
+                        // END;
+
+                        // LocalRebateEntigyType := LocalRebateEntigyType::Employee;
+                        // LocalEmployee.RESET;
+                        // LocalEmployee.SetRange("AQD Customer Rebate", TRUE);
+                        // IF LocalEmployee.FINDFIRST THEN BEGIN
+                        //     REPEAT
+                        //         LocalEmployeeRebate := FALSE;
+                        //         LocalRecordFound := FALSE;
+
+                        //         LocalEmpVenTerritoryFilter.RESET;
+                        //         LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Employee);
+                        //         LocalEmpVenTerritoryFilter.SetRange("No.", LocalEmployee."No.");
+                        //         IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
+                        //             LocalRecordFound := TRUE;
+                        //             LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesCrMHeaderIn."AQD CR Territory Code", '');
+                        //             IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
+                        //                 LocalEmployeeRebate := TRUE;
+                        //         END;
+
+                        //         LocalEmpVenCustomerFilter.RESET;
+                        //         LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Employee);
+                        //         LocalEmpVenCustomerFilter.SetRange("No.", LocalEmployee."No.");
+                        //         IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
+                        //             LocalRecordFound := TRUE;
+                        //             LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
+                        //             IF LocalEmpVenCustomerFilter.FINDFIRST THEN
+                        //                 LocalEmployeeRebate := TRUE;
+                        //         END;
+
+                        //         IF NOT LocalRecordFound THEN
+                        //             LocalEmployeeRebate := TRUE;
+
+                        //         IF LocalEmployeeRebate THEN
+                        //             InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalEmployee."No.");
+                        //     until LocalEmployee.Next() = 0;
+                        // END;
                     end;
                 until SalesCrMemoLine.Next = 0;
         end;
@@ -1528,6 +1755,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                     CustomerRebateLine."Document No." := SalesCrMemoHeaderIn."No.";
                     CustomerRebateLine."Order No." := SalesCrMemoHeaderIn."Return Order No.";
                     CustomerRebateLine.Description := SalesCrMemoHeaderIn."Posting Description";
+                    CustomerRebateLine."Rebate Order Date" := SalesCrMemoHeaderIn."AQD Customer Rebate Order Date";
                     CustomerRebateLine."Posting Date" := SalesCrMemoHeaderIn."Posting Date";
                     CustomerRebateLine."External Document No." := SalesCrMemoHeaderIn."External Document No.";
                     CustomerRebateLine.Amount := -1 * SalesCrMemoHeaderIn.Amount;
@@ -2042,6 +2270,34 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                 END;
         END;
     END;
+
+    procedure UpdateOldDocumentsNonRebateEnable()
+    var
+        UserConfirmMsg: Label 'Do you want to update Old Posted Invoices and Credit Memo non-rebatable?';
+        OldDocAlreadyUpdatedError: Label 'Old Posted Invoices and Credit Memos are already updated.';
+        OldDocAlreadyUpdatedSuccessfully: Label 'Old Posted Invoices and Credit Memos are updated successfully.';
+    begin
+        RebateSetup.Get;
+        RebateSetup.TestField("Customer Rebate Start Date");
+
+        if RebateSetup."Old Documents Updated" then
+            Error(OldDocAlreadyUpdatedError);
+
+        if not Confirm(UserConfirmMsg) then
+            exit;
+
+        SalesInvoiceHeader.Reset;
+        SalesInvoiceHeader.SetFilter("Posting Date", '<%1', RebateSetup."Customer Rebate Start Date");
+        SalesInvoiceHeader.ModifyAll("AQD No Customer Rebate", true);
+
+        SalesCrMemoHeader.Reset;
+        SalesCrMemoHeader.SetFilter("Posting Date", '<%1', RebateSetup."Customer Rebate Start Date");
+        SalesCrMemoHeader.ModifyAll("AQD No Customer Rebate", true);
+
+        RebateSetup."Old Documents Updated" := true;
+        RebateSetup.Modify;
+        Message(OldDocAlreadyUpdatedSuccessfully);
+    end;
 
     local procedure "=====Events====="()
     begin

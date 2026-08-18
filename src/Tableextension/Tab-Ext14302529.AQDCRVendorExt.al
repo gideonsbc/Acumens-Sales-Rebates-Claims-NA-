@@ -6,6 +6,8 @@ tableextension 14302529 "AQD CR Vendor Ext" extends Vendor
         {
             Caption = 'Sales Rebate Enabled';
             DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'To be removed';
         }
         field(14302520; "AQD Territory Filter"; Boolean)
         {

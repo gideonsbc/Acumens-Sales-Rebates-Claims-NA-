@@ -14,12 +14,15 @@ pageextension 14302538 "AQD CustRbt Vendor Card" extends "Vendor Card"
                     field("AQD Customer Rebate"; Rec."AQD Customer Rebate")
                     {
                         ApplicationArea = All;
+                        ObsoleteState = Pending;
+                        ObsoleteReason = 'To be removed';
+                        Visible = false;
                     }
                     field("AQD Territory Filter"; Rec."AQD Territory Filter")
                     {
                         ApplicationArea = All;
-                        Editable = Rec."AQD Customer Rebate";
-                        Enabled = Rec."AQD Customer Rebate";
+                        // Editable = Rec."AQD Customer Rebate";
+                        // Enabled = Rec."AQD Customer Rebate";
 
                         trigger OnDrillDown()
                         var
@@ -39,8 +42,8 @@ pageextension 14302538 "AQD CustRbt Vendor Card" extends "Vendor Card"
                     field("AQD Customer Filter"; Rec."AQD Customer Filter")
                     {
                         ApplicationArea = All;
-                        Editable = Rec."AQD Customer Rebate";
-                        Enabled = Rec."AQD Customer Rebate";
+                        // Editable = Rec."AQD Customer Rebate";
+                        // Enabled = Rec."AQD Customer Rebate";
 
                         trigger OnDrillDown()
                         var

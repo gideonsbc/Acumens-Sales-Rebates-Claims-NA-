@@ -11,8 +11,13 @@ report 14302510 "AQD Generate Customer Rebates"
             DataItemTableView = SORTING("No.") ORDER(Ascending) WHERE("AQD Enroll for Cust Rebate" = CONST(true));
             RequestFilterFields = "No.", "Date Filter";
 
-            trigger OnPostDataItem()
+            trigger OnPreDataItem()
             begin
+                IF BillToCustomerNo <> '' THEN
+                    Customer.SetRange("No.", BillToCustomerNo);
+
+                ClearCreatedCustomerRebate();
+
                 Clear(SummaryArray);
                 SummaryArray[1] := RespCenter;
                 SummaryArray[2] := Location;
@@ -20,25 +25,13 @@ report 14302510 "AQD Generate Customer Rebates"
                 SummaryArray[4] := ShortDim2;
                 SummaryArray[7] := ByTerritoryCode;
 
-                RebateCalculationMgt.GenerateCustomerRebates(Customer, SummaryArray, false, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebate, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo, Window, Text50001);
+                Clear(RebateCalculationMgt);
+                RebateCalculationMgt.SetCustomerRebateParameters(Customer, SummaryArray, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebate, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo);
+                RebateCalculationMgt.Run();
 
-                if GuiAllowed then
-                    Window.Close;
+                ClearCreatedCustomerRebate();
 
-                CreatedCustomerRebate.RESET;
-                CreatedCustomerRebate.DeleteAll();
-            end;
-
-            trigger OnPreDataItem()
-            begin
-                IF BillToCustomerNo <> '' THEN
-                    Customer.SetRange("No.", BillToCustomerNo);
-
-                if GuiAllowed then
-                    Window.Open(Text50001);
-
-                CreatedCustomerRebate.RESET;
-                CreatedCustomerRebate.DeleteAll();
+                CurrReport.Break();
             end;
         }
     }
@@ -156,11 +149,16 @@ report 14302510 "AQD Generate Customer Rebates"
         CalledFromGenerateCustomerRebate := CalledFromGenerateVendorRebateIn;
     end;
 
+    local procedure ClearCreatedCustomerRebate()
+    begin
+        CreatedCustomerRebate.RESET;
+        CreatedCustomerRebate.DeleteAll();
+    end;
+
     var
         CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         CreatedCustomerRebate: Record "AQD Created Customer Rebate";
         RebateCalculationMgt: Codeunit "AQD Cust Rebate Calc Mgt";
-        Text50001: Label 'Calculating Rebate for Customer No. #1########';
         Window: Dialog;
         Location: Boolean;
         ShortDim1: Boolean;
