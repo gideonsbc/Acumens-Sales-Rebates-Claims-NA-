@@ -2,7 +2,7 @@ permissionset 14302511 "AQD SRebate Users"
 {
     Assignable = true;
     Caption = 'Acumens Sales Rebate Users', MaxLength = 30;
-    Permissions = tabledata "AQD Acumens CustRbtClaim Setup" = RIMD,
+    Permissions = tabledata "AQD Acumens CustRbtClaim Setup" = R,
         tabledata "AQD Claim Service Codes" = RIMD,
         tabledata "AQD CR Reb Item Ledger Entry" = RIMD,
         tabledata "AQD CR Vend Emp Customer Filt" = RIMD,
@@ -10,8 +10,8 @@ permissionset 14302511 "AQD SRebate Users"
         tabledata "AQD CRC Workflow Cue" = RIMD,
         tabledata "AQD Created Customer Rebate" = RIMD,
         tabledata "AQD Cust Claim Program Code" = RIMD,
-        tabledata "AQD Cust Rebate Category Lines" = RIMD,
-        tabledata "AQD Cust Rebate Program Code" = RIMD,
+        tabledata "AQD Cust Rebate Category Lines" = R,
+        tabledata "AQD Cust Rebate Program Code" = R,
         tabledata "AQD Customer Claim Errors" = RIMD,
         tabledata "AQD Customer Claim Header" = RIMD,
         tabledata "AQD Customer Claim Line" = RIMD,
@@ -19,7 +19,7 @@ permissionset 14302511 "AQD SRebate Users"
         tabledata "AQD Customer Rebate Batch" = RIMD,
         tabledata "AQD Customer Rebate Buffer" = RIMD,
         tabledata "AQD Customer Rebate Comments" = RIMD,
-        tabledata "AQD Customer Rebate Cues" = RIMD,
+        tabledata "AQD Customer Rebate Cues" = R,
         tabledata "AQD Customer Rebate Details" = RIMD,
         tabledata "AQD Customer Rebate Header" = RIMD,
         tabledata "AQD Customer Rebate Line" = RIMD,
@@ -30,7 +30,7 @@ permissionset 14302511 "AQD SRebate Users"
         tabledata "AQD Posted Cust Rebate Header" = RIMD,
         tabledata "AQD Posted Cust Rebate Line" = RIMD,
         tabledata "AQD Rebate Customer Category" = RIMD,
-        tabledata "AQD Sales Rebates Rate" = RIMD,
+        tabledata "AQD Sales Rebates Rate" = R,
         table "AQD Acumens CustRbtClaim Setup" = X,
         table "AQD Claim Service Codes" = X,
         table "AQD CR Reb Item Ledger Entry" = X,
