@@ -14,9 +14,6 @@ enum 14302512 "AQD Customer Rebate Line Type"
     {
         Caption = 'Resource';
     }
-    //Deleted Values
-    //value(3; "Fixed Asset")
-    //value(4; "Charge (Item)")
     value(5; "Rebate Category")
     {
         Caption = 'Rebate Category';

@@ -2578,14 +2578,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
             //Rebate Rates
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter New", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ALL-UNIT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-UNIT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -2593,19 +2593,19 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
-                CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-UNIT';
+                CustomerSalesRebateSetup."Program Code" := 'ALL-UNIT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Rebate Program Code") THEN BEGIN
+                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Program Code") THEN BEGIN
                     CustomerSalesRebateSetup."Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type";
                     CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
                     CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
@@ -2615,14 +2615,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter New", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ALL-PCT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-PCT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -2630,21 +2630,21 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
-                CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-PCT';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
+                CustomerSalesRebateSetup."Program Code" := 'ALL-PCT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Rebate Program Code") THEN BEGIN
+                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Program Code") THEN BEGIN
                     CustomerSalesRebateSetup."Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type";
                     CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
                     CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
@@ -2654,14 +2654,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter New", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ALL-UNIT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-UNIT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -2669,19 +2669,19 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
-                CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-UNIT';
+                CustomerSalesRebateSetup."Program Code" := 'ALL-UNIT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 1;
-                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Rebate Program Code") THEN BEGIN
+                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Program Code") THEN BEGIN
                     CustomerSalesRebateSetup."Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type";
                     CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
                     CustomerSalesRebateSetup."Rebate %" := 5;
@@ -2691,14 +2691,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter New", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ALL-UNIT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-UNIT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -2706,19 +2706,19 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
-                CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-UNIT';
+                CustomerSalesRebateSetup."Program Code" := 'ALL-UNIT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 50001;
-                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Rebate Program Code") THEN BEGIN
+                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Program Code") THEN BEGIN
                     CustomerSalesRebateSetup."Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type";
                     CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
                     CustomerSalesRebateSetup."Rebate %" := 10;
@@ -2728,14 +2728,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter New", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ALL-UNIT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-UNIT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -2743,19 +2743,19 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
-                CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-UNIT';
+                CustomerSalesRebateSetup."Program Code" := 'ALL-UNIT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 500001;
-                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Rebate Program Code") THEN BEGIN
+                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Program Code") THEN BEGIN
                     CustomerSalesRebateSetup."Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type";
                     CustomerSalesRebateSetup."Rebate Per Unit" := CustomerRebateProgramCode."Customer Def Rebate Per Unit";
                     CustomerSalesRebateSetup."Rebate %" := 15;
@@ -2765,14 +2765,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter New", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ALL-PCT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-PCT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 1);
@@ -2780,21 +2780,21 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
-                CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-PCT';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
+                CustomerSalesRebateSetup."Program Code" := 'ALL-PCT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 1;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Rebate Program Code") THEN BEGIN
+                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Program Code") THEN BEGIN
                     CustomerSalesRebateSetup."Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type";
                     CustomerSalesRebateSetup."Rebate Per Unit" := 10;
                     CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
@@ -2804,14 +2804,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter New", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ALL-PCT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-PCT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 1001);
@@ -2819,21 +2819,21 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
-                CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-PCT';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
+                CustomerSalesRebateSetup."Program Code" := 'ALL-PCT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 1001;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Rebate Program Code") THEN BEGIN
+                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Program Code") THEN BEGIN
                     CustomerSalesRebateSetup."Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type";
                     CustomerSalesRebateSetup."Rebate Per Unit" := 15;
                     CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
@@ -2843,14 +2843,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
+            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter New", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ALL-PCT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-PCT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 10001);
@@ -2858,21 +2858,21 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Volume Rebate";
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Volume Rebate";
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
-                CustomerSalesRebateSetup."Customer No. Filter" := '';
-                CustomerSalesRebateSetup."Rebate Program Code" := 'ALL-PCT';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '';
+                CustomerSalesRebateSetup."Program Code" := 'ALL-PCT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 10001;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Rebate Program Code") THEN BEGIN
+                IF CustomerRebateProgramCode.GET(CustomerSalesRebateSetup."Program Code") THEN BEGIN
                     CustomerSalesRebateSetup."Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type";
                     CustomerSalesRebateSetup."Rebate Per Unit" := 20;
                     CustomerSalesRebateSetup."Rebate %" := CustomerRebateProgramCode."Customer Default Rebate %";
@@ -2882,14 +2882,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'AMAZONCOM');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'AMAZONCOM');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -2897,8 +2897,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'AMAZONCOM');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'AMAZONCOM');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -2912,14 +2912,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'SHOPIFYCOM');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'SHOPIFYCOM');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -2927,8 +2927,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'SHOPIFYCOM');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'SHOPIFYCOM');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -2942,14 +2942,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'WALMARTCOM');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'WALMARTCOM');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -2957,8 +2957,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'WALMARTCOM');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'WALMARTCOM');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -2972,14 +2972,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'AMAZONALW');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'AMAZONALW');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -2987,8 +2987,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'AMAZONALW');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'AMAZONALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3002,14 +3002,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'SHOPIFYALW');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'SHOPIFYALW');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3017,8 +3017,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'SHOPIFYALW');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'SHOPIFYALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3032,14 +3032,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No.", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'WALMARTALW');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'WALMARTALW');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3047,8 +3047,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'WALMARTALW');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'WALMARTALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3062,13 +3062,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ROYALTYUNT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ROYALTYUNT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3076,8 +3076,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'ROYALTYUNT');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'ROYALTYUNT');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup.Validate("No.", '1968-S');
@@ -3091,13 +3091,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ROYALTYPCT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ROYALTYPCT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3105,8 +3105,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'ROYALTYPCT');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'ROYALTYPCT');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup.Validate("No.", '1968-S');
@@ -3120,13 +3120,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'CASHDISCNT');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'CASHDISCNT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3134,8 +3134,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'CASHDISCNT');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'CASHDISCNT');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3149,13 +3149,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'DMGALW');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'DMGALW');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3163,8 +3163,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'DMGALW');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'DMGALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3178,13 +3178,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'DISTALW');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'DISTALW');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3192,8 +3192,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'DISTALW');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'DISTALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3207,13 +3207,13 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
+            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter New", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'ADVALW');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'ADVALW');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3221,8 +3221,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'ADVALW');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'ADVALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3236,12 +3236,12 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER01S');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'BROKER01S');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3249,8 +3249,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER01S');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'BROKER01S');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3260,19 +3260,19 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
-                CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
-                CustomerSalesRebateSetup."Customer No. Filter" := '10000';
+                CustomerSalesRebateSetup."Customer No. Filter New" := BrokerVendorCode;
+                CustomerSalesRebateSetup."Customer No. Filter New" := '10000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER01A');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'BROKER01A');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3280,8 +3280,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER01A');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'BROKER01A');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup.Validate("No.", '1968-S');
@@ -3292,18 +3292,18 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
-                CustomerSalesRebateSetup."Customer No. Filter" := '10000';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '10000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER02S');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'BROKER02S');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3311,8 +3311,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER02S');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'BROKER02S');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3322,19 +3322,19 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
-                CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
-                CustomerSalesRebateSetup."Customer No. Filter" := '20000';
+                CustomerSalesRebateSetup."Customer No. Filter New" := BrokerVendorCode;
+                CustomerSalesRebateSetup."Customer No. Filter New" := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER02A');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'BROKER02A');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3342,8 +3342,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER02A');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'BROKER02A');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup.Validate("No.", '1968-S');
@@ -3354,18 +3354,18 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
-                CustomerSalesRebateSetup."Customer No. Filter" := '20000';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER03S');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'BROKER03S');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3373,8 +3373,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER03S');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'BROKER03S');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup."No." := '';
@@ -3384,19 +3384,19 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
-                CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
-                CustomerSalesRebateSetup."Customer No. Filter" := '30000';
+                CustomerSalesRebateSetup."Customer No. Filter New" := BrokerVendorCode;
+                CustomerSalesRebateSetup."Customer No. Filter New" := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
             CustomerSalesRebateSetup.RESET;
-            CustomerSalesRebateSetup.SETRANGE("CustRbt Rate Type", CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate");
+            CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
-            CustomerSalesRebateSetup.SETRANGE("Rebate Program Code", 'BROKER03A');
+            CustomerSalesRebateSetup.SETRANGE("Program Code", 'BROKER03A');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
             CustomerSalesRebateSetup.SETRANGE("Unit of Measure Code", '');
             CustomerSalesRebateSetup.SetRange("Minimum Quantity", 0);
@@ -3404,8 +3404,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             IF NOT CustomerSalesRebateSetup.FindFirst() THEN BEGIN
                 CustomerSalesRebateSetup.Init();
                 CustomerSalesRebateSetup."Entry No." := 0;
-                CustomerSalesRebateSetup."CustRbt Rate Type" := CustomerSalesRebateSetup."CustRbt Rate Type"::"Simple Rebate";
-                CustomerSalesRebateSetup.Validate("Rebate Program Code", 'BROKER03A');
+                CustomerSalesRebateSetup."Rate Type" := CustomerSalesRebateSetup."Rate Type"::"Simple Rebate";
+                CustomerSalesRebateSetup.Validate("Program Code", 'BROKER03A');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
                 CustomerSalesRebateSetup.Validate("No.", '1968-S');
@@ -3416,7 +3416,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
                 CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
-                CustomerSalesRebateSetup."Customer No. Filter" := '30000';
+                CustomerSalesRebateSetup."Customer No. Filter New" := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;

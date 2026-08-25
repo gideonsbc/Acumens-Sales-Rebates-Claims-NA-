@@ -190,7 +190,7 @@ table 14302516 "AQD Cust Rebate Program Code"
     local procedure UpdateRates(ChangedFieldName: Text[100])
     begin
         SalesRebateRate.Reset();
-        SalesRebateRate.SetRange("Rebate Program Code", Code);
+        SalesRebateRate.SetRange("Program Code", Code);
         if SalesRebateRate.FindSet() then begin
             repeat
                 case ChangedFieldName of

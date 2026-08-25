@@ -400,6 +400,11 @@ table 14302521 "AQD Customer Rebate Details"
             DataClassification = CustomerContent;
             TableRelation = "AQD CF Trade Agreement";
         }
+        field(9050; "Line Type"; Enum "AQD Customer Rebate Line Type")
+        {
+            Caption = 'Line Type';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

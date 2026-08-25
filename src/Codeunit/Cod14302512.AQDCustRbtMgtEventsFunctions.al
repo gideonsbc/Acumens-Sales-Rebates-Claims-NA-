@@ -502,50 +502,56 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     local procedure "AQD Sales Rebate Rate Calc Mgt_OnBeforeInsertToCustomerSalesRebateRate"(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
     var
         SalesRebateCalcMgt: Codeunit "AQD Cust Rebate Calc Mgt";
+        SalesRebateRateCalcMgt: Codeunit "AQD Sales Rebate Rate Calc Mgt";
     begin
         IsHandled := false;
 
+        if CustomerRebateDetailsLocIn."Line Type" = CustomerRebateDetailsLocIn."Line Type"::"Rebate Category" then begin
+            if not SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(CustomerRebateDetailsLocIn."Rebate Item Category Code", SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(FromCustomerSalesRebateRate."No.")) then
+                IsHandled := true;
+        end else begin
+            if FromCustomerSalesRebateRate."No. Filter" <> '' then begin
+                case FromCustomerSalesRebateRate."Line Type" of
+                    FromCustomerSalesRebateRate."Line Type"::Item:
+                        begin
+                            if not SalesRebateCalcMgt.IsItemMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+                                IsHandled := true;
+                        end;
+                    FromCustomerSalesRebateRate."Line Type"::"G/L Account":
+                        begin
+                            if not SalesRebateCalcMgt.IsGLMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+                                IsHandled := true;
+                        end;
+                    FromCustomerSalesRebateRate."Line Type"::Resource:
+                        begin
+                            if not SalesRebateCalcMgt.IsRsMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+                                IsHandled := true;
+                        end;
+                    FromCustomerSalesRebateRate."Line Type"::"Rebate Category":
+                        begin
+                            if not SalesRebateCalcMgt.IsItemTypeMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+                                IsHandled := true;
+                        end;
+                end;
+            end;
+        end;
+
         // Customer No. Filter
-        if FromCustomerSalesRebateRate."Customer No. Filter" <> '' then begin
+        if FromCustomerSalesRebateRate."Customer No. Filter New" <> '' then begin
             case FromCustomerSalesRebateRate."Customer Type" of
                 FromCustomerSalesRebateRate."Customer Type"::Customer:
                     begin
-                        if not SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
+                        if not SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter New") then
                             IsHandled := true;
                     end;
                 FromCustomerSalesRebateRate."Customer Type"::"Customer Category":
                     begin
-                        if not SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
+                        if not SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter New") then
                             IsHandled := true;
                     end;
             end;
         end;
 
-        //No. Filter
-        if FromCustomerSalesRebateRate."No. Filter" <> '' then begin
-            case FromCustomerSalesRebateRate."Line Type" of
-                FromCustomerSalesRebateRate."Line Type"::Item:
-                    begin
-                        if not SalesRebateCalcMgt.IsItemMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
-                            IsHandled := true;
-                    end;
-                FromCustomerSalesRebateRate."Line Type"::"G/L Account":
-                    begin
-                        if not SalesRebateCalcMgt.IsGLMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
-                            IsHandled := true;
-                    end;
-                FromCustomerSalesRebateRate."Line Type"::Resource:
-                    begin
-                        if not SalesRebateCalcMgt.IsRsMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
-                            IsHandled := true;
-                    end;
-                FromCustomerSalesRebateRate."Line Type"::"Rebate Category":
-                    begin
-                        if not SalesRebateCalcMgt.IsItemTypeMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
-                            IsHandled := true;
-                    end;
-            end;
-        end;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnBeforeInsertRebateDetail, '', false, false)]
@@ -667,12 +673,12 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
 
         RebateRates.Reset();
         RebateRates.SetRange("Rebate Expense Type", RebateRates."Rebate Expense Type"::"Off-Invoice Rebate");
-        RebateRates.SetFilter("Rebate Program Code", '<>%1', '');
+        RebateRates.SetFilter("Program Code", '<>%1', '');
         RebateRates.SETFILTER("Territory Code", '%1|%2', BillToCustomer."Territory Code", '');
         RebateRates.SetRange(Blocked, false);
         if RebateRates.FindSet() then begin
             repeat
-                if RebateProgram.Get(RebateRates."Rebate Program Code") and (RebateProgram."Rebate Expense AC" <> '') then
+                if RebateProgram.Get(RebateRates."Program Code") and (RebateProgram."Rebate Expense AC" <> '') then
                     if ResourceRec.Get(RebateProgram."Rebate Expense AC") then begin
                         UnitPrice := 0;
                         CalcOffInvoiceRebateAmount(SalesHeader, RebateRates, UnitPrice);
@@ -757,15 +763,15 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         SalesHeader.SetRange("No.", SalesHeaderIn."No.");
         case RebateRates."Customer Type" of
             RebateRates."Customer Type"::Customer:
-                if RebateRates."Customer No. Filter" <> '' then
-                    SalesHeader.SetFilter("Bill-to Customer No.", RebateRates."Customer No. Filter");
+                if RebateRates."Customer No. Filter New" <> '' then
+                    SalesHeader.SetFilter("Bill-to Customer No.", RebateRates."Customer No. Filter New");
             RebateRates."Customer Type"::"Customer Category":
-                if RebateRates."Customer No. Filter" <> '' then
-                    SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter");
+                if RebateRates."Customer No. Filter New" <> '' then
+                    SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter New");
         end;
 
         //Set Payment Term Filter
-        ProgramCode.Get(RebateRates."Rebate Program Code");
+        ProgramCode.Get(RebateRates."Program Code");
         if ProgramCode."SO Payment Term Filter" <> '' then
             SalesHeader.SetFilter("Payment Terms Code", ProgramCode."SO Payment Term Filter");
 

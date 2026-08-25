@@ -127,18 +127,20 @@ report 14302510 "AQD Generate Customer Rebates"
     }
     trigger OnPreReport()
     begin
+        CustomerRebateSetup.Get();
+
         if ProcessCatchUpRebate then
             if Customer.GETFILTER("Date Filter") = '' then
                 Error('Date Filter must have a value. It cannot be zero or empty.');
 
-        CustomerRebateSetup.GET;
-        IF Customer.GETFILTER("Date Filter") <> '' THEN BEGIN
-            StartPostingDate := Customer.GetRangeMin("Date Filter");
-            EndPostingDate := Customer.GetRangeMax("Date Filter");
-        END ELSE begin
-            StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
-            EndPostingDate := DMY2Date(31, 12, Date2DMY(WorkDate(), 3));
-        end;
+        // CustomerRebateSetup.GET;
+        // IF Customer.GETFILTER("Date Filter") <> '' THEN BEGIN
+        //     StartPostingDate := Customer.GetRangeMin("Date Filter");
+        //     EndPostingDate := Customer.GetRangeMax("Date Filter");
+        // END ELSE begin
+        //     StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
+        //     EndPostingDate := DMY2Date(31, 12, Date2DMY(WorkDate(), 3));
+        // end;
     end;
 
     procedure SetShptRcptNoAndInvCrMemoNo(BillToCustomerNoIn: Code[20]; ShptRcptNoIn: Code[20]; InvCrMemoNoIn: Code[20]; CalledFromGenerateVendorRebateIn: Boolean)

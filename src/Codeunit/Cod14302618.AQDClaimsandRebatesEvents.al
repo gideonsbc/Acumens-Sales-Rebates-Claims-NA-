@@ -353,7 +353,7 @@ codeunit 14302618 "AQD Claims and Rebates Events"
                             CASE CustomerSalesRebateRate."Customer Type" OF
                                 CustomerSalesRebateRate."Customer Type"::Customer:
                                     BEGIN
-                                        IF CustomerSalesRebateRate."CustRbt Rate Type" = CustomerSalesRebateRate."CustRbt Rate Type"::"Volume Rebate" THEN BEGIN
+                                        IF CustomerSalesRebateRate."Rate Type" = CustomerSalesRebateRate."Rate Type"::"Volume Rebate" THEN BEGIN
                                             Case CustomerSalesRebateRate."Line Type" OF
                                                 CustomerSalesRebateRate."Line Type"::Item:
                                                     BEGIN
@@ -492,7 +492,7 @@ codeunit 14302618 "AQD Claims and Rebates Events"
                             END;
                         end;
                     else begin
-                        IF CustomerSalesRebateRate."CustRbt Rate Type" = CustomerSalesRebateRate."CustRbt Rate Type"::"Volume Rebate" THEN BEGIN
+                        IF CustomerSalesRebateRate."Rate Type" = CustomerSalesRebateRate."Rate Type"::"Volume Rebate" THEN BEGIN
                             Case CustomerSalesRebateRate."Line Type" OF
                                 CustomerSalesRebateRate."Line Type"::Item:
                                     BEGIN

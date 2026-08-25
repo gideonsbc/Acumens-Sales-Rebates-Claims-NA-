@@ -49,6 +49,11 @@ table 14302513 "AQD Cust Rebate Category Lines"
         {
             DataClassification = CustomerContent;
         }
+        field(8000; "Line Type"; Enum "AQD Customer Rebate Line Type")
+        {
+            Caption = 'Line Type';
+            DataClassification = CustomerContent;
+        }
 
     }
     keys

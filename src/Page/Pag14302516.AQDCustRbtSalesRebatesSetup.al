@@ -158,14 +158,34 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
             }
             repeater(Control1)
             {
-                field("CustRbt Rate Type"; Rec."CustRbt Rate Type")
+                // field("CustRbt Rate Type"; Rec."CustRbt Rate Type")
+                // {
+                //     ApplicationArea = All;
+                //     ToolTip = 'Specifies the the Customer Rebate Type applies to Line Item.';
+                //     ShowMandatory = TRUE;
+                //     QuickEntry = TRUE;
+                //     Visible = false;
+                //     ObsoleteState = Pending;
+                //     ObsoleteReason = 'Not in Use';
+                // }
+                // field("Rebate Program Code"; Rec."Rebate Program Code")
+                // {
+                //     ApplicationArea = All;
+                //     ToolTip = 'Specifies the the Sales Rebate Program Code applies to Line Item.';
+                //     ShowMandatory = TRUE;
+                //     QuickEntry = TRUE;
+                //     Visible = false;
+                //     ObsoleteState = Pending;
+                //     ObsoleteReason = 'Not in Use';
+                // }
+                field("Rate Type"; Rec."Rate Type")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the the Customer Rebate Type applies to Line Item.';
                     ShowMandatory = TRUE;
                     QuickEntry = TRUE;
                 }
-                field("Rebate Program Code"; Rec."Rebate Program Code")
+                field("Program Code"; Rec."Program Code")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the the Sales Rebate Program Code applies to Line Item.';
@@ -200,7 +220,40 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                         CustomerNoControlEditable := SetCustomerNoEditable(Rec."Customer Type");
                     end;
                 }
-                field("Customer No. Filter"; Rec."Customer No. Filter")
+                // field("Customer No. Filter"; Rec."Customer No. Filter")
+                // {
+                //     ApplicationArea = All;
+                //     Visible = false;
+                //     ObsoleteState = Pending;
+                //     ObsoleteReason = 'Not in Use';
+                //     trigger onlookup(var Text: Text): Boolean
+                //     var
+                //         CustList: Page "Customer List";
+                //         RebateCustomerTypeList: Page "AQD Rebate Customer Categories";
+                //     begin
+                //         CASE Rec."Customer Type" OF
+                //             Rec."Customer Type"::Customer:
+                //                 BEGIN
+                //                     CustList.LOOKUPMODE := TRUE;
+                //                     IF CustList.RUNMODAL = ACTION::LookupOK THEN
+                //                         Text := CustList.GetSelectionFilter
+                //                     ELSE
+                //                         EXIT(FALSE);
+                //                 END;
+                //             Rec."Customer Type"::"Customer Category":
+                //                 BEGIN
+                //                     RebateCustomerTypeList.LOOKUPMODE := TRUE;
+                //                     IF RebateCustomerTypeList.RUNMODAL = ACTION::LookupOK THEN
+                //                         Text := RebateCustomerTypeList.GetSelectionFilter
+                //                     ELSE
+                //                         EXIT(FALSE);
+                //                 END;
+                //         END;
+
+                //         EXIT(TRUE);
+                //     end;
+                // }
+                field("Customer No. Filter New"; Rec."Customer No. Filter New")
                 {
                     ApplicationArea = All;
                     trigger onlookup(var Text: Text): Boolean
@@ -254,6 +307,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                 {
                     ApplicationArea = All;
                     Editable = Rec."No." = '';
+                    Visible = false;
                     trigger onlookup(var Text: Text): Boolean
                     var
                         ItemList: Page "Item List";
@@ -508,7 +562,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
         RebateSetup.GET;
         SetCaption();
 
-        Rec.SetCurrentKey("Entry No.", "CustRbt Rate Type", "Rebate Program Code", "Payee Type", "Payee No.", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount");
+        Rec.SetCurrentKey("Entry No.", "Rate Type", "Program Code", "Payee Type", "Payee No.", "Customer Type", "Customer No. Filter New", "Territory Code", "Line Type", "No.", "Variant Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount");
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)
@@ -523,7 +577,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                 Rec."Line Type" := Rec."Line Type"::"Rebate Category";
         END;
         IF RebateSetup."Default Rebate Program Code" <> '' THEN
-            Rec."Rebate Program Code" := RebateSetup."Default Rebate Program Code";
+            Rec."Program Code" := RebateSetup."Default Rebate Program Code";
     end;
 
     var
@@ -571,7 +625,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
         else
             CustomerTypeFilter := CustomerTypeFilter::" ";
 
-        CustomerNoFilter := Rec.GetFilter("Customer No. Filter");
+        CustomerNoFilter := Rec.GetFilter("Customer No. Filter New");
         ItemNoFilter := Rec.GetFilter("No.");
     end;
 
@@ -619,9 +673,9 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
         end;
 
         if CustomerNoFilter <> '' then
-            Rec.SetFilter("Customer No. Filter", CustomerNoFilter)
+            Rec.SetFilter("Customer No. Filter New", CustomerNoFilter)
         else
-            Rec.SetRange("Customer No. Filter");
+            Rec.SetRange("Customer No. Filter New");
 
         if StartingDateFilter <> '' then
             Rec.SetFilter("Starting Date", StartingDateFilter)
@@ -811,7 +865,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
     begin
         SalesTypeControlEditable := Rec.GetFilter("Customer Type") = '';
         CustomerNoControlEditable :=
-          CustomerNoControlEditable and (Rec.GetFilter("Customer No. Filter") = '');
+          CustomerNoControlEditable and (Rec.GetFilter("Customer No. Filter New") = '');
     end;
 
     local procedure FilterLines()
@@ -823,8 +877,8 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
         FilterPageBuilder.SetView(Rec.TableCaption, Rec.GetView());
         if Rec.GetFilter("Customer Type") = '' then
             FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer Type"));
-        if Rec.GetFilter("Customer No. Filter") = '' then
-            FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer No. Filter"));
+        if Rec.GetFilter("Customer No. Filter New") = '' then
+            FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer No. Filter New"));
         if Rec.GetFilter("No.") = '' then
             FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("No."));
         if Rec.GetFilter("Starting Date") = '' then
