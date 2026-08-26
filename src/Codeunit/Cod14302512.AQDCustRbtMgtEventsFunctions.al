@@ -503,8 +503,12 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     var
         SalesRebateCalcMgt: Codeunit "AQD Cust Rebate Calc Mgt";
         SalesRebateRateCalcMgt: Codeunit "AQD Sales Rebate Rate Calc Mgt";
+        RebateProgramCodeSetup: Record "AQD Cust Rebate Program Code";
     begin
         IsHandled := false;
+
+        if RebateProgramCodeSetup.Get(FromCustomerSalesRebateRate."Program Code") then
+            CustomerRebateDetailsLocIn."Rebate Payment Method Code" := RebateProgramCodeSetup."Rebate Payment Method Code";
 
         if CustomerRebateDetailsLocIn."Line Type" = CustomerRebateDetailsLocIn."Line Type"::"Rebate Category" then begin
             if not SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(CustomerRebateDetailsLocIn."Rebate Item Category Code", SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(FromCustomerSalesRebateRate."No.")) then
@@ -1061,13 +1065,36 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             exit(PostedCustomerRebateLineDetails."Rebate Program Code");
     end;
 
-    // [EventSubscriber(ObjectType::Table, Database::"AQD Acumens CustRbtClaim Setup", OnBeforeInsertEvent, '', false, false)]
-    // local procedure AcumensVendorRebateSetup_OnBeforeInsertEvent(var Rec: Record "AQD Acumens CustRbtClaim Setup"; RunTrigger: Boolean)
-    // var
-    //     CFBaseEvents: Codeunit "AQD Acumens Base Events";
-    // BEGIN
-    //     CFBaseEvents.AssignAppPermissionSetToAllUsers('ad778411-e5f3-4d7e-9077-37cde7758cdb', 'AQD Acumens CashFlow', true);
-    //     CFBaseEvents.AssignAppPermissionSetToAllUsers('6fe07eb4-80c8-48b7-8afb-298cc3af0a0c', 'AQD SRebate Users', true);
-    //     CFBaseEvents.AssignAppPermissionSetToAllUsers('6fe07eb4-80c8-48b7-8afb-298cc3af0a0c', 'AQD SRebate Admin', true);
-    // END;
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Customer Rebate Post", OnBeforeInitRebatePaymentMethodCodeCustomer, '', false, false)]
+    local procedure "AQD Customer Rebate Post_OnBeforeInitRebatePaymentMethodCodeCustomer"(var SalesHeader: Record "Sales Header"; var PostedCustomerRebateLine: Record "AQD Posted Cust Rebate Line")
+    var
+        PostedCustomerRebateLineDetails: Record "AQD Posted Cust Reb Details";
+    begin
+        PostedCustomerRebateLineDetails.RESET;
+        PostedCustomerRebateLineDetails.SetRange("Rebate No.", PostedCustomerRebateLine."Rebate No.");
+        PostedCustomerRebateLineDetails.SetRange("Rebate Line No.", PostedCustomerRebateLine."Line No.");
+        PostedCustomerRebateLineDetails.SetRange("Entity Type", PostedCustomerRebateLineDetails."Entity Type"::Customer);
+        PostedCustomerRebateLineDetails.SetFilter("Rebate Payment Method Code", '<>%1', '');
+        if PostedCustomerRebateLineDetails.FindFirst() then
+            SalesHeader.Validate("Payment Method Code", PostedCustomerRebateLineDetails."Rebate Payment Method Code");
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Customer Rebate Post", OnBeforeInitRebatePaymentMethodCodeVendor, '', false, false)]
+    local procedure "AQD Customer Rebate Post_OnBeforeInitRebatePaymentMethodCodeVendor"(var GenJnlLine: Record "Gen. Journal Line"; InvoicePostingBuffer: Record "Invoice Posting Buffer")
+    var
+        ProgramCodeSetup: Record "AQD Cust Rebate Program Code";
+    begin
+        if ProgramCodeSetup.Get(InvoicePostingBuffer."AQD Program Code") then
+            GenJnlLine.Validate("Payment Method Code", ProgramCodeSetup."Rebate Payment Method Code");
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Customer Rebate Post", OnBeforeInitRebatePaymentMethodCodeEmployee, '', false, false)]
+    local procedure "AQD Customer Rebate Post_OnBeforeInitRebatePaymentMethodCodeEmployee"(var GenJnlLine: Record "Gen. Journal Line"; InvoicePostingBuffer: Record "Invoice Posting Buffer")
+    var
+        ProgramCodeSetup: Record "AQD Cust Rebate Program Code";
+    begin
+        if ProgramCodeSetup.Get(InvoicePostingBuffer."AQD Program Code") then
+            GenJnlLine.Validate("Payment Method Code", ProgramCodeSetup."Rebate Payment Method Code");
+    end;
+
 }

@@ -405,6 +405,12 @@ table 14302521 "AQD Customer Rebate Details"
             Caption = 'Line Type';
             DataClassification = CustomerContent;
         }
+        field(9060; "Rebate Payment Method Code"; Code[10])
+        {
+            Caption = 'Rebate Payment Method Code';
+            TableRelation = "Payment Method";
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

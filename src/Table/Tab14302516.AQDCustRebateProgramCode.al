@@ -99,6 +99,12 @@ table 14302516 "AQD Cust Rebate Program Code"
                     UpdateRates(FieldCaption("Payee No."));
             end;
         }
+        field(50; "Rebate Payment Method Code"; Code[10])
+        {
+            Caption = 'Rebate Payment Method Code';
+            TableRelation = "Payment Method";
+            DataClassification = CustomerContent;
+        }
         field(90; Blocked; Boolean)
         {
             Caption = 'Blocked';
