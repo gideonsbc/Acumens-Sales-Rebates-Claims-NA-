@@ -55,6 +55,19 @@ pageextension 14302509 "AQD CustRbt Item Card" extends "Item Card"
                                   "No." = FIELD("No.");
                     RunPageView = sorting("No.");
                 }
+                // action("AQD Item attributes Values")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Get Item Attributes Values';
+                //     trigger OnAction()
+                //     var
+                //         SalesRebateRateCalcMgt: Codeunit "AQD Sales Rebate Rate Calc Mgt";
+                //         Result: Dictionary of [Code[20], Text];
+                //     begin
+                //         Result := SalesRebateRateCalcMgt.GetItemAttributeValues(Rec."No.");
+                //         Message(Format(Result));
+                //     end;
+                // }
             }
         }
         addafter(Category_Category6)
@@ -63,6 +76,7 @@ pageextension 14302509 "AQD CustRbt Item Card" extends "Item Card"
             {
                 Caption = 'Acumens Sales Rebate';
                 actionref(AQDCustomerRebateRatesRef; "AQD Customer Rebate Rates") { }
+                //actionref(AQDItemattributesValues; "AQD Item attributes Values") { }
             }
         }
     }

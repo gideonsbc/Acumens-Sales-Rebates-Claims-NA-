@@ -658,8 +658,6 @@ codeunit 14302515 "AQD Customer Rebate Post"
         LocalBillToCustomer: Record Customer;
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlBatch: Record "Gen. Journal Line";
-        LocalCustomer: Record Customer;
-        LocalVendor: Record Vendor;
         LocalCustomerCategory: Record "AQD Rebate Customer Category";
         DocumentNo: Code[20];
         LineNo: Integer;
@@ -687,11 +685,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                 SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
                 SalesCredirMemo."Posting Description" := PostedCustomerRebateHeader."Posting Description";
                 SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
-                OnBeforeInitRebatePaymentMethodCodeCustomer(SalesCredirMemo, PostedCustomerRebateLine);
-                if SalesCredirMemo."Payment Method Code" = '' then
-                    if LocalCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group") then
-                        SalesCredirMemo.Validate("Payment Method Code", LocalCustomer."Payment Method Code");
-
+                OnBeforeInitRebatePaymentMethodCodeCustomer(SalesCredirMemo, PostedCustomerRebateLine, TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
                 SalesCredirMemo."External Document No." := PostedCustomerRebateHeader."No.";
                 SalesCredirMemo."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
                 SalesCredirMemo."AQD Customer Rebate" := TRUE;
@@ -831,7 +825,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     ELSE
                         NextLineNo := 10000;
 
-                    LocalCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
+                    //LocalCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
 
                     SalesCrMemoLine.INIT;
                     SalesCrMemoLine."Document Type" := SalesCrMemoLine."Document Type"::"Credit Memo";
@@ -839,7 +833,6 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     SalesCrMemoLine."Line No." := NextLineNo;
                     SalesCrMemoLine.Insert(TRUE);
                     SalesCrMemoLine.Validate(Type, SalesCrMemoLine.Type::"G/L Account");
-                    //SalesCrMemoLine.Validate("No.", LocalCustomerCategory."G/L Account No.");
                     SalesCrMemoLine.Validate("No.", InvoicePostingBuffer."G/L Account");
                     SalesCrMemoLine.Description := CopyStr(SalesRebateForText +
                                                               PostedCustomerRebateLine.Description + ' ' +
@@ -848,7 +841,6 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     SalesCrMemoLine.Validate("Location Code", PostedCustomerRebateLine."Location Code");
                     SalesCrMemoLine.Validate(Quantity, 1);
-                    //SalesCrMemoLine.Validate("Unit Price", PostedCustomerRebateLine."customer Rebate Amt (GL)");
                     SalesCrMemoLine.Validate("Unit Price", InvoicePostingBuffer.Amount);
                     IF PostedCustomerRebateLine."Shortcut Dimension 1 Code" <> '' THEN
                         SalesCrMemoLine.Validate("Shortcut Dimension 1 Code", PostedCustomerRebateLine."Shortcut Dimension 1 Code");
@@ -944,10 +936,6 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.Validate(Amount, VendLocalRebateAmount);
                     GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
                     OnBeforeInitRebatePaymentMethodCodeVendor(GenJnlLine, InvoicePostingBuffer);
-                    if GenJnlLine."Payment Method Code" = '' then
-                        if LocalVendor.Get(InvoicePostingBuffer."Job No.") then
-                            GenJnlLine.Validate("Payment Method Code", LocalVendor."Payment Method Code");
-
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                     GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
 
@@ -1054,12 +1042,10 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.Validate("Account No.", InvoicePostingBuffer."Job No.");
 
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
-                    //GenJnlLine.Validate(Amount, PostedCustomerRebateLine."Employee Commission");
                     EmpLocalRebateAmount := -InvoicePostingBuffer.Amount;
                     GenJnlLine.Validate(Amount, EmpLocalRebateAmount);
                     GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
                     OnBeforeInitRebatePaymentMethodCodeEmployee(GenJnlLine, InvoicePostingBuffer);
-
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                     GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
 
@@ -1122,11 +1108,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                 SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
                 SalesInvoice."Posting Description" := PostedCustomerRebateHeader."Posting Description";
                 SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
-                OnBeforeInitRebatePaymentMethodCodeCustomer(SalesInvoice, PostedCustomerRebateLine);
-                if SalesInvoice."Payment Method Code" = '' then
-                    if LocalCustomer.GET(TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group") then
-                        SalesInvoice.Validate("Payment Method Code", LocalCustomer."Payment Method Code");
-
+                OnBeforeInitRebatePaymentMethodCodeCustomer(SalesInvoice, PostedCustomerRebateLine, TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
                 SalesInvoice."External Document No." := PostedCustomerRebateHeader."No.";
                 SalesInvoice."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
                 SalesInvoice."AQD Customer Rebate" := TRUE;
@@ -1381,10 +1363,6 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.Validate(Amount, LocalRebateAmount);
                     GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
                     OnBeforeInitRebatePaymentMethodCodeVendor(GenJnlLine, InvoicePostingBuffer);
-                    if GenJnlLine."Payment Method Code" = '' then
-                        if LocalVendor.Get(InvoicePostingBuffer."Job No.") then
-                            GenJnlLine.Validate("Payment Method Code", LocalVendor."Payment Method Code");
-
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                     GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
 
@@ -2239,7 +2217,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInitRebatePaymentMethodCodeCustomer(var SalesHeader: Record "Sales Header"; var PostedCustomerRebateLine: Record "AQD Posted Cust Rebate Line")
+    local procedure OnBeforeInitRebatePaymentMethodCodeCustomer(var SalesHeader: Record "Sales Header"; var PostedCustomerRebateLine: Record "AQD Posted Cust Rebate Line"; CustomerNo: Code[20])
     begin
     end;
 

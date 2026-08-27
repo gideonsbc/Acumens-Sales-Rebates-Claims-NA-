@@ -212,6 +212,7 @@ page 14302538 "AQD Posted Customer Rebate Doc"
                 Caption = 'Cancel Sales Rebate';
                 Image = Cancel;
                 ToolTip = 'Cancel this posted sales rebate, reverse rebate-only transactions, and reopen the source sales documents for recalculation.';
+                Enabled = Rec."Customer Rebate Status" <> Rec."Customer Rebate Status"::Cancelled;
 
                 trigger OnAction()
                 var

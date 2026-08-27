@@ -16,9 +16,10 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
     procedure CancelPostedCustomerRebate(var PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header"; ShowDialog: Boolean)
     var
         TransactionNos: List of [Integer];
-        ConfirmCancelLbl: Label 'Do you want to cancel posted sales rebate %1? This reverses only rebate-related transactions and reopens the source sales documents for rebate recalculation.';
+        ConfirmCancelLbl: Label 'Do you want to cancel posted sales rebate %1?';
         CancellationCompletedLbl: Label 'Posted sales rebate %1 was canceled.';
         MissingPostedTxnErr: Label 'Posted sales rebate %1 cannot be canceled because no posted rebate transactions were identified for reversal.';
+        CFBaseEvents: Codeunit "AQD Acumens Base Events";
     begin
         EnsureCancelPermission();
 
@@ -29,18 +30,15 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
             if not Confirm(StrSubstNo(ConfirmCancelLbl, PostedCustRebateHeader."No.")) then
                 exit;
 
+        PostingDate := PostedCustRebateHeader."Posting Date";
+        PostingDate := CFBaseEvents.ConfirmReversalPostingDate(PostingDate);
+
         DeleteOpenRebateSalesDocuments(PostedCustRebateHeader);
         DeleteOpenRebateJournalLines(PostedCustRebateHeader);
+
         ReversePostedRebateSalesDocuments(PostedCustRebateHeader);
+        ReversePostedVendorCommissions(PostedCustRebateHeader);
 
-        CollectPostedTransactionNos(PostedCustRebateHeader, TransactionNos);
-        if (PostedCustRebateHeader."Customer Rebate Status" = PostedCustRebateHeader."Customer Rebate Status"::Posted) and
-           (TransactionNos.Count() = 0) and
-           HasPostedRebateAmounts(PostedCustRebateHeader)
-        then
-            Error(MissingPostedTxnErr, PostedCustRebateHeader."No.");
-
-        ReversePostedTransactions(TransactionNos);
         DeleteSalesRebateApprovals(PostedCustRebateHeader);
         ResetSourceSalesDocumentStatus(PostedCustRebateHeader);
         ResetRebateItemLedgerEntries(PostedCustRebateHeader);
@@ -113,6 +111,7 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
             GenJournalLine.Delete(true);
     end;
 
+    [Obsolete('Not in Use', 'Deprecated in v25.1023.1.35')]
     local procedure CollectPostedTransactionNos(PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header"; var TransactionNos: List of [Integer])
     begin
         PostedCustRebateDetail.Reset();
@@ -158,6 +157,7 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
                                             SalesHeaderLoc.Init();
                                             SalesHeaderLoc.SetHideValidationDialog(TRUE);
                                             SalesHeaderLoc."Document Type" := SalesHeaderLoc."Document Type"::Invoice;
+                                            SalesHeaderLoc."Posting Date" := PostingDate;
                                             SalesHeaderLoc."No." := '';
                                             SalesHeaderLoc.Insert(true);
 
@@ -193,6 +193,7 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
                                             SalesHeaderLoc.Init();
                                             SalesHeaderLoc.SetHideValidationDialog(true);
                                             SalesHeaderLoc."Document Type" := SalesHeaderLoc."Document Type"::"Credit Memo";
+                                            SalesHeaderLoc."Posting Date" := PostingDate;
                                             SalesHeaderLoc."No." := '';
                                             SalesHeaderLoc.Insert(true);
 
@@ -221,6 +222,158 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
             CanceledSalesDocumentNos.Add(DocumentNo);
     end;
 
+    local procedure ReversePostedVendorCommissions(PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header")
+    var
+        LineNo: Integer;
+        GenJnlTemplate: Record "Gen. Journal Template";
+        GenJnlBatch: Record "Gen. Journal Line";
+        LocalRebateAmount: Decimal;
+        VendLedgEntry: Record "Vendor Ledger Entry";
+        DocumentNo: Code[20];
+    begin
+        if not RebateSetup.Get() then
+            exit;
+
+        PostedCustRebateDetail.Reset();
+        PostedCustRebateDetail.SetRange("Rebate No.", PostedCustRebateHeader."No.");
+        PostedCustRebateDetail.SetFilter("Vendor Document No.", '<>%1', '');
+        PostedCustRebateDetail.SetRange("Entity Type", PostedCustRebateDetail."Entity Type"::Vendor);
+        PostedCustRebateDetail.SetFilter("Customer Rebate Status", '<>%1', PostedCustRebateDetail."Customer Rebate Status"::Cancelled);
+        if PostedCustRebateDetail.FindSet() then begin
+            repeat
+                UnapplyVendorLedgerEntry(PostedCustRebateDetail."Vendor Document Type", PostedCustRebateDetail."Vendor Document No.", PostedCustRebateDetail."Entity No.", PostedCustRebateDetail."Rebate Program Code", VendLedgEntry);
+
+                PostedCustRebateLine.Reset();
+                PostedCustRebateLine.SetRange("Rebate No.", PostedCustRebateDetail."Rebate No.");
+                PostedCustRebateLine.SetRange("Line No.", PostedCustRebateDetail."Rebate Line No.");
+                if PostedCustRebateLine.FindFirst() then;
+
+                GenJnlLine.Reset;
+                GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+                GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+                if GenJnlLine.FINDLAST() then
+                    LineNo := GenJnlLine."Line No." + 10000
+                ELSE
+                    LineNo := 10000;
+
+                Clear(DocumentNo);
+                Clear(GenJnlLine);
+                GenJnlLine.Init;
+                GeneralJournalInit(DocumentNo);
+                GenJnlTemplate.Get(JnlBatch."Journal Template Name");
+                GenJnlLine."Document No." := DocumentNo;
+                GenJnlLine."Journal Template Name" := JnlBatch."Journal Template Name";
+                GenJnlLine."Journal Batch Name" := JnlBatch.Name;
+                GenJnlLine."Line No." := LineNo;
+                GenJnlLine.Insert(true);
+                LineNo += 10000;
+
+                if GenJnlLine."Document No." = '' then
+                    GenJnlLine."Document No." := PostedCustRebateDetail."Vendor Document No." + 'R';
+
+                GenJnlLine."Source Code" := GenJnlTemplate."Source Code";
+                GenJnlLine."Reason Code" := GenJnlBatch."Reason Code";
+                GenJnlLine.UpdateJournalBatchID();
+                GenJnlLine.SetHideValidation(true);
+                GenJnlLine."Posting Date" := PostingDate;
+                GenJnlLine.Description := PostedCustRebateHeader."Posting Description";
+
+                LocalRebateAmount := PostedCustRebateDetail."Calculated Line Rebate Amount";
+                if LocalRebateAmount > 0 then
+                    GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
+                else
+                    GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Invoice);
+
+                GenJnlLine."Account Type" := GenJnlLine."Account Type"::Vendor;
+                GenJnlLine.Validate("Account No.", PostedCustRebateDetail."Entity No.");
+                GenJnlLine.Validate("Currency Code", PostedCustRebateLine."Currency Code");
+                GenJnlLine.Validate(Amount, LocalRebateAmount);
+                GenJnlLine."External Document No." := PostedCustRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                GenJnlLine.Validate("Payment Method Code", VendLedgEntry."Payment Method Code");
+
+                GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
+                GenJnlLine.Validate("Bal. Account No.", VendLedgEntry."Bal. Account No.");
+
+                GenJnlLine."Shortcut Dimension 1 Code" := PostedCustRebateLine."Shortcut Dimension 1 Code";
+                GenJnlLine.Validate("Shortcut Dimension 1 Code");
+                GenJnlLine."Shortcut Dimension 2 Code" := PostedCustRebateLine."Shortcut Dimension 2 Code";
+                GenJnlLine.Validate("Shortcut Dimension 2 Code");
+
+                case PostedCustRebateDetail."Vendor Document Type" of
+                    PostedCustRebateDetail."Vendor Document Type"::Invoice:
+                        GenJnlLine."AQD Cust Rebate Document Type" := GenJnlLine."AQD Cust Rebate Document Type"::"Credit Memo";
+                    PostedCustRebateDetail."Vendor Document Type"::"Credit Memo":
+                        GenJnlLine."AQD Cust Rebate Document Type" := GenJnlLine."AQD Cust Rebate Document Type"::Invoice;
+                end;
+
+                GenJnlLine."AQD Cust Rebate Document No." := PostedCustRebateLine."Rebate No.";
+                GenJnlLine."AQD CR Rebate Program Code" := PostedCustRebateDetail."Rebate Program Code";
+                GenJnlLine."AQD CR Pay-to Vendor No." := VendLedgEntry."AQD CR Pay-to Vendor No.";
+                GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
+                GenJnlLine."Source Code" := VendLedgEntry."Source Code";
+                GenJnlLine."AQD Cust Rebate Journal" := TRUE;
+
+                GenJnlLine."Applies-to Doc. Type" := VendLedgEntry."Document Type";
+                GenJnlLine."Applies-to Doc. No." := VendLedgEntry."Document No.";
+
+                //To Flow Source Type and Source No.
+                GenJnlLine."Source Type" := GenJnlLine."Source Type"::Customer;
+                GenJnlLine."Source No." := PostedCustRebateLine."Rebate Pay-To Customer No.";
+                GenJnlLine."AQD CR Bill-To Customer No." := PostedCustRebateLine."Bill-To Customer No.";
+                GenJnlLine.Modify(TRUE);
+                if GenJnlLine.Amount = 0 then
+                    GenJnlLine.Delete();
+
+            until PostedCustRebateDetail.Next() = 0;
+        end;
+
+        GenJnlLine.RESET;
+        GenJnlLine.SetRange("Journal Template Name", RebateSetup."Sales Journal Template Name");
+        GenJnlLine.SetRange("Journal Batch Name", RebateSetup."Sales Journal Batch Name");
+        GenJnlLine.SetRange("AQD Cust Rebate Journal", TRUE);
+        IF GenJnlLine.FindFirst() THEN
+            CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJnlLine);
+    end;
+
+    local procedure GeneralJournalInit(var DocumentNo: Code[20])
+    begin
+        JnlBatch.Init;
+        JnlBatch."Journal Template Name" := RebateSetup."Sales Journal Template Name";
+        JnlBatch.Name := RebateSetup."Sales Journal Batch Name";
+        if not JnlBatch.Get(RebateSetup."Sales Journal Template Name", RebateSetup."Sales Journal Batch Name") then
+            JnlBatch.Insert;
+
+        IF JnlBatch."No. Series" = '' then
+            EXIT;
+
+        DocumentNo := NoSeriesMgt.GetNextNo(JnlBatch."No. Series", Today, true);
+    end;
+
+    procedure UnapplyVendorLedgerEntry(DocumentType: Enum "Gen. Journal Document Type"; DocumentNo: Code[20]; PayeeNo: Code[20]; ProgramCode: Code[20]; var VendLedgEntry: Record "Vendor Ledger Entry")
+    var
+        VendEntryApplyPostedEntries: Codeunit "VendEntry-Apply Posted Entries";
+        DtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
+        ApplyUnapplyParameters: Record "Apply Unapply Parameters";
+    begin
+        VendLedgEntry.SetRange("Document Type", DocumentType);
+        VendLedgEntry.SetRange("Document No.", DocumentNo);
+        VendLedgEntry.SetRange("Vendor No.", PayeeNo);
+        VendLedgEntry.SetRange("AQD CR Rebate Program Code", ProgramCode);
+        if VendLedgEntry.FindFirst() then begin
+            if not VendLedgEntry.Open then begin
+                //Commit();
+                VendEntryApplyPostedEntries.CheckVendorLedgerEntryToUnapply(VendLedgEntry."Entry No.", DtldVendLedgEntry);
+
+                if (DtldVendLedgEntry."Entry Type" = DtldVendLedgEntry."Entry Type"::Application) and (not DtldVendLedgEntry.Unapplied) then begin
+                    ApplyUnapplyParameters."Posting Date" := DtldVendLedgEntry."Posting Date";
+                    ApplyUnapplyParameters."Document No." := DtldVendLedgEntry."Document No.";
+                    VendEntryApplyPostedEntries.PostUnApplyVendor(DtldVendLedgEntry, ApplyUnapplyParameters);
+                end;
+            end;
+        end;
+    end;
+
+    [Obsolete('Not in Use', 'Deprecated in v25.1023.1.35')]
     local procedure AddTransactionNosByNonSalesDocumentNo(DocumentNo: Code[20]; var TransactionNos: List of [Integer])
     begin
         if (DocumentNo = '') or CanceledSalesDocumentNos.Contains(DocumentNo) then
@@ -229,6 +382,7 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
         AddTransactionNosByDocumentNo(DocumentNo, TransactionNos);
     end;
 
+    [Obsolete('Not in Use', 'Deprecated in v25.1023.1.35')]
     local procedure AddTransactionNosByDocumentNo(DocumentNo: Code[20]; var TransactionNos: List of [Integer])
     var
         FromEntryNo: Integer;
@@ -261,15 +415,6 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
                 if not TransactionNos.Contains(GLRegister."No.") then
                     TransactionNos.Add(GLRegister."No.");
             until GLRegister.Next() = 0;
-    end;
-
-    local procedure ReversePostedTransactions(var TransactionNos: List of [Integer])
-    var
-        TransactionNo: Integer;
-    begin
-        ReversalEntry.SetHideWarningDialogs();
-        foreach TransactionNo in TransactionNos do
-            ReversalEntry.ReverseRegister(TransactionNo);
     end;
 
     local procedure DeleteSalesRebateApprovals(PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header")
@@ -329,49 +474,60 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
     end;
 
     local procedure ResetSourceSalesDocumentStatus(PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header")
+    var
+        LocalPostedCustRebateLine: Record "AQD Posted Cust Rebate Line";
     begin
         PostedCustRebateLine.Reset();
         PostedCustRebateLine.SetRange("Rebate No.", PostedCustRebateHeader."No.");
         if PostedCustRebateLine.FindSet() then
             repeat
-                case PostedCustRebateLine."Document Type" of
-                    PostedCustRebateLine."Document Type"::Invoice:
-                        if SalesInvoiceHeader.Get(PostedCustRebateLine."Document No.") then begin
-                            SalesInvoiceHeader."AQD Customer Rebate Status" := SalesInvoiceHeader."AQD Customer Rebate Status"::Cancelled;
-                            SalesInvoiceHeader."AQD Customer Rebate No" := '';
-                            SalesInvoiceHeader."AQD Cust Rebate Program Code" := '';
-                            SalesInvoiceHeader."AQD Marketplace Code" := '';
-                            SalesInvoiceHeader."AQD Cust Rebate Entry Created" := false;
-                            SalesInvoiceHeader.Modify(true);
-                        end;
-                    PostedCustRebateLine."Document Type"::"Credit Memo":
-                        if SalesCrMemoHeader.Get(PostedCustRebateLine."Document No.") then begin
-                            SalesCrMemoHeader."AQD Customer Rebate Status" := SalesCrMemoHeader."AQD Customer Rebate Status"::Cancelled;
-                            SalesCrMemoHeader."AQD Customer Rebate No" := '';
-                            SalesCrMemoHeader."AQD Cust Rebate Program Code" := '';
-                            SalesCrMemoHeader."AQD Marketplace Code" := '';
-                            SalesCrMemoHeader."AQD Rebate Entry Created" := false;
-                            SalesCrMemoHeader.Modify(true);
-                        end;
-                    PostedCustRebateLine."Document Type"::Shipment:
-                        if SalesShipmentHeader.Get(PostedCustRebateLine."Document No.") then begin
-                            SalesShipmentHeader."AQD Customer Rebate Status" := SalesShipmentHeader."AQD Customer Rebate Status"::Cancelled;
-                            SalesShipmentHeader."AQD Customer Rebate No" := '';
-                            SalesShipmentHeader."AQD Cust Rebate Program Code" := '';
-                            SalesShipmentHeader."AQD Marketplace Code" := '';
-                            SalesShipmentHeader."AQD Rebate Entry Created" := false;
-                            SalesShipmentHeader.Modify(true);
-                        end;
-                    PostedCustRebateLine."Document Type"::"Return Receipt":
-                        if ReturnReceiptHeader.Get(PostedCustRebateLine."Document No.") then begin
-                            ReturnReceiptHeader."AQD Customer Rebate Status" := ReturnReceiptHeader."AQD Customer Rebate Status"::Cancelled;
-                            ReturnReceiptHeader."AQD Customer Rebate No" := '';
-                            ReturnReceiptHeader."AQD Cust Rebate Program Code" := '';
-                            ReturnReceiptHeader."AQD Marketplace Code" := '';
-                            ReturnReceiptHeader."AQD Rebate Entry Created" := false;
-                            ReturnReceiptHeader.Modify(true);
-                        end;
+
+                LocalPostedCustRebateLine.Reset();
+                LocalPostedCustRebateLine.SetRange("Document No.", PostedCustRebateLine."Document No.");
+                LocalPostedCustRebateLine.SetRange("Document Type", PostedCustRebateLine."Document Type");
+                LocalPostedCustRebateLine.SetFilter("Customer Rebate Status", '<>%1', PostedCustRebateLine."Customer Rebate Status"::Cancelled);
+                LocalPostedCustRebateLine.SetFilter("Rebate No.", '<>%1', PostedCustRebateLine."Rebate No.");
+                if not LocalPostedCustRebateLine.FindFirst() then begin
+                    case PostedCustRebateLine."Document Type" of
+                        PostedCustRebateLine."Document Type"::Invoice:
+                            if SalesInvoiceHeader.Get(PostedCustRebateLine."Document No.") then begin
+                                SalesInvoiceHeader."AQD Customer Rebate Status" := SalesInvoiceHeader."AQD Customer Rebate Status"::Cancelled;
+                                SalesInvoiceHeader."AQD Customer Rebate No" := '';
+                                SalesInvoiceHeader."AQD Cust Rebate Program Code" := '';
+                                SalesInvoiceHeader."AQD Marketplace Code" := '';
+                                SalesInvoiceHeader."AQD Cust Rebate Entry Created" := false;
+                                SalesInvoiceHeader.Modify(true);
+                            end;
+                        PostedCustRebateLine."Document Type"::"Credit Memo":
+                            if SalesCrMemoHeader.Get(PostedCustRebateLine."Document No.") then begin
+                                SalesCrMemoHeader."AQD Customer Rebate Status" := SalesCrMemoHeader."AQD Customer Rebate Status"::Cancelled;
+                                SalesCrMemoHeader."AQD Customer Rebate No" := '';
+                                SalesCrMemoHeader."AQD Cust Rebate Program Code" := '';
+                                SalesCrMemoHeader."AQD Marketplace Code" := '';
+                                SalesCrMemoHeader."AQD Rebate Entry Created" := false;
+                                SalesCrMemoHeader.Modify(true);
+                            end;
+                        PostedCustRebateLine."Document Type"::Shipment:
+                            if SalesShipmentHeader.Get(PostedCustRebateLine."Document No.") then begin
+                                SalesShipmentHeader."AQD Customer Rebate Status" := SalesShipmentHeader."AQD Customer Rebate Status"::Cancelled;
+                                SalesShipmentHeader."AQD Customer Rebate No" := '';
+                                SalesShipmentHeader."AQD Cust Rebate Program Code" := '';
+                                SalesShipmentHeader."AQD Marketplace Code" := '';
+                                SalesShipmentHeader."AQD Rebate Entry Created" := false;
+                                SalesShipmentHeader.Modify(true);
+                            end;
+                        PostedCustRebateLine."Document Type"::"Return Receipt":
+                            if ReturnReceiptHeader.Get(PostedCustRebateLine."Document No.") then begin
+                                ReturnReceiptHeader."AQD Customer Rebate Status" := ReturnReceiptHeader."AQD Customer Rebate Status"::Cancelled;
+                                ReturnReceiptHeader."AQD Customer Rebate No" := '';
+                                ReturnReceiptHeader."AQD Cust Rebate Program Code" := '';
+                                ReturnReceiptHeader."AQD Marketplace Code" := '';
+                                ReturnReceiptHeader."AQD Rebate Entry Created" := false;
+                                ReturnReceiptHeader.Modify(true);
+                            end;
+                    end;
                 end;
+
             until PostedCustRebateLine.Next() = 0;
     end;
 
@@ -475,4 +631,8 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
         RebateItemLedgerEntry: Record "AQD CR Reb Item Ledger Entry";
         SalesRebateApprovals: Record "AQD Sales Rebate Approvals";
         CanceledSalesDocumentNos: List of [Code[20]];
+        PostingDate: Date;
+        GenJnlLine: Record "Gen. Journal Line";
+        JnlBatch: Record "Gen. Journal Batch";
+        NoSeriesMgt: Codeunit "No. Series";
 }

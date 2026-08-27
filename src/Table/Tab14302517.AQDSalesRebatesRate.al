@@ -64,12 +64,12 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Customer No. Filter';
             DataClassification = CustomerContent;
         }
-        field(10; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
-        {
-            Caption = 'Rate Type';
-            ObsoleteState = Removed;
-            ObsoleteReason = 'Replaced by Rate Type';
-        }
+        // field(10; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
+        // {
+        //     Caption = 'Rate Type';
+        //     ObsoleteState = Removed;
+        //     ObsoleteReason = 'Replaced by Rate Type';
+        // }
         field(13; "Territory Code"; Code[10])
         {
             Caption = 'Territory Code';
@@ -96,6 +96,7 @@ table 14302517 "AQD Sales Rebates Rate"
             else if ("Line Type" = const(Item)) Item
             else if ("Line Type" = const("G/L Account")) "G/L Account"
             else if ("Line Type" = const(Resource)) Resource;
+            //else if ("Line Type" = const("Item Attribute")) "Item Attribute";
             trigger OnValidate()
             begin
                 if Rec."No." <> xRec."No." then begin
@@ -141,6 +142,13 @@ table 14302517 "AQD Sales Rebates Rate"
                                 Rec."Unit of Measure Code" := '';
                                 Rec."Variant Code" := '';
                             END;
+                    // Rec."Line Type"::"Item Attribute":
+                    //     BEGIN
+                    //         IF ItemAttribute.Get("No.") then
+                    //             Rec.Description := ItemAttribute.Name;
+                    //         Rec."Unit of Measure Code" := '';
+                    //         Rec."Variant Code" := '';
+                    //     END;
                     END;
                     Clear("No. Filter");
                 END;
@@ -151,30 +159,19 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Variant Code';
             TableRelation = "Item Variant".Code where("Item No." = field("No."));
         }
-        field(17; "Rebate Program Code"; Code[20])
-        {
-            Caption = 'Program Code';
-            NotBlank = true;
-            TableRelation = "AQD Cust Rebate Program Code";
-            ObsoleteState = Removed;
-            ObsoleteReason = 'Replaced by Program Code';
-
-            // trigger OnValidate()
-            // var
-            //     RebateProgramCode: Record "AQD Cust Rebate Program Code";
-            // begin
-            //     IF RebateProgramCode.GET(Rec."Rebate Program Code") THEN BEGIN
-            //         Rec."Rebate Type" := RebateProgramCode."Customer Default Rebate Type";
-            //         Rec."Rebate %" := RebateProgramCode."Customer Default Rebate %";
-            //         Rec."Rebate Per Unit" := RebateProgramCode."Customer Def Rebate Per Unit";
-            //         Rec."Payee Type" := RebateProgramCode."Payee Type";
-            //         Rec."Payee No." := RebateProgramCode."Payee No.";
-            //         Rec."Rebate Expense Type" := RebateProgramCode."Rebate Expense Type";
-            //         Rec."Default Setup" := RebateProgramCode."Default Setup";
-            //         Rec.Validate("AQD Trade Agreement", RebateProgramCode."AQD Default Trade Agreement");
-            //     END;
-            // end;
-        }
+        // field(17; "Rebate Program Code"; Code[20])
+        // {
+        //     Caption = 'Program Code';
+        //     NotBlank = true;
+        //     TableRelation = "AQD Cust Rebate Program Code";
+        //     ObsoleteState = Removed;
+        //     ObsoleteReason = 'Replaced by Program Code';
+        // }
+        // field(17; "Item Attribute Value Filter"; Text[250])
+        // {
+        //     Caption = 'Item Attribute Value Filter';
+        //     DataClassification = CustomerContent;
+        // }
         field(18; "Starting Date"; Date)
         {
             Caption = 'Starting Date';
@@ -328,13 +325,13 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Blocked Date Time';
             Editable = false;
         }
-        field(586; "Customer No. Filter"; Code[500])
-        {
-            Caption = 'Customer No. Filter';
-            DataClassification = CustomerContent;
-            ObsoleteState = Removed;
-            ObsoleteReason = 'Replaced by Customer No. Filter New';
-        }
+        // field(586; "Customer No. Filter"; Code[500])
+        // {
+        //     Caption = 'Customer No. Filter';
+        //     DataClassification = CustomerContent;
+        //     ObsoleteState = Removed;
+        //     ObsoleteReason = 'Replaced by Customer No. Filter New';
+        // }
         field(810; "Rate Priority"; Enum "AQD Rate Priority")
         {
             Caption = 'Rate Priority';
@@ -351,6 +348,7 @@ table 14302517 "AQD Sales Rebates Rate"
             DataClassification = CustomerContent;
             Editable = false;
         }
+
     }
 
     keys
@@ -450,4 +448,5 @@ table 14302517 "AQD Sales Rebates Rate"
         FixAsset: Record "Fixed Asset";
         ItemCategory: Record "Item Category";
         CustomerRebateRate: Record "AQD Sales Rebates Rate";
+        ItemAttribute: Record "Item Attribute";
 }

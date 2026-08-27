@@ -543,6 +543,80 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
             UNTIL FromCustomerSalesRebateRate.NEXT = 0;
     end;
 
+    // procedure GetItemAttributeValues(ItemNo: Code[20]): Dictionary of [Code[20], List of [Text]]
+    // var
+    //     AttrMap: Record "Item Attribute Value Mapping";
+    //     AttrValue: Record "Item Attribute Value";
+    //     ItemAttr: Record "Item Attribute";
+    //     Result: Dictionary of [Code[20], List of [Text]];
+    //     ValueList: List of [Text];
+    //     AttrCode: Code[20];
+    // begin
+    //     AttrMap.SetRange("Table ID", Database::Item);
+    //     AttrMap.SetRange("No.", ItemNo);
+
+    //     if AttrMap.FindSet() then
+    //         repeat
+    //             // Get the attribute code from Item Attribute table
+    //             ItemAttr.Get(AttrMap."Item Attribute ID");
+    //             AttrCode := ItemAttr.Name;
+
+    //             // Get the actual value (Red, Blue, Green, etc.)
+    //              AttrValue.Get(AttrMap."Item Attribute Value ID", AttrMap."Item Attribute ID");
+
+    //             // Retrieve existing list or create a new one
+    //             if Result.ContainsKey(AttrCode) then
+    //                 ValueList := Result.Get(AttrCode)
+    //             else
+    //                 Clear(ValueList);
+
+    //             // Add the value to the list
+    //             ValueList.Add(AttrValue.Value);
+
+    //             // Store the updated list back into the dictionary
+    //             Result.Add(AttrCode, ValueList);
+
+    //         until AttrMap.Next() = 0;
+
+    //     exit(Result);
+    // end;
+
+    // procedure GetItemAttributeValues(ItemNo: Code[20]): Dictionary of [Text[250], Text]
+    // var
+    //     AttrMap: Record "Item Attribute Value Mapping";
+    //     AttrValue: Record "Item Attribute Value";
+    //     ItemAttr: Record "Item Attribute";
+    //     Result: Dictionary of [Text[250], Text];
+    //     AttrCode: Text[250];
+    // begin
+    //     AttrMap.SetRange("Table ID", Database::Item);
+    //     AttrMap.SetRange("No.", ItemNo);
+
+    //     if AttrMap.FindSet() then
+    //         repeat
+    //             if ItemAttr.Get(AttrMap."Item Attribute ID") then begin
+    //                 AttrCode := ItemAttr.Name;
+
+    //                 if AttrValue.Get(AttrMap."Item Attribute ID", AttrMap."Item Attribute Value ID") then
+    //                     Result.Add(AttrCode, AttrValue.Value);
+    //             end;
+    //         until AttrMap.Next() = 0;
+
+    //     exit(Result);
+    // end;
+
+    // procedure AttributeMatches(RebateAttrCode: Text[250]; RebateAttrFilter: Text[250]; ItemAttributes: Dictionary of [Text[250], Text]): Boolean
+    // var
+    //     ItemAttrValue: Text;
+    // begin
+    //     if not ItemAttributes.ContainsKey(RebateAttrCode) then
+    //         exit(false);
+
+    //     ItemAttrValue := ItemAttributes.Get(RebateAttrCode);
+
+    //     exit(ItemAttrValue in [RebateAttrFilter]);
+    // end;
+
     LOCAL procedure SetUoM(UnitofMeasureCode2: Code[10]; Qty2: Decimal; QtyPerUoM2: Decimal)
     begin
         UnitofMeasureCode := UnitofMeasureCode2;

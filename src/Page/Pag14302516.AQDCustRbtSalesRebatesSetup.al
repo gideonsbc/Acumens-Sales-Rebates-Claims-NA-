@@ -303,6 +303,36 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the number of the item for which the Sales Rebate is valid.';
                 }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                // field("Item Attribute Value Filter"; Rec."Item Attribute Value Filter")
+                // {
+                //     ApplicationArea = All;
+                //     Editable = Rec."Line Type" = Rec."Line Type"::"Item Attribute";
+                //     trigger OnLookup(var Text: Text): Boolean
+                //     var
+                //         ItemAttributeValues: Page "Item Attribute Values";
+                //         ItemAttributeValue: Record "Item Attribute Value";
+                //         AttributeID: Integer;
+                //     begin
+                //         CASE Rec."Line Type" OF
+                //             Rec."Line Type"::"Item Attribute":
+                //                 BEGIN
+                //                     Evaluate(AttributeID, Rec."No.");
+                //                     ItemAttributeValue.SetRange("Attribute ID", AttributeID);
+                //                     ItemAttributeValues.SetTableView(ItemAttributeValue);
+                //                     ItemAttributeValues.LOOKUPMODE := TRUE;
+                //                     IF ItemAttributeValues.RUNMODAL = ACTION::LookupOK THEN
+                //                         Text := ItemAttributeValues.GetSelectionFilter
+                //                     ELSE
+                //                         EXIT(FALSE);
+                //                 END;
+                //         end;
+                //         EXIT(TRUE);
+                //     end;
+                // }
                 field("No. Filter"; Rec."No. Filter")
                 {
                     ApplicationArea = All;
@@ -358,10 +388,6 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the variant of the item on the line.';
                     Visible = false;
-                }
-                field(Description; Rec.Description)
-                {
-                    ApplicationArea = All;
                 }
                 field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {

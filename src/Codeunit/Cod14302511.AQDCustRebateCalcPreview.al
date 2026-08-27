@@ -976,6 +976,27 @@ codeunit 14302511 "AQD Cust Rebate Calc Preview"
         END;
         //<< Rebate Category Loop -- SBC 2026-08-25
 
+
+        // GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Item Attribute");
+        // IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+        //     REPEAT
+        //         TempRebateCategoryLines.RESET;
+        //         TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+        //         TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Vendor);
+        //         IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+        //             TempRebateCategoryLines.Init();
+        //             TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+        //             TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+        //             TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+        //             TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
+        //             TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+        //             OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+        //             TempRebateCategoryLines.Insert();
+        //             GlobalNextRebateProgramLineNo += 10000;
+        //         END;
+        //     UNTIL GlobalSalesRebateRate.Next() = 0;
+        // END;
+
     END;
 
     local procedure InsertCustomerRebateHeader(SalesHeaderIn: Record "Sales Header")

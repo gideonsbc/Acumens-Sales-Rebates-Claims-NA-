@@ -198,6 +198,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnBeforePerformManualRelease, '', false, false)]
     local procedure "Sales Header_OnBeforePerformManualRelease"(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
     begin
+        if not RebateSetup.Get() then
+            exit;
         if not SalesHeader."AQD Disallow Off-Inv Rebate" then
             UpdateOffInvoiceRebate(SalesHeader);
     end;
@@ -205,6 +207,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Document-Print", OnBeforeDoPrintSalesHeader, '', false, false)]
     local procedure "Document-Print_OnBeforeDoPrintSalesHeader"(var SalesHeader: Record "Sales Header"; ReportUsage: Integer; SendAsEmail: Boolean; var IsPrinted: Boolean)
     begin
+        if not RebateSetup.Get() then
+            exit;
         if not SalesHeader."AQD Disallow Off-Inv Rebate" then
             UpdateOffInvoiceRebate(SalesHeader);
     end;
@@ -212,6 +216,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Document-Print", OnBeforeProcessPrintSalesOrder, '', false, false)]
     local procedure Cod229_OnBeforeProcessPrintSalesOrder(var SalesHeader: Record "Sales Header"; Usage: Option "Order Confirmation","Work Order","Pick Instruction"; var IsHandled: Boolean)
     begin
+        if not RebateSetup.Get() then
+            exit;
         if not SalesHeader."AQD Disallow Off-Inv Rebate" then
             UpdateOffInvoiceRebate(SalesHeader);
     end;
@@ -220,6 +226,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterPrepareOpeningDocumentStatistics, '', false, false)]
     local procedure "Sales Header_OnAfterPrepareOpeningDocumentStatistics"(var SalesHeader: Record "Sales Header")
     begin
+        if not RebateSetup.Get() then
+            exit;
         if not SalesHeader."AQD Disallow Off-Inv Rebate" then
             UpdateOffInvoiceRebate(SalesHeader);
     end;
@@ -229,6 +237,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     var
         BillToCustomer: Record Customer;
     BEGIN
+        if not RebateSetup.Get() then
+            exit;
         IF BillToCustomer.GET(SalesShptHeader."Bill-to Customer No.") THEN
             SalesShptHeader."AQD Comm Territory Code" := BillToCustomer."Territory Code";
     END;
@@ -238,6 +248,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     var
         BillToCustomer: Record Customer;
     BEGIN
+        if not RebateSetup.Get() then
+            exit;
         IF BillToCustomer.GET(SalesInvHeader."Bill-to Customer No.") THEN
             SalesInvHeader."AQD CR Territory Code" := BillToCustomer."Territory Code";
     END;
@@ -247,6 +259,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     var
         BillToCustomer: Record Customer;
     BEGIN
+        if not RebateSetup.Get() then
+            exit;
         IF BillToCustomer.GET(SalesInvHeader."Bill-to Customer No.") THEN
             SalesCrMemoHeader."AQD CR Territory Code" := BillToCustomer."Territory Code";
     END;
@@ -256,6 +270,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     var
         BillToCustomer: Record Customer;
     BEGIN
+        if not RebateSetup.Get() then
+            exit;
         IF BillToCustomer.GET(ReturnRcptHeader."Bill-to Customer No.") THEN
             ReturnRcptHeader."AQD Comm Territory Code" := BillToCustomer."Territory Code";
     END;
@@ -509,6 +525,12 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
 
         if RebateProgramCodeSetup.Get(FromCustomerSalesRebateRate."Program Code") then
             CustomerRebateDetailsLocIn."Rebate Payment Method Code" := RebateProgramCodeSetup."Rebate Payment Method Code";
+
+        // if FromCustomerSalesRebateRate."Line Type" = FromCustomerSalesRebateRate."Line Type"::"Item Attribute" then begin
+        //     if FromCustomerSalesRebateRate.Description <> '' then
+        //         if not SalesRebateRateCalcMgt.AttributeMatches(FromCustomerSalesRebateRate.Description, FromCustomerSalesRebateRate."Item Attribute Value Filter", SalesRebateRateCalcMgt.GetItemAttributeValues(CustomerRebateDetailsLocIn."No.")) then
+        //             IsHandled := true;
+        // end;
 
         if CustomerRebateDetailsLocIn."Line Type" = CustomerRebateDetailsLocIn."Line Type"::"Rebate Category" then begin
             if not SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(CustomerRebateDetailsLocIn."Rebate Item Category Code", SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(FromCustomerSalesRebateRate."No.")) then
@@ -1066,8 +1088,9 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Customer Rebate Post", OnBeforeInitRebatePaymentMethodCodeCustomer, '', false, false)]
-    local procedure "AQD Customer Rebate Post_OnBeforeInitRebatePaymentMethodCodeCustomer"(var SalesHeader: Record "Sales Header"; var PostedCustomerRebateLine: Record "AQD Posted Cust Rebate Line")
+    local procedure "AQD Customer Rebate Post_OnBeforeInitRebatePaymentMethodCodeCustomer"(var SalesHeader: Record "Sales Header"; var PostedCustomerRebateLine: Record "AQD Posted Cust Rebate Line"; CustomerNo: Code[20])
     var
+        LocalCustomer: Record Customer;
         PostedCustomerRebateLineDetails: Record "AQD Posted Cust Reb Details";
     begin
         PostedCustomerRebateLineDetails.RESET;
@@ -1077,15 +1100,24 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         PostedCustomerRebateLineDetails.SetFilter("Rebate Payment Method Code", '<>%1', '');
         if PostedCustomerRebateLineDetails.FindFirst() then
             SalesHeader.Validate("Payment Method Code", PostedCustomerRebateLineDetails."Rebate Payment Method Code");
+
+        if SalesHeader."Payment Method Code" = '' then
+            if LocalCustomer.GET(CustomerNo) then
+                SalesHeader.Validate("Payment Method Code", LocalCustomer."Payment Method Code");
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Customer Rebate Post", OnBeforeInitRebatePaymentMethodCodeVendor, '', false, false)]
     local procedure "AQD Customer Rebate Post_OnBeforeInitRebatePaymentMethodCodeVendor"(var GenJnlLine: Record "Gen. Journal Line"; InvoicePostingBuffer: Record "Invoice Posting Buffer")
     var
+        LocalVendor: Record Vendor;
         ProgramCodeSetup: Record "AQD Cust Rebate Program Code";
     begin
         if ProgramCodeSetup.Get(InvoicePostingBuffer."AQD Program Code") then
             GenJnlLine.Validate("Payment Method Code", ProgramCodeSetup."Rebate Payment Method Code");
+
+        if GenJnlLine."Payment Method Code" = '' then
+            if LocalVendor.Get(InvoicePostingBuffer."Job No.") then
+                GenJnlLine.Validate("Payment Method Code", LocalVendor."Payment Method Code");
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Customer Rebate Post", OnBeforeInitRebatePaymentMethodCodeEmployee, '', false, false)]
