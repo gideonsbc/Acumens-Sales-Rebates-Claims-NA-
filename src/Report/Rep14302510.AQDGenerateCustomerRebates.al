@@ -160,7 +160,7 @@ report 14302510 "AQD Generate Customer Rebates"
     var
         CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
         CreatedCustomerRebate: Record "AQD Created Customer Rebate";
-        RebateCalculationMgt: Codeunit "AQD Cust Rebate Calc Mgt";
+        RebateCalculationMgt: Codeunit "AQD Sales Rebate Calc Mgt";
         Window: Dialog;
         Location: Boolean;
         ShortDim1: Boolean;

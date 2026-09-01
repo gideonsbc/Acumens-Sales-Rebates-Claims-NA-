@@ -1,4 +1,4 @@
-codeunit 14302513 "AQD Cust Rebate Calc Mgt"
+codeunit 14302622 "AQD Sales Rebate Calc Mgt"
 {
     Permissions = TableData "Cust. Ledger Entry" = rm,
                   TableData "Item Ledger Entry" = rm,
@@ -29,7 +29,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         FilterCustomer: Record Customer;
         CreatedCustomerRebate: Record "AQD Created Customer Rebate";
         TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary;
-        GlobalSalesRebateRate: Record "AQD Sales Rebates Rate";
+        GlobalSalesRebateRate: Record "AQD Sales Rebates Rate New";
         Item: Record Item;
         Resource: Record Resource;
         GLAccount: Record "G/L Account";
@@ -90,13 +90,8 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         LastRecord: Boolean;
         GlobalSummaryArray: array[7] of Boolean;
         GlobalRegenerateEntries: Boolean;
-        SalesRebateCalcMgt: Codeunit "AQD Cust Rebate Calc Mgt";
+        SalesRebateCalcMgt: Codeunit "AQD Sales Rebate Calc Mgt";
         SalesRebateRateCalcMgt: Codeunit "AQD Sales Rebate Rate Calc Mgt";
-
-    [Obsolete('Replaced by the new function', 'v25.1023.1.30')]
-    local procedure "===Calculation==="()
-    begin
-    end;
 
     procedure SetCustomerRebateParameters(var CustomerIn: Record Customer; SummaryArray: array[7] of Boolean; ShptRcptNo: Code[20]; InvCrMemoNo: Code[20]; CalledFromGenerateCustomerRebateIn: Boolean; ProcessCatchUpRebate: Boolean; RebateProgramCodeFilter: Code[20]; BrokerVendorNo: Code[20])
     var
@@ -331,7 +326,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         LocalRecordFound: Boolean;
         LocalRebateEntigyType: Enum "AQD CR Rebate Entity Type";
         LocalSourceDocType: Option "Posted Invoice","Posted Credit Memo";
-        LocaSalesRebateRate: Record "AQD Sales Rebates Rate";
+        LocaSalesRebateRate: Record "AQD Sales Rebates Rate New";
         SeenPayees: Dictionary of [Code[20], Boolean];
     begin
         IsHandled := false;
@@ -453,77 +448,6 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                             until LocaSalesRebateRate.Next() = 0;
                         end;
 
-                        // LocalRebateEntigyType := LocalRebateEntigyType::Vendor;
-                        // LocalVendor.RESET;
-                        // LocalVendor.SetRange("AQD Customer Rebate", TRUE);
-                        // IF LocalVendor.FINDFIRST THEN BEGIN
-                        //     REPEAT
-                        //         LocalVendorRebate := FALSE;
-                        //         LocalRecordFound := FALSE;
-
-                        //         LocalEmpVenTerritoryFilter.RESET;
-                        //         LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Vendor);
-                        //         LocalEmpVenTerritoryFilter.SetRange("No.", LocalVendor."No.");
-                        //         IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
-                        //             LocalRecordFound := TRUE;
-                        //             LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesInvHeaderIn."AQD CR Territory Code", '');
-                        //             IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
-                        //                 LocalVendorRebate := TRUE;
-                        //         END;
-
-                        //         LocalEmpVenCustomerFilter.RESET;
-                        //         LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Vendor);
-                        //         LocalEmpVenCustomerFilter.SetRange("No.", LocalVendor."No.");
-                        //         IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
-                        //             LocalRecordFound := TRUE;
-                        //             LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
-                        //             IF LocalEmpVenCustomerFilter.FINDFIRST THEN
-                        //                 LocalVendorRebate := TRUE;
-                        //         END;
-
-                        //         IF NOT LocalRecordFound THEN
-                        //             LocalVendorRebate := TRUE;
-
-                        //         IF LocalVendorRebate THEN
-                        //             InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalVendor."No.");
-                        //     until LocalVendor.Next() = 0;
-                        // END;
-
-                        // LocalRebateEntigyType := LocalRebateEntigyType::Employee;
-                        // LocalEmployee.RESET;
-                        // LocalEmployee.SetRange("AQD Customer Rebate", TRUE);
-                        // IF LocalEmployee.FINDFIRST THEN BEGIN
-                        //     REPEAT
-                        //         LocalEmployeeRebate := FALSE;
-                        //         LocalRecordFound := FALSE;
-
-                        //         LocalEmpVenTerritoryFilter.RESET;
-                        //         LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Employee);
-                        //         LocalEmpVenTerritoryFilter.SetRange("No.", LocalEmployee."No.");
-                        //         IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
-                        //             LocalRecordFound := TRUE;
-                        //             LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesInvHeaderIn."AQD CR Territory Code", '');
-                        //             IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
-                        //                 LocalEmployeeRebate := TRUE;
-                        //         END;
-
-                        //         LocalEmpVenCustomerFilter.RESET;
-                        //         LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Employee);
-                        //         LocalEmpVenCustomerFilter.SetRange("No.", LocalEmployee."No.");
-                        //         IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
-                        //             LocalRecordFound := TRUE;
-                        //             LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
-                        //             IF LocalEmpVenCustomerFilter.FINDFIRST THEN
-                        //                 LocalEmployeeRebate := TRUE;
-                        //         END;
-
-                        //         IF NOT LocalRecordFound THEN
-                        //             LocalEmployeeRebate := TRUE;
-
-                        //         IF LocalEmployeeRebate THEN
-                        //             InsertRebateDetail(DocumentType::Invoice, SalesInvHeaderIn, SalesInvLine, SalesCrMemoHeader, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalEmployee."No.");
-                        //     until LocalEmployee.Next() = 0;
-                        // END;
                     END;
                 until SalesInvLine.Next = 0;
             end;
@@ -650,7 +574,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         LocalRecordFound: Boolean;
         LocalRebateEntigyType: Enum "AQD CR Rebate Entity Type";
         LocalSourceDocType: Option "Posted Invoice","Posted Credit Memo";
-        LocaSalesRebateRate: Record "AQD Sales Rebates Rate";
+        LocaSalesRebateRate: Record "AQD Sales Rebates Rate New";
         SeenPayees: Dictionary of [Code[20], Boolean];
     begin
         IsHandled := false;
@@ -774,77 +698,6 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                             until LocaSalesRebateRate.Next() = 0;
                         end;
 
-                        // LocalRebateEntigyType := LocalRebateEntigyType::Vendor;
-                        // LocalVendor.RESET;
-                        // LocalVendor.SetRange("AQD Customer Rebate", TRUE);
-                        // IF LocalVendor.FINDFIRST THEN BEGIN
-                        //     REPEAT
-                        //         LocalVendorRebate := FALSE;
-                        //         LocalRecordFound := FALSE;
-
-                        //         LocalEmpVenTerritoryFilter.RESET;
-                        //         LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Vendor);
-                        //         LocalEmpVenTerritoryFilter.SetRange("No.", LocalVendor."No.");
-                        //         IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
-                        //             LocalRecordFound := TRUE;
-                        //             LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesCrMHeaderIn."AQD CR Territory Code", '');
-                        //             IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
-                        //                 LocalVendorRebate := TRUE;
-                        //         END;
-
-                        //         LocalEmpVenCustomerFilter.RESET;
-                        //         LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Vendor);
-                        //         LocalEmpVenCustomerFilter.SetRange("No.", LocalVendor."No.");
-                        //         IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
-                        //             LocalRecordFound := TRUE;
-                        //             LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
-                        //             IF LocalEmpVenCustomerFilter.FINDFIRST THEN
-                        //                 LocalVendorRebate := TRUE;
-                        //         END;
-
-                        //         IF NOT LocalRecordFound THEN
-                        //             LocalVendorRebate := TRUE;
-
-                        //         IF LocalVendorRebate THEN
-                        //             InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalVendor."No.");
-                        //     until LocalVendor.Next() = 0;
-                        // END;
-
-                        // LocalRebateEntigyType := LocalRebateEntigyType::Employee;
-                        // LocalEmployee.RESET;
-                        // LocalEmployee.SetRange("AQD Customer Rebate", TRUE);
-                        // IF LocalEmployee.FINDFIRST THEN BEGIN
-                        //     REPEAT
-                        //         LocalEmployeeRebate := FALSE;
-                        //         LocalRecordFound := FALSE;
-
-                        //         LocalEmpVenTerritoryFilter.RESET;
-                        //         LocalEmpVenTerritoryFilter.SetRange("Type", LocalEmpVenTerritoryFilter."Type"::Employee);
-                        //         LocalEmpVenTerritoryFilter.SetRange("No.", LocalEmployee."No.");
-                        //         IF LocalEmpVenTerritoryFilter.FINDFIRST THEN BEGIN
-                        //             LocalRecordFound := TRUE;
-                        //             LocalEmpVenTerritoryFilter.SETFILTER("Territory Code", '%1|%2', SalesCrMHeaderIn."AQD CR Territory Code", '');
-                        //             IF LocalEmpVenTerritoryFilter.FINDFIRST THEN
-                        //                 LocalEmployeeRebate := TRUE;
-                        //         END;
-
-                        //         LocalEmpVenCustomerFilter.RESET;
-                        //         LocalEmpVenCustomerFilter.SetRange("Type", LocalEmpVenCustomerFilter."Type"::Employee);
-                        //         LocalEmpVenCustomerFilter.SetRange("No.", LocalEmployee."No.");
-                        //         IF LocalEmpVenCustomerFilter.FINDFIRST THEN BEGIN
-                        //             LocalRecordFound := TRUE;
-                        //             LocalEmpVenCustomerFilter.SETFILTER("Customer No.", '%1|%2', CustomerIn."No.", '');
-                        //             IF LocalEmpVenCustomerFilter.FINDFIRST THEN
-                        //                 LocalEmployeeRebate := TRUE;
-                        //         END;
-
-                        //         IF NOT LocalRecordFound THEN
-                        //             LocalEmployeeRebate := TRUE;
-
-                        //         IF LocalEmployeeRebate THEN
-                        //             InsertRebateDetail(DocumentType::"Credit Memo", SalesInvoiceHeader, SalesInvLine, SalesCrMHeaderIn, SalesCrMemoLine, CustomerIn, RebateNo, RebateLineNo, LocalRebateEntigyType, LocalEmployee."No.");
-                        //     until LocalEmployee.Next() = 0;
-                        // END;
                     end;
                 until SalesCrMemoLine.Next = 0;
         end;
@@ -992,7 +845,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         GlobalSalesRebateRate.SetFilter("No.", '%1|%2', DocumentLine_No, '');
         IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
             REPEAT
-                if IsCustomerMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter New") then begin
+                if IsCustomerMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter") then begin
                     TempRebateCategoryLines.RESET;
                     TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
                     TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Customer);
@@ -1010,8 +863,50 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
             UNTIL GlobalSalesRebateRate.Next() = 0;
         END;
 
-        // Rebate Category
+        GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Item Attribute");
+        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+            REPEAT
+                if (GlobalSalesRebateRate."Item Attribute Name" <> '') and (GlobalSalesRebateRate."Item Attribute Value Filter" <> '') then begin
+                    if SalesRebateRateCalcMgt.AttributeMatches(GlobalSalesRebateRate."Item Attribute Name", GlobalSalesRebateRate."Item Attribute Value Filter", SalesRebateRateCalcMgt.GetItemAttributeValues(DocumentLine_No)) then begin
+                        if SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter") then begin
+                            TempRebateCategoryLines.RESET;
+                            TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                            TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Customer);
+                            IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                                TempRebateCategoryLines.Init();
+                                TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                                TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                                TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                                TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
+                                TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                                OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                                TempRebateCategoryLines.Insert();
+                                GlobalNextRebateProgramLineNo += 10000;
+                            END;
+                        end;
+                    end
+                end else begin
+                    if SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter") then begin
+                        TempRebateCategoryLines.RESET;
+                        TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                        TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Customer);
+                        IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                            TempRebateCategoryLines.Init();
+                            TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                            TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                            TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                            TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
+                            TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                            OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                            TempRebateCategoryLines.Insert();
+                            GlobalNextRebateProgramLineNo += 10000;
+                        END;
+                    end;
+                end;
+            UNTIL GlobalSalesRebateRate.Next() = 0;
+        END;
 
+        //>> Rebate Category Loop -- SBC 2026-08-25
         GlobalSalesRebateRate.RESET;
         GlobalSalesRebateRate.SetRange("Customer Type", GlobalSalesRebateRate."Customer Type"::Customer);
         GlobalSalesRebateRate.SetRange("Payee Type", GlobalSalesRebateRate."Payee Type"::CustomerRebate);
@@ -1053,10 +948,9 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         //GlobalSalesRebateRate.SetFilter("No.", '%1|%2', GlobalRebateCategoryCode, '');
         IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
             REPEAT
-
                 if (GlobalSalesRebateRate."No." <> '') then begin
                     if SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(GlobalRebateCategoryCode, SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(GlobalSalesRebateRate."No.")) then begin
-                        if IsCustomerMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter New") then begin
+                        if IsCustomerMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter") then begin
                             TempRebateCategoryLines.RESET;
                             TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
                             TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Customer);
@@ -1074,7 +968,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                         end;
                     end;
                 end else begin
-                    if IsCustomerMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter New") then begin
+                    if IsCustomerMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter") then begin
                         TempRebateCategoryLines.RESET;
                         TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
                         TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Customer);
@@ -1091,9 +985,10 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                         END;
                     end;
                 end;
-
             UNTIL GlobalSalesRebateRate.Next() = 0;
         END;
+        //<< Rebate Category Loop -- SBC 2026-08-25
+
     END;
 
     local procedure GetCustomerTypeRebateCategoryLines(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date; var IsRebateEnabled: Boolean): Boolean
@@ -1133,7 +1028,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         GlobalSalesRebateRate.SetFilter("No.", '%1|%2', DocumentLine_No, '');
         IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
             REPEAT
-                if IsCustomerTypeMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter New") then begin
+                if IsCustomerTypeMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter") then begin
                     TempRebateCategoryLines.RESET;
                     TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
                     TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Customer);
@@ -1151,8 +1046,50 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
             UNTIL GlobalSalesRebateRate.Next() = 0;
         END;
 
-        // Rebate Category
+        GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Item Attribute");
+        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+            REPEAT
+                if (GlobalSalesRebateRate."Item Attribute Name" <> '') and (GlobalSalesRebateRate."Item Attribute Value Filter" <> '') then begin
+                    if SalesRebateRateCalcMgt.AttributeMatches(GlobalSalesRebateRate."Item Attribute Name", GlobalSalesRebateRate."Item Attribute Value Filter", SalesRebateRateCalcMgt.GetItemAttributeValues(DocumentLine_No)) then begin
+                        if SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter") then begin
+                            TempRebateCategoryLines.RESET;
+                            TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                            TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Customer);
+                            IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                                TempRebateCategoryLines.Init();
+                                TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                                TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                                TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                                TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
+                                TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                                OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                                TempRebateCategoryLines.Insert();
+                                GlobalNextRebateProgramLineNo += 10000;
+                            END;
+                        end;
+                    end
+                end else begin
+                    if SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter") then begin
+                        TempRebateCategoryLines.RESET;
+                        TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                        TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Customer);
+                        IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                            TempRebateCategoryLines.Init();
+                            TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                            TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                            TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                            TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Customer;
+                            TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                            OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                            TempRebateCategoryLines.Insert();
+                            GlobalNextRebateProgramLineNo += 10000;
+                        END;
+                    end;
+                end;
+            UNTIL GlobalSalesRebateRate.Next() = 0;
+        END;
 
+        //>> Rebate Category Loop -- SBC 2026-08-25
         GlobalSalesRebateRate.RESET;
         GlobalSalesRebateRate.SetRange("Customer Type", GlobalSalesRebateRate."Customer Type"::"Customer Category");
         GlobalSalesRebateRate.SetRange("Payee Type", GlobalSalesRebateRate."Payee Type"::CustomerRebate);
@@ -1182,13 +1119,11 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
         END;
 
         GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Rebate Category");
-        //GlobalSalesRebateRate.SetFilter("No.", '%1|%2', GlobalRebateCategoryCode, '');
         IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
             REPEAT
-
                 if (GlobalSalesRebateRate."No." <> '') then begin
                     if SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(GlobalRebateCategoryCode, SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(GlobalSalesRebateRate."No.")) then begin
-                        if IsCustomerTypeMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter New") then begin
+                        if IsCustomerTypeMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter") then begin
                             TempRebateCategoryLines.RESET;
                             TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
                             TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Customer);
@@ -1206,7 +1141,7 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                         end;
                     end;
                 end else begin
-                    if IsCustomerTypeMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter New") then begin
+                    if IsCustomerTypeMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate."Customer No. Filter") then begin
                         TempRebateCategoryLines.RESET;
                         TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
                         TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Customer);
@@ -1223,9 +1158,373 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
                         END;
                     end;
                 end;
+            UNTIL GlobalSalesRebateRate.Next() = 0;
+        END;
+        //<< Rebate Category Loop -- SBC 2026-08-25
+
+    END;
+
+    local procedure GetEmployeeRebateCategoryLines(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date; var IsRebateEnabled: Boolean): Boolean
+    var
+        IsHandled: Boolean;
+    begin
+        IsHandled := false;
+
+        GlobalSalesRebateRate.RESET;
+        GlobalSalesRebateRate.SetRange("Payee Type", GlobalSalesRebateRate."Payee Type"::"Employee Commission");
+        GlobalSalesRebateRate.SetRange("Payee No.");
+
+        case DocumentLine_Type of
+            DocumentLine_Type::Item:
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Item);
+
+                    Item.GET(DocumentLine_No);
+                    IsRebateEnabled := Item."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := Item."AQD Cust Rebate Category Code";
+                end;
+            DocumentLine_Type::"G/L Account":
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"G/L Account");
+
+                    GLAccount.GET(DocumentLine_No);
+                    IsRebateEnabled := GLAccount."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := GLAccount."AQD Cust Rebate Category Code";
+                end;
+            DocumentLine_Type::Resource:
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Resource);
+
+                    Resource.GET(DocumentLine_No);
+                    IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
+                end;
+            else begin
+                IsHandled := FALSE;
+                OnBeforeGetRebateRateForOtherTypes(DocumentLine_Type, DocumentLine_No, IsRebateEnabled, IsHandled);
+                IF IsHandled THEN
+                    EXIT(IsRebateEnabled);
+            end;
+        END;
+
+        GlobalSalesRebateRate.SetFilter("No.", '%1|%2', DocumentLine_No, '');
+        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+            REPEAT
+                TempRebateCategoryLines.RESET;
+                TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Employee);
+                IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                    TempRebateCategoryLines.Init();
+                    TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                    TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                    TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                    TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Employee;
+                    OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                    TempRebateCategoryLines.Insert();
+                    GlobalNextRebateProgramLineNo += 10000;
+                END;
+            UNTIL GlobalSalesRebateRate.Next() = 0;
+        END;
+
+        GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Item Attribute");
+        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+            REPEAT
+                if (GlobalSalesRebateRate."Item Attribute Name" <> '') and (GlobalSalesRebateRate."Item Attribute Value Filter" <> '') then begin
+                    if SalesRebateRateCalcMgt.AttributeMatches(GlobalSalesRebateRate."Item Attribute Name", GlobalSalesRebateRate."Item Attribute Value Filter", SalesRebateRateCalcMgt.GetItemAttributeValues(DocumentLine_No)) then begin
+                        TempRebateCategoryLines.RESET;
+                        TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                        TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Employee);
+                        IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                            TempRebateCategoryLines.Init();
+                            TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                            TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                            TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                            TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Employee;
+                            TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                            OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                            TempRebateCategoryLines.Insert();
+                            GlobalNextRebateProgramLineNo += 10000;
+                        END;
+                    end;
+                end else begin
+                    TempRebateCategoryLines.RESET;
+                    TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                    TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Employee);
+                    IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                        TempRebateCategoryLines.Init();
+                        TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                        TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                        TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                        TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Employee;
+                        TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                        OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                        TempRebateCategoryLines.Insert();
+                        GlobalNextRebateProgramLineNo += 10000;
+                    END;
+                end;
+            UNTIL GlobalSalesRebateRate.Next() = 0;
+        END;
+
+        //>> Rebate Category Loop -- SBC 2026-08-25
+        GlobalSalesRebateRate.RESET;
+        GlobalSalesRebateRate.SetRange("Payee Type", GlobalSalesRebateRate."Payee Type"::"Employee Commission");
+        GlobalSalesRebateRate.SetRange("Payee No.");
+
+        case DocumentLine_Type of
+            DocumentLine_Type::Item:
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Item);
+
+                    Item.GET(DocumentLine_No);
+                    IsRebateEnabled := Item."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := Item."AQD Cust Rebate Category Code";
+                end;
+            DocumentLine_Type::"G/L Account":
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"G/L Account");
+
+                    GLAccount.GET(DocumentLine_No);
+                    IsRebateEnabled := GLAccount."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := GLAccount."AQD Cust Rebate Category Code";
+                end;
+            DocumentLine_Type::Resource:
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Resource);
+
+                    Resource.GET(DocumentLine_No);
+                    IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
+                end;
+            else begin
+                IsHandled := FALSE;
+                OnBeforeGetRebateRateForOtherTypes(DocumentLine_Type, DocumentLine_No, IsRebateEnabled, IsHandled);
+                IF IsHandled THEN
+                    EXIT(IsRebateEnabled);
+            end;
+        END;
+
+        GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Rebate Category");
+        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+            REPEAT
+                if (GlobalSalesRebateRate."No." <> '') then begin
+                    if SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(GlobalRebateCategoryCode, SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(GlobalSalesRebateRate."No.")) then begin
+                        TempRebateCategoryLines.RESET;
+                        TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                        TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Employee);
+                        IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                            TempRebateCategoryLines.Init();
+                            TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                            TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                            TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                            TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Employee;
+                            TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                            OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                            TempRebateCategoryLines.Insert();
+                            GlobalNextRebateProgramLineNo += 10000;
+                        END;
+                    end;
+                end else begin
+                    TempRebateCategoryLines.RESET;
+                    TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                    TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Employee);
+                    IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                        TempRebateCategoryLines.Init();
+                        TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                        TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                        TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                        TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Employee;
+                        TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                        OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                        TempRebateCategoryLines.Insert();
+                        GlobalNextRebateProgramLineNo += 10000;
+                    END;
+                end;
+            UNTIL GlobalSalesRebateRate.Next() = 0;
+        END;
+        //<< Rebate Category Loop -- SBC 2026-08-25
+
+    END;
+
+    local procedure GetVendorRebateCategoryLines(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date; var IsRebateEnabled: Boolean): Boolean
+    var
+        IsHandled: Boolean;
+    begin
+        IsHandled := false;
+
+        GlobalSalesRebateRate.RESET;
+        GlobalSalesRebateRate.SetRange("Payee Type", GlobalSalesRebateRate."Payee Type"::"Vendor Commission");
+        GlobalSalesRebateRate.SetRange("Payee No.");
+
+        case DocumentLine_Type of
+            DocumentLine_Type::Item:
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Item);
+
+                    Item.GET(DocumentLine_No);
+                    IsRebateEnabled := Item."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := Item."AQD Cust Rebate Category Code";
+                end;
+            DocumentLine_Type::"G/L Account":
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"G/L Account");
+
+                    GLAccount.GET(DocumentLine_No);
+                    IsRebateEnabled := GLAccount."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := GLAccount."AQD Cust Rebate Category Code";
+                end;
+            DocumentLine_Type::Resource:
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Resource);
+
+                    Resource.GET(DocumentLine_No);
+                    IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
+                end;
+            else begin
+                IsHandled := FALSE;
+                OnBeforeGetRebateRateForOtherTypes(DocumentLine_Type, DocumentLine_No, IsRebateEnabled, IsHandled);
+                IF IsHandled THEN
+                    EXIT(IsRebateEnabled);
+            end;
+        END;
+
+        GlobalSalesRebateRate.SetFilter("No.", '%1|%2', DocumentLine_No, '');
+        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+            REPEAT
+                TempRebateCategoryLines.RESET;
+                TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Vendor);
+                IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                    TempRebateCategoryLines.Init();
+                    TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                    TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                    TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                    TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
+                    OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                    TempRebateCategoryLines.Insert();
+                    GlobalNextRebateProgramLineNo += 10000;
+                END;
+            UNTIL GlobalSalesRebateRate.Next() = 0;
+        END;
+
+        GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Item Attribute");
+        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+            REPEAT
+                if (GlobalSalesRebateRate."Item Attribute Name" <> '') and (GlobalSalesRebateRate."Item Attribute Value Filter" <> '') then begin
+                    if SalesRebateRateCalcMgt.AttributeMatches(GlobalSalesRebateRate."Item Attribute Name", GlobalSalesRebateRate."Item Attribute Value Filter", SalesRebateRateCalcMgt.GetItemAttributeValues(DocumentLine_No)) then begin
+                        TempRebateCategoryLines.RESET;
+                        TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                        TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Vendor);
+                        IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                            TempRebateCategoryLines.Init();
+                            TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                            TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                            TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                            TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
+                            TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                            OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                            TempRebateCategoryLines.Insert();
+                            GlobalNextRebateProgramLineNo += 10000;
+                        END;
+                    end;
+                end else begin
+                    TempRebateCategoryLines.RESET;
+                    TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                    TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Vendor);
+                    IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                        TempRebateCategoryLines.Init();
+                        TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                        TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                        TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                        TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
+                        TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                        OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                        TempRebateCategoryLines.Insert();
+                        GlobalNextRebateProgramLineNo += 10000;
+                    END;
+                end;
+            UNTIL GlobalSalesRebateRate.Next() = 0;
+        END;
+
+        //>> Rebate Category Loop -- SBC 2026-08-25
+        GlobalSalesRebateRate.RESET;
+        GlobalSalesRebateRate.SetRange("Payee Type", GlobalSalesRebateRate."Payee Type"::"Vendor Commission");
+        GlobalSalesRebateRate.SetRange("Payee No.");
+
+        case DocumentLine_Type of
+            DocumentLine_Type::Item:
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Item);
+
+                    Item.GET(DocumentLine_No);
+                    IsRebateEnabled := Item."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := Item."AQD Cust Rebate Category Code";
+                end;
+            DocumentLine_Type::"G/L Account":
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"G/L Account");
+
+                    GLAccount.GET(DocumentLine_No);
+                    IsRebateEnabled := GLAccount."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := GLAccount."AQD Cust Rebate Category Code";
+                end;
+            DocumentLine_Type::Resource:
+                begin
+                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Resource);
+
+                    Resource.GET(DocumentLine_No);
+                    IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
+                    GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
+                end;
+            else begin
+                IsHandled := FALSE;
+                OnBeforeGetRebateRateForOtherTypes(DocumentLine_Type, DocumentLine_No, IsRebateEnabled, IsHandled);
+                IF IsHandled THEN
+                    EXIT(IsRebateEnabled);
+            end;
+        END;
+
+        GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Rebate Category");
+        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+            REPEAT
+                if (GlobalSalesRebateRate."No." <> '') then begin
+                    if SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(GlobalRebateCategoryCode, SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(GlobalSalesRebateRate."No.")) then begin
+                        TempRebateCategoryLines.RESET;
+                        TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                        TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Vendor);
+                        IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                            TempRebateCategoryLines.Init();
+                            TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                            TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                            TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                            TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
+                            TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                            OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                            TempRebateCategoryLines.Insert();
+                            GlobalNextRebateProgramLineNo += 10000;
+                        END;
+                    end;
+                end else begin
+                    TempRebateCategoryLines.RESET;
+                    TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
+                    TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Vendor);
+                    IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
+                        TempRebateCategoryLines.Init();
+                        TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
+                        TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
+                        TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
+                        TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
+                        TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+                        OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
+                        TempRebateCategoryLines.Insert();
+                        GlobalNextRebateProgramLineNo += 10000;
+                    END;
+                end;
 
             UNTIL GlobalSalesRebateRate.Next() = 0;
         END;
+        //<< Rebate Category Loop -- SBC 2026-08-25
+
     END;
 
     procedure IsCustomerMatchCustomerNoFilter(CustomerNo: Code[20]; CustomerNoFilter: Code[500]): Boolean
@@ -1360,293 +1659,6 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
 
         exit(false);
     end;
-
-    local procedure GetEmployeeRebateCategoryLines(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date; var IsRebateEnabled: Boolean): Boolean
-    var
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-
-        GlobalSalesRebateRate.RESET;
-        GlobalSalesRebateRate.SetRange("Payee Type", GlobalSalesRebateRate."Payee Type"::"Employee Commission");
-        GlobalSalesRebateRate.SetRange("Payee No.");
-
-        case DocumentLine_Type of
-            DocumentLine_Type::Item:
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Item);
-
-                    Item.GET(DocumentLine_No);
-                    IsRebateEnabled := Item."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := Item."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"G/L Account":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"G/L Account");
-
-                    GLAccount.GET(DocumentLine_No);
-                    IsRebateEnabled := GLAccount."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := GLAccount."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::Resource:
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Resource);
-
-                    Resource.GET(DocumentLine_No);
-                    IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
-                end;
-            else begin
-                IsHandled := FALSE;
-                OnBeforeGetRebateRateForOtherTypes(DocumentLine_Type, DocumentLine_No, IsRebateEnabled, IsHandled);
-                IF IsHandled THEN
-                    EXIT(IsRebateEnabled);
-            end;
-        END;
-
-        GlobalSalesRebateRate.SetFilter("No.", '%1|%2', DocumentLine_No, '');
-        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
-            REPEAT
-                TempRebateCategoryLines.RESET;
-                TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
-                TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Employee);
-                IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
-                    TempRebateCategoryLines.Init();
-                    TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
-                    TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
-                    TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
-                    TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Employee;
-                    OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
-                    TempRebateCategoryLines.Insert();
-                    GlobalNextRebateProgramLineNo += 10000;
-                END;
-            UNTIL GlobalSalesRebateRate.Next() = 0;
-        END;
-
-        // Rebate Category
-        GlobalSalesRebateRate.RESET;
-        GlobalSalesRebateRate.SetRange("Payee Type", GlobalSalesRebateRate."Payee Type"::"Employee Commission");
-        GlobalSalesRebateRate.SetRange("Payee No.");
-
-        case DocumentLine_Type of
-            DocumentLine_Type::Item:
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Item);
-
-                    Item.GET(DocumentLine_No);
-                    IsRebateEnabled := Item."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := Item."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"G/L Account":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"G/L Account");
-
-                    GLAccount.GET(DocumentLine_No);
-                    IsRebateEnabled := GLAccount."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := GLAccount."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::Resource:
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Resource);
-
-                    Resource.GET(DocumentLine_No);
-                    IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
-                end;
-            else begin
-                IsHandled := FALSE;
-                OnBeforeGetRebateRateForOtherTypes(DocumentLine_Type, DocumentLine_No, IsRebateEnabled, IsHandled);
-                IF IsHandled THEN
-                    EXIT(IsRebateEnabled);
-            end;
-        END;
-
-        GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Rebate Category");
-        //GlobalSalesRebateRate.SetFilter("No.", '%1|%2', GlobalRebateCategoryCode, '');
-        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
-            REPEAT
-
-                if (GlobalSalesRebateRate."No." <> '') then begin
-                    if SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(GlobalRebateCategoryCode, SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(GlobalSalesRebateRate."No.")) then begin
-                        TempRebateCategoryLines.RESET;
-                        TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
-                        TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Employee);
-                        IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
-                            TempRebateCategoryLines.Init();
-                            TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
-                            TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
-                            TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
-                            TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Employee;
-                            TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
-                            OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
-                            TempRebateCategoryLines.Insert();
-                            GlobalNextRebateProgramLineNo += 10000;
-                        END;
-                    end;
-                end else begin
-                    TempRebateCategoryLines.RESET;
-                    TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
-                    TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Employee);
-                    IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
-                        TempRebateCategoryLines.Init();
-                        TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
-                        TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
-                        TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
-                        TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Employee;
-                        TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
-                        OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
-                        TempRebateCategoryLines.Insert();
-                        GlobalNextRebateProgramLineNo += 10000;
-                    END;
-                end;
-
-            UNTIL GlobalSalesRebateRate.Next() = 0;
-        END;
-    END;
-
-    local procedure GetVendorRebateCategoryLines(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20]; PostingDate: Date; var IsRebateEnabled: Boolean): Boolean
-    var
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-
-        GlobalSalesRebateRate.RESET;
-        GlobalSalesRebateRate.SetRange("Payee Type", GlobalSalesRebateRate."Payee Type"::"Vendor Commission");
-        GlobalSalesRebateRate.SetRange("Payee No.");
-
-        case DocumentLine_Type of
-            DocumentLine_Type::Item:
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Item);
-
-                    Item.GET(DocumentLine_No);
-                    IsRebateEnabled := Item."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := Item."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"G/L Account":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"G/L Account");
-
-                    GLAccount.GET(DocumentLine_No);
-                    IsRebateEnabled := GLAccount."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := GLAccount."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::Resource:
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Resource);
-
-                    Resource.GET(DocumentLine_No);
-                    IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
-                end;
-            else begin
-                IsHandled := FALSE;
-                OnBeforeGetRebateRateForOtherTypes(DocumentLine_Type, DocumentLine_No, IsRebateEnabled, IsHandled);
-                IF IsHandled THEN
-                    EXIT(IsRebateEnabled);
-            end;
-        END;
-
-        GlobalSalesRebateRate.SetFilter("No.", '%1|%2', DocumentLine_No, '');
-        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
-            REPEAT
-                TempRebateCategoryLines.RESET;
-                TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
-                TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Vendor);
-                IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
-                    TempRebateCategoryLines.Init();
-                    TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
-                    TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
-                    TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
-                    TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
-                    OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
-                    TempRebateCategoryLines.Insert();
-                    GlobalNextRebateProgramLineNo += 10000;
-                END;
-            UNTIL GlobalSalesRebateRate.Next() = 0;
-        END;
-
-        // Rebate Category
-
-        GlobalSalesRebateRate.RESET;
-        GlobalSalesRebateRate.SetRange("Payee Type", GlobalSalesRebateRate."Payee Type"::"Vendor Commission");
-        GlobalSalesRebateRate.SetRange("Payee No.");
-
-        case DocumentLine_Type of
-            DocumentLine_Type::Item:
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Item);
-
-                    Item.GET(DocumentLine_No);
-                    IsRebateEnabled := Item."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := Item."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::"G/L Account":
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"G/L Account");
-
-                    GLAccount.GET(DocumentLine_No);
-                    IsRebateEnabled := GLAccount."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := GLAccount."AQD Cust Rebate Category Code";
-                end;
-            DocumentLine_Type::Resource:
-                begin
-                    GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::Resource);
-
-                    Resource.GET(DocumentLine_No);
-                    IsRebateEnabled := Resource."AQD Customer Rebate Enabled";
-                    GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
-                end;
-            else begin
-                IsHandled := FALSE;
-                OnBeforeGetRebateRateForOtherTypes(DocumentLine_Type, DocumentLine_No, IsRebateEnabled, IsHandled);
-                IF IsHandled THEN
-                    EXIT(IsRebateEnabled);
-            end;
-        END;
-
-        GlobalSalesRebateRate.SetRange("Line Type", GlobalSalesRebateRate."Line Type"::"Rebate Category");
-        //GlobalSalesRebateRate.SetFilter("No.", '%1|%2', GlobalRebateCategoryCode, '');
-        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
-            REPEAT
-
-                if (GlobalSalesRebateRate."No." <> '') then begin
-                    if SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(GlobalRebateCategoryCode, SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(GlobalSalesRebateRate."No.")) then begin
-                        TempRebateCategoryLines.RESET;
-                        TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
-                        TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Vendor);
-                        IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
-                            TempRebateCategoryLines.Init();
-                            TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
-                            TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
-                            TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
-                            TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
-                            TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
-                            OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
-                            TempRebateCategoryLines.Insert();
-                            GlobalNextRebateProgramLineNo += 10000;
-                        END;
-                    end;
-                end else begin
-                    TempRebateCategoryLines.RESET;
-                    TempRebateCategoryLines.SetRange("Rebate Program Code", GlobalSalesRebateRate."Program Code");
-                    TempRebateCategoryLines.SetRange("Entity Type", TempRebateCategoryLines."Entity Type"::Vendor);
-                    IF NOT TempRebateCategoryLines.FindFirst() THEN BEGIN
-                        TempRebateCategoryLines.Init();
-                        TempRebateCategoryLines."Rebate Category Code" := GlobalRebateCategoryCode;
-                        TempRebateCategoryLines."Line No." := GlobalNextRebateProgramLineNo;
-                        TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
-                        TempRebateCategoryLines."Entity Type" := TempRebateCategoryLines."Entity Type"::Vendor;
-                        TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
-                        OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
-                        TempRebateCategoryLines.Insert();
-                        GlobalNextRebateProgramLineNo += 10000;
-                    END;
-                end;
-
-            UNTIL GlobalSalesRebateRate.Next() = 0;
-        END;
-    END;
 
     local procedure InsertRebateHeader(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeaderIn: Record "Sales Invoice Header"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; CustomerIn: Record Customer; var RebateNo: code[20]; SummaryArray: array[7] of Boolean)
     var
@@ -2600,12 +2612,12 @@ codeunit 14302513 "AQD Cust Rebate Calc Mgt"
 
     [IntegrationEvent(false, false)]
     local procedure OnAfterCheckLineRebateEnabled(CustomerNo: Code[20]; DocumentLine_Type: Enum "Sales Line Type"; DocumentLine_No: Code[20];
-                                                                                               PostingDate: Date; var GlobalSalesRebateRate: Record "AQD Sales Rebates Rate"; GlobalProcessCatchUpRebate: Boolean; var IsRebateEnabled: Boolean)
+                                                                                               PostingDate: Date; var GlobalSalesRebateRate: Record "AQD Sales Rebates Rate New"; GlobalProcessCatchUpRebate: Boolean; var IsRebateEnabled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsertTempRebateCategoryLines(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate"; CustomerNo: Code[20])
+    local procedure OnBeforeInsertTempRebateCategoryLines(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate New"; CustomerNo: Code[20])
     begin
     end;
 

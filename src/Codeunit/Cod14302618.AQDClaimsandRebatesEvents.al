@@ -288,12 +288,12 @@ codeunit 14302618 "AQD Claims and Rebates Events"
 
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnBeforeInsertRebateDetail, '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Calc Mgt", OnBeforeInsertRebateDetail, '', false, false)]
     local procedure CU14302513_AQDCustRebateCalcMgt_OnBeforeInsertRebateDetail(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; GlobalBrokerVendorNo: Code[20]; var IsHandled: Boolean)
     var
         ProgramCodeRec: Record "AQD Cust Rebate Program Code";
         SalesRebateCalc: Codeunit "AQD Sales Rebate Rate Calc Mgt";
-        TempSalesRebatesRate: Record "AQD Sales Rebates Rate" temporary;
+        TempSalesRebatesRate: Record "AQD Sales Rebates Rate New" temporary;
         BestSalesRebateFound: Boolean;
     begin
         if CustomerRebateDetails.IsTemporary then
@@ -304,11 +304,6 @@ codeunit 14302618 "AQD Claims and Rebates Events"
         IF TempSalesRebatesRate.IsTemporary THEN
             TempSalesRebatesRate.DeleteAll();
 
-        // BestSalesRebateFound := CalcBestSalesRebateRate(CustomerRebateDetails, TempSalesRebatesRate);
-
-        // IF BestSalesRebateFound THEN BEGIN
-        //     CustomerRebateDetails."AQD Trade Agreement" := TempSalesRebatesRate."AQD Trade Agreement";
-        // END ELSE BEGIN
         if CustomerRebateDetails."Rebate Program Code" <> '' then begin
             ProgramCodeRec.Reset();
             if ProgramCodeRec.Get(CustomerRebateDetails."Rebate Program Code") then
@@ -317,10 +312,15 @@ codeunit 14302618 "AQD Claims and Rebates Events"
         //END;
     end;
 
+    [Obsolete('Not in Use', 'Variable has changed in v25.1023.1.36')]
     procedure CalcBestSalesRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var TempSalesRebatesRate: Record "AQD Sales Rebates Rate"): Boolean
+    begin
+    end;
+
+    procedure CalcBestSalesRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var TempSalesRebatesRate: Record "AQD Sales Rebates Rate New"): Boolean
     var
-        BestCustomerSalesRebate: Record "AQD Sales Rebates Rate";
-        CustomerSalesRebateRate: Record "AQD Sales Rebates Rate";
+        BestCustomerSalesRebate: Record "AQD Sales Rebates Rate New";
+        CustomerSalesRebateRate: Record "AQD Sales Rebates Rate New";
         ItemRec: Record Item;
         CustomerRec: Record Customer;
         BestSalesRebateFound: Boolean;

@@ -58,7 +58,7 @@ pageextension 14302521 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Mem
 
                     trigger OnAction()
                     var
-                        CustomerRebateCalcPreview: Codeunit "AQD Cust Rebate Calc Preview";
+                        CustomerRebateCalcPreview: Codeunit "AQD Sales Rebate Calc Preview";
                     begin
                         clear(CustomerRebateCalcPreview);
                         CustomerRebateCalcPreview.CustomerRebateCalcPreview(Rec);

@@ -479,15 +479,15 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
     BEGIN
     END;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnBeforeInsertTempRebateCategoryLines, '', false, false)]
-    local procedure "AQD Cust Rebate Calc Preview_OnBeforeInsertTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate"; CustomerNo: Code[20])
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Calc Preview", OnBeforeInsertTempRebateCategoryLines, '', false, false)]
+    local procedure "AQD Cust Rebate Calc Preview_OnBeforeInsertTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate New"; CustomerNo: Code[20])
     begin
         TempRebateCategoryLines."Bill-to Customer No." := CustomerNo;
         TempRebateCategoryLines."Customer Rebate Category" := CustomerRebateCategory(CustomerNo);
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnBeforeInsertTempRebateCategoryLines, '', false, false)]
-    local procedure "AQD Cust Rebate Calc Mgt_OnBeforeInsertTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate"; CustomerNo: Code[20])
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Calc Mgt", OnBeforeInsertTempRebateCategoryLines, '', false, false)]
+    local procedure "AQD Cust Rebate Calc Mgt_OnBeforeInsertTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalSalesRebateRate: Record "AQD Sales Rebates Rate New"; CustomerNo: Code[20])
     begin
         TempRebateCategoryLines."Bill-to Customer No." := CustomerNo;
         TempRebateCategoryLines."Customer Rebate Category" := CustomerRebateCategory(CustomerNo);
@@ -501,23 +501,23 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             exit(Customer."AQD Cust Rebate Category");
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnSetFilterTempRebateCategoryLines, '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Calc Mgt", OnSetFilterTempRebateCategoryLines, '', false, false)]
     local procedure "AQD Cust Rebate Calc Mgt_OnSetFilterTempRebateCategoryLines"(var TempRebateCategoryLines: Record "AQD Cust Rebate Category Lines" temporary; GlobalProcessCatchUpRebate: Boolean; GlobalRebateProgramCodeFilter: Code[20])
     begin
         if GlobalProcessCatchUpRebate and (GlobalRebateProgramCodeFilter <> '') then
             TempRebateCategoryLines.SetFilter("Rebate Program Code", GlobalRebateProgramCodeFilter);
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnSetSalesRebateRateFilter, '', false, false)]
-    local procedure "AQD Sales Rebate Rate Calc Mgt_OnSetSalesRebateRateFilter"(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnSetSalesRebateRateFilterNew, '', false, false)]
+    local procedure "AQD Sales Rebate Rate Calc Mgt_OnSetSalesRebateRateFilter"(var SalesRebatesRate: Record "AQD Sales Rebates Rate New"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     begin
         SalesRebatesRate.SetFilter("Rebate Expense Type", '<>%1', SalesRebatesRate."Rebate Expense Type"::"Off-Invoice Rebate");
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnBeforeInsertToCustomerSalesRebateRate, '', false, false)]
-    local procedure "AQD Sales Rebate Rate Calc Mgt_OnBeforeInsertToCustomerSalesRebateRate"(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Rate Calc Mgt", OnBeforeInsertToCustomerSalesRebateRateNew, '', false, false)]
+    local procedure "AQD Sales Rebate Rate Calc Mgt_OnBeforeInsertToCustomerSalesRebateRate"(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
     var
-        SalesRebateCalcMgt: Codeunit "AQD Cust Rebate Calc Mgt";
+        SalesRebateCalcMgt: Codeunit "AQD Sales Rebate Calc Mgt";
         SalesRebateRateCalcMgt: Codeunit "AQD Sales Rebate Rate Calc Mgt";
         RebateProgramCodeSetup: Record "AQD Cust Rebate Program Code";
     begin
@@ -526,11 +526,10 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         if RebateProgramCodeSetup.Get(FromCustomerSalesRebateRate."Program Code") then
             CustomerRebateDetailsLocIn."Rebate Payment Method Code" := RebateProgramCodeSetup."Rebate Payment Method Code";
 
-        // if FromCustomerSalesRebateRate."Line Type" = FromCustomerSalesRebateRate."Line Type"::"Item Attribute" then begin
-        //     if FromCustomerSalesRebateRate.Description <> '' then
-        //         if not SalesRebateRateCalcMgt.AttributeMatches(FromCustomerSalesRebateRate.Description, FromCustomerSalesRebateRate."Item Attribute Value Filter", SalesRebateRateCalcMgt.GetItemAttributeValues(CustomerRebateDetailsLocIn."No.")) then
-        //             IsHandled := true;
-        // end;
+        if FromCustomerSalesRebateRate."Line Type" = FromCustomerSalesRebateRate."Line Type"::"Item Attribute" then
+            if (FromCustomerSalesRebateRate."Item Attribute Name" <> '') and (FromCustomerSalesRebateRate."Item Attribute Value Filter" <> '') then
+                if not SalesRebateRateCalcMgt.AttributeMatches(FromCustomerSalesRebateRate."Item Attribute Name", FromCustomerSalesRebateRate."Item Attribute Value Filter", SalesRebateRateCalcMgt.GetItemAttributeValues(CustomerRebateDetailsLocIn."No.")) then
+                    IsHandled := true;
 
         if CustomerRebateDetailsLocIn."Line Type" = CustomerRebateDetailsLocIn."Line Type"::"Rebate Category" then begin
             if not SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(CustomerRebateDetailsLocIn."Rebate Item Category Code", SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(FromCustomerSalesRebateRate."No.")) then
@@ -563,16 +562,16 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         end;
 
         // Customer No. Filter
-        if FromCustomerSalesRebateRate."Customer No. Filter New" <> '' then begin
+        if FromCustomerSalesRebateRate."Customer No. Filter" <> '' then begin
             case FromCustomerSalesRebateRate."Customer Type" of
                 FromCustomerSalesRebateRate."Customer Type"::Customer:
                     begin
-                        if not SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter New") then
+                        if not SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
                             IsHandled := true;
                     end;
                 FromCustomerSalesRebateRate."Customer Type"::"Customer Category":
                     begin
-                        if not SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter New") then
+                        if not SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
                             IsHandled := true;
                     end;
             end;
@@ -580,7 +579,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
 
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnBeforeInsertRebateDetail, '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Calc Preview", OnBeforeInsertRebateDetail, '', false, false)]
     local procedure "AQD Cust Rebate Calc Preview_OnBeforeInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
     begin
         if not ApplyMoreRebateFilters(CustomerRebateDetails, false, '') then
@@ -590,7 +589,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             IsHandled := true;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnBeforeInsertRebateDetail, '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Calc Mgt", OnBeforeInsertRebateDetail, '', false, false)]
     local procedure "AQD Cust Rebate Calc Mgt_OnBeforeInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; GlobalBrokerVendorNo: Code[20]; var IsHandled: Boolean)
     var
         PostedCustRebateDetails: Record "AQD Posted Cust Reb Details";
@@ -620,7 +619,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
 
     local procedure ApplyMoreRebateFilters(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; GlobalBrokerVendorNo: Code[20]): Boolean
     var
-        RebateRates: Record "AQD Sales Rebates Rate";
+        RebateRates: Record "AQD Sales Rebates Rate New";
         RebatePrograms: Record "AQD Cust Rebate Program Code";
         RebateDetailsTemp: Record "AQD Customer Rebate Details" temporary;
         FilterType: Option "Rebate Program Mismatch","Marketplace Mismatch";
@@ -680,7 +679,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         ResourceFilter: Record Resource;
         lvSalesHeader: Record "Sales Header";
         RebateProgram: Record "AQD Cust Rebate Program Code";
-        RebateRates: Record "AQD Sales Rebates Rate";
+        RebateRates: Record "AQD Sales Rebates Rate New";
         UnitPrice: Decimal;
         BillToCustomer: Record Customer;
     begin
@@ -755,7 +754,12 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             exit(Salesline."Line No." + 10000);
     end;
 
+    [Obsolete('Not in Use', 'Variable has changed in v25.1023.1.36')]
     local procedure CalcOffInvoiceRebateAmount(SalesHeader: Record "Sales Header"; RebateRates: Record "AQD Sales Rebates Rate"; var UnitPrice: Decimal)
+    begin
+    end;
+
+    local procedure CalcOffInvoiceRebateAmount(SalesHeader: Record "Sales Header"; RebateRates: Record "AQD Sales Rebates Rate New"; var UnitPrice: Decimal)
     var
         TotalAmount: Decimal;
         TotalQuantity: Decimal;
@@ -774,7 +778,12 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         end;
     end;
 
+    [Obsolete('Not in Use', 'Variable has changed in v25.1023.1.36')]
     local procedure GetQuantityAndAmounts(SalesHeaderIn: Record "Sales Header"; RebateRates: Record "AQD Sales Rebates Rate"; var TotalAmount: Decimal; var TotalQuantity: Decimal)
+    begin
+    end;
+
+    local procedure GetQuantityAndAmounts(SalesHeaderIn: Record "Sales Header"; RebateRates: Record "AQD Sales Rebates Rate New"; var TotalAmount: Decimal; var TotalQuantity: Decimal)
     var
         SalesLine: Record "Sales Line";
         SalesHeader: Record "Sales Header";
@@ -789,11 +798,11 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         SalesHeader.SetRange("No.", SalesHeaderIn."No.");
         case RebateRates."Customer Type" of
             RebateRates."Customer Type"::Customer:
-                if RebateRates."Customer No. Filter New" <> '' then
-                    SalesHeader.SetFilter("Bill-to Customer No.", RebateRates."Customer No. Filter New");
+                if RebateRates."Customer No. Filter" <> '' then
+                    SalesHeader.SetFilter("Bill-to Customer No.", RebateRates."Customer No. Filter");
             RebateRates."Customer Type"::"Customer Category":
-                if RebateRates."Customer No. Filter New" <> '' then
-                    SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter New");
+                if RebateRates."Customer No. Filter" <> '' then
+                    SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter");
         end;
 
         //Set Payment Term Filter
@@ -875,14 +884,14 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         end;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Preview", OnAfterInsertRebateHeader, '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Calc Preview", OnAfterInsertRebateHeader, '', false, false)]
     local procedure "AQD Cust Rebate Calc Preview_OnAfterInsertRebateHeader"(SalesHeader: Record "Sales Header"; var CustomerRebateHeader: Record "AQD Customer Rebate Header")
     begin
         CustomerRebateHeader."Off-Invoice Rebate" := OffInvoiceRebateAmountPreview(SalesHeader);
         CustomerRebateHeader.Modify(false);
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnAfterInsertRebateHeader, '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Calc Mgt", OnAfterInsertRebateHeader, '', false, false)]
     local procedure "AQD Cust Rebate Calc Mgt_OnAfterInsertRebateHeader"(DocumentType: Option " ",Invoice,"Credit Memo"; SalesInvHeaderIn: Record "Sales Invoice Header"; SalesCrMemoHeaderIn: Record "Sales Cr.Memo Header"; var CustomerRebateHeader: Record "AQD Customer Rebate Header")
     var
         OffInvoiceRebateAmount: Decimal;
@@ -1048,7 +1057,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         RebateItemLdgrEntry.Insert();
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Cust Rebate Calc Mgt", OnAfterInsertRebateDetail, '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"AQD Sales Rebate Calc Mgt", OnAfterInsertRebateDetail, '', false, false)]
     local procedure "AQD Cust Rebate Calc Mgt_OnAfterInsertRebateDetail"(var CustomerRebateDetails: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; TempItemLedgEntry: Record "Item Ledger Entry" temporary)
     var
         CusRebItemLedgerEntry: Record "AQD CR Reb Item Ledger Entry";

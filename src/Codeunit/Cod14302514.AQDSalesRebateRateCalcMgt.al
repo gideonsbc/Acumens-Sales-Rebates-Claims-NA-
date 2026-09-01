@@ -128,8 +128,8 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
 
     procedure FindSalesRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     var
-        SalesRebatesRate: Record "AQD Sales Rebates Rate";
-        LocalSalesRebatesRate: Record "AQD Sales Rebates Rate";
+        SalesRebatesRate: Record "AQD Sales Rebates Rate New";
+        LocalSalesRebatesRate: Record "AQD Sales Rebates Rate New";
         LocalCust: Record Customer;
         ItemCard: Record Item;
         Resource: Record Resource;
@@ -162,7 +162,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                 END;
         END;
 
-        if CustomerRebateDetailsLocIn."Line Type" <> CustomerRebateDetailsLocIn."Line Type"::"Rebate Category" then begin
+        if not (CustomerRebateDetailsLocIn."Line Type" in [CustomerRebateDetailsLocIn."Line Type"::"Rebate Category", CustomerRebateDetailsLocIn."Line Type"::"Item Attribute"]) then begin
             SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."No.");
             SalesRebatesRate.SETFILTER("Variant Code", '%1|%2', '', '');
         end;
@@ -174,7 +174,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         SalesRebatesRate.SETRANGE(Blocked, false);
         SalesRebatesRate.SetRange("Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');
-        OnSetSalesRebateRateFilter(SalesRebatesRate, CustomerRebateDetailsLocIn);
+        OnSetSalesRebateRateFilterNew(SalesRebatesRate, CustomerRebateDetailsLocIn);
 
         CASE CustomerRebateDetailsLocIn."Entity Type" OF
             CustomerRebateDetailsLocIn."Entity Type"::Customer:
@@ -205,6 +205,9 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                             CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
                         end;
                     END;
+
+                    SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Item Attribute");
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
                 END;
             CustomerRebateDetailsLocIn."Entity Type"::Employee:
                 BEGIN
@@ -213,9 +216,9 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Rebate Category");
-                    // SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Rebate Item Category Code");
-                    // SalesRebatesRate.SetRange("Variant Code");
-                    // SalesRebatesRate.SetRange("Unit of Measure Code");
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
+
+                    SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Item Attribute");
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
                 END;
             CustomerRebateDetailsLocIn."Entity Type"::Vendor:
@@ -225,17 +228,22 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Rebate Category");
-                    // SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Rebate Item Category Code");
-                    // SalesRebatesRate.SetRange("Variant Code");
-                    // SalesRebatesRate.SetRange("Unit of Measure Code");
+                    CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
+
+                    SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Item Attribute");
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
                 END;
         END;
     END;
 
+    [Obsolete('Not in Use', 'Variable has changed in v25.1023.1.36')]
     procedure CalcBestSalesRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var CustomerSalesRebateRate: Record "AQD Sales Rebates Rate")
+    begin
+    end;
+
+    procedure CalcBestSalesRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var CustomerSalesRebateRate: Record "AQD Sales Rebates Rate New")
     var
-        BestCustomerSalesRebate: Record "AQD Sales Rebates Rate";
+        BestCustomerSalesRebate: Record "AQD Sales Rebates Rate New";
         ItemRec: Record Item;
         CustomerRec: Record Customer;
         BestSalesRebateFound: Boolean;
@@ -529,7 +537,12 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
             until ItemCategory.Next() = 0;
     end;
 
-    local procedure CopyCustomerSalesRebateToCustomerSalesRebate(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    [Obsolete('Not in use', 'Replace in v25.1023.1.36')]
+    local procedure CopyCustomerSalesRebateToCustomerSalesRebate(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    begin
+    end;
+
+    local procedure CopyCustomerSalesRebateToCustomerSalesRebate(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     var
         IsHandled: Boolean;
     begin
@@ -537,7 +550,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
             REPEAT
                 ToCustomerSalesRebateRate := FromCustomerSalesRebateRate;
                 IsHandled := false;
-                OnBeforeInsertToCustomerSalesRebateRate(FromCustomerSalesRebateRate, ToCustomerSalesRebateRate, CustomerRebateDetailsLocIn, IsHandled);
+                OnBeforeInsertToCustomerSalesRebateRateNew(FromCustomerSalesRebateRate, ToCustomerSalesRebateRate, CustomerRebateDetailsLocIn, IsHandled);
                 if not IsHandled then
                     ToCustomerSalesRebateRate.INSERT;
             UNTIL FromCustomerSalesRebateRate.NEXT = 0;
@@ -581,41 +594,55 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
     //     exit(Result);
     // end;
 
-    // procedure GetItemAttributeValues(ItemNo: Code[20]): Dictionary of [Text[250], Text]
-    // var
-    //     AttrMap: Record "Item Attribute Value Mapping";
-    //     AttrValue: Record "Item Attribute Value";
-    //     ItemAttr: Record "Item Attribute";
-    //     Result: Dictionary of [Text[250], Text];
-    //     AttrCode: Text[250];
-    // begin
-    //     AttrMap.SetRange("Table ID", Database::Item);
-    //     AttrMap.SetRange("No.", ItemNo);
+    procedure GetItemAttributeValues(ItemNo: Code[20]): Dictionary of [Text[250], Text]
+    var
+        AttrMap: Record "Item Attribute Value Mapping";
+        AttrValue: Record "Item Attribute Value";
+        ItemAttr: Record "Item Attribute";
+        Result: Dictionary of [Text[250], Text];
+        AttrCode: Text[250];
+    begin
+        Clear(Result);
 
-    //     if AttrMap.FindSet() then
-    //         repeat
-    //             if ItemAttr.Get(AttrMap."Item Attribute ID") then begin
-    //                 AttrCode := ItemAttr.Name;
+        AttrMap.SetRange("Table ID", Database::Item);
+        AttrMap.SetRange("No.", ItemNo);
 
-    //                 if AttrValue.Get(AttrMap."Item Attribute ID", AttrMap."Item Attribute Value ID") then
-    //                     Result.Add(AttrCode, AttrValue.Value);
-    //             end;
-    //         until AttrMap.Next() = 0;
+        if AttrMap.FindSet() then
+            repeat
+                if ItemAttr.Get(AttrMap."Item Attribute ID") then begin
+                    if AttrValue.Get(AttrMap."Item Attribute ID", AttrMap."Item Attribute Value ID") then begin
+                        AttrCode := ItemAttr.Name;
+                        Result.Add(AttrCode, AttrValue.Value);
+                    end;
+                end;
+            until AttrMap.Next() = 0;
 
-    //     exit(Result);
-    // end;
+        exit(Result);
+    end;
 
-    // procedure AttributeMatches(RebateAttrCode: Text[250]; RebateAttrFilter: Text[250]; ItemAttributes: Dictionary of [Text[250], Text]): Boolean
-    // var
-    //     ItemAttrValue: Text;
-    // begin
-    //     if not ItemAttributes.ContainsKey(RebateAttrCode) then
-    //         exit(false);
+    procedure AttributeMatches(RebateAttrCode: Text[250]; RebateAttrFilter: Text[250]; ItemAttributes: Dictionary of [Text[250], Text]): Boolean
+    var
+        ItemAttrValue: Text;
+        TempAttr: Record "AQD Temp Attribute Value" temporary;
+    begin
+        if not ItemAttributes.ContainsKey(RebateAttrCode) then
+            exit(false);
 
-    //     ItemAttrValue := ItemAttributes.Get(RebateAttrCode);
+        ItemAttrValue := ItemAttributes.Get(RebateAttrCode);
 
-    //     exit(ItemAttrValue in [RebateAttrFilter]);
-    // end;
+        if TempAttr.IsTemporary then
+            TempAttr.DeleteAll();
+
+        TempAttr.Value := ItemAttrValue;
+        TempAttr.Insert();
+
+        TempAttr.SetFilter(Value, RebateAttrFilter);
+
+        if TempAttr.FindFirst() then
+            exit(true);
+
+        exit(false);
+    end;
 
     LOCAL procedure SetUoM(UnitofMeasureCode2: Code[10]; Qty2: Decimal; QtyPerUoM2: Decimal)
     begin
@@ -632,6 +659,16 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
     end;
 
     [IntegrationEvent(false, false)]
+    local procedure OnSetSalesRebateRateFilterNew(var SalesRebatesRate: Record "AQD Sales Rebates Rate New"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeInsertToCustomerSalesRebateRateNew(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
     local procedure OnSetSalesRebateRateFilter(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
     begin
     end;
@@ -641,8 +678,9 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
     begin
     end;
 
+
     var
-        TempSalesRebatesRate: Record "AQD Sales Rebates Rate" temporary;
+        TempSalesRebatesRate: Record "AQD Sales Rebates Rate New" temporary;
         Cust: Record Customer;
         BillToCustomer: Record Customer;
         UnitofMeasureCode: Code[10];

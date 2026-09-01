@@ -151,16 +151,16 @@ table 14302516 "AQD Cust Rebate Program Code"
         }
         field(5010; "AQD Default Trade Agreement"; Code[10])
         {
-            Caption = 'Default Trade Agreement';
+            Caption = 'Default Trade Agreement #';
             DataClassification = CustomerContent;
             TableRelation = "AQD CF Trade Agreement";
+            ValidateTableRelation = false;
         }
         field(9000; "Default Setup"; Boolean)
         {
             DataClassification = CustomerContent;
             Editable = false;
         }
-
     }
 
     keys
@@ -215,6 +215,6 @@ table 14302516 "AQD Cust Rebate Program Code"
     end;
 
     var
-        SalesRebateRate: Record "AQD Sales Rebates Rate";
+        SalesRebateRate: Record "AQD Sales Rebates Rate New";
 
 }

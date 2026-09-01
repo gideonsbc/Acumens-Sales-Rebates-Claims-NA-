@@ -85,7 +85,7 @@ pageextension 14302538 "AQD CustRbt Vendor Card" extends "Vendor Card"
                 ApplicationArea = All;
                 Caption = 'Sales Rebates';
                 Image = LineDiscount;
-                RunObject = Page "AQD CustRbt SalesRebates Setup";
+                RunObject = Page "AQD Sales Rebates Rate Setup";
                 RunPageLink = "Payee Type" = CONST("Vendor Commission"),
                               "Payee No." = FIELD("No.");
                 RunPageView = SORTING("Payee Type", "Payee No.");

@@ -2,8 +2,10 @@ table 14302517 "AQD Sales Rebates Rate"
 {
     Caption = 'Sales Rebate & Commission Rates';
     DataClassification = CustomerContent;
-    DrillDownPageId = "AQD CustRbt SalesRebates Setup";
-    LookupPageId = "AQD CustRbt SalesRebates Setup";
+    // DrillDownPageId = "AQD CustRbt SalesRebates Setup";
+    // LookupPageId = "AQD CustRbt SalesRebates Setup";
+    ObsoleteState = Pending;
+    ObsoleteReason = 'Replaced with AQD Sales Rebates Rate New';
 
     fields
     {
@@ -64,12 +66,12 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Customer No. Filter';
             DataClassification = CustomerContent;
         }
-        // field(10; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
-        // {
-        //     Caption = 'Rate Type';
-        //     ObsoleteState = Removed;
-        //     ObsoleteReason = 'Replaced by Rate Type';
-        // }
+        field(10; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
+        {
+            Caption = 'Rate Type';
+            ObsoleteState = Removed;
+            ObsoleteReason = 'Replaced by Rate Type';
+        }
         field(13; "Territory Code"; Code[10])
         {
             Caption = 'Territory Code';
@@ -86,6 +88,8 @@ table 14302517 "AQD Sales Rebates Rate"
                     Rec."No." := '';
                     Description := '';
                     Rec."No. Filter" := '';
+                    Rec."Item Attribute Name" := '';
+                    Clear(Rec."Item Attribute Value Filter");
                 end;
             end;
         }
@@ -96,7 +100,6 @@ table 14302517 "AQD Sales Rebates Rate"
             else if ("Line Type" = const(Item)) Item
             else if ("Line Type" = const("G/L Account")) "G/L Account"
             else if ("Line Type" = const(Resource)) Resource;
-            //else if ("Line Type" = const("Item Attribute")) "Item Attribute";
             trigger OnValidate()
             begin
                 if Rec."No." <> xRec."No." then begin
@@ -142,13 +145,6 @@ table 14302517 "AQD Sales Rebates Rate"
                                 Rec."Unit of Measure Code" := '';
                                 Rec."Variant Code" := '';
                             END;
-                    // Rec."Line Type"::"Item Attribute":
-                    //     BEGIN
-                    //         IF ItemAttribute.Get("No.") then
-                    //             Rec.Description := ItemAttribute.Name;
-                    //         Rec."Unit of Measure Code" := '';
-                    //         Rec."Variant Code" := '';
-                    //     END;
                     END;
                     Clear("No. Filter");
                 END;
@@ -159,19 +155,14 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Variant Code';
             TableRelation = "Item Variant".Code where("Item No." = field("No."));
         }
-        // field(17; "Rebate Program Code"; Code[20])
-        // {
-        //     Caption = 'Program Code';
-        //     NotBlank = true;
-        //     TableRelation = "AQD Cust Rebate Program Code";
-        //     ObsoleteState = Removed;
-        //     ObsoleteReason = 'Replaced by Program Code';
-        // }
-        // field(17; "Item Attribute Value Filter"; Text[250])
-        // {
-        //     Caption = 'Item Attribute Value Filter';
-        //     DataClassification = CustomerContent;
-        // }
+        field(17; "Rebate Program Code"; Code[20])
+        {
+            Caption = 'Program Code';
+            NotBlank = true;
+            TableRelation = "AQD Cust Rebate Program Code";
+            ObsoleteState = Removed;
+            ObsoleteReason = 'Replaced by Program Code';
+        }
         field(18; "Starting Date"; Date)
         {
             Caption = 'Starting Date';
@@ -212,6 +203,24 @@ table 14302517 "AQD Sales Rebates Rate"
             FieldClass = FlowField;
             Editable = false;
             CalcFormula = lookup("AQD Cust Rebate Program Code".Description where("Code" = field("Program Code")));
+        }
+        field(36; "Item Attribute Name"; Text[250])
+        {
+            Caption = 'Item Attribute Name';
+            DataClassification = CustomerContent;
+            TableRelation = "Item Attribute";
+            trigger OnValidate()
+            var
+                ItemAttribute: Record "Item Attribute";
+            begin
+                if ItemAttribute.Get("Item Attribute Name") then
+                    "Item Attribute Name" := ItemAttribute.Name;
+            end;
+        }
+        field(37; "Item Attribute Value Filter"; Text[250])
+        {
+            Caption = 'Item Attribute Value Filter';
+            DataClassification = CustomerContent;
         }
         field(40; "Rebate Type"; Option)
         {
@@ -325,13 +334,13 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Blocked Date Time';
             Editable = false;
         }
-        // field(586; "Customer No. Filter"; Code[500])
-        // {
-        //     Caption = 'Customer No. Filter';
-        //     DataClassification = CustomerContent;
-        //     ObsoleteState = Removed;
-        //     ObsoleteReason = 'Replaced by Customer No. Filter New';
-        // }
+        field(586; "Customer No. Filter"; Code[500])
+        {
+            Caption = 'Customer No. Filter';
+            DataClassification = CustomerContent;
+            ObsoleteState = Removed;
+            ObsoleteReason = 'Replaced by Customer No. Filter New';
+        }
         field(810; "Rate Priority"; Enum "AQD Rate Priority")
         {
             Caption = 'Rate Priority';
@@ -342,6 +351,7 @@ table 14302517 "AQD Sales Rebates Rate"
             Caption = 'Trade Agreement';
             DataClassification = CustomerContent;
             TableRelation = "AQD CF Trade Agreement";
+            ValidateTableRelation = false;
         }
         field(9000; "Default Setup"; Boolean)
         {

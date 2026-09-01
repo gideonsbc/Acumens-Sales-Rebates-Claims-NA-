@@ -95,7 +95,7 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
 
                     trigger OnAction()
                     var
-                        CustomerRebateCalcPreview: Codeunit "AQD Cust Rebate Calc Preview";
+                        CustomerRebateCalcPreview: Codeunit "AQD Sales Rebate Calc Preview";
                     begin
                         OnBeforeRebatePreviewAction(Rec);
                         clear(CustomerRebateCalcPreview);

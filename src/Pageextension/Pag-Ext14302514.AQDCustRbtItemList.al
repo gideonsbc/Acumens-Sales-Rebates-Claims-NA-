@@ -18,7 +18,7 @@ pageextension 14302514 "AQD CustRbt Item List" extends "Item List"
                     ApplicationArea = All;
                     Caption = 'Sales Rebate Rates';
                     Image = Setup;
-                    RunObject = Page "AQD CustRbt SalesRebates Setup";
+                    RunObject = Page "AQD Sales Rebates Rate Setup";
                     RunPageLink = "Line Type" = CONST(Item),
                                   "No." = FIELD("No.");
                     RunPageView = sorting("No.");

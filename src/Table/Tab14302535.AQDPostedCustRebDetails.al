@@ -382,9 +382,10 @@ table 14302535 "AQD Posted Cust Reb Details"
         }
         field(9040; "AQD Default Trade Agreement"; Code[10])
         {
-            Caption = 'Default Trade Agreement';
+            Caption = 'Default Trade Agreement #';
             DataClassification = CustomerContent;
             TableRelation = "AQD CF Trade Agreement";
+            ValidateTableRelation = false;
         }
         field(9050; "Line Type"; Enum "AQD Customer Rebate Line Type")
         {

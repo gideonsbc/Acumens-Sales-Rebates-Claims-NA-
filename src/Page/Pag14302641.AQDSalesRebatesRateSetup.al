@@ -1,11 +1,11 @@
-page 14302516 "AQD CustRbt SalesRebates Setup"
+page 14302641 "AQD Sales Rebates Rate Setup"
 {
     ApplicationArea = All;
     Caption = 'Sales Rebate & Commission Rates';
     DataCaptionExpression = GetCaption;
     DelayedInsert = true;
     PageType = List;
-    SourceTable = "AQD Sales Rebates Rate";
+    SourceTable = "AQD Sales Rebates Rate New";
     RefreshOnActivate = true;
     SourceTableView = sorting("Entry No.") order(ascending);
 
@@ -158,26 +158,6 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
             }
             repeater(Control1)
             {
-                // field("CustRbt Rate Type"; Rec."CustRbt Rate Type")
-                // {
-                //     ApplicationArea = All;
-                //     ToolTip = 'Specifies the the Customer Rebate Type applies to Line Item.';
-                //     ShowMandatory = TRUE;
-                //     QuickEntry = TRUE;
-                //     Visible = false;
-                //     ObsoleteState = Pending;
-                //     ObsoleteReason = 'Not in Use';
-                // }
-                // field("Rebate Program Code"; Rec."Rebate Program Code")
-                // {
-                //     ApplicationArea = All;
-                //     ToolTip = 'Specifies the the Sales Rebate Program Code applies to Line Item.';
-                //     ShowMandatory = TRUE;
-                //     QuickEntry = TRUE;
-                //     Visible = false;
-                //     ObsoleteState = Pending;
-                //     ObsoleteReason = 'Not in Use';
-                // }
                 field("Rate Type"; Rec."Rate Type")
                 {
                     ApplicationArea = All;
@@ -220,40 +200,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                         CustomerNoControlEditable := SetCustomerNoEditable(Rec."Customer Type");
                     end;
                 }
-                // field("Customer No. Filter"; Rec."Customer No. Filter")
-                // {
-                //     ApplicationArea = All;
-                //     Visible = false;
-                //     ObsoleteState = Pending;
-                //     ObsoleteReason = 'Not in Use';
-                //     trigger onlookup(var Text: Text): Boolean
-                //     var
-                //         CustList: Page "Customer List";
-                //         RebateCustomerTypeList: Page "AQD Rebate Customer Categories";
-                //     begin
-                //         CASE Rec."Customer Type" OF
-                //             Rec."Customer Type"::Customer:
-                //                 BEGIN
-                //                     CustList.LOOKUPMODE := TRUE;
-                //                     IF CustList.RUNMODAL = ACTION::LookupOK THEN
-                //                         Text := CustList.GetSelectionFilter
-                //                     ELSE
-                //                         EXIT(FALSE);
-                //                 END;
-                //             Rec."Customer Type"::"Customer Category":
-                //                 BEGIN
-                //                     RebateCustomerTypeList.LOOKUPMODE := TRUE;
-                //                     IF RebateCustomerTypeList.RUNMODAL = ACTION::LookupOK THEN
-                //                         Text := RebateCustomerTypeList.GetSelectionFilter
-                //                     ELSE
-                //                         EXIT(FALSE);
-                //                 END;
-                //         END;
-
-                //         EXIT(TRUE);
-                //     end;
-                // }
-                field("Customer No. Filter New"; Rec."Customer No. Filter New")
+                field("Customer No. Filter"; Rec."Customer No. Filter")
                 {
                     ApplicationArea = All;
                     trigger onlookup(var Text: Text): Boolean
@@ -288,7 +235,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the Territory Code that belongs to the Entity Type.';
                 }
-                field("AQD Trade Agreement"; Rec."AQD Trade Agreement")
+                field("Trade Agreement"; Rec."Trade Agreement")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Trade Agreement field.';
@@ -302,101 +249,120 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the number of the item for which the Sales Rebate is valid.';
+                    Editable = Rec."Line Type" <> Rec."Line Type"::"Item Attribute";
                 }
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
                 }
-                // field("Item Attribute Value Filter"; Rec."Item Attribute Value Filter")
+                field("Item Attribute Name"; Rec."Item Attribute Name")
+                {
+                    ApplicationArea = All;
+                    Editable = Rec."Line Type" = Rec."Line Type"::"Item Attribute";
+                    trigger OnValidate()
+                    begin
+                        if Rec."Item Attribute Name" <> xRec."Item Attribute Name" then
+                            Clear(Rec."Item Attribute Value Filter");
+                    end;
+                }
+                field("Item Attribute Value Filter"; Rec."Item Attribute Value Filter")
+                {
+                    ApplicationArea = All;
+                    Editable = Rec."Line Type" = Rec."Line Type"::"Item Attribute";
+
+                    trigger OnLookup(var Text: Text): Boolean
+                    var
+                        ItemAttributeValues: Page "Item Attribute Values";
+                        ItemAttributeValue: Record "Item Attribute Value";
+                        ItemAttribute: Record "Item Attribute";
+                        SelectedValues: List of [Text];
+                        Value: Text;
+                    begin
+                        ItemAttribute.SetRange(Name, Rec."Item Attribute Name");
+                        if ItemAttribute.FindFirst() then;
+
+                        ItemAttributeValue.SetRange("Attribute ID", ItemAttribute.ID);
+                        ItemAttributeValues.SetTableView(ItemAttributeValue);
+                        ItemAttributeValues.LookupMode := true;
+
+                        if ItemAttributeValues.RunModal = Action::LookupOK then begin
+                            // Get the records the user selected
+                            ItemAttributeValues.SetSelectionFilter(ItemAttributeValue);
+
+                            if ItemAttributeValue.FindSet() then
+                                repeat
+                                    Value := ItemAttributeValue.Value;
+                                    SelectedValues.Add(Value);
+                                until ItemAttributeValue.Next() = 0;
+
+                            // Build pipe-separated string
+                            Text := '';
+                            foreach Value in SelectedValues do begin
+                                if Text <> '' then
+                                    Text += '|';
+                                Text += Value;
+                            end;
+                        end else
+                            exit(false);
+
+                        exit(true);
+                    end;
+                }
+
+                // field("No. Filter"; Rec."No. Filter")
                 // {
                 //     ApplicationArea = All;
-                //     Editable = Rec."Line Type" = Rec."Line Type"::"Item Attribute";
-                //     trigger OnLookup(var Text: Text): Boolean
+                //     Editable = Rec."No." = '';
+                //     Visible = false;
+                //     trigger onlookup(var Text: Text): Boolean
                 //     var
-                //         ItemAttributeValues: Page "Item Attribute Values";
-                //         ItemAttributeValue: Record "Item Attribute Value";
-                //         AttributeID: Integer;
+                //         ItemList: Page "Item List";
+                //         GLList: Page "G/L Account List";
+                //         ResourceList: Page "Resource List";
+                //         ItemCategories: Page "Item Categories";
                 //     begin
                 //         CASE Rec."Line Type" OF
-                //             Rec."Line Type"::"Item Attribute":
+                //             Rec."Line Type"::Item:
                 //                 BEGIN
-                //                     Evaluate(AttributeID, Rec."No.");
-                //                     ItemAttributeValue.SetRange("Attribute ID", AttributeID);
-                //                     ItemAttributeValues.SetTableView(ItemAttributeValue);
-                //                     ItemAttributeValues.LOOKUPMODE := TRUE;
-                //                     IF ItemAttributeValues.RUNMODAL = ACTION::LookupOK THEN
-                //                         Text := ItemAttributeValues.GetSelectionFilter
+                //                     ItemList.LOOKUPMODE := TRUE;
+                //                     IF ItemList.RUNMODAL = ACTION::LookupOK THEN
+                //                         Text := ItemList.GetSelectionFilter
                 //                     ELSE
                 //                         EXIT(FALSE);
                 //                 END;
-                //         end;
+                //             Rec."Line Type"::"G/L Account":
+                //                 BEGIN
+                //                     GLList.LOOKUPMODE := TRUE;
+                //                     IF GLList.RUNMODAL = ACTION::LookupOK THEN
+                //                         Text := GLList.GetSelectionFilter
+                //                     ELSE
+                //                         EXIT(FALSE);
+                //                 END;
+                //             Rec."Line Type"::Resource:
+                //                 BEGIN
+                //                     ResourceList.LOOKUPMODE := TRUE;
+                //                     IF ResourceList.RUNMODAL = ACTION::LookupOK THEN
+                //                         Text := ResourceList.GetSelectionFilter
+                //                     ELSE
+                //                         EXIT(FALSE);
+                //                 END;
+                //             Rec."Line Type"::"Rebate Category":
+                //                 BEGIN
+                //                     ItemCategories.LOOKUPMODE := TRUE;
+                //                     IF ItemCategories.RUNMODAL = ACTION::LookupOK THEN
+                //                         Text := ItemCategories.GetSelectionFilter
+                //                     ELSE
+                //                         EXIT(FALSE);
+                //                 END;
+                //         END;
+
                 //         EXIT(TRUE);
                 //     end;
                 // }
-                field("No. Filter"; Rec."No. Filter")
-                {
-                    ApplicationArea = All;
-                    Editable = Rec."No." = '';
-                    Visible = false;
-                    trigger onlookup(var Text: Text): Boolean
-                    var
-                        ItemList: Page "Item List";
-                        GLList: Page "G/L Account List";
-                        ResourceList: Page "Resource List";
-                        ItemCategories: Page "Item Categories";
-                    begin
-                        CASE Rec."Line Type" OF
-                            Rec."Line Type"::Item:
-                                BEGIN
-                                    ItemList.LOOKUPMODE := TRUE;
-                                    IF ItemList.RUNMODAL = ACTION::LookupOK THEN
-                                        Text := ItemList.GetSelectionFilter
-                                    ELSE
-                                        EXIT(FALSE);
-                                END;
-                            Rec."Line Type"::"G/L Account":
-                                BEGIN
-                                    GLList.LOOKUPMODE := TRUE;
-                                    IF GLList.RUNMODAL = ACTION::LookupOK THEN
-                                        Text := GLList.GetSelectionFilter
-                                    ELSE
-                                        EXIT(FALSE);
-                                END;
-                            Rec."Line Type"::Resource:
-                                BEGIN
-                                    ResourceList.LOOKUPMODE := TRUE;
-                                    IF ResourceList.RUNMODAL = ACTION::LookupOK THEN
-                                        Text := ResourceList.GetSelectionFilter
-                                    ELSE
-                                        EXIT(FALSE);
-                                END;
-                            Rec."Line Type"::"Rebate Category":
-                                BEGIN
-                                    ItemCategories.LOOKUPMODE := TRUE;
-                                    IF ItemCategories.RUNMODAL = ACTION::LookupOK THEN
-                                        Text := ItemCategories.GetSelectionFilter
-                                    ELSE
-                                        EXIT(FALSE);
-                                END;
-                        END;
-
-                        EXIT(TRUE);
-                    end;
-                }
-                field("Variant Code"; Rec."Variant Code")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the variant of the item on the line.';
-                    Visible = false;
-                }
                 field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.';
-                }
-                field("Rate Priority"; Rec."Rate Priority")
-                {
-                    ApplicationArea = All;
                 }
                 field("Starting Date"; Rec."Starting Date")
                 {
@@ -435,6 +401,10 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                     ApplicationArea = All;
                     Editable = Rec."Rebate Type" = Rec."Rebate Type"::"Per Quantity";
                     Enabled = Rec."Rebate Type" = Rec."Rebate Type"::"Per Quantity";
+                }
+                field("Rate Priority"; Rec."Rate Priority")
+                {
+                    ApplicationArea = All;
                 }
                 field(Blocked; Rec.Blocked)
                 {
@@ -496,9 +466,9 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
                 Caption = 'Copy Rebate Rates';
                 trigger OnAction()
                 var
-                    FromSalesRebateSetup: Record "AQD Sales Rebates Rate";
-                    DeleteSalesRebateSetup: Record "AQD Sales Rebates Rate";
-                    ToSalesRebateSetup: Record "AQD Sales Rebates Rate";
+                    FromSalesRebateSetup: Record "AQD Sales Rebates Rate New";
+                    DeleteSalesRebateSetup: Record "AQD Sales Rebates Rate New";
+                    ToSalesRebateSetup: Record "AQD Sales Rebates Rate New";
                     TempRebateRateToCopy: Record "Drop Shpt. Post. Buffer"; //"Order No.", "Order Line No."
                     DeleteOldRates: Boolean;
                     StartDate: Date;
@@ -588,7 +558,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
         RebateSetup.GET;
         SetCaption();
 
-        Rec.SetCurrentKey("Entry No.", "Rate Type", "Program Code", "Payee Type", "Payee No.", "Customer Type", "Customer No. Filter New", "Territory Code", "Line Type", "No.", "Variant Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount");
+        Rec.SetCurrentKey("Entry No.", "Rate Type", "Program Code", "Payee Type", "Payee No.", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount");
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)
@@ -604,6 +574,51 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
         END;
         IF RebateSetup."Default Rebate Program Code" <> '' THEN
             Rec."Program Code" := RebateSetup."Default Rebate Program Code";
+    end;
+
+
+    local procedure ExpandRanges(Filter: Text): Text
+    var
+        Parts: List of [Text];
+        Result: Text;
+        Part: Text;
+        RangePos: Integer;
+        StartVal: Text;
+        EndVal: Text;
+    begin
+        // Split by '|'
+        while Filter <> '' do begin
+            RangePos := StrPos(Filter, '|');
+            if RangePos = 0 then begin
+                Parts.Add(Filter);
+                Filter := '';
+            end else begin
+                Parts.Add(CopyStr(Filter, 1, RangePos - 1));
+                Filter := CopyStr(Filter, RangePos + 1);
+            end;
+        end;
+
+        foreach Part in Parts do begin
+            RangePos := StrPos(Part, '..');
+            if RangePos > 0 then begin
+                StartVal := CopyStr(Part, 1, RangePos - 1);
+                EndVal := CopyStr(Part, RangePos + 2);
+
+                // For now: just endpoints
+                if Result <> '' then
+                    Result += '|';
+                Result += StartVal + '|' + EndVal;
+
+                // If you want full expansion (e.g. Red..Green → Red|Orange|Yellow|Green),
+                // you’d need to map attribute ordering and loop through values between StartVal and EndVal.
+            end else begin
+                if Result <> '' then
+                    Result += '|';
+                Result += Part;
+            end;
+        end;
+
+        exit(Result);
     end;
 
     var
@@ -651,7 +666,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
         else
             CustomerTypeFilter := CustomerTypeFilter::" ";
 
-        CustomerNoFilter := Rec.GetFilter("Customer No. Filter New");
+        CustomerNoFilter := Rec.GetFilter("Customer No. Filter");
         ItemNoFilter := Rec.GetFilter("No.");
     end;
 
@@ -699,9 +714,9 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
         end;
 
         if CustomerNoFilter <> '' then
-            Rec.SetFilter("Customer No. Filter New", CustomerNoFilter)
+            Rec.SetFilter("Customer No. Filter", CustomerNoFilter)
         else
-            Rec.SetRange("Customer No. Filter New");
+            Rec.SetRange("Customer No. Filter");
 
         if StartingDateFilter <> '' then
             Rec.SetFilter("Starting Date", StartingDateFilter)
@@ -891,7 +906,7 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
     begin
         SalesTypeControlEditable := Rec.GetFilter("Customer Type") = '';
         CustomerNoControlEditable :=
-          CustomerNoControlEditable and (Rec.GetFilter("Customer No. Filter New") = '');
+          CustomerNoControlEditable and (Rec.GetFilter("Customer No. Filter") = '');
     end;
 
     local procedure FilterLines()
@@ -903,8 +918,8 @@ page 14302516 "AQD CustRbt SalesRebates Setup"
         FilterPageBuilder.SetView(Rec.TableCaption, Rec.GetView());
         if Rec.GetFilter("Customer Type") = '' then
             FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer Type"));
-        if Rec.GetFilter("Customer No. Filter New") = '' then
-            FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer No. Filter New"));
+        if Rec.GetFilter("Customer No. Filter") = '' then
+            FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer No. Filter"));
         if Rec.GetFilter("No.") = '' then
             FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("No."));
         if Rec.GetFilter("Starting Date") = '' then

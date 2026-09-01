@@ -47,16 +47,32 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
         Message(CancellationCompletedLbl, PostedCustRebateHeader."No.");
     end;
 
+    // local procedure EnsureCancelPermission()
+    // var
+    //     UserSetup: Record "User Setup";
+    //     NoPermissionErr: Label 'Only Admin users can cancel posted sales rebates.';
+    // begin
+    //     if not UserSetup.Get(UserId) then
+    //         Error(NoPermissionErr);
+
+    //     if not (UserSetup."AQD Cust Rebate Rebate Role" in [UserSetup."AQD Cust Rebate Rebate Role"::Admin])
+    //     then
+    //         Error(NoPermissionErr);
+    // end;
+
     local procedure EnsureCancelPermission()
     var
-        UserSetup: Record "User Setup";
-        NoPermissionErr: Label 'Only Admin users can cancel posted sales rebates.';
+        AccessControl: Record "Access Control";
+        User: Record User;
+        NoPermissionErr: Label 'You do not have permission to perform this action.';
     begin
-        if not UserSetup.Get(UserId) then
+        if not User.Get(UserSecurityId()) then
             Error(NoPermissionErr);
 
-        if not (UserSetup."AQD Cust Rebate Rebate Role" in [UserSetup."AQD Cust Rebate Rebate Role"::Admin])
-        then
+        AccessControl.Reset();
+        AccessControl.SetRange("User Name", User."User Name");
+        AccessControl.SetRange("Role ID", 'AQD SREBATE ADMIN');
+        if not AccessControl.FindFirst() then
             Error(NoPermissionErr);
     end;
 
@@ -125,14 +141,13 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
 
     local procedure ReversePostedRebateSalesDocuments(PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header")
     var
-        SalesHeaderLoc: Record "Sales Header";
-        SalesInvoiceHeaderLoc: Record "Sales Invoice Header";
-        SalesCrMemoHeaderLoc: Record "Sales Cr.Memo Header";
+        LocalSalesHeader: Record "Sales Header";
+        LocalSalesInvoiceHeader: Record "Sales Invoice Header";
+        LocalSalesCrMemoHeader: Record "Sales Cr.Memo Header";
         CorrectPostedSalesInvoice: Codeunit "Correct Posted Sales Invoice";
         CancelPostedSalesCrMemo: Codeunit "Cancel Posted Sales Cr. Memo";
         CopyDocumentMgt: Codeunit "Copy Document Mgt.";
         SalesPost: Codeunit "Sales-Post";
-        SalesDocCancelErr: Label 'The posted sales rebate document %1 could not be canceled using the standard process.';
     begin
         PostedCustRebateLine.Reset();
         PostedCustRebateLine.SetRange("Rebate No.", PostedCustRebateHeader."No.");
@@ -143,73 +158,63 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
                     PostedCustRebateLine."Document Type"::Invoice, PostedCustRebateLine."Document Type"::Shipment:
                         begin
                             if not CanceledSalesDocumentNos.Contains(PostedCustRebateLine."Credit Document No.") then begin
-                                if SalesCrMemoHeaderLoc.Get(PostedCustRebateLine."Credit Document No.") then
-                                    if (SalesCrMemoHeaderLoc."AQD Customer Rebate") and
-                                       (SalesCrMemoHeaderLoc."AQD Customer Rebate No" = PostedCustRebateHeader."No.")
-                                    then
-                                        if SalesCrMemoHeaderLoc.Correction then
-                                            if not CancelPostedSalesCrMemo.CancelPostedCrMemo(SalesCrMemoHeaderLoc) then
-                                                Error(SalesDocCancelErr, PostedCustRebateLine."Credit Document No.")
-                                            else
-                                                AddCanceledSalesDocumentNo(PostedCustRebateLine."Credit Document No.")
-                                        else begin
-                                            Clear(SalesHeaderLoc);
-                                            SalesHeaderLoc.Init();
-                                            SalesHeaderLoc.SetHideValidationDialog(TRUE);
-                                            SalesHeaderLoc."Document Type" := SalesHeaderLoc."Document Type"::Invoice;
-                                            SalesHeaderLoc."Posting Date" := PostingDate;
-                                            SalesHeaderLoc."No." := '';
-                                            SalesHeaderLoc.Insert(true);
+                                if LocalSalesCrMemoHeader.Get(PostedCustRebateLine."Credit Document No.") then
+                                    if (LocalSalesCrMemoHeader."AQD Customer Rebate") and
+                                       (LocalSalesCrMemoHeader."AQD Customer Rebate No" = PostedCustRebateHeader."No.")
+                                    then begin
+                                        Clear(LocalSalesHeader);
+                                        LocalSalesHeader.Init();
+                                        LocalSalesHeader.SetHideValidationDialog(TRUE);
+                                        LocalSalesHeader."Document Type" := LocalSalesHeader."Document Type"::Invoice;
+                                        LocalSalesHeader."External Document No." := LocalSalesCrMemoHeader."No.";
+                                        LocalSalesHeader."No." := '';
+                                        LocalSalesHeader.Insert(true);
 
-                                            CopyDocumentMgt.SetPropertiesForCreditMemoCorrection();
-                                            CopyDocumentMgt.CopySalesDocForCrMemoCancelling(SalesCrMemoHeaderLoc."No.", SalesHeaderLoc);
+                                        CopyDocumentMgt.SetPropertiesForCreditMemoCorrection();
+                                        CopyDocumentMgt.CopySalesDocForCrMemoCancelling(LocalSalesCrMemoHeader."No.", LocalSalesHeader);
 
-                                            SalesHeaderLoc.Validate("AQD Customer Rebate", true);
-                                            SalesHeaderLoc.Validate("AQD Customer Rebate No", PostedCustRebateHeader."No.");
-                                            SalesHeaderLoc.Modify(true);
+                                        LocalSalesHeader.Validate("Posting Date", PostingDate);
+                                        LocalSalesHeader.Validate("AQD Customer Rebate", true);
+                                        LocalSalesHeader.Validate("AQD Customer Rebate No", PostedCustRebateHeader."No.");
+                                        LocalSalesHeader.Modify(true);
 
-                                            SalesHeaderLoc.Ship := true;
-                                            SalesHeaderLoc.Invoice := true;
-                                            SalesPost.Run(SalesHeaderLoc);
+                                        LocalSalesHeader.Ship := true;
+                                        LocalSalesHeader.Invoice := true;
+                                        SalesPost.Run(LocalSalesHeader);
 
-                                            AddCanceledSalesDocumentNo(PostedCustRebateLine."Credit Document No.");
-                                        end;
+                                        AddCanceledSalesDocumentNo(PostedCustRebateLine."Credit Document No.");
+                                    end;
                             end;
                         end;
                     PostedCustRebateLine."Document Type"::"Credit Memo", PostedCustRebateLine."Document Type"::"Return Receipt":
                         begin
                             if not CanceledSalesDocumentNos.Contains(PostedCustRebateLine."Credit Document No.") then begin
-                                if SalesInvoiceHeaderLoc.Get(PostedCustRebateLine."Credit Document No.") then
-                                    if (SalesInvoiceHeaderLoc."AQD Customer Rebate") and
-                                       (SalesInvoiceHeaderLoc."AQD Customer Rebate No" = PostedCustRebateHeader."No.")
-                                    then
-                                        if SalesInvoiceHeaderLoc.Correction then
-                                            if not CorrectPostedSalesInvoice.CancelPostedInvoice(SalesInvoiceHeaderLoc) then
-                                                Error(SalesDocCancelErr, PostedCustRebateLine."Credit Document No.")
-                                            else
-                                                AddCanceledSalesDocumentNo(PostedCustRebateLine."Credit Document No.")
-                                        else begin
-                                            Clear(SalesHeaderLoc);
-                                            SalesHeaderLoc.Init();
-                                            SalesHeaderLoc.SetHideValidationDialog(true);
-                                            SalesHeaderLoc."Document Type" := SalesHeaderLoc."Document Type"::"Credit Memo";
-                                            SalesHeaderLoc."Posting Date" := PostingDate;
-                                            SalesHeaderLoc."No." := '';
-                                            SalesHeaderLoc.Insert(true);
+                                if LocalSalesInvoiceHeader.Get(PostedCustRebateLine."Credit Document No.") then
+                                    if (LocalSalesInvoiceHeader."AQD Customer Rebate") and
+                                       (LocalSalesInvoiceHeader."AQD Customer Rebate No" = PostedCustRebateHeader."No.")
+                                    then begin
+                                        Clear(LocalSalesHeader);
+                                        LocalSalesHeader.Init();
+                                        LocalSalesHeader.SetHideValidationDialog(true);
+                                        LocalSalesHeader."Document Type" := LocalSalesHeader."Document Type"::"Credit Memo";
+                                        LocalSalesHeader."External Document No." := LocalSalesInvoiceHeader."No.";
+                                        LocalSalesHeader."No." := '';
+                                        LocalSalesHeader.Insert(true);
 
-                                            CopyDocumentMgt.SetPropertiesForInvoiceCorrection(false);
-                                            CopyDocumentMgt.CopySalesDocForInvoiceCancelling(SalesInvoiceHeaderLoc."No.", SalesHeaderLoc);
+                                        CopyDocumentMgt.SetPropertiesForInvoiceCorrection(false);
+                                        CopyDocumentMgt.CopySalesDocForInvoiceCancelling(LocalSalesInvoiceHeader."No.", LocalSalesHeader);
 
-                                            SalesHeaderLoc.Validate("AQD Customer Rebate", true);
-                                            SalesHeaderLoc.Validate("AQD Customer Rebate No", PostedCustRebateHeader."No.");
-                                            SalesHeaderLoc.Modify(true);
+                                        LocalSalesHeader.Validate("Posting Date", PostingDate);
+                                        LocalSalesHeader.Validate("AQD Customer Rebate", true);
+                                        LocalSalesHeader.Validate("AQD Customer Rebate No", PostedCustRebateHeader."No.");
+                                        LocalSalesHeader.Modify(true);
 
-                                            SalesHeaderLoc.Receive := true;
-                                            SalesHeaderLoc.Invoice := true;
-                                            SalesPost.Run(SalesHeaderLoc);
+                                        LocalSalesHeader.Receive := true;
+                                        LocalSalesHeader.Invoice := true;
+                                        SalesPost.Run(LocalSalesHeader);
 
-                                            AddCanceledSalesDocumentNo(PostedCustRebateLine."Credit Document No.");
-                                        end;
+                                        AddCanceledSalesDocumentNo(PostedCustRebateLine."Credit Document No.");
+                                    end;
                             end;
                         end;
                 end;
@@ -558,7 +563,6 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
                 PostedCustRebateLine.Amount := 0;
                 PostedCustRebateLine."Amount Including VAT" := 0;
                 PostedCustRebateLine."Credit Document No." := '';
-                PostedCustRebateLine."Customer Rebate Status" := PostedCustRebateLine."Customer Rebate Status"::" ";
                 PostedCustRebateLine."Rebate Payable A/C" := PostedCustRebateLine."Rebate Payable A/C"::" ";
                 PostedCustRebateLine."Sales Jnl Template Name" := '';
                 PostedCustRebateLine."Sales Jnl Batch Name" := '';
@@ -585,7 +589,6 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
                 PostedCustRebateDetail."Rebate Sales Line No." := 0;
                 PostedCustRebateDetail."Vendor Document Type" := PostedCustRebateDetail."Vendor Document Type"::" ";
                 PostedCustRebateDetail."Vendor Document No." := '';
-                PostedCustRebateDetail."Customer Rebate Status" := PostedCustRebateDetail."Customer Rebate Status"::" ";
                 PostedCustRebateDetail."Rebate Payable A/C" := PostedCustRebateDetail."Rebate Payable A/C"::" ";
                 PostedCustRebateDetail."Sales Jnl Template Name" := '';
                 PostedCustRebateDetail."Sales Jnl Batch Name" := '';
@@ -594,7 +597,6 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
                 PostedCustRebateDetail.Modify(true);
             until PostedCustRebateDetail.Next() = 0;
 
-        PostedCustRebateHeader."Customer Rebate Status" := PostedCustRebateHeader."Customer Rebate Status"::" ";
         PostedCustRebateHeader."Rebate Payable AC" := PostedCustRebateHeader."Rebate Payable AC"::" ";
         PostedCustRebateHeader."Sales Jnl Template Name" := '';
         PostedCustRebateHeader."Sales Jnl Batch Name" := '';

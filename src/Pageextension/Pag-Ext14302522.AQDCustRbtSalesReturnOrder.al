@@ -83,7 +83,7 @@ pageextension 14302522 "AQD CustRbt Sales Return Order" extends "Sales Return Or
 
                     trigger OnAction()
                     var
-                        CustomerRebateCalcPreview: Codeunit "AQD Cust Rebate Calc Preview";
+                        CustomerRebateCalcPreview: Codeunit "AQD Sales Rebate Calc Preview";
                     begin
                         OnBeforeRebatePreviewAction(Rec);
                         clear(CustomerRebateCalcPreview);

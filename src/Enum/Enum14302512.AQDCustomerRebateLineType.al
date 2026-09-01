@@ -18,8 +18,8 @@ enum 14302512 "AQD Customer Rebate Line Type"
     {
         Caption = 'Item Category';
     }
-    // value(6; "Item Attribute")
-    // {
-    //     Caption = 'Item Attribute';
-    // }
+    value(6; "Item Attribute")
+    {
+        Caption = 'Item Attribute';
+    }
 }

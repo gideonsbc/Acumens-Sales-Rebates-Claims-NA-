@@ -456,7 +456,7 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     ApplicationArea = All;
                     Caption = 'Sales Rebate & Commission Rates';
                     Image = Setup;
-                    RunObject = Page "AQD CustRbt SalesRebates Setup";
+                    RunObject = Page "AQD Sales Rebates Rate Setup";
                 }
             }
             group(CustomerClaimSetup)
