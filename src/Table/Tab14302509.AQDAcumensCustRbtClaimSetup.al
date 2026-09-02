@@ -134,6 +134,18 @@ table 14302509 "AQD Acumens CustRbtClaim Setup"
             DataClassification = CustomerContent;
         }
 
+        field(600; "Purch Journal Template Name"; Code[10])
+        {
+            Caption = 'Commission Purchase Jnl Template Name';
+            TableRelation = "Gen. Journal Template" WHERE(Type = FILTER(Purchases));
+        }
+        field(610; "Purch Journal Batch Name"; Code[10])
+        {
+            Caption = 'Commission Purchase  Jnl Batch Name';
+            TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Purch Journal Template Name"),
+                                                             "AQD Customer Rebate" = CONST(true));
+        }
+
         //>> Customer Claims
         field(2000; "Item Claim Enabled"; Boolean)
         {

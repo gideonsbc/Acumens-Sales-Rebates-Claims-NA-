@@ -58,6 +58,8 @@ pageextension 14302627 "AQD CR Purchase Journal Ext." extends "Purchase Journal"
             }
         }
     }
+    var
+        RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
 
     [IntegrationEvent(true, false)]
     local procedure AQDOnBeforeSuggestVendorPaymentsAction(var GenJournalLine: Record "Gen. Journal Line"; var IsHanlded: Boolean)

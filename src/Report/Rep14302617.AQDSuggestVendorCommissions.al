@@ -13,8 +13,18 @@ report 14302617 "AQD Suggest Vendor Commissions"
 
             trigger OnPreDataItem()
             begin
+                RebateSetup.Get();
+                RebateSetup.TestField("Purch Journal Template Name");
+                RebateSetup.TestField("Purch Journal Batch Name");
+
                 GenJnlLine.TestField("Journal Template Name");
                 GenJnlLine.TestField("Journal Batch Name");
+
+                if RebateSetup."Purch Journal Template Name" <> GenJnlLine."Journal Template Name" then
+                    Error('Please use the Rebate Purchase Journal template (%1) when suggesting or posting vendor commissions.', RebateSetup."Purch Journal Template Name");
+
+                if RebateSetup."Purch Journal Batch Name" <> GenJnlLine."Journal Batch Name" then
+                    Error('Please select the %1 batch when posting vendor commissions.', RebateSetup."Purch Journal Batch Name");
 
                 CurrReport.Break();
             end;
@@ -162,6 +172,7 @@ report 14302617 "AQD Suggest Vendor Commissions"
         JnlBatchName: Code[10];
         StartingDocumentNoErr: Label 'The value in the Balancing Document No. field must have a number so that we can assign the next number in the series.';
         SummarizeByProgramCode: Boolean;
+        RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
 
     procedure SetGenJnlLine(NewGenJnlLine: Record "Gen. Journal Line")
     begin

@@ -59,45 +59,45 @@ codeunit 14302517 "AQD Customer Rebate Install"
             JobQueueEntry.SetStatus(JobQueueEntry.Status::"On Hold");
         END;
 
-        IF NavApp.GetCurrentModuleInfo(NewAppVersion) THEN
-            IF NewAppVersion.AppVersion = Version.Create(25, 1023, 1, 35) then BEGIN
-                IF NOT VendorRebateRateNew.FindFirst() THEN BEGIN
-                    VendorRebateRate.RESET;
-                    IF VendorRebateRate.FindFirst() THEN BEGIN
-                        REPEAT
-                            VendorRebateRateNew.Init();
-                            VendorRebateRateNew."Entry No." := 0;
-                            VendorRebateRateNew."Rate Type" := VendorRebateRate."Rate Type";
-                            VendorRebateRateNew."Line Type" := VendorRebateRate."Line Type";
-                            VendorRebateRateNew."No." := VendorRebateRate."No.";
-                            VendorRebateRateNew."Variant Code" := VendorRebateRate."Variant Code";
-                            VendorRebateRateNew."Payee Type" := VendorRebateRate."Payee Type";
-                            VendorRebateRateNew."Payee No." := VendorRebateRate."Payee No.";
-                            VendorRebateRateNew."Program Code" := VendorRebateRate."Program Code";
-                            VendorRebateRateNew."Starting Date" := VendorRebateRate."Starting Date";
-                            VendorRebateRateNew."Minimum Quantity" := VendorRebateRate."Minimum Quantity";
-                            VendorRebateRateNew."Customer Type" := VendorRebateRate."Customer Type";
-                            VendorRebateRateNew."Customer No. Filter" := VendorRebateRate."Customer No. Filter New";
-                            VendorRebateRateNew."Minimum Amount" := VendorRebateRate."Minimum Amount";
-                            VendorRebateRateNew.Description := VendorRebateRate.Description;
-                            VendorRebateRateNew."Rebate Type" := VendorRebateRate."Rebate Type";
-                            VendorRebateRateNew."Rebate %" := VendorRebateRate."Rebate %";
-                            VendorRebateRateNew."Rebate Per Unit" := VendorRebateRate."Rebate Per Unit";
-                            VendorRebateRateNew."Ending Date" := VendorRebateRate."Ending Date";
-                            VendorRebateRateNew."Unit of Measure Code" := VendorRebateRate."Unit of Measure Code";
-                            VendorRebateRateNew."Last Changed DataTime" := VendorRebateRate."Last Changed DataTime";
-                            VendorRebateRateNew."Last Changed Changed By" := VendorRebateRate."Last Changed Changed By";
-                            VendorRebateRateNew."Last Rebate Type" := VendorRebateRate."Last Rebate Type";
-                            VendorRebateRateNew."Last Rebate Per Unit" := VendorRebateRate."Last Rebate Per Unit";
-                            VendorRebateRateNew."Last Rebate %" := VendorRebateRate."Last Rebate %";
-                            VendorRebateRateNew.Blocked := VendorRebateRate.Blocked;
-                            VendorRebateRateNew."Blocked By" := VendorRebateRate."Blocked By";
-                            VendorRebateRateNew."Blocked Date Time" := VendorRebateRate."Blocked Date Time";
-                            IF VendorRebateRateNew.Insert() THEN;
-                        UNTIL VendorRebateRate.Next() = 0;
-                    END;
-                END;
-            END;
+        // IF NavApp.GetCurrentModuleInfo(NewAppVersion) THEN
+        //     IF NewAppVersion.AppVersion = Version.Create(25, 1023, 1, 39) then BEGIN
+        //         IF NOT VendorRebateRateNew.FindFirst() THEN BEGIN
+        //             VendorRebateRate.RESET;
+        //             IF VendorRebateRate.FindFirst() THEN BEGIN
+        //                 REPEAT
+        //                     VendorRebateRateNew.Init();
+        //                     VendorRebateRateNew."Entry No." := 0;
+        //                     VendorRebateRateNew."Rate Type" := VendorRebateRate."Rate Type";
+        //                     VendorRebateRateNew."Line Type" := VendorRebateRate."Line Type";
+        //                     VendorRebateRateNew."No." := VendorRebateRate."No.";
+        //                     VendorRebateRateNew."Variant Code" := VendorRebateRate."Variant Code";
+        //                     VendorRebateRateNew."Payee Type" := VendorRebateRate."Payee Type";
+        //                     VendorRebateRateNew."Payee No." := VendorRebateRate."Payee No.";
+        //                     VendorRebateRateNew."Program Code" := VendorRebateRate."Program Code";
+        //                     VendorRebateRateNew."Starting Date" := VendorRebateRate."Starting Date";
+        //                     VendorRebateRateNew."Minimum Quantity" := VendorRebateRate."Minimum Quantity";
+        //                     VendorRebateRateNew."Customer Type" := VendorRebateRate."Customer Type";
+        //                     VendorRebateRateNew."Customer No. Filter" := VendorRebateRate."Customer No. Filter New";
+        //                     VendorRebateRateNew."Minimum Amount" := VendorRebateRate."Minimum Amount";
+        //                     VendorRebateRateNew.Description := VendorRebateRate.Description;
+        //                     VendorRebateRateNew."Rebate Type" := VendorRebateRate."Rebate Type";
+        //                     VendorRebateRateNew."Rebate %" := VendorRebateRate."Rebate %";
+        //                     VendorRebateRateNew."Rebate Per Unit" := VendorRebateRate."Rebate Per Unit";
+        //                     VendorRebateRateNew."Ending Date" := VendorRebateRate."Ending Date";
+        //                     VendorRebateRateNew."Unit of Measure Code" := VendorRebateRate."Unit of Measure Code";
+        //                     VendorRebateRateNew."Last Changed DataTime" := VendorRebateRate."Last Changed DataTime";
+        //                     VendorRebateRateNew."Last Changed Changed By" := VendorRebateRate."Last Changed Changed By";
+        //                     VendorRebateRateNew."Last Rebate Type" := VendorRebateRate."Last Rebate Type";
+        //                     VendorRebateRateNew."Last Rebate Per Unit" := VendorRebateRate."Last Rebate Per Unit";
+        //                     VendorRebateRateNew."Last Rebate %" := VendorRebateRate."Last Rebate %";
+        //                     VendorRebateRateNew.Blocked := VendorRebateRate.Blocked;
+        //                     VendorRebateRateNew."Blocked By" := VendorRebateRate."Blocked By";
+        //                     VendorRebateRateNew."Blocked Date Time" := VendorRebateRate."Blocked Date Time";
+        //                     IF VendorRebateRateNew.Insert() THEN;
+        //                 UNTIL VendorRebateRate.Next() = 0;
+        //             END;
+        //         END;
+        //     END;
     END;
 
     var
