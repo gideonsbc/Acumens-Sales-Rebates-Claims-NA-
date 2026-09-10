@@ -22,6 +22,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         CustomerRebateBatch: Record "AQD Customer Rebate Batch";
         Customer: Record Customer;
         SalesInvoiceHeader: Record "Sales Invoice Header";
+        SalesCommDocHeader: Record "AQD Sales Comm. Doc. Header";
         SalesCrMemoHeader: Record "Sales Cr.Memo Header";
         SalesShipmentHeader: Record "Sales Shipment Header";
         ReturnReceiptHeader: Record "Return Receipt Header";
@@ -193,22 +194,39 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     case CustomerRebateLine."Document Type" of
                         CustomerRebateLine."Document Type"::Invoice:
                             begin
-                                if SalesInvoiceHeader.Get(CustomerRebateLine."Document No.") then begin
-                                    SalesInvoiceHeader."AQD Customer Rebate Status" := SalesInvoiceHeader."AQD Customer Rebate Status"::Posted;
-                                    SalesInvoiceHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
-                                    SalesInvoiceHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
-                                    SalesInvoiceHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
-                                    SalesInvoiceHeader.Modify(true);
+                                if CustomerRebateHeader."Commission Type" = CustomerRebateHeader."Commission Type"::"Collect Commission" then begin
+                                    if SalesCommDocHeader.Get(CustomerRebateLine."Document No.") then begin
+                                        SalesCommDocHeader.Processed := true;
+                                        SalesCommDocHeader."Rebate No" := CustomerRebateLine."Rebate No.";
+                                        SalesCommDocHeader.Modify(true);
+                                    end;
+                                end else begin
+                                    if SalesInvoiceHeader.Get(CustomerRebateLine."Document No.") then begin
+                                        SalesInvoiceHeader."AQD Customer Rebate Status" := SalesInvoiceHeader."AQD Customer Rebate Status"::Posted;
+                                        SalesInvoiceHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
+                                        SalesInvoiceHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
+                                        SalesInvoiceHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
+                                        SalesInvoiceHeader.Modify(true);
+                                    end;
                                 end;
+
                             end;
                         CustomerRebateLine."Document Type"::"Credit Memo":
                             begin
-                                if SalesCrMemoHeader.Get(CustomerRebateLine."Document No.") then begin
-                                    SalesCrMemoHeader."AQD Customer Rebate Status" := SalesCrMemoHeader."AQD Customer Rebate Status"::Posted;
-                                    SalesCrMemoHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
-                                    SalesCrMemoHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
-                                    SalesCrMemoHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
-                                    SalesCrMemoHeader.Modify(true);
+                                if CustomerRebateHeader."Commission Type" = CustomerRebateHeader."Commission Type"::"Collect Commission" then begin
+                                    if SalesCommDocHeader.Get(CustomerRebateLine."Document No.") then begin
+                                        SalesCommDocHeader.Processed := true;
+                                        SalesCommDocHeader."Rebate No" := CustomerRebateLine."Rebate No.";
+                                        SalesCommDocHeader.Modify(true);
+                                    end;
+                                end else begin
+                                    if SalesCrMemoHeader.Get(CustomerRebateLine."Document No.") then begin
+                                        SalesCrMemoHeader."AQD Customer Rebate Status" := SalesCrMemoHeader."AQD Customer Rebate Status"::Posted;
+                                        SalesCrMemoHeader."AQD Customer Rebate No" := CustomerRebateLine."Rebate No.";
+                                        SalesCrMemoHeader."AQD Cust Rebate Program Code" := CustomerRebateLine."Cust Rebate Program Code";
+                                        SalesCrMemoHeader."AQD Marketplace Code" := CustomerRebateLine."Marketplace Code";
+                                        SalesCrMemoHeader.Modify(true);
+                                    end;
                                 end;
                             end;
                         CustomerRebateLine."Document Type"::Shipment:
@@ -640,11 +658,17 @@ codeunit 14302515 "AQD Customer Rebate Post"
         If PostedCustomerRebateLine.FindFirst() Then Begin
             Repeat
                 PostedCustomerRebateLine.CalcFields("Customer Rebate Amount");
-                IF PostedCustomerRebateLine."Customer Rebate Amount" >= 0 THEN Begin
-                    CreateSalesCrMemoLine(PostedCustomerRebateHeader, PostedCustomerRebateLine);
-                END ELSE IF PostedCustomerRebateLine."Customer Rebate Amount" < 0 THEN Begin
-                    CreateSalesInvoiceLine(PostedCustomerRebateHeader, PostedCustomerRebateLine);
-                END;
+                if PostedCustomerRebateHeader."Commission Type" = PostedCustomerRebateHeader."Commission Type"::"Collect Commission" then begin
+                    IF PostedCustomerRebateLine."Customer Rebate Amount" >= 0 THEN
+                        CreateSalesInvoiceLine(PostedCustomerRebateHeader, PostedCustomerRebateLine)
+                    ELSE IF PostedCustomerRebateLine."Customer Rebate Amount" < 0 THEN
+                        CreateSalesCrMemoLine(PostedCustomerRebateHeader, PostedCustomerRebateLine);
+                end else begin
+                    IF PostedCustomerRebateLine."Customer Rebate Amount" >= 0 THEN
+                        CreateSalesCrMemoLine(PostedCustomerRebateHeader, PostedCustomerRebateLine)
+                    ELSE IF PostedCustomerRebateLine."Customer Rebate Amount" < 0 THEN
+                        CreateSalesInvoiceLine(PostedCustomerRebateHeader, PostedCustomerRebateLine);
+                end;
             Until PostedCustomerRebateLine.Next() = 0;
         End;
     End;
@@ -749,7 +773,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     SalesCrMemoLine.Validate("Location Code", PostedCustomerRebateLine."Location Code");
                     SalesCrMemoLine.Validate(Quantity, 1);
-                    SalesCrMemoLine.Validate("Unit Price", PostedCustomerRebateLine."Cust Rebate Amt(Item Charge)");
+                    SalesCrMemoLine.Validate("Unit Price", ABS(PostedCustomerRebateLine."Cust Rebate Amt(Item Charge)"));
                     IF PostedCustomerRebateLine."Shortcut Dimension 1 Code" <> '' THEN
                         SalesCrMemoLine.Validate("Shortcut Dimension 1 Code", PostedCustomerRebateLine."Shortcut Dimension 1 Code");
                     IF PostedCustomerRebateLine."Shortcut Dimension 2 Code" <> '' THEN
@@ -841,7 +865,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     SalesCrMemoLine.Validate("Location Code", PostedCustomerRebateLine."Location Code");
                     SalesCrMemoLine.Validate(Quantity, 1);
-                    SalesCrMemoLine.Validate("Unit Price", InvoicePostingBuffer.Amount);
+                    SalesCrMemoLine.Validate("Unit Price", ABS(InvoicePostingBuffer.Amount));
                     IF PostedCustomerRebateLine."Shortcut Dimension 1 Code" <> '' THEN
                         SalesCrMemoLine.Validate("Shortcut Dimension 1 Code", PostedCustomerRebateLine."Shortcut Dimension 1 Code");
                     IF PostedCustomerRebateLine."Shortcut Dimension 2 Code" <> '' THEN
@@ -1246,7 +1270,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                 REPEAT
                     SalesInvoiceLine.RESET;
                     SalesInvoiceLine.SETRANGE("Document Type", SalesInvoiceLine."Document Type"::Invoice);
-                    SalesInvoiceLine.SETRANGE("Document No.", TmpCrMemoBuffer."Job No.");
+                    SalesInvoiceLine.SETRANGE("Document No.", TmpInovoiceBuffer."Job No.");
                     IF SalesInvoiceLine.FINDLAST THEN
                         NextLineNo := SalesInvoiceLine."Line No." + 10000
                     ELSE

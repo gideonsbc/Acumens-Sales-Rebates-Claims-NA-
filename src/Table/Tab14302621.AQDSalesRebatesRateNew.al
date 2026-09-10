@@ -411,6 +411,8 @@ table 14302621 "AQD Sales Rebates Rate New"
         CustomerRebateRate.SetRange("Rate Priority", Rec."Rate Priority");
         CustomerRebateRate.SetRange("Item Attribute Name", Rec."Item Attribute Name");
         CustomerRebateRate.SetRange("Item Attribute Value Filter", Rec."Item Attribute Value Filter");
+        CustomerRebateRate.SetRange("Payee Type", Rec."Payee Type");
+        CustomerRebateRate.SetRange("Payee No.", Rec."Payee No.");
         IF CustomerRebateRate.FindFirst() THEN
             ERROR(Text002,
                 Rec.FieldCaption("Rate Type"), Rec."Rate Type",

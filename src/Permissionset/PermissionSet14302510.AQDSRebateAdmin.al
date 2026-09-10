@@ -152,10 +152,20 @@ permissionset 14302510 "AQD SRebate Admin"
         tabledata "AQD Temp Attribute Value" = RIMD,
         table "AQD Temp Attribute Value" = X,
         tabledata "AQD Sales Rebates Rate New" = RIMD,
+        tabledata "AQD Sales Comm. Doc. Header" = RIMD,
+        tabledata "AQD Sales Comm. Doc. Line" = RIMD,
         table "AQD Sales Rebates Rate New" = X,
+        table "AQD Sales Comm. Doc. Header" = X,
+        table "AQD Sales Comm. Doc. Line" = X,
         tabledata "AQD Sales Rebates Rate" = RIMD,
         table "AQD Sales Rebates Rate" = X,
         page "AQD Sales Rebates Rate Setup" = X,
+        page "AQD Sales Commission Documents" = X,
+        page "AQD Sales Commission Document" = X,
+        page "AQD Sales Comm. Doc. Lines" = X,
         codeunit "AQD Sales Rebate Calc Mgt" = X,
-        codeunit "AQD Sales Rebate Calc Preview" = X;
+        codeunit "AQD Sales Rebate Calc Preview" = X,
+        page "AQD Processed Sales Comm Dct" = X,
+        page "AQD Processed Sales Comm Dcts" = X,
+        report "AQD Collect Commissions" = X;
 }

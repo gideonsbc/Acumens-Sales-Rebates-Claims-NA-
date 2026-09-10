@@ -91,6 +91,11 @@ page 14302533 "AQD Customer Rebate Document"
                     ApplicationArea = All;
                     Caption = 'Calculation Date';
                 }
+                field("Commission Type"; Rec."Commission Type")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies whether the commission is paid to or collected from the customer.', Comment = '%';
+                }
                 field("Sales Amount"; Rec."Sales Amount")
                 {
                     ApplicationArea = All;

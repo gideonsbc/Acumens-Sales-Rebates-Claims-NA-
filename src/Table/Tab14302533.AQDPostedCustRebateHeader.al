@@ -183,6 +183,12 @@ table 14302533 "AQD Posted Cust Rebate Header"
             Caption = 'Rebate Status';
             DataClassification = CustomerContent;
         }
+        field(565; "Commission Type"; Enum "AQD CR Commission Type")
+        {
+            Caption = 'Commission Type';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
         field(570; "AQD Calculation Date"; Enum "AQD CustRebateCalculation Type")
         {
             Caption = 'Calculation Date';

@@ -8,11 +8,18 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         GlobalProcessCatchUpRebate: Boolean;
         GlobalStartPostingDate: Date;
         GlobalEndPostingDate: Date;
+        CommissionType: Enum "AQD CR Commission Type";
+
+    procedure SetCommissionType(CommissionTypeIn: Enum "AQD CR Commission Type")
+    begin
+        CommissionType := CommissionTypeIn;
+    end;
 
     procedure FindSalesLineRebateRate(var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebateIn: Boolean; GlobalStartPostingDateIn: Date; GlobalEndPostingDateIn: Date)
     var
         SalesLine: Record "Sales Line";
         SalesInvLine: Record "Sales Invoice Line";
+        SalesCommLine: Record "AQD Sales Comm. Doc. Line";
         SalesCrMemoLine: Record "Sales Cr.Memo Line";
         SalesShptLine: Record "Sales Shipment Line";
         ReturnReceiptLine: Record "Return Receipt Line";
@@ -63,22 +70,32 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                 end;
             CustomerRebateDetailsLocIn."Document Type"::Invoice:
                 begin
-                    SalesInvLine.GET(CustomerRebateDetailsLocIn."Document No.", CustomerRebateDetailsLocIn."Document Line No.");
-                    SalesInvLine.TESTFIELD("Qty. per Unit of Measure");
-                    SetUoM(SalesInvLine."Unit of Measure Code",
-                           ABS(CustomerRebateDetailsLocIn.Quantity),
-                           SalesInvLine."Qty. per Unit of Measure");
-                    UOM := SalesInvLine."Unit of Measure Code";
+                    if CommissionType = CommissionType::"Collect Commission" then begin
+                        SalesCommLine.GET(CustomerRebateDetailsLocIn."Document No.", CustomerRebateDetailsLocIn."Document Line No.");
+                        UOM := SalesCommLine."Unit of Measure Code";
+                    end else begin
+                        SalesInvLine.GET(CustomerRebateDetailsLocIn."Document No.", CustomerRebateDetailsLocIn."Document Line No.");
+                        SalesInvLine.TESTFIELD("Qty. per Unit of Measure");
+                        SetUoM(SalesInvLine."Unit of Measure Code",
+                               ABS(CustomerRebateDetailsLocIn.Quantity),
+                               SalesInvLine."Qty. per Unit of Measure");
+                        UOM := SalesInvLine."Unit of Measure Code";
+                    end;
                 end;
             CustomerRebateDetailsLocIn."Document Type"::"Credit Memo":
                 BEGIN
-                    SalesCrMemoLine.GET(CustomerRebateDetailsLocIn."Document No.", CustomerRebateDetailsLocIn."Document Line No.");
-                    SalesCrMemoLine.TESTFIELD("Qty. per Unit of Measure");
-                    SetUoM(SalesCrMemoLine."Unit of Measure Code",
-                           ABS(CustomerRebateDetailsLocIn.Quantity),
-                           SalesCrMemoLine."Qty. per Unit of Measure");
+                    if CommissionType = CommissionType::"Collect Commission" then begin
+                        SalesCommLine.GET(CustomerRebateDetailsLocIn."Document No.", CustomerRebateDetailsLocIn."Document Line No.");
+                        UOM := SalesCommLine."Unit of Measure Code";
+                    end else begin
+                        SalesCrMemoLine.GET(CustomerRebateDetailsLocIn."Document No.", CustomerRebateDetailsLocIn."Document Line No.");
+                        SalesCrMemoLine.TESTFIELD("Qty. per Unit of Measure");
+                        SetUoM(SalesCrMemoLine."Unit of Measure Code",
+                               ABS(CustomerRebateDetailsLocIn.Quantity),
+                               SalesCrMemoLine."Qty. per Unit of Measure");
 
-                    UOM := SalesCrMemoLine."Unit of Measure Code";
+                        UOM := SalesCrMemoLine."Unit of Measure Code";
+                    end;
                 END;
             CustomerRebateDetailsLocIn."Document Type"::Shipment:
                 begin

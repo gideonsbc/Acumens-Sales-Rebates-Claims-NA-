@@ -27,6 +27,7 @@ report 14302510 "AQD Generate Customer Rebates"
 
                 Clear(RebateCalculationMgt);
                 RebateCalculationMgt.SetCustomerRebateParameters(Customer, SummaryArray, ShptRcptNo, InvCrMemoNo, CalledFromGenerateCustomerRebate, ProcessCatchUpRebate, RebateProgramCodeFilter, BrokerVendorNo);
+                RebateCalculationMgt.SetCommissionType(CommissionType);
                 RebateCalculationMgt.Run();
 
                 ClearCreatedCustomerRebate();
@@ -47,6 +48,7 @@ report 14302510 "AQD Generate Customer Rebates"
                 group("Create Rebate Summary By")
                 {
                     Caption = 'Create Rebate Summary By';
+
                     field(RespCenter; RespCenter)
                     {
                         ApplicationArea = All;
@@ -132,15 +134,6 @@ report 14302510 "AQD Generate Customer Rebates"
         if ProcessCatchUpRebate then
             if Customer.GETFILTER("Date Filter") = '' then
                 Error('Date Filter must have a value. It cannot be zero or empty.');
-
-        // CustomerRebateSetup.GET;
-        // IF Customer.GETFILTER("Date Filter") <> '' THEN BEGIN
-        //     StartPostingDate := Customer.GetRangeMin("Date Filter");
-        //     EndPostingDate := Customer.GetRangeMax("Date Filter");
-        // END ELSE begin
-        //     StartPostingDate := CustomerRebateSetup."Customer Rebate Start Date";
-        //     EndPostingDate := DMY2Date(31, 12, Date2DMY(WorkDate(), 3));
-        // end;
     end;
 
     procedure SetShptRcptNoAndInvCrMemoNo(BillToCustomerNoIn: Code[20]; ShptRcptNoIn: Code[20]; InvCrMemoNoIn: Code[20]; CalledFromGenerateVendorRebateIn: Boolean)
@@ -149,6 +142,11 @@ report 14302510 "AQD Generate Customer Rebates"
         ShptRcptNo := ShptRcptNoIn;
         InvCrMemoNo := InvCrMemoNoIn;
         CalledFromGenerateCustomerRebate := CalledFromGenerateVendorRebateIn;
+    end;
+
+    procedure SetCommissionType(CommissionTypeIn: Enum "AQD CR Commission Type")
+    begin
+        CommissionType := CommissionTypeIn;
     end;
 
     local procedure ClearCreatedCustomerRebate()
@@ -181,4 +179,5 @@ report 14302510 "AQD Generate Customer Rebates"
         ProcessCatchUpRebate: Boolean;
         RebateProgramCodeFilter: Code[100];
         BrokerVendorNo: Code[100];
+        CommissionType: Enum "AQD CR Commission Type";
 }

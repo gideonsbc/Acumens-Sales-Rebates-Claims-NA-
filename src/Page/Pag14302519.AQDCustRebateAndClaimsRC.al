@@ -496,7 +496,25 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             group(History)
             {
                 Caption = 'History';
-
+                group("Collect Commissions")
+                {
+                    Caption = 'Collect Commissions';
+                    Image = Documents;
+                    action("Sales Commission Documents")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Sales Commission Documents';
+                        RunObject = page "AQD Sales Commission Documents";
+                        Image = CreditMemo;
+                    }
+                    action("Processed Sales Commission Documents")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Processed Sales Commission Documents';
+                        RunObject = page "AQD Processed Sales Comm Dcts";
+                        Image = PostedCreditMemo;
+                    }
+                }
                 action("Item Ledger Entries")
                 {
                     ApplicationArea = All;

@@ -43,6 +43,11 @@ page 14302532 "AQD Customer Rebates Documents"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Posting Description field.', Comment = '%';
                 }
+                field("Commission Type"; Rec."Commission Type")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies whether the commission is paid to or collected from the customer.', Comment = '%';
+                }
                 field("Document Date"; Rec."Document Date")
                 {
                     ApplicationArea = All;
