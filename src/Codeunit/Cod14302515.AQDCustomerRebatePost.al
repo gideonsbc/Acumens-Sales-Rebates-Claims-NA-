@@ -958,7 +958,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     GenJnlLine.Validate(Amount, VendLocalRebateAmount);
-                    GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    GenJnlLine."External Document No." := CopyStr(PostedCustomerRebateLine."Document No." + '-' + PostedCustomerRebateLine."Rebate No." + '-' + FORMAT(GenJnlLine."Line No."), 1, MaxStrLen(GenJnlLine."External Document No."));
                     OnBeforeInitRebatePaymentMethodCodeVendor(GenJnlLine, InvoicePostingBuffer);
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                     GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
@@ -1068,7 +1068,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     EmpLocalRebateAmount := -InvoicePostingBuffer.Amount;
                     GenJnlLine.Validate(Amount, EmpLocalRebateAmount);
-                    GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    GenJnlLine."External Document No." := CopyStr(PostedCustomerRebateLine."Document No." + '-' + PostedCustomerRebateLine."Rebate No." + '-' + FORMAT(GenJnlLine."Line No."), 1, MaxStrLen(GenJnlLine."External Document No."));
                     OnBeforeInitRebatePaymentMethodCodeEmployee(GenJnlLine, InvoicePostingBuffer);
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                     GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
@@ -1385,7 +1385,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     GenJnlLine.Validate(Amount, LocalRebateAmount);
-                    GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    GenJnlLine."External Document No." := CopyStr(PostedCustomerRebateLine."Document No." + '-' + PostedCustomerRebateLine."Rebate No." + '-' + FORMAT(GenJnlLine."Line No."), 1, MaxStrLen(GenJnlLine."External Document No."));
                     OnBeforeInitRebatePaymentMethodCodeVendor(GenJnlLine, InvoicePostingBuffer);
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                     GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
@@ -1499,7 +1499,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                     GenJnlLine.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                     GenJnlLine.Validate(Amount, InvoicePostingBuffer.Amount);
-                    GenJnlLine."External Document No." := PostedCustomerRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                    GenJnlLine."External Document No." := CopyStr(PostedCustomerRebateLine."Document No." + '-' + PostedCustomerRebateLine."Rebate No." + '-' + FORMAT(GenJnlLine."Line No."), 1, MaxStrLen(GenJnlLine."External Document No."));
                     OnBeforeInitRebatePaymentMethodCodeEmployee(GenJnlLine, InvoicePostingBuffer);
 
                     GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
@@ -1540,8 +1540,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
         RebateStatusError: Label 'Rebate Status must not be %1.';
         LocalRebateAmount: Decimal;
     begin
-        PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)",
-                                            "Vendor Commission", "Employee Commission");
+        // PostedCustomerRebateLine.CalcFields("Customer Rebate Amount", "Cust Rebate Amt(Item Charge)", "Customer Rebate Amt (GL)",
+        //                                     "Vendor Commission", "Employee Commission");
 
         RebateSetup.TestField("Sales Journal Template Name");
         RebateSetup.TestField("Sales Journal Batch Name");
@@ -1639,7 +1639,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                         GenJnlLine.Validate("Currency Code", PostedCustRebateLine."Currency Code");
                         GenJnlLine.Validate(Amount, LocalRebateAmount);
-                        GenJnlLine."External Document No." := PostedCustRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                        GenJnlLine."External Document No." := CopyStr(PostedCustRebateLine."Document No." + '-' + PostedCustRebateLine."Rebate No." + '-' + FORMAT(GenJnlLine."Line No."), 1, MaxStrLen(GenJnlLine."External Document No."));
 
                         GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
                         GenJnlLine.Validate("Bal. Account No.", InvoicePostingBuffer."G/L Account");
@@ -1697,8 +1697,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         END;
 
                         PostedCustomerRebateLineDetails.RESET;
-                        PostedCustomerRebateLineDetails.SetRange("Rebate No.", PostedCustomerRebateLine."Rebate No.");
-                        PostedCustomerRebateLineDetails.SetRange("Rebate Line No.", PostedCustomerRebateLine."Line No.");
+                        PostedCustomerRebateLineDetails.SetRange("Rebate No.", PostedCustRebateLine."Rebate No.");
+                        PostedCustomerRebateLineDetails.SetRange("Rebate Line No.", PostedCustRebateLine."Line No.");
                         PostedCustomerRebateLineDetails.SetFilter("No.", '<>%1', '');
                         PostedCustomerRebateLineDetails.SetRange("AQD Cust Rebate Posting Type", PostedCustomerRebateLineDetails."AQD Cust Rebate Posting Type"::Expense);
                         PostedCustomerRebateLineDetails.SetRange("Do Not Credit", false);

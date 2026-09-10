@@ -293,7 +293,7 @@ codeunit 14302620 "AQD Cancel Posted Cust Rebate"
                 GenJnlLine.Validate("Account No.", PostedCustRebateDetail."Entity No.");
                 GenJnlLine.Validate("Currency Code", PostedCustRebateLine."Currency Code");
                 GenJnlLine.Validate(Amount, LocalRebateAmount);
-                GenJnlLine."External Document No." := PostedCustRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
+                GenJnlLine."External Document No." := CopyStr(PostedCustRebateLine."Document No." + '-' + PostedCustRebateLine."Rebate No." + '-' + FORMAT(GenJnlLine."Line No."), 1, MaxStrLen(GenJnlLine."External Document No."));//PostedCustRebateLine."Document No." + '-' + FORMAT(GenJnlLine."Line No.");
                 GenJnlLine.Validate("Payment Method Code", VendLedgEntry."Payment Method Code");
 
                 GenJnlLine.Validate("Bal. Account Type", GenJnlLine."Account Type"::"G/L Account");
