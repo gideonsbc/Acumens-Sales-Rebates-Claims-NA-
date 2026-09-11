@@ -182,14 +182,14 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         CustomerRebateSetup.TESTFIELD("Customer Rebate Start Date");
         BillToCustomer.TestField("AQD Cust Rebate Customer No.");
 
-        CustomerRebateProgramCode.RESET;
-        CustomerRebateProgramCode.SETRANGE("Customer Rebate Posting Type",
-            CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense);
-        IF CustomerRebateProgramCode.FindFirst() THEN
-            REPEAT
-                CustomerRebateProgramCode.TestField("Rebate Expense AC");
-            //CustomerRebateProgramCode.TestField("Rebate Payable AC");
-            UNTIL CustomerRebateProgramCode.Next() = 0;
+        // CustomerRebateProgramCode.RESET;
+        // CustomerRebateProgramCode.SETRANGE("Customer Rebate Posting Type",
+        //     CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense);
+        // IF CustomerRebateProgramCode.FindFirst() THEN
+        //     REPEAT
+        //         CustomerRebateProgramCode.TestField("Rebate Expense AC");
+        //     //CustomerRebateProgramCode.TestField("Rebate Payable AC");
+        //     UNTIL CustomerRebateProgramCode.Next() = 0;
 
         if not SalesHeader."AQD Disallow Off-Inv Rebate" then
             UpdateOffInvoiceRebate(SalesHeader);

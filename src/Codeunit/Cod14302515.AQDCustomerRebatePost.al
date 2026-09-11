@@ -1,7 +1,8 @@
 codeunit 14302515 "AQD Customer Rebate Post"
 {
     Permissions = tabledata "Sales Shipment Header" = rm, tabledata "Sales Invoice Header" = rm,
-                  tabledata "Return Receipt Header" = rm, tabledata "Sales Cr.Memo Header" = rm;
+                  tabledata "Return Receipt Header" = rm, tabledata "Sales Cr.Memo Header" = rm,
+                  tabledata "Job Queue Entry" = rm, tabledata "Job Queue Log Entry" = rm;
     trigger OnRun()
     begin
         RebateSetup.GET;

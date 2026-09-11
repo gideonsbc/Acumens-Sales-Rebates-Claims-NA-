@@ -1,6 +1,6 @@
 codeunit 14302518 "AQD Customer Rebate Job Queue"
 {
-    Permissions = tabledata "Job Queue Entry" = RIMD;
+    Permissions = tabledata "Job Queue Entry" = rimd, tabledata "Job Queue Log Entry" = rimd;
 
     procedure EnsureJobQueueRunning()
     var
