@@ -19,6 +19,10 @@ pageextension 14302626 "AQD CR Vend. Ledger Entry Ext" extends "Vendor Ledger En
                 ToolTip = 'Specifies the value of the Rebate Program Code field.';
                 ApplicationArea = all;
             }
+            field("AQD CR Rebate Customer No."; Rec."AQD CR Rebate Customer No.")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 }

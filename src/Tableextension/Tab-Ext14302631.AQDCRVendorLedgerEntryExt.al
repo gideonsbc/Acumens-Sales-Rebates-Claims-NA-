@@ -22,5 +22,12 @@ tableextension 14302631 "AQD CR Vendor Ledger Entry Ext" extends "Vendor Ledger 
             Editable = false;
             TableRelation = Vendor;
         }
+        field(14302512; "AQD CR Rebate Customer No."; Code[20])
+        {
+            Caption = 'Rebate Customer No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+            TableRelation = Customer;
+        }
     }
 }
