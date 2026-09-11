@@ -292,6 +292,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         BillToCustomerNo: Code[20];
         IsHandled: Boolean;
         ExitFunction: Boolean;
+        CustomerRebateJobQueue: Codeunit "AQD Customer Rebate Job Queue";
     begin
         IF PreviewMode THEN
             EXIT;
@@ -359,6 +360,8 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         GenerateCustomerRebate.SetShptRcptNoAndInvCrMemoNo(BillToCustomerNo, ShptRcptNo, InvCrMemoNo, TRUE);
         GenerateCustomerRebate.UseRequestPage(false);
         GenerateCustomerRebate.Run();
+
+        CustomerRebateJobQueue.EnsureJobQueueRunning();
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnAfterInitValueEntry, '', FALSE, FALSE)]
@@ -609,7 +612,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             PostedCustRebateDetails.Reset();
             PostedCustRebateDetails.SetRange("Document No.", CustomerRebateDetails."Document No.");
             PostedCustRebateDetails.SetFilter("Rebate Program Code", CustomerRebateDetails."Rebate Program Code");
-            PostedCustRebateDetails.SetRange("Document Line No.", CustomerRebateDetails."Document Line No.");
+            //PostedCustRebateDetails.SetRange("Document Line No.", CustomerRebateDetails."Document Line No.");
             PostedCustRebateDetails.SetRange("Document Type", CustomerRebateDetails."Document Type");
             if PostedCustRebateDetails.FindFirst() then
                 IsHandled := true;

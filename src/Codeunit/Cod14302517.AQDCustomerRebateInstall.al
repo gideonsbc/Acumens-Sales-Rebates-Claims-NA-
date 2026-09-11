@@ -16,6 +16,7 @@ codeunit 14302517 "AQD Customer Rebate Install"
         GenCustRebateText: Label 'Generate Customer Rebate';
         CustRebateDetails: Record "AQD Customer Rebate Details";
         PostedCustRebateDetails: Record "AQD Posted Cust Reb Details";
+        CustomerRebateJobQueue: Codeunit "AQD Customer Rebate Job Queue";
     begin
         ModifyRecord := false;
         IF NOT SalesSetup.GET THEN BEGIN
@@ -58,6 +59,8 @@ codeunit 14302517 "AQD Customer Rebate Install"
             JobQueueEntry.Insert(true);
             JobQueueEntry.SetStatus(JobQueueEntry.Status::"On Hold");
         END;
+
+        CustomerRebateJobQueue.EnsureJobQueueRunning();
 
         // IF NavApp.GetCurrentModuleInfo(NewAppVersion) THEN
         //     IF NewAppVersion.AppVersion = Version.Create(25, 1023, 1, 39) then BEGIN
