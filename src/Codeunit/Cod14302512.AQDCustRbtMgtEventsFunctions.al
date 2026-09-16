@@ -1142,4 +1142,65 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             GenJnlLine.Validate("Payment Method Code", ProgramCodeSetup."Rebate Payment Method Code");
     end;
 
+    [EventSubscriber(ObjectType::Page, Page::Navigate, 'OnAfterFindRecords', '', false, false)]
+    local procedure Navigate_OnAfterFindRecords(var DocumentEntry: Record "Document Entry"; DocNoFilter: Text; PostingDateFilter: Text)
+    var
+        RebateNoFilter: Text;
+        PostedRebateCount: Integer;
+        PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header";
+    begin
+        if not RebateSetup.Get() then
+            exit;
+
+        PostedRebateCount := GetPostedRebateNoFilter(DocNoFilter, PostingDateFilter, RebateNoFilter);
+        if PostedRebateCount = 0 then
+            exit;
+
+        DocumentEntry.InsertIntoDocEntry(Database::"AQD Posted Cust Rebate Header", 'Posted Sales Rebate Document', PostedRebateCount);
+    end;
+
+    [EventSubscriber(ObjectType::Page, Page::Navigate, OnAfterShowRecords, '', false, false)]
+    local procedure Navigate_OnAfterShowRecords(var Sender: Page Navigate; var DocumentEntry: Record "Document Entry"; DocNoFilter: Text; PostingDateFilter: Text; ItemTrackingSearch: Boolean; ContactType: Enum "Navigate Contact Type"; ContactNo: Code[250]; ExtDocNo: Code[250])
+    var
+        PostedCustRebateHeader: Record "AQD Posted Cust Rebate Header";
+        RebateNoFilter: Text;
+    begin
+        if DocumentEntry."Table ID" = Database::"AQD Posted Cust Rebate Header" then begin
+
+            if GetPostedRebateNoFilter(DocNoFilter, PostingDateFilter, RebateNoFilter) = 0 then
+                exit;
+
+            PostedCustRebateHeader.SetFilter("No.", RebateNoFilter);
+            if not PostedCustRebateHeader.FindFirst() then
+                exit;
+
+            PAGE.Run(PAGE::"AQD Posted Customer Rebate Doc", PostedCustRebateHeader);
+        end;
+    end;
+
+    local procedure GetPostedRebateNoFilter(DocNoFilter: Text; PostingDateFilter: Text; var RebateNoFilter: Text): Integer
+    var
+        PostedCustRebateDetails: Record "AQD Posted Cust Reb Details";
+        RebateNos: Dictionary of [Code[20], Boolean];
+    begin
+        if DocNoFilter = '' then
+            exit(0);
+
+        PostedCustRebateDetails.SetFilter("Vendor Document No.", DocNoFilter);
+        if PostingDateFilter <> '' then
+            PostedCustRebateDetails.SetFilter("Posting Date", PostingDateFilter);
+
+        if PostedCustRebateDetails.FindSet() then
+            repeat
+                if (PostedCustRebateDetails."Rebate No." <> '') and not RebateNos.ContainsKey(PostedCustRebateDetails."Rebate No.") then begin
+                    RebateNos.Add(PostedCustRebateDetails."Rebate No.", true);
+                    if RebateNoFilter = '' then
+                        RebateNoFilter := PostedCustRebateDetails."Rebate No."
+                    else
+                        RebateNoFilter += '|' + PostedCustRebateDetails."Rebate No.";
+                end;
+            until PostedCustRebateDetails.Next() = 0;
+
+        exit(RebateNos.Count);
+    end;
 }
