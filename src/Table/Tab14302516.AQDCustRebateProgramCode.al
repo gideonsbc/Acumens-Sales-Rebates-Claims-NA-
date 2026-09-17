@@ -105,6 +105,11 @@ table 14302516 "AQD Cust Rebate Program Code"
             TableRelation = "Payment Method";
             DataClassification = CustomerContent;
         }
+        field(60; "Posting Type"; Enum "AQD CR Posting Type")
+        {
+            Caption = 'Posting Type';
+            DataClassification = CustomerContent;
+        }
         field(90; Blocked; Boolean)
         {
             Caption = 'Blocked';

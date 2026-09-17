@@ -123,6 +123,11 @@ page 14302515 "AQD Cust Rebate Program Codes"
                 {
                     ApplicationArea = All;
                 }
+                field("Posting Type"; Rec."Posting Type")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Posting Type';
+                }
                 field(Blocked; Rec.Blocked)
                 {
                     ApplicationArea = All;

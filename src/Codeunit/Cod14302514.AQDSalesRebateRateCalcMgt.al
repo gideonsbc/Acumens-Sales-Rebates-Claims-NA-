@@ -191,6 +191,9 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         SalesRebatesRate.SETRANGE(Blocked, false);
         SalesRebatesRate.SetRange("Program Code", CustomerRebateDetailsLocIn."Rebate Program Code");
         SalesRebatesRate.SETFILTER("Territory Code", '%1|%2', CustomerRebateDetailsLocIn."Territory Code", '');
+
+        //New Filters
+        SalesRebatesRate.SetFilter("Rebate Expense Type", '<>%1', SalesRebatesRate."Rebate Expense Type"::"Off-Invoice Rebate");
         OnSetSalesRebateRateFilterNew(SalesRebatesRate, CustomerRebateDetailsLocIn);
 
         CASE CustomerRebateDetailsLocIn."Entity Type" OF
@@ -210,9 +213,6 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
 
                     SalesRebatesRate.SetRange("Line Type", SalesRebatesRate."Line Type"::"Rebate Category");
                     SalesRebatesRate.SetRange("Payee Type", SalesRebatesRate."Payee Type"::CustomerRebate);
-                    // SalesRebatesRate.SetFilter("No.", '%1|%2', ' ', CustomerRebateDetailsLocIn."Rebate Item Category Code");
-                    // SalesRebatesRate.SetRange("Variant Code");
-                    // SalesRebatesRate.SetRange("Unit of Measure Code");
                     CopyCustomerSalesRebateToCustomerSalesRebate(SalesRebatesRate, TempSalesRebatesRate, CustomerRebateDetailsLocIn);
 
                     IF LocalCust.GET(CustomerRebateDetailsLocIn."Bill-To Customer No.") THEN BEGIN
@@ -567,7 +567,7 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
             REPEAT
                 ToCustomerSalesRebateRate := FromCustomerSalesRebateRate;
                 IsHandled := false;
-                OnBeforeInsertToCustomerSalesRebateRateNew(FromCustomerSalesRebateRate, ToCustomerSalesRebateRate, CustomerRebateDetailsLocIn, IsHandled);
+                OnBeforeInsertToCustomerSalesRebateRateNew(FromCustomerSalesRebateRate, ToCustomerSalesRebateRate, CustomerRebateDetailsLocIn, GlobalProcessCatchUpRebate, IsHandled);
                 if not IsHandled then
                     ToCustomerSalesRebateRate.INSERT;
             UNTIL FromCustomerSalesRebateRate.NEXT = 0;
@@ -680,8 +680,13 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
     begin
     end;
 
+    // [IntegrationEvent(false, false)]
+    // local procedure OnBeforeInsertToCustomerSalesRebateRateNew(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
+    // begin
+    // end;
+
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsertToCustomerSalesRebateRateNew(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
+    local procedure OnBeforeInsertToCustomerSalesRebateRateNew(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; GlobalProcessCatchUpRebate: Boolean; var IsHandled: Boolean)
     begin
     end;
 
