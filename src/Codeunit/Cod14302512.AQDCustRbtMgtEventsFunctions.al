@@ -91,6 +91,21 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         SetRebateOrderDateFromPricingDate(Rec);
     END;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, "Shipment Date", FALSE, FALSE)]
+    local procedure Tab36_SalesHeader_ShipmentDate_OnAfterValidateEvent(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
+    BEGIN
+        //  IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
+        //         CASE Customer."AQD CustRbt Calculation Date" OF
+        //             Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
+        //                 Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
+        //             Customer."AQD CustRbt Calculation Date"::"Shipment Date":
+        //                 Rec."AQD Customer Rebate Order Date" := Rec."Posting Date";
+        //         END;
+        //     END;
+
+        SetRebateOrderDateFromPricingDate(Rec);
+    END;
+
     local procedure SetRebateOrderDateFromPricingDate(var SalesHeader: Record "Sales Header")
     var
         SalesPriceCalcMgt: Codeunit "Sales Price Calc. Mgt.";
