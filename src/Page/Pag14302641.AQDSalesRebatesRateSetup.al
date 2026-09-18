@@ -406,6 +406,8 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                 {
                     ApplicationArea = All;
                     Visible = false;
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'Moved to program setup';
                 }
                 field(Blocked; Rec.Blocked)
                 {

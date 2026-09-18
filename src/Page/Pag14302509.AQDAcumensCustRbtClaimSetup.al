@@ -3361,7 +3361,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
+                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
                 CustomerSalesRebateSetup."Customer No. Filter" := '10000';
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -3393,7 +3393,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
+                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := '10000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
@@ -3423,7 +3423,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
+                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
                 CustomerSalesRebateSetup."Customer No. Filter" := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -3455,7 +3455,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
+                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
@@ -3485,7 +3485,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
+                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
                 CustomerSalesRebateSetup."Customer No. Filter" := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -3517,7 +3517,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
+                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();

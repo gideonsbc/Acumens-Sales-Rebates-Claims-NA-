@@ -264,11 +264,12 @@ table 14302621 "AQD Sales Rebates Rate New"
                 Rec.TestField("Rebate Type");
             end;
         }
-
         field(120; "Rate Priority"; Enum "AQD Rate Priority")
         {
             Caption = 'Rate Priority';
             DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'Moved to program setup';
         }
         field(130; Blocked; Boolean)
         {
@@ -404,15 +405,19 @@ table 14302621 "AQD Sales Rebates Rate New"
         CustomerRebateRate.SETRANGE("Variant Code", Rec."Variant Code");
         CustomerRebateRate.SETRANGE("Program Code", Rec."Program Code");
         CustomerRebateRate.SETRANGE("Starting Date", Rec."Starting Date");
+        CustomerRebateRate.SetRange("Ending Date", Rec."Ending Date");
         CustomerRebateRate.SETRANGE("Unit of Measure Code", Rec."Unit of Measure Code");
         CustomerRebateRate.SetRange("Minimum Quantity", Rec."Minimum Quantity");
         CustomerRebateRate.SetRange("Minimum Amount", Rec."Minimum Amount");
         CustomerRebateRate.SetRange("Customer No. Filter", Rec."Customer No. Filter");
-        CustomerRebateRate.SetRange("Rate Priority", Rec."Rate Priority");
         CustomerRebateRate.SetRange("Item Attribute Name", Rec."Item Attribute Name");
         CustomerRebateRate.SetRange("Item Attribute Value Filter", Rec."Item Attribute Value Filter");
         CustomerRebateRate.SetRange("Payee Type", Rec."Payee Type");
         CustomerRebateRate.SetRange("Payee No.", Rec."Payee No.");
+        CustomerRebateRate.SetRange("Trade Agreement", Rec."Trade Agreement");
+        CustomerRebateRate.SetRange("Rebate Type", Rec."Rebate Type");
+        CustomerRebateRate.SetRange("Rebate %", Rec."Rebate %");
+        CustomerRebateRate.SetRange("Rebate Per Unit", Rec."Rebate Per Unit");
         IF CustomerRebateRate.FindFirst() THEN
             ERROR(Text002,
                 Rec.FieldCaption("Rate Type"), Rec."Rate Type",
