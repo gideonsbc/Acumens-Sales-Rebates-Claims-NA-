@@ -405,6 +405,7 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                 field("Rate Priority"; Rec."Rate Priority")
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(Blocked; Rec.Blocked)
                 {

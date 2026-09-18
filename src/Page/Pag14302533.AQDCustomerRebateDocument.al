@@ -183,6 +183,12 @@ page 14302533 "AQD Customer Rebate Document"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the External Document No. field.', Comment = '%';
                 }
+                field("AQD Last Processing Error Msg"; Rec."AQD Last Processing Error Msg")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Last Processing Error Message';
+                    MultiLine = true;
+                }
             }
             part("AQD Customer Rebate Subpage"; "AQD Customer Rebate Subpage")
             {

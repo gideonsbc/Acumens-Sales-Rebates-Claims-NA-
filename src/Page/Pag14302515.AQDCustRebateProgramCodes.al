@@ -119,6 +119,10 @@ page 14302515 "AQD Cust Rebate Program Codes"
                         EXIT(true);
                     end;
                 }
+                field("Rate Priority"; Rec."Rate Priority")
+                {
+                    ApplicationArea = All;
+                }
                 field("Rebate Payment Method Code"; Rec."Rebate Payment Method Code")
                 {
                     ApplicationArea = All;

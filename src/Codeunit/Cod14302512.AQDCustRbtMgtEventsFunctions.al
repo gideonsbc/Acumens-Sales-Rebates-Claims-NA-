@@ -48,48 +48,57 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, "Bill-to Customer No.", FALSE, FALSE)]
     local procedure Tab36_SalesHeader_BillToCustomerNo_OnAfterValidate(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
-    var
-        Customer: Record Customer;
     begin
-        IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
-            CASE Customer."AQD CustRbt Calculation Date" OF
-                Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                    Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
-                Customer."AQD CustRbt Calculation Date"::"Shipment Date":
-                    Rec."AQD Customer Rebate Order Date" := Rec."Posting Date";
-            END;
-        END;
+        //  IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
+        //     CASE Customer."AQD CustRbt Calculation Date" OF
+        //         Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
+        //             Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
+        //         Customer."AQD CustRbt Calculation Date"::"Shipment Date":
+        //             Rec."AQD Customer Rebate Order Date" := Rec."Posting Date";
+        //     END;
+        // END;
+
+        SetRebateOrderDateFromPricingDate(Rec);
     END;
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, "Order Date", FALSE, FALSE)]
     local procedure Tab36_SalesHeader_OrderDate_OnAfterValidateEvent(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
-    var
-        Customer: Record Customer;
     BEGIN
-        IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
-            CASE Customer."AQD CustRbt Calculation Date" OF
-                Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                    Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
-                Customer."AQD CustRbt Calculation Date"::"Shipment Date":
-                    Rec."AQD Customer Rebate Order Date" := Rec."Posting Date";
-            END;
-        END;
+        // IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
+        //         CASE Customer."AQD CustRbt Calculation Date" OF
+        //             Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
+        //                 Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
+        //             Customer."AQD CustRbt Calculation Date"::"Shipment Date":
+        //                 Rec."AQD Customer Rebate Order Date" := Rec."Posting Date";
+        //         END;
+        //     END;
+
+        SetRebateOrderDateFromPricingDate(Rec);
     END;
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, "Posting Date", FALSE, FALSE)]
     local procedure Tab36_SalesHeader_PostingDate_OnAfterValidateEvent(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
-    var
-        Customer: Record Customer;
     BEGIN
-        IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
-            CASE Customer."AQD CustRbt Calculation Date" OF
-                Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
-                    Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
-                Customer."AQD CustRbt Calculation Date"::"Shipment Date":
-                    Rec."AQD Customer Rebate Order Date" := Rec."Posting Date";
-            END;
-        END;
+        //  IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
+        //         CASE Customer."AQD CustRbt Calculation Date" OF
+        //             Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
+        //                 Rec."AQD Customer Rebate Order Date" := Rec."Order Date";
+        //             Customer."AQD CustRbt Calculation Date"::"Shipment Date":
+        //                 Rec."AQD Customer Rebate Order Date" := Rec."Posting Date";
+        //         END;
+        //     END;
+
+        SetRebateOrderDateFromPricingDate(Rec);
     END;
+
+    local procedure SetRebateOrderDateFromPricingDate(var SalesHeader: Record "Sales Header")
+    var
+        SalesPriceCalcMgt: Codeunit "Sales Price Calc. Mgt.";
+        DateCaption: Text[30];
+    begin
+        //SalesHeader."AQD Customer Rebate Order Date" := SalesLine.GetDateForCalculations(SalesHeader);
+        SalesHeader."AQD Customer Rebate Order Date" := SalesPriceCalcMgt.SalesHeaderStartDate(SalesHeader, DateCaption);
+    end;
 
     [EventSubscriber(ObjectType::Table, Database::Resource, 'OnBeforeInsertEvent', '', true, false)]
     local procedure Table156_Resource_OnBeforeInsert(var Rec: Record Resource; RunTrigger: Boolean)
