@@ -558,6 +558,22 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             if RebateProgramCodeSetup."Posting Type" <> RebateProgramCodeSetup."Posting Type"::"Auto Post" then
                 IsHandled := true;
 
+        // Customer Type
+        if FromCustomerSalesRebateRate."Customer No. Filter" <> '' then begin
+            case FromCustomerSalesRebateRate."Customer Type" of
+                FromCustomerSalesRebateRate."Customer Type"::Customer:
+                    begin
+                        if not SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
+                            IsHandled := true;
+                    end;
+                FromCustomerSalesRebateRate."Customer Type"::"Customer Category", FromCustomerSalesRebateRate."Customer Type"::"Customer Posting Group":
+                    begin
+                        if not SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate) then
+                            IsHandled := true;
+                    end;
+            end;
+        end;
+
         if FromCustomerSalesRebateRate."Line Type" = FromCustomerSalesRebateRate."Line Type"::"Item Attribute" then
             if (FromCustomerSalesRebateRate."Item Attribute Name" <> '') and (FromCustomerSalesRebateRate."Item Attribute Value Filter" <> '') then
                 if not SalesRebateRateCalcMgt.AttributeMatches(FromCustomerSalesRebateRate."Item Attribute Name", FromCustomerSalesRebateRate."Item Attribute Value Filter", SalesRebateRateCalcMgt.GetItemAttributeValues(CustomerRebateDetailsLocIn."No.")) then
@@ -590,22 +606,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                                 IsHandled := true;
                         end;
                 end;
-            end;
-        end;
-
-        // Customer No. Filter
-        if FromCustomerSalesRebateRate."Customer No. Filter" <> '' then begin
-            case FromCustomerSalesRebateRate."Customer Type" of
-                FromCustomerSalesRebateRate."Customer Type"::Customer:
-                    begin
-                        if not SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
-                            IsHandled := true;
-                    end;
-                FromCustomerSalesRebateRate."Customer Type"::"Customer Category":
-                    begin
-                        if not SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
-                            IsHandled := true;
-                    end;
             end;
         end;
 
@@ -835,6 +835,9 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             RebateRates."Customer Type"::"Customer Category":
                 if RebateRates."Customer No. Filter" <> '' then
                     SalesHeader.SetFilter("AQD Cust Rebate Category", RebateRates."Customer No. Filter");
+            RebateRates."Customer Type"::"Customer Posting Group":
+                if RebateRates."Customer No. Filter" <> '' then
+                    SalesHeader.SetFilter("Customer Posting Group", RebateRates."Customer No. Filter");
         end;
 
         //Set Payment Term Filter

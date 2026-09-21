@@ -207,6 +207,7 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                     var
                         CustList: Page "Customer List";
                         RebateCustomerTypeList: Page "AQD Rebate Customer Categories";
+                        CustomerPostingGroups: page "Customer Posting Groups";
                     begin
                         CASE Rec."Customer Type" OF
                             Rec."Customer Type"::Customer:
@@ -222,6 +223,14 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                                     RebateCustomerTypeList.LOOKUPMODE := TRUE;
                                     IF RebateCustomerTypeList.RUNMODAL = ACTION::LookupOK THEN
                                         Text := RebateCustomerTypeList.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                            Rec."Customer Type"::"Customer Posting Group":
+                                BEGIN
+                                    CustomerPostingGroups.LOOKUPMODE := TRUE;
+                                    IF CustomerPostingGroups.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := CustomerPostingGroups.GetSelectionFilter
                                     ELSE
                                         EXIT(FALSE);
                                 END;
@@ -691,6 +700,11 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                         CheckFilters(DATABASE::"AQD Rebate Customer Category", CustomerNoFilter);
                         Rec.SetRange("Customer Type", Rec."Customer Type"::"Customer Category");
                     end;
+                CustomerTypeFilter::"Customer Posting Group":
+                    begin
+                        CheckFilters(DATABASE::"Customer Posting Group", CustomerNoFilter);
+                        Rec.SetRange("Customer Type", Rec."Customer Type"::"Customer Posting Group");
+                    end;
             // CustomerTypeFilter::"All Customers":
             //     begin
             //         CustomerNoFilter := '';
@@ -889,8 +903,8 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                 exit(CustomerTypeFilter::Customer.AsInteger());
             Format(Rec."Customer Type"::"Customer Category"):
                 exit(CustomerTypeFilter::"Customer Category".AsInteger());
-        // Format(Rec."Entity Type"::"All Customers"):
-        //     exit(CustomerTypeFilter::"All Customers".AsInteger());
+            Format(Rec."Customer Type"::"Customer Posting Group"):
+                exit(CustomerTypeFilter::"Customer Posting Group".AsInteger());
         end;
         // case Rec.GetFilter("Payee Type") of
         //     Format(Rec."Payee Type"::"Employee Commission"):

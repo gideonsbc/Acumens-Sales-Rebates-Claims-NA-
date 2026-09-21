@@ -26,4 +26,8 @@ enum 14302516 "AQD Rebate Cust Type Filter"
     {
         Caption = 'Vendor Commission';
     }
+    value(6; "Customer Posting Group")
+    {
+        Caption = 'Customer Posting Group';
+    }
 }

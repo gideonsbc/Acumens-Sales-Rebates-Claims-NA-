@@ -10,4 +10,8 @@ enum 14302539 "AQD Sales Rebate Customer Type"
     {
         Caption = 'Customer Category';
     }
+    value(2; "Customer Posting Group")
+    {
+        Caption = 'Customer Posting Group';
+    }
 }

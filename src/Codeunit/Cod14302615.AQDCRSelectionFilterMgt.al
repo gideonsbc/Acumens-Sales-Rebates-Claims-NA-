@@ -32,6 +32,14 @@ codeunit 14302615 "AQD CR SelectionFilterMgt"
         exit(GetSelectionFilter(RecRef, ItemAttributeValue.FieldNo(Value)));
     end;
 
+    procedure GetSelectionFilterForCustomerPostingGroups(var CustomerPostingGroup: Record "Customer Posting Group"): Text
+    var
+        RecRef: RecordRef;
+    begin
+        RecRef.GetTable(CustomerPostingGroup);
+        exit(GetSelectionFilter(RecRef, CustomerPostingGroup.FieldNo(Code)));
+    end;
+
     procedure GetSelectionFilter(var TempRecRef: RecordRef; SelectionFieldID: Integer): Text
     var
         [SecurityFiltering(SecurityFilter::Ignored)]

@@ -489,6 +489,77 @@ codeunit 14302618 "AQD Claims and Rebates Events"
                                                 END;
                                         End;
                                     END;
+                                CustomerSalesRebateRate."Customer Type"::"Customer Posting Group":
+                                    BEGIN
+                                        CustomerRec.RESET;
+                                        CustomerRec.SetRange("Customer Posting Group", CustomerSalesRebateRate."No.");
+                                        IF CustomerRec.FINDFIRST THEN BEGIN
+                                            REPEAT
+                                                Case CustomerSalesRebateRate."Line Type" OF
+                                                    CustomerSalesRebateRate."Line Type"::Item:
+                                                        BEGIN
+                                                            ItemRec.GET(CustomerRebateDetailsLocIn."No.");
+                                                            ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                                            ItemRec.SetFilter("Date Filter", RebateDateFilter);
+
+                                                            ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
+                                                            SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
+                                                            SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
+                                                        END;
+                                                    CustomerSalesRebateRate."Line Type"::"Rebate Category":
+                                                        BEGIN
+                                                            ItemRec.RESET;
+                                                            ItemRec.SETRANGE("AQD Cust Rebate Category Code", CustomerRebateDetailsLocIn."Rebate Item Category Code");
+                                                            IF ItemRec.FINDFIRST THEN BEGIN
+                                                                REPEAT
+                                                                    ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                                                    ItemRec.SetFilter("Date Filter", RebateDateFilter);
+
+                                                                    ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
+                                                                    SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
+                                                                    SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
+                                                                UNTIL ItemRec.Next() = 0;
+                                                            END;
+                                                        END;
+                                                End;
+                                            UNTIL CustomerRec.NEXT = 0;
+                                        END;
+
+                                        Case TRUE of
+                                            (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" <> 0):
+                                                BEGIN
+                                                    IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") AND
+                                                       (SalesAmount >= CustomerSalesRebateRate."Minimum Amount")
+                                                    THEN BEGIN
+                                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                        BestSalesRebateFound := TRUE;
+                                                    END;
+                                                END;
+                                            (CustomerSalesRebateRate."Minimum Quantity" <> 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" = 0):
+                                                BEGIN
+                                                    IF (SalesQty >= CustomerSalesRebateRate."Minimum Quantity") THEN BEGIN
+                                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                        BestSalesRebateFound := TRUE;
+                                                    END;
+                                                END;
+                                            (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" <> 0):
+                                                BEGIN
+                                                    IF (SalesAmount >= CustomerSalesRebateRate."Minimum Amount") THEN BEGIN
+                                                        BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                        BestSalesRebateFound := TRUE;
+                                                    END;
+                                                END;
+                                            (CustomerSalesRebateRate."Minimum Quantity" = 0) AND
+                                            (CustomerSalesRebateRate."Minimum Amount" = 0):
+                                                BEGIN
+                                                    BestCustomerSalesRebate := CustomerSalesRebateRate;
+                                                    BestSalesRebateFound := TRUE;
+                                                END;
+                                        End;
+                                    END;
                             END;
                         end;
                     else begin
