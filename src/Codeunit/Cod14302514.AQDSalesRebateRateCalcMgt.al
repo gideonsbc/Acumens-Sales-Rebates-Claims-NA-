@@ -771,15 +771,15 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
     begin
     end;
 
-    // [IntegrationEvent(false, false)]
-    // local procedure OnSetSalesRebateRateFilter(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
-    // begin
-    // end;
+    [IntegrationEvent(false, false)]
+    local procedure OnSetSalesRebateRateFilter(var SalesRebatesRate: Record "AQD Sales Rebates Rate"; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    begin
+    end;
 
-    // [IntegrationEvent(false, false)]
-    // local procedure OnBeforeInsertToCustomerSalesRebateRate(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
-    // begin
-    // end;
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeInsertToCustomerSalesRebateRate(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details"; var IsHandled: Boolean)
+    begin
+    end;
 
 
     var

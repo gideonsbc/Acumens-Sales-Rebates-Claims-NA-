@@ -555,7 +555,9 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 END;
             END;
 
+            Rec."Customer Rebate Start Date" := TODAY();
             Rec.Insert();
+
             InitializeDefaultSetups();
             AllowToEdit := FALSE;
         end;
@@ -684,21 +686,11 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             END;
 
             Rec."Customer Rebate Document Nos" := 'CRB';
-            IF SalesInvoiceHeader.FINDLAST THEN BEGIN
+            IF SalesInvoiceHeader.FINDLAST THEN
                 Rec."Rebate Calc Start Invoice No." := '100';
-                Rec."Customer Rebate Start Date" := SalesInvoiceHeader."Posting Date";
-            END;
-            IF SalesCrMemoHeader.FINDLAST THEN BEGIN
-                Rec."Rebate Calc Start CM No." := '100';
-                Rec."Customer Rebate Start Date" := SalesCrMemoHeader."Posting Date";
-            END;
 
-            // IF Rec."Customer Rebate Start Date" <> 0D THEN
-            //     Rec."Customer Rebate Start Date" := CalcDate('1D', Rec."Customer Rebate Start Date")
-            // ELSE
-            //     Rec."Customer Rebate Start Date" := WorkDate();
-            IF Rec."Customer Rebate Start Date" = 0D THEN
-                Rec."Customer Rebate Start Date" := WorkDate();
+            IF SalesCrMemoHeader.FINDLAST THEN
+                Rec."Rebate Calc Start CM No." := '100';
 
             SingleInstance.SetSuppressConfirm(true);
             Rec.Validate("Item Rebate Enabled", true);

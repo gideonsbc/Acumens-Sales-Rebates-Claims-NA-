@@ -258,12 +258,12 @@ codeunit 14302622 "AQD Sales Rebate Calc Mgt"
                 CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
                     begin
                         if GlobalCalledFromGenerateCustomerRebateIn then
-                            SalesInvoiceHeader.SetFilter("Posting Date", '%1..', StartDate)
+                            SalesInvoiceHeader.SetFilter(SystemCreatedAt, '%1..', CreateDateTime(StartDate, 000000T))
                         else begin
                             if EndDate <> 0D then
-                                SalesInvoiceHeader.SetFilter("Posting Date", '%1..%2', StartDate, EndDate)
+                                SalesInvoiceHeader.SetFilter(SystemCreatedAt, '%1..%2', CreateDateTime(StartDate, 000000T), CreateDateTime(EndDate, 235959T))
                             else
-                                SalesInvoiceHeader.SetFilter("Posting Date", '%1..', StartDate)
+                                SalesInvoiceHeader.SetFilter(SystemCreatedAt, '%1..', CreateDateTime(StartDate, 000000T))
                         end;
                     end;
                 CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
@@ -505,12 +505,12 @@ codeunit 14302622 "AQD Sales Rebate Calc Mgt"
                 CustomerIn."AQD CustRbt Calculation Date"::"Shipment Date":
                     begin
                         if GlobalCalledFromGenerateCustomerRebateIn then
-                            SalesCrMemoHeader.SetFilter("Posting Date", '%1..', StartDate)
+                            SalesCrMemoHeader.SetFilter(SystemCreatedAt, '%1..', CreateDateTime(StartDate, 000000T))
                         else begin
                             if EndDate <> 0D then
-                                SalesCrMemoHeader.SetFilter("Posting Date", '%1..%2', StartDate, EndDate)
+                                SalesCrMemoHeader.SetFilter(SystemCreatedAt, '%1..%2', CreateDateTime(StartDate, 000000T), CreateDateTime(EndDate, 235959T))
                             else
-                                SalesCrMemoHeader.SetFilter("Posting Date", '%1..', StartDate)
+                                SalesCrMemoHeader.SetFilter(SystemCreatedAt, '%1..', CreateDateTime(StartDate, 000000T))
                         end;
                     end;
                 CustomerIn."AQD CustRbt Calculation Date"::"Rebate Order Date":
@@ -1374,9 +1374,9 @@ codeunit 14302622 "AQD Sales Rebate Calc Mgt"
         //     SalesCommHeader.SetFilter("Source Code", '<>%1', SourceCodeSetup."Deleted Document");
         IF (StartDate <> 0D) OR (EndDate <> 0D) then begin
             if EndDate <> 0D then
-                SalesCommHeader.SetFilter("Posting Date", '%1..%2', StartDate, EndDate)
+                SalesCommHeader.SetFilter(SystemCreatedAt, '%1..%2', CreateDateTime(StartDate, 000000T), CreateDateTime(EndDate, 235959T))
             else
-                SalesCommHeader.SetFilter("Posting Date", '%1..', StartDate);
+                SalesCommHeader.SetFilter(SystemCreatedAt, '%1..', CreateDateTime(StartDate, 000000T));
         end;
         if SalesCommHeader.FindFirst then
             repeat
