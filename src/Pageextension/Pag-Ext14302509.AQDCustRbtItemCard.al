@@ -51,9 +51,7 @@ pageextension 14302509 "AQD CustRbt Item Card" extends "Item Card"
                     Caption = 'Sales Rebate Rates';
                     Image = Setup;
                     RunObject = Page "AQD Sales Rebates Rate Setup";
-                    RunPageLink = "Line Type" = CONST(Item),
-                                  "No." = FIELD("No.");
-                    RunPageView = sorting("No.");
+                    RunPageLink = "Line Type" = CONST(Item);
                 }
                 // action("AQD Item attributes Values")
                 // {

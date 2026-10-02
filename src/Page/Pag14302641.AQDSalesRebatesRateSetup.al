@@ -34,6 +34,8 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                     Caption = 'Customer No. Filter';
                     Enabled = CustomerNoFilterEnable;
                     ToolTip = 'Specifies a filter for which sales rebate to display.';
+                    Visible = false;
+                    ObsoleteState = Pending;
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -86,6 +88,8 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                     ApplicationArea = All;
                     Caption = 'Item No. Filter';
                     ToolTip = 'Specifies a filter for which sales rebates to display.';
+                    Visible = false;
+                    ObsoleteState = Pending;
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -208,6 +212,8 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                         CustList: Page "Customer List";
                         RebateCustomerTypeList: Page "AQD Rebate Customer Categories";
                         CustomerPostingGroups: page "Customer Posting Groups";
+                        CorporateAffiliation: Page "AQD CF Corporate Affiliation";
+                        GPOMembership: Page "AQD CF GPO Membership";
                     begin
                         CASE Rec."Customer Type" OF
                             Rec."Customer Type"::Customer:
@@ -234,6 +240,22 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                                     ELSE
                                         EXIT(FALSE);
                                 END;
+                            Rec."Customer Type"::"Corporate Affiliation level":
+                                BEGIN
+                                    CorporateAffiliation.LOOKUPMODE := TRUE;
+                                    IF CorporateAffiliation.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := CorporateAffiliation.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                            Rec."Customer Type"::"GPO Membership level":
+                                BEGIN
+                                    GPOMembership.LOOKUPMODE := TRUE;
+                                    IF GPOMembership.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := GPOMembership.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
                         END;
 
                         EXIT(TRUE);
@@ -254,15 +276,68 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the Type of the item for which the Sales Rebate is valid.';
                 }
+                field("No. Filter"; Rec."No. Filter")
+                {
+                    ApplicationArea = All;
+                    Editable = Rec."Line Type" <> Rec."Line Type"::"Item Attribute";
+                    trigger onlookup(var Text: Text): Boolean
+                    var
+                        ItemList: Page "Item List";
+                        GLList: Page "G/L Account List";
+                        ResourceList: Page "Resource List";
+                        ItemCategories: Page "Item Categories";
+                    begin
+                        CASE Rec."Line Type" OF
+                            Rec."Line Type"::Item:
+                                BEGIN
+                                    ItemList.LOOKUPMODE := TRUE;
+                                    IF ItemList.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := ItemList.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                            Rec."Line Type"::"G/L Account":
+                                BEGIN
+                                    GLList.LOOKUPMODE := TRUE;
+                                    IF GLList.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := GLList.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                            Rec."Line Type"::Resource:
+                                BEGIN
+                                    ResourceList.LOOKUPMODE := TRUE;
+                                    IF ResourceList.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := ResourceList.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                            Rec."Line Type"::"Rebate Category":
+                                BEGIN
+                                    ItemCategories.LOOKUPMODE := TRUE;
+                                    IF ItemCategories.RUNMODAL = ACTION::LookupOK THEN
+                                        Text := ItemCategories.GetSelectionFilter
+                                    ELSE
+                                        EXIT(FALSE);
+                                END;
+                        END;
+
+                        EXIT(TRUE);
+                    end;
+                }
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the number of the item for which the Sales Rebate is valid.';
                     Editable = Rec."Line Type" <> Rec."Line Type"::"Item Attribute";
+                    Visible = false;
+                    ObsoleteState = Pending;
                 }
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
+                    Visible = false;
+                    ObsoleteState = Pending;
                 }
                 field("Item Attribute Name"; Rec."Item Attribute Name")
                 {
@@ -317,57 +392,6 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                         exit(true);
                     end;
                 }
-
-                // field("No. Filter"; Rec."No. Filter")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = Rec."No." = '';
-                //     Visible = false;
-                //     trigger onlookup(var Text: Text): Boolean
-                //     var
-                //         ItemList: Page "Item List";
-                //         GLList: Page "G/L Account List";
-                //         ResourceList: Page "Resource List";
-                //         ItemCategories: Page "Item Categories";
-                //     begin
-                //         CASE Rec."Line Type" OF
-                //             Rec."Line Type"::Item:
-                //                 BEGIN
-                //                     ItemList.LOOKUPMODE := TRUE;
-                //                     IF ItemList.RUNMODAL = ACTION::LookupOK THEN
-                //                         Text := ItemList.GetSelectionFilter
-                //                     ELSE
-                //                         EXIT(FALSE);
-                //                 END;
-                //             Rec."Line Type"::"G/L Account":
-                //                 BEGIN
-                //                     GLList.LOOKUPMODE := TRUE;
-                //                     IF GLList.RUNMODAL = ACTION::LookupOK THEN
-                //                         Text := GLList.GetSelectionFilter
-                //                     ELSE
-                //                         EXIT(FALSE);
-                //                 END;
-                //             Rec."Line Type"::Resource:
-                //                 BEGIN
-                //                     ResourceList.LOOKUPMODE := TRUE;
-                //                     IF ResourceList.RUNMODAL = ACTION::LookupOK THEN
-                //                         Text := ResourceList.GetSelectionFilter
-                //                     ELSE
-                //                         EXIT(FALSE);
-                //                 END;
-                //             Rec."Line Type"::"Rebate Category":
-                //                 BEGIN
-                //                     ItemCategories.LOOKUPMODE := TRUE;
-                //                     IF ItemCategories.RUNMODAL = ACTION::LookupOK THEN
-                //                         Text := ItemCategories.GetSelectionFilter
-                //                     ELSE
-                //                         EXIT(FALSE);
-                //                 END;
-                //         END;
-
-                //         EXIT(TRUE);
-                //     end;
-                // }
                 field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
                     ApplicationArea = All;
@@ -570,7 +594,7 @@ page 14302641 "AQD Sales Rebates Rate Setup"
         RebateSetup.GET;
         SetCaption();
 
-        Rec.SetCurrentKey("Entry No.", "Rate Type", "Program Code", "Payee Type", "Payee No.", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount");
+        Rec.SetCurrentKey("Entry No.", "Rate Type", "Program Code", "Payee Type", "Payee No.", "Customer Type", "Territory Code", "Line Type", "Variant Code", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount");
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)
@@ -678,8 +702,8 @@ page 14302641 "AQD Sales Rebates Rate Setup"
         else
             CustomerTypeFilter := CustomerTypeFilter::" ";
 
-        CustomerNoFilter := Rec.GetFilter("Customer No. Filter");
-        ItemNoFilter := Rec.GetFilter("No.");
+        // CustomerNoFilter := Rec.GetFilter("Customer No. Filter");
+        // ItemNoFilter := Rec.GetFilter("No. Filter");
     end;
 
     procedure SetRecFilters()
@@ -730,10 +754,10 @@ page 14302641 "AQD Sales Rebates Rate Setup"
             CustomerNoFilter := '';
         end;
 
-        if CustomerNoFilter <> '' then
-            Rec.SetFilter("Customer No. Filter", CustomerNoFilter)
-        else
-            Rec.SetRange("Customer No. Filter");
+        // if CustomerNoFilter <> '' then
+        //     Rec.SetFilter("Customer No. Filter", CustomerNoFilter)
+        // else
+        //     Rec.SetRange("Customer No. Filter");
 
         if StartingDateFilter <> '' then
             Rec.SetFilter("Starting Date", StartingDateFilter)
@@ -768,10 +792,11 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                 END;
         end;
 
-        if ItemNoFilter <> '' then
-            Rec.SetFilter("No.", ItemNoFilter)
-        else
-            Rec.SetRange("No.");
+        // if ItemNoFilter <> '' then
+        //     Rec.SetFilter("No. Filter", ItemNoFilter)
+        // else
+        //     Rec.SetRange("No. Filter");
+
         SetEditableFields();
         CurrPage.Update(false);
     end;
@@ -935,10 +960,10 @@ page 14302641 "AQD Sales Rebates Rate Setup"
         FilterPageBuilder.SetView(Rec.TableCaption, Rec.GetView());
         if Rec.GetFilter("Customer Type") = '' then
             FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer Type"));
-        if Rec.GetFilter("Customer No. Filter") = '' then
-            FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer No. Filter"));
-        if Rec.GetFilter("No.") = '' then
-            FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("No."));
+        // if Rec.GetFilter("Customer No. Filter") = '' then
+        //     FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Customer No. Filter"));
+        // if Rec.GetFilter("No.") = '' then
+        //     FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("No."));
         if Rec.GetFilter("Starting Date") = '' then
             FilterPageBuilder.AddFieldNo(Rec.TableCaption, Rec.FieldNo("Starting Date"));
         if FilterPageBuilder.RunModal() then

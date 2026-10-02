@@ -40,6 +40,22 @@ codeunit 14302615 "AQD CR SelectionFilterMgt"
         exit(GetSelectionFilter(RecRef, CustomerPostingGroup.FieldNo(Code)));
     end;
 
+    procedure GetSelectionFilterForCorporateAffiliation(var CorporateAffiliation: Record "AQD CF Corporate Affiliation"): Text
+    var
+        RecRef: RecordRef;
+    begin
+        RecRef.GetTable(CorporateAffiliation);
+        exit(GetSelectionFilter(RecRef, CorporateAffiliation.FieldNo(Code)));
+    end;
+
+    procedure GetSelectionFilterForGPOMembership(var GPOMembership: Record "AQD CF GPO Membership"): Text
+    var
+        RecRef: RecordRef;
+    begin
+        RecRef.GetTable(GPOMembership);
+        exit(GetSelectionFilter(RecRef, GPOMembership.FieldNo(Code)));
+    end;
+
     procedure GetSelectionFilter(var TempRecRef: RecordRef; SelectionFieldID: Integer): Text
     var
         [SecurityFiltering(SecurityFilter::Ignored)]

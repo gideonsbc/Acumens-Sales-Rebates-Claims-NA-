@@ -91,8 +91,8 @@ table 14302621 "AQD Sales Rebates Rate New"
             trigger OnValidate()
             begin
                 IF Rec."Line Type" <> xRec."Line Type" then begin
-                    Rec."No." := '';
-                    Description := '';
+                    // Rec."No." := '';
+                    // Description := '';
                     Rec."Item Attribute Name" := '';
                     Clear("No. Filter");
                     Clear(Rec."Item Attribute Value Filter");
@@ -106,6 +106,7 @@ table 14302621 "AQD Sales Rebates Rate New"
             else if ("Line Type" = const(Item)) Item
             else if ("Line Type" = const("G/L Account")) "G/L Account"
             else if ("Line Type" = const(Resource)) Resource;
+            ObsoleteState = Pending;
             trigger OnValidate()
             begin
                 if Rec."No." <> xRec."No." then begin
@@ -160,10 +161,12 @@ table 14302621 "AQD Sales Rebates Rate New"
         {
             Caption = 'Description';
             Editable = false;
+            ObsoleteState = Pending;
         }
         field(62; "No. Filter"; Text[250])
         {
-            DataClassification = CustomerContent;//Consider to remove
+            Caption = 'Line No. Filter';
+            DataClassification = CustomerContent;
         }
         field(65; "Item Attribute Name"; Text[250])
         {
@@ -186,13 +189,13 @@ table 14302621 "AQD Sales Rebates Rate New"
         field(75; "Unit of Measure Code"; Code[10])
         {
             Caption = 'Unit of Measure Code';
-            TableRelation = if ("Line Type" = const(Item)) "Item Unit of Measure".Code where("Item No." = field("No."));
+            //TableRelation = if ("Line Type" = const(Item)) "Item Unit of Measure".Code where("Item No." = field("No."));
+            TableRelation = if ("Line Type" = const(Item)) "Item Unit of Measure".Code;
         }
-
         field(80; "Variant Code"; Code[10])
         {
             Caption = 'Variant Code';
-            TableRelation = "Item Variant".Code where("Item No." = field("No."));
+            //TableRelation = "Item Variant".Code where("Item No." = field("No."));
         }
         field(85; "Starting Date"; Date)
         {
@@ -347,7 +350,7 @@ table 14302621 "AQD Sales Rebates Rate New"
         {
             Clustered = true;
         }
-        key(Key2; "Rate Type", "Customer Type", "Customer No. Filter", "Territory Code", "Line Type", "No.", "Variant Code", "Program Code", "Ending Date", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount", "Payee Type", "Payee No.")
+        key(Key2; "Rate Type", "Customer Type", "Territory Code", "Line Type", "Variant Code", "Program Code", "Ending Date", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount", "Payee Type", "Payee No.")
         {
         }
         key(Key3; "Payee Type", "Payee No.")
@@ -357,10 +360,10 @@ table 14302621 "AQD Sales Rebates Rate New"
 
     fieldgroups
     {
-        fieldgroup(DropDown; "Rate Type", "Customer Type", "Territory Code", "Line Type", "No.", "Variant Code", "Program Code", "Ending Date", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        fieldgroup(DropDown; "Rate Type", "Customer Type", "Territory Code", "Line Type", "Variant Code", "Program Code", "Ending Date", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
         }
-        fieldgroup(Brick; "Rate Type", "Customer Type", "Territory Code", "Line Type", "No.", "Variant Code", "Program Code", "Ending Date", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
+        fieldgroup(Brick; "Rate Type", "Customer Type", "Territory Code", "Line Type", "Variant Code", "Program Code", "Ending Date", "Starting Date", "Unit of Measure Code", "Minimum Quantity", "Minimum Amount")
         {
         }
     }
@@ -401,7 +404,7 @@ table 14302621 "AQD Sales Rebates Rate New"
         CustomerRebateRate.SETRANGE("Customer Type", Rec."Customer Type");
         CustomerRebateRate.SETRANGE("Territory Code", Rec."Territory Code");
         CustomerRebateRate.SETRANGE("Line Type", Rec."Line Type");
-        CustomerRebateRate.SETRANGE("No.", Rec."No.");
+        CustomerRebateRate.SETRANGE("No. Filter", Rec."No. Filter");
         CustomerRebateRate.SETRANGE("Variant Code", Rec."Variant Code");
         CustomerRebateRate.SETRANGE("Program Code", Rec."Program Code");
         CustomerRebateRate.SETRANGE("Starting Date", Rec."Starting Date");
@@ -425,7 +428,7 @@ table 14302621 "AQD Sales Rebates Rate New"
                 Rec.FieldCaption("Customer No. Filter"), Rec."Customer No. Filter",
                 Rec.FieldCaption("Territory Code"), Rec."Territory Code",
                 Rec.FieldCaption("Line Type"), Rec."Line Type",
-                Rec.FieldCaption("No."), Rec."No.",
+                Rec.FieldCaption("No. Filter"), Rec."No. Filter",
                 Rec.FieldCaption("Variant Code"), Rec."Variant Code",
                 Rec.FieldCaption("Program Code"), Rec."Program Code",
                 Rec.FieldCaption("Starting Date"), Rec."Starting Date",

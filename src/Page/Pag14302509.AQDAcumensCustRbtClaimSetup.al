@@ -2677,7 +2677,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-UNIT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -2692,7 +2692,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Program Code" := 'ALL-UNIT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
@@ -2714,7 +2714,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-PCT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -2729,7 +2729,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
@@ -2753,7 +2753,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-UNIT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -2768,7 +2768,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Program Code" := 'ALL-UNIT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
@@ -2790,7 +2790,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-UNIT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -2805,7 +2805,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Program Code" := 'ALL-UNIT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
@@ -2827,7 +2827,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-UNIT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -2842,7 +2842,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Program Code" := 'ALL-UNIT';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
@@ -2864,7 +2864,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-PCT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -2879,7 +2879,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
@@ -2903,7 +2903,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-PCT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -2918,7 +2918,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
@@ -2942,7 +2942,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'ALL-PCT');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -2957,7 +2957,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Customer Type" := CustomerSalesRebateSetup."Customer Type"::Customer;
                 CustomerSalesRebateSetup."Customer No. Filter" := '';
@@ -2981,7 +2981,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'AMAZONCOM');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -2995,7 +2995,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'AMAZONCOM');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3011,7 +3011,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'SHOPIFYCOM');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -3025,7 +3025,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'SHOPIFYCOM');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3041,7 +3041,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'WALMARTCOM');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -3055,7 +3055,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'WALMARTCOM');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3071,7 +3071,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'AMAZONALW');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -3085,7 +3085,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'AMAZONALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3101,7 +3101,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'SHOPIFYALW');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -3115,7 +3115,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'SHOPIFYALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3131,7 +3131,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
-            CustomerSalesRebateSetup.SETRANGE("No.", '');
+            CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
             CustomerSalesRebateSetup.SETRANGE("Program Code", 'WALMARTALW');
             CustomerSalesRebateSetup.SETRANGE("Starting Date", 0D);
@@ -3145,7 +3145,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'WALMARTALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3174,7 +3174,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'ROYALTYUNT');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup.Validate("No.", '1968-S');
+                CustomerSalesRebateSetup."No. Filter" := '1968-S';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3203,7 +3203,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'ROYALTYPCT');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup.Validate("No.", '1968-S');
+                CustomerSalesRebateSetup."No. Filter" := '1968-S';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3232,7 +3232,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'CASHDISCNT');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3261,7 +3261,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'DMGALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3290,7 +3290,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'DISTALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3319,7 +3319,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'ADVALW');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3347,7 +3347,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'BROKER01S');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3378,7 +3378,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'BROKER01A');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup.Validate("No.", '1968-S');
+                CustomerSalesRebateSetup."No. Filter" := '1968-S';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := DMY2Date(1, 1, 2026);
                 CustomerSalesRebateSetup."Ending Date" := DMY2Date(30, 6, 2027);
@@ -3409,7 +3409,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'BROKER02S');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3440,7 +3440,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'BROKER02A');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup.Validate("No.", '1968-S');
+                CustomerSalesRebateSetup."No. Filter" := '1968-S';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := DMY2Date(1, 1, 2026);
                 CustomerSalesRebateSetup."Ending Date" := DMY2Date(30, 6, 2027);
@@ -3471,7 +3471,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'BROKER03S');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup."No." := '';
+                CustomerSalesRebateSetup."No. Filter" := '';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := 0D;
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
@@ -3502,7 +3502,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup.Validate("Program Code", 'BROKER03A');
                 CustomerSalesRebateSetup."Territory Code" := '';
                 CustomerSalesRebateSetup."Line Type" := CustomerSalesRebateSetup."Line Type"::Item;
-                CustomerSalesRebateSetup.Validate("No.", '1968-S');
+                CustomerSalesRebateSetup."No. Filter" := '1968-S';
                 CustomerSalesRebateSetup."Variant Code" := '';
                 CustomerSalesRebateSetup."Starting Date" := DMY2Date(1, 1, 2026);
                 CustomerSalesRebateSetup."Ending Date" := DMY2Date(30, 6, 2027);

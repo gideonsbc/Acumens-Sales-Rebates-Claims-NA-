@@ -38,6 +38,16 @@ pageextension 14302513 "AQD CustRbt Customer Card" extends "Customer Card"
                     {
                         ApplicationArea = All;
                     }
+                    field("AQD Corporate Affiliation Code"; Rec."AQD CF Corporate Affiliat Code")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the AQD Corporate Affiliation Code field.', Comment = '%';
+                    }
+                    field("AQD GPO Membership Code"; Rec."AQD CF GPO Membership Code")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the GPO Membership Code field.', Comment = '%';
+                    }
                 }
                 Group("AQD AcumensCustomerClaim")
                 {

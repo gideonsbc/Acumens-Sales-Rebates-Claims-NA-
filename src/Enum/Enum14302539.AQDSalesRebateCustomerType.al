@@ -14,4 +14,12 @@ enum 14302539 "AQD Sales Rebate Customer Type"
     {
         Caption = 'Customer Posting Group';
     }
+    value(3; "Corporate Affiliation level")
+    {
+        Caption = 'Corporate Affiliation level';
+    }
+    value(4; "GPO Membership level")
+    {
+        Caption = 'GPO Membership level';
+    }
 }

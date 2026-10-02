@@ -558,7 +558,6 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             if RebateProgramCodeSetup."Posting Type" <> RebateProgramCodeSetup."Posting Type"::"Auto Post" then
                 IsHandled := true;
 
-        // Customer Type
         if FromCustomerSalesRebateRate."Customer No. Filter" <> '' then begin
             case FromCustomerSalesRebateRate."Customer Type" of
                 FromCustomerSalesRebateRate."Customer Type"::Customer:
@@ -566,7 +565,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                         if not SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate."Customer No. Filter") then
                             IsHandled := true;
                     end;
-                FromCustomerSalesRebateRate."Customer Type"::"Customer Category", FromCustomerSalesRebateRate."Customer Type"::"Customer Posting Group":
+                FromCustomerSalesRebateRate."Customer Type"::"Customer Category", FromCustomerSalesRebateRate."Customer Type"::"Customer Posting Group", FromCustomerSalesRebateRate."Customer Type"::"Corporate Affiliation level", FromCustomerSalesRebateRate."Customer Type"::"GPO Membership level":
                     begin
                         if not SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Bill-To Customer No.", FromCustomerSalesRebateRate) then
                             IsHandled := true;
@@ -574,40 +573,40 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             end;
         end;
 
-        if FromCustomerSalesRebateRate."Line Type" = FromCustomerSalesRebateRate."Line Type"::"Item Attribute" then
-            if (FromCustomerSalesRebateRate."Item Attribute Name" <> '') and (FromCustomerSalesRebateRate."Item Attribute Value Filter" <> '') then
-                if not SalesRebateRateCalcMgt.AttributeMatches(FromCustomerSalesRebateRate."Item Attribute Name", FromCustomerSalesRebateRate."Item Attribute Value Filter", SalesRebateRateCalcMgt.GetItemAttributeValues(CustomerRebateDetailsLocIn."No.")) then
-                    IsHandled := true;
+        // if FromCustomerSalesRebateRate."Line Type" = FromCustomerSalesRebateRate."Line Type"::"Item Attribute" then
+        //     if (FromCustomerSalesRebateRate."Item Attribute Name" <> '') and (FromCustomerSalesRebateRate."Item Attribute Value Filter" <> '') then
+        //         if not SalesRebateRateCalcMgt.AttributeMatches(FromCustomerSalesRebateRate."Item Attribute Name", FromCustomerSalesRebateRate."Item Attribute Value Filter", SalesRebateRateCalcMgt.GetItemAttributeValues(CustomerRebateDetailsLocIn."No.")) then
+        //             IsHandled := true;
 
-        if CustomerRebateDetailsLocIn."Line Type" = CustomerRebateDetailsLocIn."Line Type"::"Rebate Category" then begin
-            if not SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(CustomerRebateDetailsLocIn."Rebate Item Category Code", SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(FromCustomerSalesRebateRate."No.")) then
-                IsHandled := true;
-        end else begin
-            if FromCustomerSalesRebateRate."No. Filter" <> '' then begin
-                case FromCustomerSalesRebateRate."Line Type" of
-                    FromCustomerSalesRebateRate."Line Type"::Item:
-                        begin
-                            if not SalesRebateCalcMgt.IsItemMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
-                                IsHandled := true;
-                        end;
-                    FromCustomerSalesRebateRate."Line Type"::"G/L Account":
-                        begin
-                            if not SalesRebateCalcMgt.IsGLMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
-                                IsHandled := true;
-                        end;
-                    FromCustomerSalesRebateRate."Line Type"::Resource:
-                        begin
-                            if not SalesRebateCalcMgt.IsRsMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
-                                IsHandled := true;
-                        end;
-                    FromCustomerSalesRebateRate."Line Type"::"Rebate Category":
-                        begin
-                            if not SalesRebateCalcMgt.IsItemTypeMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
-                                IsHandled := true;
-                        end;
-                end;
-            end;
-        end;
+        // if CustomerRebateDetailsLocIn."Line Type" = CustomerRebateDetailsLocIn."Line Type"::"Rebate Category" then begin
+        //     if not SalesRebateCalcMgt.IsItemTypeMatchCategoryFilter(CustomerRebateDetailsLocIn."Rebate Item Category Code", SalesRebateRateCalcMgt.BuildItemCategoryCodeFilter(FromCustomerSalesRebateRate."No. Filter")) then
+        //         IsHandled := true;
+        // end else begin
+        //     if FromCustomerSalesRebateRate."No. Filter" <> '' then begin
+        //         case FromCustomerSalesRebateRate."Line Type" of
+        //             FromCustomerSalesRebateRate."Line Type"::Item:
+        //                 begin
+        //                     if not SalesRebateCalcMgt.IsItemMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+        //                         IsHandled := true;
+        //                 end;
+        //             FromCustomerSalesRebateRate."Line Type"::"G/L Account":
+        //                 begin
+        //                     if not SalesRebateCalcMgt.IsGLMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+        //                         IsHandled := true;
+        //                 end;
+        //             FromCustomerSalesRebateRate."Line Type"::Resource:
+        //                 begin
+        //                     if not SalesRebateCalcMgt.IsRsMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+        //                         IsHandled := true;
+        //                 end;
+        //             FromCustomerSalesRebateRate."Line Type"::"Rebate Category":
+        //                 begin
+        //                     if not SalesRebateCalcMgt.IsItemTypeMatchNoFilter(CustomerRebateDetailsLocIn."No.", FromCustomerSalesRebateRate."No. Filter") then
+        //                         IsHandled := true;
+        //                 end;
+        //         end;
+        //     end;
+        // end;
 
     end;
 
@@ -855,10 +854,10 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         case RebateRates."Line Type" of
             RebateRates."Line Type"::Item:
                 begin
-                    if RebateRates."No." <> '' then begin
-                        SalesLine.SetRange(Type, SalesLine.Type::Item);
-                        SalesLine.SetRange("No.", RebateRates."No.");
-                    end;
+                    // if RebateRates."No." <> '' then begin
+                    //     SalesLine.SetRange(Type, SalesLine.Type::Item);
+                    //     SalesLine.SetRange("No.", RebateRates."No.");
+                    // end;
 
                     if RebateRates."No. Filter" <> '' then begin
                         SalesLine.SetRange(Type, SalesLine.Type::Item);
@@ -867,10 +866,10 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                 end;
             RebateRates."Line Type"::Resource:
                 begin
-                    if RebateRates."No." <> '' then begin
-                        SalesLine.SetRange(Type, SalesLine.Type::Resource);
-                        SalesLine.SetRange("No.", RebateRates."No.");
-                    end;
+                    // if RebateRates."No." <> '' then begin
+                    //     SalesLine.SetRange(Type, SalesLine.Type::Resource);
+                    //     SalesLine.SetRange("No.", RebateRates."No.");
+                    // end;
 
                     if RebateRates."No. Filter" <> '' then begin
                         SalesLine.SetRange(Type, SalesLine.Type::Resource);
@@ -879,10 +878,10 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                 end;
             RebateRates."Line Type"::"G/L Account":
                 begin
-                    if RebateRates."No." <> '' then begin
-                        SalesLine.SetRange(Type, SalesLine.Type::"G/L Account");
-                        SalesLine.SetRange("No.", RebateRates."No.");
-                    end;
+                    // if RebateRates."No." <> '' then begin
+                    //     SalesLine.SetRange(Type, SalesLine.Type::"G/L Account");
+                    //     SalesLine.SetRange("No.", RebateRates."No.");
+                    // end;
 
                     if RebateRates."No. Filter" <> '' then begin
                         SalesLine.SetRange(Type, SalesLine.Type::"G/L Account");
@@ -891,10 +890,10 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
                 end;
             RebateRates."Line Type"::"Rebate Category":
                 begin
-                    if RebateRates."No." <> '' then begin
-                        SalesLine.SetRange(Type, SalesLine.Type::Item);
-                        SalesLine.SetRange("Item Category Code", RebateRates."No.");
-                    end;
+                    // if RebateRates."No." <> '' then begin
+                    //     SalesLine.SetRange(Type, SalesLine.Type::Item);
+                    //     SalesLine.SetRange("Item Category Code", RebateRates."No.");
+                    // end;
 
                     if RebateRates."No. Filter" <> '' then begin
                         SalesLine.SetRange(Type, SalesLine.Type::Item);
