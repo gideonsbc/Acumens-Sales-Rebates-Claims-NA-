@@ -172,5 +172,6 @@ permissionset 14302510 "AQD SRebate Admin"
         codeunit "AQD Sales Rebate Calc Preview" = X,
         page "AQD Processed Sales Comm Dct" = X,
         page "AQD Processed Sales Comm Dcts" = X,
-        report "AQD Collect Commissions" = X;
+        report "AQD Collect Commissions" = X,
+        page "AQD Rebate Adjustment Journal" = X;
 }
