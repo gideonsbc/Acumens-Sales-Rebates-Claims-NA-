@@ -251,7 +251,30 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         SalesAmount: Decimal;
         RebateDateFilter: text;
     begin
-        FoundSalesRebate := CustomerSalesRebateRate.FindFirst();
+        // Check customer specific
+        CustomerSalesRebateRate.SetFilter("Customer Type", '%1', CustomerSalesRebateRate."Customer Type"::Customer);
+        CustomerSalesRebateRate.SetFilter("Customer No. Filter", '<>%1', '');
+        IF CustomerSalesRebateRate.FindFirst() THEN BEGIN
+            FoundSalesRebate := true;
+        END else BEGIN
+            // Check customer posting groupspecific
+
+            CustomerSalesRebateRate.SetFilter("Customer Type", '%1', CustomerSalesRebateRate."Customer Type"::"Customer Posting Group");
+            CustomerSalesRebateRate.SetFilter("Customer No. Filter", '<>%1', '');
+            IF CustomerSalesRebateRate.FindFirst() THEN
+                FoundSalesRebate := true
+            else begin
+                CustomerSalesRebateRate.SetRange("Customer Type");
+                CustomerSalesRebateRate.SetRange("Customer No. Filter");
+
+                FoundSalesRebate := CustomerSalesRebateRate.FindFirst();
+            end;
+        END;
+
+        //GlobalSalesRebateRate.SetFilter("No.", '%1|%2', DocumentLine_No, '');
+
+
+        //FoundSalesRebate := CustomerSalesRebateRate.FindFirst();
         IF FoundSalesRebate THEN BEGIN
             REPEAT
                 SalesQty := 0;
@@ -688,6 +711,24 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                     ToCustomerSalesRebateRate.INSERT;
             UNTIL FromCustomerSalesRebateRate.NEXT = 0;
     end;
+
+    local procedure CopyCustomerSalesRebateToCustomerSalesRebateWithPriority(var FromCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New"; var ToCustomerSalesRebateRate: Record "AQD Sales Rebates Rate New" temporary; var CustomerRebateDetailsLocIn: Record "AQD Customer Rebate Details")
+    var
+        IsHandled: Boolean;
+        SalesRebateCalcMgt: Codeunit "AQD Sales Rebate Calc Mgt";
+    begin
+        FromCustomerSalesRebateRate.SetFilter("Customer No. Filter", '<>%1', '');
+        IF FromCustomerSalesRebateRate.FINDSET THEN
+            REPEAT
+                ToCustomerSalesRebateRate := FromCustomerSalesRebateRate;
+                IsHandled := false;
+                OnBeforeInsertToCustomerSalesRebateRateNew(FromCustomerSalesRebateRate, ToCustomerSalesRebateRate, CustomerRebateDetailsLocIn, GlobalProcessCatchUpRebate, IsHandled);
+                if not IsHandled then
+                    if SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Entity No.", FromCustomerSalesRebateRate."Customer No. Filter") then
+                        ToCustomerSalesRebateRate.INSERT;
+            UNTIL FromCustomerSalesRebateRate.NEXT = 0;
+    end;
+
 
     // procedure GetItemAttributeValues(ItemNo: Code[20]): Dictionary of [Code[20], List of [Text]]
     // var

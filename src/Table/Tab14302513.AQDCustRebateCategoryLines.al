@@ -54,6 +54,11 @@ table 14302513 "AQD Cust Rebate Category Lines"
             Caption = 'Line Type';
             DataClassification = CustomerContent;
         }
+        field(8001; "Rates Entry No."; Integer)
+        {
+            Caption = 'Rates Entry No.';
+            DataClassification = CustomerContent;
+        }
 
     }
     keys

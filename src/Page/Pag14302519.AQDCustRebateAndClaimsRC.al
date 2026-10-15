@@ -373,6 +373,15 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 RunObject = page "AQD Sales Rebate Approvals";
                 Image = Approvals;
             }
+            action("AQD Rebate Adjustment Journal")
+            {
+                ApplicationArea = All;
+                Caption = 'Rebate Adjustment Journal';
+                RunObject = codeunit "AQD rebates journal Mgt";
+                Image = Journals;
+                ;
+            }
+
             action("AQD Payment Journal")
             {
                 ApplicationArea = All;

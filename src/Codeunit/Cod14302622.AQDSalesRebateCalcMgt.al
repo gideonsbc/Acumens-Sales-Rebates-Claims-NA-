@@ -2184,8 +2184,31 @@ codeunit 14302622 "AQD Sales Rebate Calc Mgt"
                     GlobalRebateCategoryCode := Resource."AQD Cust Rebate Category Code";
                 end;
         END;
+        // Check customer specific
+        GlobalSalesRebateRate.SetFilter("Customer Type", '%1', GlobalSalesRebateRate."Customer Type"::Customer);
+        GlobalSalesRebateRate.SetFilter("Customer No. Filter", '<>%1', '');
+        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+            REPEAT
+                if SalesRebateCalcMgt.IsLineMatch(DocumentLine_Type, DocumentLine_No, GlobalSalesRebateRate."No. Filter") then
+                    if SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate) then
+                        InsertTempRebateCategoryLine(GlobalSalesRebateRate, CustomerNo, EntityType::Customer);
+            UNTIL GlobalSalesRebateRate.Next() = 0;
+        END;
+        // Check customer posting groupspecific
+
+        GlobalSalesRebateRate.SetFilter("Customer Type", '%1', GlobalSalesRebateRate."Customer Type"::"Customer Posting Group");
+        GlobalSalesRebateRate.SetFilter("Customer No. Filter", '<>%1', '');
+        IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
+            REPEAT
+                if SalesRebateCalcMgt.IsLineMatch(DocumentLine_Type, DocumentLine_No, GlobalSalesRebateRate."No. Filter") then
+                    if SalesRebateCalcMgt.IsCustomerTypeMatchCustomerNoFilter(CustomerNo, GlobalSalesRebateRate) then
+                        InsertTempRebateCategoryLine(GlobalSalesRebateRate, CustomerNo, EntityType::Customer);
+            UNTIL GlobalSalesRebateRate.Next() = 0;
+        END;
 
         //GlobalSalesRebateRate.SetFilter("No.", '%1|%2', DocumentLine_No, '');
+        GlobalSalesRebateRate.SetRange("Customer Type");
+        GlobalSalesRebateRate.SetRange("Customer No. Filter");
         IF GlobalSalesRebateRate.FindFirst() THEN BEGIN
             REPEAT
                 if SalesRebateCalcMgt.IsLineMatch(DocumentLine_Type, DocumentLine_No, GlobalSalesRebateRate."No. Filter") then
@@ -2380,6 +2403,7 @@ codeunit 14302622 "AQD Sales Rebate Calc Mgt"
             TempRebateCategoryLines."Rebate Program Code" := GlobalSalesRebateRate."Program Code";
             TempRebateCategoryLines."Entity Type" := EntityType;
             TempRebateCategoryLines."Line Type" := GlobalSalesRebateRate."Line Type";
+            TempRebateCategoryLines."Rates Entry No." := GlobalSalesRebateRate."Entry No.";
             OnBeforeInsertTempRebateCategoryLines(TempRebateCategoryLines, GlobalSalesRebateRate, CustomerNo);
             TempRebateCategoryLines.Insert();
             GlobalNextRebateProgramLineNo += 10000;
@@ -2644,6 +2668,8 @@ codeunit 14302622 "AQD Sales Rebate Calc Mgt"
         Cust.Reset();
 
         case GlobalSalesRebateRate."Customer Type" of
+            GlobalSalesRebateRate."Customer Type"::Customer:
+                Cust.SetFilter("No.", GlobalSalesRebateRate."Customer No. Filter");
             GlobalSalesRebateRate."Customer Type"::"Customer Posting Group":
                 Cust.SetFilter("Customer Posting Group", GlobalSalesRebateRate."Customer No. Filter");
 

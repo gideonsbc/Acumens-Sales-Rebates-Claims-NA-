@@ -10,4 +10,12 @@ enum 14302529 "AQD CustRbt Rate Type"
     {
         Caption = 'Volume Rate';
     }
+    value(2; "Cummulative Tiered Rate")
+    {
+        Caption = 'Cummulative Tiered Rate';
+    }
+    value(3; "Highest Tiered Rebate")
+    {
+        Caption = 'Highest Tiered Rate';
+    }
 }
