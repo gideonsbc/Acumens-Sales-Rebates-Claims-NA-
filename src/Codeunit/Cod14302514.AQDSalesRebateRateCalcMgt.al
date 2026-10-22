@@ -130,6 +130,9 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
             CustomerRebateDetailsLocIn."Rebate Type" := TempSalesRebatesRate."Rebate Type";
             CustomerRebateDetailsLocIn."Rebate %" := TempSalesRebatesRate."Rebate %";
             CustomerRebateDetailsLocIn."Rebate Per Unit" := TempSalesRebatesRate."Rebate Per Unit";
+            CustomerRebateDetailsLocIn."Growth Rate" := TempSalesRebatesRate."Growth Rate";
+            CustomerRebateDetailsLocIn."Baseline Amount" := TempSalesRebatesRate."Baseline Amount";
+            CustomerRebateDetailsLocIn."Current Yr Amount" := TempSalesRebatesRate."Current Yr Amount";
         END;
     END;
 
@@ -249,7 +252,23 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
         FoundSalesRebate: Boolean;
         SalesQty: Decimal;
         SalesAmount: Decimal;
+        SalesAmountRem: Decimal;
         RebateDateFilter: text;
+        TieredRebatesRatesRec: Record "AQD Tiered Rebate Rates";
+        TieredRebatesRatesbasis: Record "AQD Tiered Rebate Rates";
+        RateBasisValue: Decimal;
+        RateBasisValueRem: Decimal;
+        TieredBasisValue: Decimal;
+        SalesHistory: Record "AQD CF Sales History";
+        SalesHistoryMgt: Codeunit "AQD CF Sales History Mgt";
+        PrevYearNet, ThreeYearAvg, ThreeYearHighest, CurrentPeriod : Decimal;
+        GrowthPct: Decimal;
+        CummulativeRate: Decimal;
+        TierRate: Decimal;
+        TierRabatevalue: Decimal;
+        CustomerRebateDetailsLocInTiered: Record "AQD Customer Rebate Details";
+        SaleRebatCalMgt: Codeunit "AQD Sales Rebate Calc Mgt";
+        LineNo: Integer;
     begin
         // Check customer specific
         CustomerSalesRebateRate.SetFilter("Customer Type", '%1', CustomerSalesRebateRate."Customer Type"::Customer);
@@ -291,35 +310,379 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
 
                 SalesQty := CustomerRebateDetailsLocIn.Quantity;
                 SalesAmount := CustomerRebateDetailsLocIn.Amount;
+                RateBasisValue := SalesAmount;
 
-                IF CustomerSalesRebateRate."Rate Type" = CustomerSalesRebateRate."Rate Type"::"Volume Rebate" THEN BEGIN
-                    Case CustomerSalesRebateRate."Line Type" OF
-                        CustomerSalesRebateRate."Line Type"::Item:
-                            BEGIN
-                                ItemRec.GET(CustomerRebateDetailsLocIn."No.");
-                                ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
-                                ItemRec.SetFilter("Date Filter", RebateDateFilter);
 
-                                ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
-                                SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
-                                SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
+
+                //// TempSalesRebatesRate := BestCustomerSalesRebate;
+
+                case CustomerSalesRebateRate."Rate Type" of
+                    CustomerSalesRebateRate."Rate Type"::"Cummulative Tiered Rate":
+                        BEGIN
+                            CustomerSalesRebateRate."Rebate %" := 0;
+                            TieredRebatesRatesbasis.Reset();
+                            TieredRebatesRatesbasis.SetRange("Entry No.", CustomerSalesRebateRate."Entry No.");
+
+                            IF TieredRebatesRatesbasis.FINDFIRST THEN BEGIN
+
+                                CASE TieredRebatesRatesbasis.Basis OF
+                                    TieredRebatesRatesbasis.Basis::"Sales Amount ":
+                                        BEGIN
+                                            RateBasisValue := SalesAmount;
+                                        END;
+                                    TieredRebatesRatesbasis.Basis::"3YearAvgGR":
+                                        BEGIN
+                                            SalesHistory.SetRange("Bill-to Customer No.", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                            SalesHistory.SetRange(Type, SalesHistory.Type::Item);
+
+                                            ThreeYearAvg := SalesHistoryMgt.GetSalesHistoryValue(SalesHistory,
+                                                            "AQD CF Sales Hist. Calculation"::Average,
+                                                            "AQD CF Sales Hist. Measure"::Amount,
+                                                            "AQD CF Sales Hist. Period"::"Year from Date", -3, -1,
+                                                             CustomerSalesRebateRate."Starting Date");
+                                            CurrentPeriod := SalesHistoryMgt.GetValueForDates(SalesHistory,
+                                                "AQD CF Sales Hist. Measure"::Amount,
+                                                CustomerSalesRebateRate."Starting Date",      // e.g. 01-04-2026
+                                                CustomerSalesRebateRate."Ending Date");
+
+                                            GetGrowthPct(ThreeYearAvg, CurrentPeriod, GrowthPct);
+                                            CustomerSalesRebateRate."Growth Rate" := GrowthPct;
+                                            CustomerSalesRebateRate."Baseline Amount" := ThreeYearAvg;
+                                            CustomerSalesRebateRate."Current Yr Amount" := CurrentPeriod;
+                                            RateBasisValue := GrowthPct;
+                                        END;
+                                    TieredRebatesRatesbasis.Basis::"3YearHighestGR":
+                                        BEGIN
+                                            SalesHistory.SetRange("Bill-to Customer No.", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                            SalesHistory.SetRange(Type, SalesHistory.Type::Item);
+
+                                            ThreeYearHighest := SalesHistoryMgt.GetSalesHistoryValue(SalesHistory,
+                                                           "AQD CF Sales Hist. Calculation"::Highest,
+                                                           "AQD CF Sales Hist. Measure"::Amount,
+                                                           "AQD CF Sales Hist. Period"::"Year from Date", -3, -1,
+                                                            CustomerSalesRebateRate."Starting Date");
+                                            CurrentPeriod := SalesHistoryMgt.GetValueForDates(SalesHistory,
+                                                "AQD CF Sales Hist. Measure"::Amount,
+                                                CustomerSalesRebateRate."Starting Date",      // e.g. 01-04-2026
+                                                CustomerSalesRebateRate."Ending Date");
+
+                                            GetGrowthPct(ThreeYearHighest, CurrentPeriod, GrowthPct);
+                                            CustomerSalesRebateRate."Growth Rate" := GrowthPct;
+                                            CustomerSalesRebateRate."Baseline Amount" := ThreeYearHighest;
+                                            CustomerSalesRebateRate."Current Yr Amount" := CurrentPeriod;
+                                            RateBasisValue := GrowthPct;
+                                        END;
+                                    TieredRebatesRatesbasis.Basis::PrevYearGR:
+                                        BEGIN
+                                            SalesHistory.SetRange("Bill-to Customer No.", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                            SalesHistory.SetRange(Type, SalesHistory.Type::Item);
+
+                                            PrevYearNet := SalesHistoryMgt.GetSalesHistoryValue(SalesHistory,
+                                                           "AQD CF Sales Hist. Calculation"::Total,
+                                                           "AQD CF Sales Hist. Measure"::Amount,
+                                                           "AQD CF Sales Hist. Period"::"Year from Date", -1, -1,
+                                                            CustomerSalesRebateRate."Starting Date");
+                                            CurrentPeriod := SalesHistoryMgt.GetValueForDates(SalesHistory,
+                                                "AQD CF Sales Hist. Measure"::Amount,
+                                                CustomerSalesRebateRate."Starting Date",      // e.g. 01-04-2026
+                                                CustomerSalesRebateRate."Ending Date");
+
+                                            GetGrowthPct(PrevYearNet, CurrentPeriod, GrowthPct);
+                                            CustomerSalesRebateRate."Growth Rate" := GrowthPct;
+                                            CustomerSalesRebateRate."Baseline Amount" := PrevYearNet;
+                                            CustomerSalesRebateRate."Current Yr Amount" := CurrentPeriod;
+
+                                            RateBasisValue := GrowthPct;
+                                        END;
+                                    TieredRebatesRatesbasis.Basis::"CurrYRSalesAmount":
+                                        BEGIN
+                                            SalesHistory.SetRange("Bill-to Customer No.", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                            SalesHistory.SetRange(Type, SalesHistory.Type::Item);
+
+                                            CurrentPeriod := SalesHistoryMgt.GetValueForDates(SalesHistory,
+                                                "AQD CF Sales Hist. Measure"::Amount,
+                                                CustomerSalesRebateRate."Starting Date",      // e.g. 01-04-2026
+                                                CustomerSalesRebateRate."Ending Date");
+
+
+                                            RateBasisValue := CurrentPeriod + SalesAmount;
+
+                                            CustomerSalesRebateRate."Baseline Amount" := CurrentPeriod;
+                                            CustomerSalesRebateRate."Current Yr Amount" := CurrentPeriod;
+                                        END;
+
+                                END;
+
+                                //to do
+                                RateBasisValueRem := RateBasisValue;
+                                LineNo := CustomerRebateDetailsLocIn."Line No.";
+                                CummulativeRate := 0;
+                                REPEAT
+
+                                    TierRate := 0;
+                                    if RateBasisValue >= TieredRebatesRatesbasis."Lower Limit" then begin
+
+                                        if TieredRebatesRatesbasis."Upper Limit" = 0 then begin
+                                            TieredBasisValue := RateBasisValueRem - CurrentPeriod;
+                                            if TieredBasisValue > 0 then begin
+
+                                                TierRabatevalue := (TieredRebatesRatesbasis."Rebate %" / 100) * TieredBasisValue;
+                                                //TieredBasisValue := RateBasisValueRem;
+
+                                                TierRate := GetPercentage(TierRabatevalue, SalesAmount);
+                                                CummulativeRate += TierRate;
+
+                                            end else
+                                                TieredBasisValue := 0;
+                                            RateBasisValueRem := 0;
+                                        end else if RateBasisValue < TieredRebatesRatesbasis."Upper Limit" then begin
+                                            TieredBasisValue := RateBasisValueRem - CurrentPeriod;
+                                            if TieredBasisValue > 0 then begin
+                                                TierRabatevalue := (TieredRebatesRatesbasis."Rebate %" / 100) * TieredBasisValue;
+                                                //TieredBasisValue := RateBasisValueRem;
+                                                TierRate := GetPercentage(TierRabatevalue, SalesAmount);
+                                                CummulativeRate += TierRate;
+
+                                            end else
+                                                TieredBasisValue := 0;
+                                            RateBasisValueRem := 0;
+                                        end else begin
+                                            TieredBasisValue := (TieredRebatesRatesbasis."Upper Limit" - TieredRebatesRatesbasis."Lower Limit") - CurrentPeriod;
+
+                                            if TieredBasisValue > 0 then begin
+                                                TierRabatevalue := (TieredRebatesRatesbasis."Rebate %" / 100) * TieredBasisValue;
+
+
+
+                                                TierRate := GetPercentage(TierRabatevalue, SalesAmount);
+
+                                                CummulativeRate += TierRate;
+                                                //RateBasisValueRem := RateBasisValueRem - TierRabatevalue;
+
+                                            end else
+                                                TieredBasisValue := 0;
+                                            RateBasisValueRem := RateBasisValueRem - (TieredRebatesRatesbasis."Upper Limit" - TieredRebatesRatesbasis."Lower Limit");
+
+
+                                            CurrentPeriod := CurrentPeriod - (TieredRebatesRatesbasis."Upper Limit" - TieredRebatesRatesbasis."Lower Limit");
+
+                                            if CurrentPeriod < 0 then
+                                                CurrentPeriod := 0;
+                                        end;
+                                        LineNo += 5;
+
+                                        CustomerRebateDetailsLocInTiered.Init();
+                                        CustomerRebateDetailsLocInTiered := CustomerRebateDetailsLocIn;
+                                        CustomerRebateDetailsLocInTiered."Line No." := LineNo;
+                                        CustomerRebateDetailsLocInTiered."CustRbt Rate Type" := CustomerSalesRebateRate."Rate Type";
+                                        CustomerRebateDetailsLocInTiered."Rebate Type" := CustomerSalesRebateRate."Rebate Type";
+                                        CustomerRebateDetailsLocInTiered."Rebate %" := TieredRebatesRatesbasis."Rebate %";
+                                        CustomerRebateDetailsLocInTiered.Amount := TieredBasisValue;
+                                        CustomerRebateDetailsLocInTiered."Rebate Per Unit" := CustomerSalesRebateRate."Rebate Per Unit";
+                                        CustomerRebateDetailsLocInTiered."Growth Rate" := CustomerSalesRebateRate."Growth Rate";
+                                        CustomerRebateDetailsLocInTiered."Baseline Amount" := CustomerSalesRebateRate."Baseline Amount";
+                                        CustomerRebateDetailsLocInTiered."Current Yr Amount" := CustomerSalesRebateRate."Current Yr Amount";
+
+                                        CustomerRebateDetailsLocInTiered."Profit %" := SaleRebatCalMgt.CalculateProfitPercentage(CustomerRebateDetailsLocInTiered);
+                                        SaleRebatCalMgt.CalculateRebateAmount(CustomerRebateDetailsLocInTiered);
+
+                                        CustomerRebateDetailsLocInTiered."Calculated Line Rebate Amount" := CustomerRebateDetailsLocInTiered."Customer Rebate Amount";
+                                        IF CustomerRebateDetailsLocInTiered."Rebate Type" <> CustomerRebateDetailsLocInTiered."Rebate Type"::" " then begin
+                                            if CustomerRebateDetailsLocInTiered."Customer Rebate Amount" > 0 then
+                                                CustomerRebateDetailsLocInTiered.Insert();
+
+                                        end;
+
+                                    end;
+
+
+
+
+
+                                UNTIL (TieredRebatesRatesbasis.Next() = 0) OR (RateBasisValueRem <= 0);
+                                // IF UnitPriceToCompare < TieredCommRatesRec.Threshold THEN BEGIN
+                                //     BestTieredCommRate := TieredCommRatesRec;
+                                //     BestTieredCommRateFound := TRUE;
+                                // END;
+                                CustomerSalesRebateRate."Rebate %" := 0;
                             END;
-                        CustomerSalesRebateRate."Line Type"::"Rebate Category":
-                            BEGIN
-                                ItemRec.RESET;
-                                ItemRec.SetFilter("AQD Cust Rebate Category Code", BuildItemCategoryCodeFilter(CustomerRebateDetailsLocIn."Rebate Item Category Code"));
-                                IF ItemRec.FINDFIRST THEN BEGIN
-                                    REPEAT
+
+
+                            TempSalesRebatesRate := CustomerSalesRebateRate;
+                            // exit;
+                        END;
+                    CustomerSalesRebateRate."Rate Type"::"Highest Tiered Rebate":
+                        BEGIN
+                            RateBasisValue := SalesAmount;
+
+                            TieredRebatesRatesbasis.Reset();
+                            TieredRebatesRatesbasis.SetRange("Entry No.", CustomerSalesRebateRate."Entry No.");
+                            IF TieredRebatesRatesbasis.FINDFIRST THEN BEGIN
+
+                                CASE TieredRebatesRatesbasis.Basis OF
+                                    TieredRebatesRatesbasis.Basis::"Sales Amount ":
+                                        BEGIN
+                                            TieredRebatesRatesRec.Reset();
+                                            TieredRebatesRatesRec.SetRange("Entry No.", CustomerSalesRebateRate."Entry No.");
+                                            TieredRebatesRatesRec.SetFilter("Lower Limit", '<=%1', RateBasisValue);
+                                            TieredRebatesRatesRec.SetFilter("Upper Limit", '>%1', RateBasisValue);
+                                            IF TieredRebatesRatesRec.FINDFIRST THEN BEGIN
+                                                CustomerSalesRebateRate."Rebate %" := TieredRebatesRatesRec."Rebate %";
+                                            END else
+                                                CustomerSalesRebateRate."Rebate %" := 0;
+                                        end;
+                                    TieredRebatesRatesbasis.Basis::"3YearAvgGR":
+                                        BEGIN
+                                            SalesHistory.SetRange("Bill-to Customer No.", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                            SalesHistory.SetRange(Type, SalesHistory.Type::Item);
+
+                                            ThreeYearAvg := SalesHistoryMgt.GetSalesHistoryValue(SalesHistory,
+                                                            "AQD CF Sales Hist. Calculation"::Average,
+                                                            "AQD CF Sales Hist. Measure"::Amount,
+                                                            "AQD CF Sales Hist. Period"::"Year from Date", -3, -1,
+                                                             CustomerSalesRebateRate."Starting Date");
+                                            CurrentPeriod := SalesHistoryMgt.GetValueForDates(SalesHistory,
+                                                "AQD CF Sales Hist. Measure"::Amount,
+                                                CustomerSalesRebateRate."Starting Date",      // e.g. 01-04-2026
+                                                CustomerSalesRebateRate."Ending Date");
+
+                                            GetGrowthPct(ThreeYearAvg, CurrentPeriod, GrowthPct);
+                                            CustomerSalesRebateRate."Growth Rate" := GrowthPct;
+                                            CustomerSalesRebateRate."Baseline Amount" := ThreeYearAvg;
+                                            CustomerSalesRebateRate."Current Yr Amount" := CurrentPeriod;
+                                            RateBasisValue := GrowthPct;
+                                            TieredRebatesRatesRec.Reset();
+                                            TieredRebatesRatesRec.SetRange("Entry No.", CustomerSalesRebateRate."Entry No.");
+                                            TieredRebatesRatesRec.SetFilter("Lower Limit", '<=%1', RateBasisValue);
+                                            TieredRebatesRatesRec.SetFilter("Upper Limit", '>%1', RateBasisValue);
+                                            IF TieredRebatesRatesRec.FINDFIRST THEN BEGIN
+                                                CustomerSalesRebateRate."Rebate %" := TieredRebatesRatesRec."Rebate %";
+                                            END else
+                                                CustomerSalesRebateRate."Rebate %" := 0;
+                                        END;
+                                    TieredRebatesRatesbasis.Basis::"3YearHighestGR":
+                                        BEGIN
+                                            SalesHistory.SetRange("Bill-to Customer No.", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                            SalesHistory.SetRange(Type, SalesHistory.Type::Item);
+
+                                            ThreeYearHighest := SalesHistoryMgt.GetSalesHistoryValue(SalesHistory,
+                                                           "AQD CF Sales Hist. Calculation"::Highest,
+                                                           "AQD CF Sales Hist. Measure"::Amount,
+                                                           "AQD CF Sales Hist. Period"::"Year from Date", -3, -1,
+                                                            CustomerSalesRebateRate."Starting Date");
+                                            CurrentPeriod := SalesHistoryMgt.GetValueForDates(SalesHistory,
+                                                "AQD CF Sales Hist. Measure"::Amount,
+                                                CustomerSalesRebateRate."Starting Date",      // e.g. 01-04-2026
+                                                CustomerSalesRebateRate."Ending Date");
+
+                                            GetGrowthPct(ThreeYearHighest, CurrentPeriod, GrowthPct);
+                                            CustomerSalesRebateRate."Growth Rate" := GrowthPct;
+                                            CustomerSalesRebateRate."Baseline Amount" := ThreeYearHighest;
+                                            CustomerSalesRebateRate."Current Yr Amount" := CurrentPeriod;
+                                            RateBasisValue := GrowthPct;
+                                            TieredRebatesRatesRec.Reset();
+                                            TieredRebatesRatesRec.SetRange("Entry No.", CustomerSalesRebateRate."Entry No.");
+                                            TieredRebatesRatesRec.SetFilter("Lower Limit", '<=%1', RateBasisValue);
+                                            TieredRebatesRatesRec.SetFilter("Upper Limit", '>%1', RateBasisValue);
+                                            IF TieredRebatesRatesRec.FINDFIRST THEN BEGIN
+                                                CustomerSalesRebateRate."Rebate %" := TieredRebatesRatesRec."Rebate %";
+                                            END else
+                                                CustomerSalesRebateRate."Rebate %" := 0;
+                                        END;
+                                    TieredRebatesRatesbasis.Basis::PrevYearGR:
+                                        BEGIN
+                                            SalesHistory.SetRange("Bill-to Customer No.", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                            SalesHistory.SetRange(Type, SalesHistory.Type::Item);
+
+                                            PrevYearNet := SalesHistoryMgt.GetSalesHistoryValue(SalesHistory,
+                                                           "AQD CF Sales Hist. Calculation"::Total,
+                                                           "AQD CF Sales Hist. Measure"::Amount,
+                                                           "AQD CF Sales Hist. Period"::"Year from Date", -1, -1,
+                                                            CustomerSalesRebateRate."Starting Date");
+                                            CurrentPeriod := SalesHistoryMgt.GetValueForDates(SalesHistory,
+                                                "AQD CF Sales Hist. Measure"::Amount,
+                                                CustomerSalesRebateRate."Starting Date",      // e.g. 01-04-2026
+                                                CustomerSalesRebateRate."Ending Date");
+
+                                            GetGrowthPct(PrevYearNet, CurrentPeriod, GrowthPct);
+                                            CustomerSalesRebateRate."Growth Rate" := GrowthPct;
+                                            CustomerSalesRebateRate."Baseline Amount" := PrevYearNet;
+                                            CustomerSalesRebateRate."Current Yr Amount" := CurrentPeriod;
+                                            RateBasisValue := GrowthPct;
+
+                                            TieredRebatesRatesRec.Reset();
+                                            TieredRebatesRatesRec.SetRange("Entry No.", CustomerSalesRebateRate."Entry No.");
+                                            TieredRebatesRatesRec.SetFilter("Lower Limit", '<=%1', RateBasisValue);
+                                            TieredRebatesRatesRec.SetFilter("Upper Limit", '>%1', RateBasisValue);
+                                            IF TieredRebatesRatesRec.FINDFIRST THEN BEGIN
+                                                CustomerSalesRebateRate."Rebate %" := TieredRebatesRatesRec."Rebate %";
+                                            END else
+                                                CustomerSalesRebateRate."Rebate %" := 0;
+                                        END;
+                                    TieredRebatesRatesbasis.Basis::"CurrYRSalesAmount":
+                                        BEGIN
+                                            SalesHistory.SetRange("Bill-to Customer No.", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                            SalesHistory.SetRange(Type, SalesHistory.Type::Item);
+
+
+                                            CurrentPeriod := SalesHistoryMgt.GetValueForDates(SalesHistory,
+                                                "AQD CF Sales Hist. Measure"::Amount,
+                                                CustomerSalesRebateRate."Starting Date",      // e.g. 01-04-2026
+                                                CustomerSalesRebateRate."Ending Date");
+
+
+                                            RateBasisValue := CurrentPeriod;
+                                            //CustomerRebateDetailsLocIn."Growth Rate" := GrowthPct;
+                                            CustomerSalesRebateRate."Baseline Amount" := CurrentPeriod;
+                                            CustomerSalesRebateRate."Current Yr Amount" := CurrentPeriod;
+                                            TieredRebatesRatesRec.Reset();
+                                            TieredRebatesRatesRec.SetRange("Entry No.", CustomerSalesRebateRate."Entry No.");
+                                            TieredRebatesRatesRec.SetFilter("Lower Limit", '<=%1', RateBasisValue);
+                                            TieredRebatesRatesRec.SetFilter("Upper Limit", '>%1', RateBasisValue);
+                                            IF TieredRebatesRatesRec.FINDFIRST THEN BEGIN
+                                                CustomerSalesRebateRate."Rebate %" := TieredRebatesRatesRec."Rebate %";
+                                            END else
+                                                CustomerSalesRebateRate."Rebate %" := 0;
+                                        END;
+                                END;
+                                // IF UnitPriceToCompare < TieredCommRatesRec.Threshold THEN BEGIN
+                                //     BestTieredCommRate := TieredCommRatesRec;
+                                //     BestTieredCommRateFound := TRUE;
+                                // END;
+
+                            END;
+                            TempSalesRebatesRate := CustomerSalesRebateRate;
+                        END;
+                    CustomerSalesRebateRate."Rate Type"::"Volume Rebate":
+                        BEGIN
+                            Case CustomerSalesRebateRate."Line Type" OF
+                                CustomerSalesRebateRate."Line Type"::Item:
+                                    BEGIN
+                                        ItemRec.GET(CustomerRebateDetailsLocIn."No.");
                                         ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
                                         ItemRec.SetFilter("Date Filter", RebateDateFilter);
 
                                         ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
                                         SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
                                         SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
-                                    UNTIL ItemRec.Next() = 0;
-                                END;
-                            END;
-                    End;
+                                    END;
+                                CustomerSalesRebateRate."Line Type"::"Rebate Category":
+                                    BEGIN
+                                        ItemRec.RESET;
+                                        ItemRec.SetFilter("AQD Cust Rebate Category Code", BuildItemCategoryCodeFilter(CustomerRebateDetailsLocIn."Rebate Item Category Code"));
+                                        IF ItemRec.FINDFIRST THEN BEGIN
+                                            REPEAT
+                                                ItemRec.SetFilter("AQD CustRbt Source No. Filter", CustomerRebateDetailsLocIn."Sell-To Customer No.");
+                                                ItemRec.SetFilter("Date Filter", RebateDateFilter);
+
+                                                ItemRec.CalcFields("AQD Cust Rbt Sales (Qty.)", "AQD Cust Rbt Sales (LCY)");
+                                                SalesQty += ItemRec."AQD Cust Rbt Sales (Qty.)";
+                                                SalesAmount += ItemRec."AQD Cust Rbt Sales (LCY)";
+                                            UNTIL ItemRec.Next() = 0;
+                                        END;
+                                    END;
+                            End;
+                        END;
                 END;
 
                 Case TRUE of
@@ -727,6 +1090,22 @@ codeunit 14302514 "AQD Sales Rebate Rate Calc Mgt"
                     if SalesRebateCalcMgt.IsCustomerMatchCustomerNoFilter(CustomerRebateDetailsLocIn."Entity No.", FromCustomerSalesRebateRate."Customer No. Filter") then
                         ToCustomerSalesRebateRate.INSERT;
             UNTIL FromCustomerSalesRebateRate.NEXT = 0;
+    end;
+
+    procedure GetGrowthPct(BaseValue: Decimal; CurrentValue: Decimal; var GrowthPct: Decimal): Boolean
+    begin
+        GrowthPct := 0;
+        if BaseValue <= 0 then
+            exit(false);   // no base to grow from
+        GrowthPct := Round((CurrentValue - BaseValue) / BaseValue * 100, 0.01);
+        exit(true);
+    end;
+
+    procedure GetPercentage(Amount: Decimal; Basis: Decimal): Decimal
+    begin
+        if Basis = 0 then
+            exit(0);
+        exit(Round(Amount / Basis * 100, 0.01));
     end;
 
 

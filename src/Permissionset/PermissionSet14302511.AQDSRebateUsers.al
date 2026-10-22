@@ -174,5 +174,8 @@ permissionset 14302511 "AQD SRebate Users"
         report "AQD Post Customer Rebates" = X,
         codeunit "AQD Customer Rebate Job Queue" = X,
         codeunit "AQD rebates journal Mgt" = X,
-        page "AQD Rebate Adjustment Journal" = X;
+        page "AQD Rebate Adjustment Journal" = X,
+        tabledata "AQD Tiered Rebate Rates" = RIMD,
+        table "AQD Tiered Rebate Rates" = X,
+        page "AQD Tiered Rebate Rates" = X;
 }

@@ -968,6 +968,9 @@ codeunit 14302621 "AQD Sales Rebate Calc Preview"
                 CustomerRebateDetails."Posting Date" := CustomerRebateLine."Posting Date";
                 CustomerRebateDetails."Rebate Order Date" := CustomerRebateLine."Rebate Order Date";
                 CustomerRebateDetails.Preview := TRUE;
+                CustomerRebateDetails."Do Not Credit" := false;
+                CustomerRebateDetails."AQD Use Cust Rebate Setup From" := TempRebateCategoryLines."AQD Use Rebate Setup From";
+                CustomerRebateDetails."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type";
 
                 GetRebateCategoryCode(CustomerRebateDetails);
                 GetSalesRebateDetails(CustomerRebateDetails);
@@ -975,9 +978,6 @@ codeunit 14302621 "AQD Sales Rebate Calc Preview"
                 CalculateRebateAmount(CustomerRebateDetails);
 
                 CustomerRebateDetails."Calculated Line Rebate Amount" := CustomerRebateDetails."Customer Rebate Amount";
-                CustomerRebateDetails."Do Not Credit" := false;
-                CustomerRebateDetails."AQD Use Cust Rebate Setup From" := TempRebateCategoryLines."AQD Use Rebate Setup From";
-                CustomerRebateDetails."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type";
                 IF CustomerRebateDetails."Rebate Type" <> CustomerRebateDetails."Rebate Type"::" " then begin
                     IsHandled := FALSE;
                     OnBeforeInsertRebateDetail(CustomerRebateDetails, IsHandled);

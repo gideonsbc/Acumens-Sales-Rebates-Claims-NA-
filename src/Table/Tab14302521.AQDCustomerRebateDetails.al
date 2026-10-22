@@ -412,6 +412,24 @@ table 14302521 "AQD Customer Rebate Details"
             TableRelation = "Payment Method";
             DataClassification = CustomerContent;
         }
+        field(268; "Baseline Amount"; Decimal)
+        {
+            BlankZero = true;
+            Caption = 'Baseline Amount';
+            Editable = false;
+        }
+        field(269; "Current Yr Amount"; Decimal)
+        {
+            BlankZero = true;
+            Caption = 'Current Yr Amount';
+            Editable = false;
+        }
+        field(273; "Growth Rate"; Decimal)
+        {
+            BlankZero = true;
+            Caption = 'Growth Rate';
+            Editable = false;
+        }
     }
 
     keys

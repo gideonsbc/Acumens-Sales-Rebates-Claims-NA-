@@ -2772,7 +2772,7 @@ codeunit 14302622 "AQD Sales Rebate Calc Mgt"
         OnAfterGetSalesRebateDetail(CustomerRebateDetailsLocIn);
     end;
 
-    local procedure CalculateRebateAmount(var CustomerRebateDetailsIn: Record "AQD Customer Rebate Details")
+    procedure CalculateRebateAmount(var CustomerRebateDetailsIn: Record "AQD Customer Rebate Details")
     var
         IsHandled: Boolean;
     begin
@@ -2822,7 +2822,7 @@ codeunit 14302622 "AQD Sales Rebate Calc Mgt"
         end;
     end;
 
-    local procedure CalculateProfitPercentage(var CustomerRebateDetailsVar: Record "AQD Customer Rebate Details"): Decimal
+    procedure CalculateProfitPercentage(var CustomerRebateDetailsVar: Record "AQD Customer Rebate Details"): Decimal
     var
         ProfitPer: Decimal;
     begin

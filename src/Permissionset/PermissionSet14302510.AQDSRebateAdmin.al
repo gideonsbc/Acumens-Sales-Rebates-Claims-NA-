@@ -174,5 +174,8 @@ permissionset 14302510 "AQD SRebate Admin"
         page "AQD Processed Sales Comm Dcts" = X,
         report "AQD Collect Commissions" = X,
         page "AQD Rebate Adjustment Journal" = X,
-        codeunit "AQD rebates journal Mgt" = X;
+        codeunit "AQD rebates journal Mgt" = X,
+        tabledata "AQD Tiered Rebate Rates" = RIMD,
+        table "AQD Tiered Rebate Rates" = X,
+        page "AQD Tiered Rebate Rates" = X;
 }

@@ -407,6 +407,35 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the calendar date when the sales rebate agreement ends.';
                 }
+                field("Tiered Rates"; Rec."Tiered Rates")
+                {
+                    trigger OnDrillDown()
+                    var
+
+                        TieredCommRatesRec: Record "AQD Tiered Rebate Rates";
+                        TieredCommRatesPg: Page "AQD Tiered Rebate Rates";
+                        CommissionRateTypeError: Label 'Rebate Rate Type must be %1 or %2.';
+                    BEGIN
+                        //CurrPage.SaveRecord();
+                        COMMIT;
+                        IF NOT (Rec."Rate Type" IN
+                          [Rec."Rate Type"::"Cummulative Tiered Rate",
+                           Rec."Rate Type"::"Highest Tiered Rebate"])
+                        THEN
+                            ERROR(CommissionRateTypeError,
+                                FORMAT(Rec."Rate Type"::"Cummulative Tiered Rate"),
+                                FORMAT(Rec."Rate Type"::"Cummulative Tiered Rate"));
+
+
+                        TieredCommRatesRec.RESET;
+                        TieredCommRatesRec.SetRange("Entry No.", Rec."Entry No.");
+                        TieredCommRatesPg.SetTableView(TieredCommRatesRec);
+                        TieredCommRatesPg.Editable(true);
+                        TieredCommRatesPg.RunModal();
+
+                    END;
+                }
+
                 field("Minimum Quantity"; Rec."Minimum Quantity")
                 {
                     ApplicationArea = All;

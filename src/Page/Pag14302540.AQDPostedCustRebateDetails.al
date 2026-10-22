@@ -149,6 +149,21 @@ page 14302540 "AQD Posted Cust Rebate Details"
                     ToolTip = 'Specifies the value of the Customer Rebate Posting Type field.', Comment = '%';
                     Visible = false;
                 }
+                field("Growth Rate"; Rec."Growth Rate")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Growth Rate field.', Comment = '%';
+                }
+                field("Baseline Amount"; Rec."Baseline Amount")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Baseline Amount field.', Comment = '%';
+                }
+                field("Current Yr Amount"; Rec."Current Yr Amount")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Current Yr Amount field.', Comment = '%';
+                }
                 field(Ineligible; Rec.Ineligible)
                 {
                     ApplicationArea = All;

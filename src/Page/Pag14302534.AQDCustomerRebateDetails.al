@@ -116,6 +116,21 @@ page 14302534 "AQD Customer Rebate Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Customer Rebate Amount field.', Comment = '%';
                 }
+                field("Growth Rate"; Rec."Growth Rate")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Growth Rate field.', Comment = '%';
+                }
+                field("Baseline Amount"; Rec."Baseline Amount")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Baseline Amount field.', Comment = '%';
+                }
+                field("Current Yr Amount"; Rec."Current Yr Amount")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Current Yr Amount field.', Comment = '%';
+                }
                 field("AQD Use Cust Rebate Setup From"; Rec."AQD Use Cust Rebate Setup From")
                 {
                     ApplicationArea = All;

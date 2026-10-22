@@ -342,6 +342,32 @@ table 14302621 "AQD Sales Rebates Rate New"
             DataClassification = CustomerContent;
             Editable = false;//Temporary used
         }
+        field(190; "Tiered Rates"; Boolean)
+        {
+            Caption = 'Tiered Rates';
+            Editable = FALSE;
+            FieldClass = FlowField;
+            CalcFormula = Exist("AQD Tiered Rebate Rates" where("Entry No." = field("Entry No.")));
+        }
+        field(268; "Baseline Amount"; Decimal)
+        {
+            BlankZero = true;
+            Caption = 'Baseline Amount';
+            Editable = false;
+        }
+        field(269; "Current Yr Amount"; Decimal)
+        {
+            BlankZero = true;
+            Caption = 'Current Yr Amount';
+            Editable = false;
+        }
+        field(273; "Growth Rate"; Decimal)
+        {
+            BlankZero = true;
+            Caption = 'Growth Rate';
+            Editable = false;
+        }
+
     }
 
     keys
