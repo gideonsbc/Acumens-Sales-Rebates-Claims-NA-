@@ -84,6 +84,11 @@ page 14302537 "AQD Posted Customer Rebates"
                 {
                     ApplicationArea = All;
                 }
+                field("Manual Entry"; Rec."Manual Entry")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies that the rebate was entered manually in the Rebate Journal.';
+                }
             }
         }
     }

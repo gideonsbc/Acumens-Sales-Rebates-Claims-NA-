@@ -237,6 +237,12 @@ table 14302519 "AQD Customer Rebate Header"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(9300; "Manual Entry"; Boolean)
+        {
+            Caption = 'Manual Entry';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys

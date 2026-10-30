@@ -182,6 +182,11 @@ page 14302538 "AQD Posted Customer Rebate Doc"
                     ApplicationArea = All;
                     Editable = false;
                 }
+                field("Manual Entry"; Rec."Manual Entry")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies that the rebate was entered manually in the Rebate Journal.';
+                }
             }
             part("AQD Posted Cust Reb Subpage"; "AQD Posted Cust Reb Subpage")
             {

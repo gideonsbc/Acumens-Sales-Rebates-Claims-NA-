@@ -247,6 +247,12 @@ table 14302533 "AQD Posted Cust Rebate Header"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(9300; "Manual Entry"; Boolean)
+        {
+            Caption = 'Manual Entry';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys

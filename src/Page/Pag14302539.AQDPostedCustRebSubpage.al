@@ -2,7 +2,7 @@ page 14302539 "AQD Posted Cust Reb Subpage"
 {
     ApplicationArea = All;
     Caption = 'Posted Sales Rebate Subpage';
-    Editable = false;
+    DeleteAllowed = false;
     InsertAllowed = false;
     PageType = ListPart;
     RefreshOnActivate = true;
@@ -50,15 +50,18 @@ page 14302539 "AQD Posted Cust Reb Subpage"
                 field("Sell-To Customer No."; Rec."Sell-To Customer No.")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                     Visible = false;
                 }
                 field("Bill-To Customer No."; Rec."Bill-To Customer No.")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Bill-To Customer Name"; Rec."Bill-To Customer Name")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(Description; Rec.Description)
                 {
@@ -114,31 +117,37 @@ page 14302539 "AQD Posted Cust Reb Subpage"
                 field("Customer Rebate Amount"; Rec."Customer Rebate Amount")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Customer Rebate Amount field.', Comment = '%';
                 }
                 field("Vendor Commission"; Rec."Vendor Commission")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Vendor Commission field.', Comment = '%';
                 }
                 field("Employee Commission"; Rec."Employee Commission")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Employee Commission field.', Comment = '%';
                 }
                 field("Off-Invoice Rebate"; Rec."Off-Invoice Rebate")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(Ineligible; Rec.Ineligible)
                 {
                     ApplicationArea = All;
                     Caption = 'Ineligible';
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Ineligible field.', Comment = '%';
                 }
                 field(Exclude; Rec."Do Not Credit")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Exclude field.', Comment = '%';
                 }
                 field("Rebate Status"; Rec."Customer Rebate Status")

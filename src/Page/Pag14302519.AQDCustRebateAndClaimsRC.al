@@ -373,14 +373,28 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 RunObject = page "AQD Sales Rebate Approvals";
                 Image = Approvals;
             }
-            action("AQD Rebate Adjustment Journal")
+            // action("AQD Rebate Adjustment Journal")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Rebate Adjustment Journal';
+            //     RunObject = codeunit "AQD rebates journal Mgt";
+            //     Image = Journals;
+            //     ;
+            // }
+            action("AQD Rebate Journal")
             {
                 ApplicationArea = All;
-                Caption = 'Rebate Adjustment Journal';
-                RunObject = codeunit "AQD rebates journal Mgt";
+                Caption = 'Rebate Journal';
+                RunObject = page "AQD Rebate Journal";
                 Image = Journals;
-                ;
             }
+            // action("AQD Rebate Journal Batches")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Rebate Journal Batches';
+            //     RunObject = page "AQD Rebate Journal Batches";
+            //     Image = Journals;
+            // }
 
             action("AQD Payment Journal")
             {

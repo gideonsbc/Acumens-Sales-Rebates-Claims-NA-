@@ -501,6 +501,64 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         END;
     end;
 
+    // // Lookup for a manually entered source document. The selected number is returned, but the caller
+    // // may also keep a typed value that does not exist. A blank document type defaults to Sales Invoice.
+    // procedure LookupSourceDocument(var OriginalDocumentType: Enum "Item Ledger Document Type"; var DocumentNo: Code[20]): Boolean
+    // var
+    //     PostedSalesInvoice: Record "Sales Invoice Header";
+    //     PostedSalesCrMemo: Record "Sales Cr.Memo Header";
+    //     PostedSalesShptHeader: Record "Sales Shipment Header";
+    //     PostedReturnRcptHeader: Record "Return Receipt Header";
+    // begin
+    //     case OriginalDocumentType of
+    //         OriginalDocumentType::"Sales Credit Memo":
+    //             begin
+    //                 if PostedSalesCrMemo.Get(DocumentNo) then;
+    //                 if Page.RunModal(Page::"Posted Sales Credit Memos", PostedSalesCrMemo) <> Action::LookupOK then
+    //                     exit(false);
+    //                 DocumentNo := PostedSalesCrMemo."No.";
+    //             end;
+    //         OriginalDocumentType::"Sales Shipment":
+    //             begin
+    //                 if PostedSalesShptHeader.Get(DocumentNo) then;
+    //                 if Page.RunModal(Page::"Posted Sales Shipments", PostedSalesShptHeader) <> Action::LookupOK then
+    //                     exit(false);
+    //                 DocumentNo := PostedSalesShptHeader."No.";
+    //             end;
+    //         OriginalDocumentType::"Sales Return Receipt":
+    //             begin
+    //                 if PostedReturnRcptHeader.Get(DocumentNo) then;
+    //                 if Page.RunModal(Page::"Posted Return Receipts", PostedReturnRcptHeader) <> Action::LookupOK then
+    //                     exit(false);
+    //                 DocumentNo := PostedReturnRcptHeader."No.";
+    //             end;
+    //         else begin
+    //             if PostedSalesInvoice.Get(DocumentNo) then;
+    //             if Page.RunModal(Page::"Posted Sales Invoices", PostedSalesInvoice) <> Action::LookupOK then
+    //                 exit(false);
+    //             DocumentNo := PostedSalesInvoice."No.";
+    //             OriginalDocumentType := OriginalDocumentType::"Sales Invoice";
+    //         end;
+    //     end;
+    //     exit(true);
+    // end;
+
+    // procedure ShowSourceDocument(OriginalDocumentType: Enum "Item Ledger Document Type"; DocumentNo: Code[20])
+    // begin
+    //     if DocumentNo = '' then
+    //         exit;
+    //     case OriginalDocumentType of
+    //         OriginalDocumentType::"Sales Invoice":
+    //             ShowPostedDocument("AQD Cust Rebate Document Type"::Invoice, DocumentNo);
+    //         OriginalDocumentType::"Sales Credit Memo":
+    //             ShowPostedDocument("AQD Cust Rebate Document Type"::"Credit Memo", DocumentNo);
+    //         OriginalDocumentType::"Sales Shipment":
+    //             ShowPostedDocument("AQD Cust Rebate Document Type"::Shipment, DocumentNo);
+    //         OriginalDocumentType::"Sales Return Receipt":
+    //             ShowPostedDocument("AQD Cust Rebate Document Type"::"Return Receipt", DocumentNo);
+    //     end;
+    // end;
+
     [IntegrationEvent(true, false)]
     local procedure OnBeforeGenerateRealTimeCustomerRebate(var SalesHeader: Record "Sales Header"; SalesShptHdrNo: Code[20]; RetRcpHdrNo: Code[20]; SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; PreviewMode: Boolean; var IsHandled: Boolean)
     BEGIN
@@ -714,6 +772,9 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         UnitPrice: Decimal;
         BillToCustomer: Record Customer;
     begin
+        if not RebateSetup.Get() then
+            exit;
+
         if SalesHeader.Status <> SalesHeader.Status::Open then
             exit;
 
@@ -1234,4 +1295,14 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
 
         exit(RebateNos.Count);
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Caption Class", OnAfterCaptionClassResolve, '', false, false)]
+    local procedure "Caption Class_OnAfterCaptionClassResolve"(Language: Integer; CaptionExpression: Text; var Caption: Text[1024])
+    begin
+        if CaptionExpression.Contains('Line Amount') then
+            Caption := 'Amount Excl. Tax';
+        if CaptionExpression.Contains('Amount Including VAT') then
+            Caption := 'Amount Incl. Tax';
+    end;
+
 }
