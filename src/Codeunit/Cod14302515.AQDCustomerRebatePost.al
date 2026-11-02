@@ -955,6 +955,9 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     if PostedCustomerRebateLine."Customer Invoice No." <> '' THEN
                         GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Vendor Commission ' + PostedCustomerRebateLine."Customer Invoice No.";
                     VendLocalRebateAmount := -InvoicePostingBuffer.Amount;
+                    // Collect Commission reverses the vendor posting (Credit Memo instead of Invoice)
+                    if PostedCustomerRebateHeader."Commission Type" = PostedCustomerRebateHeader."Commission Type"::"Collect Commission" then
+                        VendLocalRebateAmount := -VendLocalRebateAmount;
                     if VendLocalRebateAmount > 0 then
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
                     else
@@ -1382,6 +1385,9 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     if PostedCustomerRebateLine."Customer Invoice No." <> '' THEN
                         GenJnlLine.Description := 'Rebate No: ' + PostedCustomerRebateHeader."No." + ' Vendor Commission ' + PostedCustomerRebateLine."Customer Invoice No.";
                     LocalRebateAmount := -InvoicePostingBuffer.Amount;
+                    // Collect Commission reverses the vendor posting (Credit Memo instead of Invoice)
+                    if PostedCustomerRebateHeader."Commission Type" = PostedCustomerRebateHeader."Commission Type"::"Collect Commission" then
+                        LocalRebateAmount := -LocalRebateAmount;
                     if LocalRebateAmount > 0 then
                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
                     else
@@ -1635,6 +1641,9 @@ codeunit 14302515 "AQD Customer Rebate Post"
                                 BEGIN
                                     GenJnlLine."Account Type" := GenJnlLine."Account Type"::Vendor;
                                     LocalRebateAmount := -InvoicePostingBuffer.Amount;
+                                    // Collect Commission reverses the vendor posting (Credit Memo instead of Invoice)
+                                    if PostedCustRebateHeader."Commission Type" = PostedCustRebateHeader."Commission Type"::"Collect Commission" then
+                                        LocalRebateAmount := -LocalRebateAmount;
                                     if LocalRebateAmount > 0 then
                                         GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::"Credit Memo")
                                     else

@@ -178,6 +178,16 @@ page 14302644 "AQD Rebate Journal"
                     ToolTip = 'Specifies the order date used for the rebate.';
                     Visible = false;
                 }
+                field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the code for Shortcut Dimension 1.';
+                }
+                field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the code for Shortcut Dimension 2.';
+                }
                 field(Quantity; Rec.Quantity)
                 {
                     ApplicationArea = All;
@@ -313,16 +323,6 @@ page 14302644 "AQD Rebate Journal"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the state of the rebate.';
                     Visible = false;
-                }
-                field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the code for Shortcut Dimension 1.';
-                }
-                field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the code for Shortcut Dimension 2.';
                 }
             }
         }
