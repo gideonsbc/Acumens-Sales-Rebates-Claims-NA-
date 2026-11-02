@@ -417,7 +417,12 @@ table 14302523 "AQD Rebate Journal Line"
     begin
         RebateJournalLine.SetRange("Batch Name", "Batch Name");
         if not RebateJournalLine.IsEmpty() then begin
+            if (LastRebateJournalLine."Batch Name" <> "Batch Name") or (LastRebateJournalLine."Line No." = 0) then
+                if RebateJournalLine.FindLast() then
+                    LastRebateJournalLine := RebateJournalLine;
+
             "Posting Date" := LastRebateJournalLine."Posting Date";
+            "Document Type" := LastRebateJournalLine."Document Type";
             "Document Date" := LastRebateJournalLine."Document Date";
             "Document No." := LastRebateJournalLine."Document No.";
         end else begin
