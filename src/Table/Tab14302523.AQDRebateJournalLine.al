@@ -14,6 +14,24 @@ table 14302523 "AQD Rebate Journal Line"
         {
             Caption = 'Line No.';
         }
+        field(5; "Rebate No."; Code[20])
+        {
+            Caption = 'Sales Rebate No.';
+            Editable = false;
+            TableRelation = "AQD Customer Rebate Header";
+        }
+        field(6; "Rebate Line No."; Integer)
+        {
+            BlankZero = true;
+            Caption = 'Sales Rebate Line No.';
+            Editable = false;
+        }
+        field(7; "Rebate Detail Line No."; Integer)
+        {
+            BlankZero = true;
+            Caption = 'Sales Rebate Detail Line No.';
+            Editable = false;
+        }
         field(10; "Posting Date"; Date)
         {
             Caption = 'Posting Date';
@@ -42,7 +60,7 @@ table 14302523 "AQD Rebate Journal Line"
         field(45; "Entity Type"; Enum "AQD CR Rebate Entity Type")
         {
             Caption = 'Payee Type';
-            InitValue = Customer;
+            //InitValue = Customer;
 
             trigger OnValidate()
             begin
@@ -121,8 +139,11 @@ table 14302523 "AQD Rebate Journal Line"
             var
                 RebateProgramCode: Record "AQD Cust Rebate Program Code";
             begin
-                if "Rebate Program Code" = '' then
+                if "Rebate Program Code" = '' then begin
+                    "Entity Type" := "Entity Type"::" ";
+                    "Entity No." := '';
                     exit;
+                end;
                 RebateProgramCode.Get("Rebate Program Code");
                 if RebateProgramCode."Customer Rebate Posting Type" <> RebateProgramCode."Customer Rebate Posting Type"::" " then
                     "Cust Rebate Posting Type" := RebateProgramCode."Customer Rebate Posting Type"
@@ -130,6 +151,24 @@ table 14302523 "AQD Rebate Journal Line"
                     "Cust Rebate Posting Type" := "Cust Rebate Posting Type"::Expense;
                 if "Rebate Payment Method Code" = '' then
                     "Rebate Payment Method Code" := RebateProgramCode."Rebate Payment Method Code";
+
+                case RebateProgramCode."Payee Type" of
+                    RebateProgramCode."Payee Type"::CustomerRebate:
+                        begin
+                            "Entity Type" := "Entity Type"::Customer;
+                            "Entity No." := "Rebate Pay-To Customer No.";
+                        end;
+                    RebateProgramCode."Payee Type"::"Employee Commission":
+                        begin
+                            "Entity Type" := "Entity Type"::Employee;
+                            "Entity No." := RebateProgramCode."Payee No.";
+                        end;
+                    RebateProgramCode."Payee Type"::"Vendor Commission":
+                        begin
+                            "Entity Type" := "Entity Type"::Vendor;
+                            "Entity No." := RebateProgramCode."Payee No.";
+                        end;
+                end;
             end;
         }
         field(67; "CustRbt Rate Type"; Enum "AQD CustRbt Rate Type")
@@ -302,6 +341,11 @@ table 14302523 "AQD Rebate Journal Line"
                     "Entity No." := "Rebate Pay-To Customer No.";
             end;
         }
+        field(565; "Commission Type"; Enum "AQD CR Commission Type")
+        {
+            Caption = 'Commission Type';
+            InitValue = "Pay Commission";
+        }
         field(570; "Applies-to Doc. Type"; Enum "Sales Applies-to Document Type")
         {
             Caption = 'Applies-to Doc. Type';
@@ -360,6 +404,9 @@ table 14302523 "AQD Rebate Journal Line"
         key(Key2; "Batch Name", "Document No.", "Posting Date")
         {
         }
+        key(Key3; "Rebate No.")
+        {
+        }
     }
 
     procedure SetUpNewLine(LastRebateJournalLine: Record "AQD Rebate Journal Line")
@@ -380,7 +427,9 @@ table 14302523 "AQD Rebate Journal Line"
                 if RebateJournalBatch."No. Series" <> '' then
                     "Document No." := NoSeries.PeekNextNo(RebateJournalBatch."No. Series", "Posting Date");
         end;
-        "Entity Type" := "Entity Type"::Customer;
+        "Entity Type" := "Entity Type"::" ";
+        "Entity No." := '';
         "Cust Rebate Posting Type" := "Cust Rebate Posting Type"::Expense;
+        "Commission Type" := "Commission Type"::"Pay Commission";
     end;
 }

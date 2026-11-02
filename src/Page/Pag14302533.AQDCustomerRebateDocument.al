@@ -211,21 +211,26 @@ page 14302533 "AQD Customer Rebate Document"
     {
         area(Processing)
         {
+            // Sales Rebate Document -> Rebate Journal -> Posted Sales Rebate Document.
             action(Post)
             {
                 ApplicationArea = All;
                 Caption = 'Post';
                 Image = PostDocument;
                 Visible = PostEnabled;
+                ToolTip = 'Send the calculated rebate lines to the Rebate Journal and post them, creating the Posted Sales Rebate Document.';
 
                 trigger OnAction()
                 var
-                    CustomerRebateSetup: Record "AQD Acumens CustRbtClaim Setup";
-                    CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
+                    RebateJnlPost: Codeunit "AQD Rebate Jnl.-Post";
+                    ConfirmPostQst: Label 'Do you want to post Sales Rebate %1 through the Rebate Journal?', Comment = '%1 = Rebate No.';
+                //CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
                 begin
-                    CustomerRebateSetup.GET;
-                    CustomerRebatePost.PostCustomerRebate(Rec, true);
-
+                    CurrPage.SaveRecord();
+                    if not Confirm(ConfirmPostQst, true, Rec."No.") then
+                        exit;
+                    //CustomerRebatePost.PostCustomerRebate(Rec, true);
+                    RebateJnlPost.SendToJournalAndPost(Rec);
                     CurrPage.Update(false);
                 end;
             }

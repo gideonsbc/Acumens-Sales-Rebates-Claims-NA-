@@ -55,6 +55,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
         PurchaseRebateForText: Label 'Purchase Rebate for ';
         SalesRebateForText: Label 'Sales Rebate For';
         ProgramCodeSetup: Record "AQD Cust Rebate Program Code";
+        // Auto and batch posting route through the Rebate Journal, which then calls PostCustomerRebate.
+        RebateJnlPost: Codeunit "AQD Rebate Jnl.-Post";
 
     procedure SetCustomerRebateBatchParameters(var RunByIn: Enum "AQD Customer Rebate Posting"; var CustomerRebateBatchIn: Record "AQD Customer Rebate Batch"; CalledFromGenerateCustomerRebateIn: Boolean)
     begin
@@ -111,7 +113,9 @@ codeunit 14302515 "AQD Customer Rebate Post"
 
                 IF NOT SkipRecord THEN BEGIN
                     OnBeforePostCustomerRebates(CustomerRebateHeader);
-                    PostCustomerRebate(CustomerRebateHeader, FALSE);
+                    //PostCustomerRebate(CustomerRebateHeader, FALSE);
+                    Clear(RebateJnlPost);
+                    RebateJnlPost.SendToJournalAndPost(CustomerRebateHeader);
                     OnAfterPostCustomerRebates(CustomerRebateHeader);
                 END;
             until CustomerRebateHeader.Next() = 0;
@@ -138,7 +142,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
             CustomerRebateHeader.TestField("Posting Date");
 
             OnBeforePostCustomerRebates(CustomerRebateHeader);
-            PostCustomerRebate(CustomerRebateHeader, FALSE);
+            //PostCustomerRebate(CustomerRebateHeader, FALSE);
+            RebateJnlPost.SendToJournalAndPost(CustomerRebateHeader);
             OnAfterPostCustomerRebates(CustomerRebateHeader);
 
         END;

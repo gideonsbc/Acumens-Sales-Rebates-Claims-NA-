@@ -10,7 +10,7 @@ page 14302644 "AQD Rebate Journal"
     UsageCategory = Tasks;
 
     AboutTitle = 'About Rebate Journal';
-    AboutText = 'Enter rebate amounts that have already been calculated. Posting creates a Posted Sales Rebate Document for each Document No. without performing any rebate calculation.';
+    AboutText = 'Review and post rebates sent from calculated Sales Rebate Documents, or enter rebate amounts manually. Posting creates a Posted Sales Rebate Document for each Sales Rebate No., and for each Document No. of manual lines, without recalculating the rebate.';
 
     layout
     {
@@ -111,6 +111,11 @@ page 14302644 "AQD Rebate Journal"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the rebate program. The program''s Rebate Expense account is used when posting.';
+                }
+                field("Commission Type"; Rec."Commission Type")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies whether the commission is paid out or collected. All lines with the same Document No. must have the same commission type.';
                 }
                 field("Entity Type"; Rec."Entity Type")
                 {
@@ -313,13 +318,11 @@ page 14302644 "AQD Rebate Journal"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the code for Shortcut Dimension 1.';
-                    Visible = false;
                 }
                 field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the code for Shortcut Dimension 2.';
-                    Visible = false;
                 }
             }
         }
@@ -335,7 +338,7 @@ page 14302644 "AQD Rebate Journal"
                 Caption = 'P&ost';
                 Image = PostOrder;
                 ShortcutKey = 'F9';
-                ToolTip = 'Post the rebate journal lines. A Posted Sales Rebate Document is created for each Document No.';
+                ToolTip = 'Post the rebate journal lines. A Posted Sales Rebate Document is created for each Sales Rebate No., and for each Document No. of manual lines.';
 
                 trigger OnAction()
                 var
@@ -409,6 +412,8 @@ page 14302644 "AQD Rebate Journal"
     begin
         Rec.FilterGroup(2);
         Rec.SetRange("Batch Name", CurrentBatchName);
+        // Lines sent from a Sales Rebate Document are posted automatically; users only work with manual entries here.
+        Rec.SetRange("Rebate No.", '');
         Rec.FilterGroup(0);
         if Rec.FindFirst() then;
     end;
