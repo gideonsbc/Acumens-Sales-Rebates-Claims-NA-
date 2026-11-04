@@ -29,5 +29,11 @@ tableextension 14302631 "AQD CR Vendor Ledger Entry Ext" extends "Vendor Ledger 
             Editable = false;
             TableRelation = Customer;
         }
+        field(14302513; "AQD CR Payable Due Date"; Date)
+        {
+            Caption = 'Payable Due Date';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 }

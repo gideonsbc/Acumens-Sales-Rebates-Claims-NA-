@@ -93,6 +93,11 @@ page 14302556 "AQD Posted CustRbtDetail List"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Rebate Program Code field.', Comment = '%';
                 }
+                field("Payable Due Date"; Rec."Payable Due Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the date the commission becomes due for payment, based on the Payment Frequency of the rebate program.';
+                }
                 field("Rebate Type"; Rec."Rebate Type")
                 {
                     ApplicationArea = All;

@@ -134,6 +134,11 @@ table 14302535 "AQD Posted Cust Reb Details"
         {
             Caption = 'Posting Date';
         }
+        field(146; "Payable Due Date"; Date)
+        {
+            Caption = 'Payable Due Date';
+            Editable = false;
+        }
         field(150; Amount; Decimal)
         {
             Caption = 'Amount';
@@ -423,6 +428,9 @@ table 14302535 "AQD Posted Cust Reb Details"
         key(Key1; "Rebate No.", "Rebate Line No.", "Line No.")
         {
             Clustered = true;
+        }
+        key(Key2; "Rebate Program Code", "Payable Due Date")
+        {
         }
     }
     local procedure UpdateChangedBy()

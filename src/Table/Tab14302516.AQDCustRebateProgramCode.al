@@ -115,6 +115,17 @@ table 14302516 "AQD Cust Rebate Program Code"
             Caption = 'Posting Type';
             DataClassification = CustomerContent;
         }
+        field(65; "Payment Frequency"; Enum "AQD CR Payment Frequency")
+        {
+            Caption = 'Payment Frequency';
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if Rec."Payment Frequency" <> xRec."Payment Frequency" then
+                    UpdateOpenRebateDetailsPayableDueDate();
+            end;
+        }
         field(90; Blocked; Boolean)
         {
             Caption = 'Blocked';
@@ -222,6 +233,59 @@ table 14302516 "AQD Cust Rebate Program Code"
                 SalesRebateRate.Modify();
             until SalesRebateRate.Next() = 0;
         end;
+    end;
+
+    // Due for Payment = end of the frequency period that contains the posting date + 1D
+    procedure CalcPayableDueDate(PostingDate: Date): Date
+    begin
+        if PostingDate = 0D then
+            exit(0D);
+
+        case "Payment Frequency" of
+            "Payment Frequency"::Bimonthly:
+                if Date2DMY(PostingDate, 1) <= 15 then
+                    exit(DMY2Date(16, Date2DMY(PostingDate, 2), Date2DMY(PostingDate, 3)))
+                else
+                    exit(CalcDate('<CM+1D>', PostingDate));
+            "Payment Frequency"::Monthly:
+                exit(CalcDate('<CM+1D>', PostingDate));
+            "Payment Frequency"::Quarterly:
+                exit(CalcDate('<CQ+1D>', PostingDate));
+            "Payment Frequency"::"Half Year":
+                if Date2DMY(PostingDate, 2) <= 6 then
+                    exit(DMY2Date(1, 7, Date2DMY(PostingDate, 3)))
+                else
+                    exit(CalcDate('<CY+1D>', PostingDate));
+            "Payment Frequency"::Annual:
+                exit(CalcDate('<CY+1D>', PostingDate));
+        end;
+
+        exit(PostingDate);
+    end;
+
+    local procedure UpdateOpenRebateDetailsPayableDueDate()
+    var
+        CustomerRebateDetails: Record "AQD Customer Rebate Details";
+        UpdateOpenDetailsQst: Label 'There are %1 open sales rebate detail lines for program %2.\Do you want to recalculate their Payable Due Date using the %3 payment frequency?', Comment = '%1 = No. of lines, %2 = Program Code, %3 = Payment Frequency';
+    begin
+        CustomerRebateDetails.SetCurrentKey("Rebate Program Code", "Payable Due Date");
+        CustomerRebateDetails.SetRange("Rebate Program Code", Code);
+        CustomerRebateDetails.SetRange(Preview, false);
+        if CustomerRebateDetails.IsEmpty() then
+            exit;
+
+        if not GuiAllowed() then
+            exit;
+
+        if not Confirm(UpdateOpenDetailsQst, true, CustomerRebateDetails.Count(), Code, "Payment Frequency") then
+            exit;
+
+        CustomerRebateDetails.SetLoadFields("Posting Date", "Payable Due Date");
+        if CustomerRebateDetails.FindSet(true) then
+            repeat
+                CustomerRebateDetails."Payable Due Date" := CalcPayableDueDate(CustomerRebateDetails."Posting Date");
+                CustomerRebateDetails.Modify(false);
+            until CustomerRebateDetails.Next() = 0;
     end;
 
     var

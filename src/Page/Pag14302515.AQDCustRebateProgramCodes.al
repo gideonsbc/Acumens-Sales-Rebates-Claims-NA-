@@ -127,6 +127,12 @@ page 14302515 "AQD Cust Rebate Program Codes"
                 {
                     ApplicationArea = All;
                 }
+                field("Payment Frequency"; Rec."Payment Frequency")
+                {
+                    ApplicationArea = All;
+                    ValuesAllowed = "Now", Bimonthly, Monthly, Quarterly, "Half Year", Annual;
+                    ToolTip = 'Specifies how often commissions for this program are made available for payment. The Payable Due Date is the end of the period containing the invoice/credit memo posting date plus one day.';
+                }
                 field("Posting Type"; Rec."Posting Type")
                 {
                     ApplicationArea = All;

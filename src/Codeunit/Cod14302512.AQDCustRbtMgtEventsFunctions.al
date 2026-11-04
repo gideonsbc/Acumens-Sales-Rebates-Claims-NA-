@@ -1061,6 +1061,16 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         VendorLedgerEntry."AQD CR Rebate Program Code" := GenJournalLine."AQD CR Rebate Program Code";
         VendorLedgerEntry."AQD CR Pay-to Vendor No." := GenJournalLine."AQD CR Pay-to Vendor No.";
         VendorLedgerEntry."AQD CR Rebate Customer No." := GenJournalLine."AQD CR Bill-To Customer No.";
+        VendorLedgerEntry."AQD CR Payable Due Date" := GenJournalLine."AQD CR Payable Due Date";
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"AQD Customer Rebate Details", OnBeforeInsertEvent, '', false, false)]
+    local procedure CustomerRebateDetails_OnBeforeInsertEvent(var Rec: Record "AQD Customer Rebate Details"; RunTrigger: Boolean)
+    begin
+        if Rec.IsTemporary() then
+            exit;
+
+        Rec.SetPayableDueDate();
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Item Ledger Entry", OnAfterInsertEvent, '', false, false)]

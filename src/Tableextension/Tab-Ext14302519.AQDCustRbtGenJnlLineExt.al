@@ -42,6 +42,12 @@ tableextension 14302519 "AQD CustRbt Gen. Jnl Line Ext" extends "Gen. Journal Li
             DataClassification = CustomerContent;
             TableRelation = Vendor;
         }
+        field(14302590; "AQD CR Payable Due Date"; Date)
+        {
+            Caption = 'Payable Due Date';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 }
 

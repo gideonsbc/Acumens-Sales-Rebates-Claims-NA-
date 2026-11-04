@@ -134,6 +134,11 @@ table 14302521 "AQD Customer Rebate Details"
         {
             Caption = 'Posting Date';
         }
+        field(146; "Payable Due Date"; Date)
+        {
+            Caption = 'Payable Due Date';
+            Editable = false;
+        }
         field(150; Amount; Decimal)
         {
             Caption = 'Amount';
@@ -438,7 +443,20 @@ table 14302521 "AQD Customer Rebate Details"
         {
             Clustered = true;
         }
+        key(Key2; "Rebate Program Code", "Payable Due Date")
+        {
+        }
     }
+
+    procedure SetPayableDueDate()
+    var
+        RebateProgramCode: Record "AQD Cust Rebate Program Code";
+    begin
+        if ("Rebate Program Code" <> '') and RebateProgramCode.Get("Rebate Program Code") then
+            "Payable Due Date" := RebateProgramCode.CalcPayableDueDate("Posting Date")
+        else
+            "Payable Due Date" := "Posting Date";
+    end;
 
     local procedure UpdateChangedBy()
     begin

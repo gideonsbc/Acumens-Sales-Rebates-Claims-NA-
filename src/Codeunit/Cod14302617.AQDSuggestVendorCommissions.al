@@ -107,6 +107,7 @@ codeunit 14302617 "AQD Suggest Vendor Commissions"
                             VendLedgEntry.SetFilter("Posting Date", '..%1', EndingDate)
                         else if (StartingDate <> 0D) and (EndingDate = 0D) then
                             VendLedgEntry.SetFilter("Posting Date", '>=%1', StartingDate);
+                        SetPayableDueDateFilter(VendLedgEntry);
 
                         if VendLedgEntry.FindFirst() then begin
                             repeat
@@ -262,6 +263,7 @@ codeunit 14302617 "AQD Suggest Vendor Commissions"
                     VendLedgEntry.SetFilter("Posting Date", '..%1', EndingDate)
                 else if (StartingDate <> 0D) and (EndingDate = 0D) then
                     VendLedgEntry.SetFilter("Posting Date", '>=%1', StartingDate);
+                SetPayableDueDateFilter(VendLedgEntry);
 
                 if VendLedgEntry.FindFirst() then begin
                     repeat
@@ -360,6 +362,15 @@ codeunit 14302617 "AQD Suggest Vendor Commissions"
     local procedure InsertSummarybyProgramCodetoJournal()
     var
     begin
+    end;
+
+    // Only commissions due for payment by the end of the period (End Date + 1D) per the program's Payment Frequency
+    local procedure SetPayableDueDateFilter(var VendLedgEntry: Record "Vendor Ledger Entry")
+    begin
+        if EndingDate <> 0D then
+            VendLedgEntry.SetFilter("AQD CR Payable Due Date", '..%1', CalcDate('<1D>', EndingDate))
+        else
+            VendLedgEntry.SetRange("AQD CR Payable Due Date");
     end;
 
     local procedure RunIncrementDocumentNo(GenJnlLine: Record "Gen. Journal Line")
