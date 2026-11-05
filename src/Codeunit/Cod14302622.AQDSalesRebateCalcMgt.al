@@ -1300,7 +1300,9 @@ codeunit 14302622 "AQD Sales Rebate Calc Mgt"
                     CustomerRebateDetails."Batch Entry No." := GlobalBatchEntryNo;
                     CustomerRebateDetails."AQD Use Cust Rebate Setup From" := TempRebateCategoryLines."AQD Use Rebate Setup From";
                     CustomerRebateDetails."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type";
-                    IF CustomerRebateDetails."Rebate Type" <> CustomerRebateDetails."Rebate Type"::" " then begin
+                    IF (CustomerRebateDetails."Rebate Type" <> CustomerRebateDetails."Rebate Type"::" ") and
+                       not CustomerRebateDetails.IsAlreadyCalculated()
+                    then begin
                         IsHandled := FALSE;
                         OnBeforeInsertRebateDetail(CustomerRebateDetails, GlobalProcessCatchUpRebate, GlobalBrokerVendorNo, IsHandled);
                         IF NOT IsHandled then begin
@@ -1832,7 +1834,9 @@ codeunit 14302622 "AQD Sales Rebate Calc Mgt"
                     CustomerRebateDetails."Batch Entry No." := GlobalBatchEntryNo;
                     CustomerRebateDetails."AQD Use Cust Rebate Setup From" := TempRebateCategoryLines."AQD Use Rebate Setup From";
                     CustomerRebateDetails."AQD Cust Rebate Posting Type" := TempRebateCategoryLines."AQD Cust Rebate Posting Type";
-                    IF CustomerRebateDetails."Rebate Type" <> CustomerRebateDetails."Rebate Type"::" " then begin
+                    IF (CustomerRebateDetails."Rebate Type" <> CustomerRebateDetails."Rebate Type"::" ") and
+                       not CustomerRebateDetails.IsAlreadyCalculated()
+                    then begin
                         IsHandled := FALSE;
                         OnBeforeInsertRebateDetail(CustomerRebateDetails, false, '', IsHandled);
                         IF NOT IsHandled then begin

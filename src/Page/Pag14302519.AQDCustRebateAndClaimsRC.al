@@ -372,6 +372,7 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 Caption = 'Sales Rebate Approvals';
                 RunObject = page "AQD Sales Rebate Approvals";
                 Image = Approvals;
+                Visible = false;
             }
             // action("AQD Rebate Adjustment Journal")
             // {
@@ -465,6 +466,14 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Caption = 'Trade Agreements';
                     RunObject = page "AQD CF Trade Agreements";
                     Image = CodesList;
+                }
+                action("AQD CR Payment Periods")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Commission Payment Periods';
+                    RunObject = page "AQD CR Payment Periods";
+                    Image = AccountingPeriods;
+                    ToolTip = 'View, close or reopen the rebate payment periods for each payment frequency.';
                 }
 
                 action("Customer Rebate Program Codes2")

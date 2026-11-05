@@ -982,7 +982,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine."AQD CR Rebate Program Code" := InvoicePostingBuffer."AQD Program Code";//CustRebateMgtFunction.GetRebateProgramCode(PostedCustomerRebateLine, GenJnlLine);//PostedCustomerRebateLine."Cust Rebate Program Code";
                     if ProgramCodeSetup.Get(GenJnlLine."AQD CR Rebate Program Code") then
                         GenJnlLine."AQD CR Pay-to Vendor No." := ProgramCodeSetup."AQD Pay-to Vendor No.";
-                    GenJnlLine."AQD CR Payable Due Date" := GetPayableDueDate(PostedCustomerRebateLine."Rebate No.", PostedCustomerRebateLine."Line No.", GenJnlLine."AQD CR Rebate Program Code");
+                    GenJnlLine."AQD CR Commission Payable Date" := GetPayableDueDate(PostedCustomerRebateLine."Rebate No.", PostedCustomerRebateLine."Line No.", GenJnlLine."AQD CR Rebate Program Code");
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                     GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
@@ -1413,7 +1413,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                     GenJnlLine."AQD CR Rebate Program Code" := InvoicePostingBuffer."AQD Program Code";//CustRebateMgtFunction.GetRebateProgramCode(PostedCustomerRebateLine, GenJnlLine);//PostedCustomerRebateLine."Cust Rebate Program Code";
                     if ProgramCodeSetup.Get(GenJnlLine."AQD CR Rebate Program Code") then
                         GenJnlLine."AQD CR Pay-to Vendor No." := ProgramCodeSetup."AQD Pay-to Vendor No.";
-                    GenJnlLine."AQD CR Payable Due Date" := GetPayableDueDate(PostedCustomerRebateLine."Rebate No.", PostedCustomerRebateLine."Line No.", GenJnlLine."AQD CR Rebate Program Code");
+                    GenJnlLine."AQD CR Commission Payable Date" := GetPayableDueDate(PostedCustomerRebateLine."Rebate No.", PostedCustomerRebateLine."Line No.", GenJnlLine."AQD CR Rebate Program Code");
                     GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                     GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                     GenJnlLine."AQD Cust Rebate Journal" := TRUE;
@@ -1671,7 +1671,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
                         GenJnlLine."AQD CR Rebate Program Code" := InvoicePostingBuffer."AQD Program Code";
                         if ProgramCodeSetup.Get(GenJnlLine."AQD CR Rebate Program Code") then
                             GenJnlLine."AQD CR Pay-to Vendor No." := ProgramCodeSetup."AQD Pay-to Vendor No.";
-                        GenJnlLine."AQD CR Payable Due Date" := GetPayableDueDate(PostedCustRebateLine."Rebate No.", PostedCustRebateLine."Line No.", GenJnlLine."AQD CR Rebate Program Code");
+                        GenJnlLine."AQD CR Commission Payable Date" := GetPayableDueDate(PostedCustRebateLine."Rebate No.", PostedCustRebateLine."Line No.", GenJnlLine."AQD CR Rebate Program Code");
                         GenJnlLine."AQD Cust Journal Document No." := GenJnlLine."Document No.";
                         GenJnlLine."Source Code" := RebateSetup."Customer Rebate Source Code";
                         GenJnlLine."AQD Cust Rebate Journal" := TRUE;
@@ -2263,15 +2263,15 @@ codeunit 14302515 "AQD Customer Rebate Post"
         PostedCustRebDetails: Record "AQD Posted Cust Reb Details";
         PayableDueDate: Date;
     begin
-        PostedCustRebDetails.SetLoadFields("Payable Due Date");
+        PostedCustRebDetails.SetLoadFields("Commission Payable Date");
         PostedCustRebDetails.SetRange("Rebate No.", RebateNo);
         PostedCustRebDetails.SetRange("Rebate Line No.", RebateLineNo);
         PostedCustRebDetails.SetRange("Rebate Program Code", ProgramCode);
         PostedCustRebDetails.SetRange("Entity Type", PostedCustRebDetails."Entity Type"::Vendor);
         if PostedCustRebDetails.FindSet() then
             repeat
-                if PostedCustRebDetails."Payable Due Date" > PayableDueDate then
-                    PayableDueDate := PostedCustRebDetails."Payable Due Date";
+                if PostedCustRebDetails."Commission Payable Date" > PayableDueDate then
+                    PayableDueDate := PostedCustRebDetails."Commission Payable Date";
             until PostedCustRebDetails.Next() = 0;
         exit(PayableDueDate);
     end;

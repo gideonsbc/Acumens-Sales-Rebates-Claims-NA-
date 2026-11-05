@@ -131,7 +131,7 @@ page 14302515 "AQD Cust Rebate Program Codes"
                 {
                     ApplicationArea = All;
                     ValuesAllowed = "Now", Bimonthly, Monthly, Quarterly, "Half Year", Annual;
-                    ToolTip = 'Specifies how often commissions for this program are made available for payment. The Payable Due Date is the end of the period containing the invoice/credit memo posting date plus one day.';
+                    ToolTip = 'Specifies how often commissions for this program are made available for payment. The Commission Payable Date is the end of the period containing the invoice/credit memo posting date plus one day. If that period is closed, the next open period is used.';
                 }
                 field("Posting Type"; Rec."Posting Type")
                 {
@@ -155,6 +155,22 @@ page 14302515 "AQD Cust Rebate Program Codes"
             {
                 ApplicationArea = Notes;
                 Visible = false;
+            }
+        }
+    }
+
+    actions
+    {
+        area(Navigation)
+        {
+            action(PaymentPeriods)
+            {
+                ApplicationArea = All;
+                Caption = 'Commission Payment Periods';
+                Image = AccountingPeriods;
+                RunObject = page "AQD CR Payment Periods";
+                RunPageLink = "Payment Frequency" = field("Payment Frequency");
+                ToolTip = 'View, close or reopen the payment periods of the program''s Payment Frequency. Periods are shared by all programs with the same frequency. Transactions back-posted into a closed period are assigned to the next open period.';
             }
         }
     }

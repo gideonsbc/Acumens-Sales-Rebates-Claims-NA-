@@ -1061,7 +1061,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
         VendorLedgerEntry."AQD CR Rebate Program Code" := GenJournalLine."AQD CR Rebate Program Code";
         VendorLedgerEntry."AQD CR Pay-to Vendor No." := GenJournalLine."AQD CR Pay-to Vendor No.";
         VendorLedgerEntry."AQD CR Rebate Customer No." := GenJournalLine."AQD CR Bill-To Customer No.";
-        VendorLedgerEntry."AQD CR Payable Due Date" := GenJournalLine."AQD CR Payable Due Date";
+        VendorLedgerEntry."AQD CF Commission Payable Date" := GenJournalLine."AQD CR Commission Payable Date";
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"AQD Customer Rebate Details", OnBeforeInsertEvent, '', false, false)]

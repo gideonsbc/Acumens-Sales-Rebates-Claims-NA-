@@ -134,9 +134,9 @@ table 14302521 "AQD Customer Rebate Details"
         {
             Caption = 'Posting Date';
         }
-        field(146; "Payable Due Date"; Date)
+        field(146; "Commission Payable Date"; Date)
         {
-            Caption = 'Payable Due Date';
+            Caption = 'Commission Payable Date';
             Editable = false;
         }
         field(150; Amount; Decimal)
@@ -443,7 +443,7 @@ table 14302521 "AQD Customer Rebate Details"
         {
             Clustered = true;
         }
-        key(Key2; "Rebate Program Code", "Payable Due Date")
+        key(Key2; "Rebate Program Code", "Commission Payable Date")
         {
         }
     }
@@ -452,10 +452,32 @@ table 14302521 "AQD Customer Rebate Details"
     var
         RebateProgramCode: Record "AQD Cust Rebate Program Code";
     begin
-        if ("Rebate Program Code" <> '') and RebateProgramCode.Get("Rebate Program Code") then
-            "Payable Due Date" := RebateProgramCode.CalcPayableDueDate("Posting Date")
-        else
-            "Payable Due Date" := "Posting Date";
+        if ("Rebate Program Code" <> '') and RebateProgramCode.Get("Rebate Program Code") then begin
+            "Commission Payable Date" := RebateProgramCode.CalcPayableDueDate("Posting Date");
+            if not Preview then
+                RebateProgramCode.RegisterPaymentPeriod("Commission Payable Date");
+        end else
+            "Commission Payable Date" := "Posting Date";
+    end;
+
+    // Back-posted documents can be picked up again by a later calculation run, skip lines already calculated for the same program and payee
+    procedure IsAlreadyCalculated(): Boolean
+    var
+        PostedCustRebDetails: Record "AQD Posted Cust Reb Details";
+    begin
+        if "Document No." = '' then
+            exit(false);
+
+        PostedCustRebDetails.SetCurrentKey("Document Type", "Document No.", "Document Line No.");
+        PostedCustRebDetails.SetRange("Document Type", "Document Type");
+        PostedCustRebDetails.SetRange("Document No.", "Document No.");
+        PostedCustRebDetails.SetRange("Document Line No.", "Document Line No.");
+        PostedCustRebDetails.SetRange("Rebate Program Code", "Rebate Program Code");
+        PostedCustRebDetails.SetRange("Rebate Item Category Code", "Rebate Item Category Code");
+        PostedCustRebDetails.SetRange("Entity Type", "Entity Type");
+        PostedCustRebDetails.SetRange("Entity No.", "Entity No.");
+        PostedCustRebDetails.SetFilter("Customer Rebate Status", '<>%1', PostedCustRebDetails."Customer Rebate Status"::Cancelled);
+        exit(not PostedCustRebDetails.IsEmpty());
     end;
 
     local procedure UpdateChangedBy()

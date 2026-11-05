@@ -364,13 +364,13 @@ codeunit 14302617 "AQD Suggest Vendor Commissions"
     begin
     end;
 
-    // Only commissions due for payment by the end of the period (End Date + 1D) per the program's Payment Frequency
+    // Only commissions whose Commission Payable Date falls on or before the Ending Date
     local procedure SetPayableDueDateFilter(var VendLedgEntry: Record "Vendor Ledger Entry")
     begin
         if EndingDate <> 0D then
-            VendLedgEntry.SetFilter("AQD CR Payable Due Date", '..%1', CalcDate('<1D>', EndingDate))
+            VendLedgEntry.SetFilter("AQD CF Commission Payable Date", '..%1', EndingDate)
         else
-            VendLedgEntry.SetRange("AQD CR Payable Due Date");
+            VendLedgEntry.SetRange("AQD CF Commission Payable Date");
     end;
 
     local procedure RunIncrementDocumentNo(GenJnlLine: Record "Gen. Journal Line")

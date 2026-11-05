@@ -134,9 +134,9 @@ table 14302535 "AQD Posted Cust Reb Details"
         {
             Caption = 'Posting Date';
         }
-        field(146; "Payable Due Date"; Date)
+        field(146; "Commission Payable Date"; Date)
         {
-            Caption = 'Payable Due Date';
+            Caption = 'Commission Payable Date';
             Editable = false;
         }
         field(150; Amount; Decimal)
@@ -429,7 +429,10 @@ table 14302535 "AQD Posted Cust Reb Details"
         {
             Clustered = true;
         }
-        key(Key2; "Rebate Program Code", "Payable Due Date")
+        key(Key2; "Rebate Program Code", "Commission Payable Date")
+        {
+        }
+        key(Key3; "Document Type", "Document No.", "Document Line No.")
         {
         }
     }

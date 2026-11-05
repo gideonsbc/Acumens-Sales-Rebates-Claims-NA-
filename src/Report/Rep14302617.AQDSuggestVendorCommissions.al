@@ -67,18 +67,16 @@ report 14302617 "AQD Suggest Vendor Commissions"
                     field(FromDate; FromDate)
                     {
                         ApplicationArea = All;
-                        Caption = 'Start Date Filter';
-
+                        Caption = 'Commission Start Date';
                     }
                     field(ToDate; ToDate)
                     {
                         ApplicationArea = All;
-                        Caption = 'End Date Filter';
+                        Caption = 'Commission End Date';
                         trigger OnValidate()
                         begin
                             PostingDate := ToDate;
                         end;
-
                     }
                     field(PostingDate; PostingDate)
                     {
