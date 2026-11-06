@@ -452,11 +452,9 @@ table 14302521 "AQD Customer Rebate Details"
     var
         RebateProgramCode: Record "AQD Cust Rebate Program Code";
     begin
-        if ("Rebate Program Code" <> '') and RebateProgramCode.Get("Rebate Program Code") then begin
-            "Commission Payable Date" := RebateProgramCode.CalcPayableDueDate("Posting Date");
-            if not Preview then
-                RebateProgramCode.RegisterPaymentPeriod("Commission Payable Date");
-        end else
+        if ("Rebate Program Code" <> '') and RebateProgramCode.Get("Rebate Program Code") then
+            "Commission Payable Date" := RebateProgramCode.CalcPayableDueDate("Posting Date")
+        else
             "Commission Payable Date" := "Posting Date";
     end;
 

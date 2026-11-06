@@ -235,136 +235,32 @@ table 14302516 "AQD Cust Rebate Program Code"
         end;
     end;
 
-    // Due for Payment = end of the first open frequency period on or after the posting date + 1D
+    // Due for Payment = end of the frequency period that contains the posting date + 1D
     procedure CalcPayableDueDate(PostingDate: Date): Date
-    var
-        PeriodStart: Date;
-        PeriodEnd: Date;
     begin
         if PostingDate = 0D then
             exit(0D);
 
-        if not FindOpenPaymentPeriod(PostingDate, PeriodStart, PeriodEnd) then
-            exit(PostingDate);
-
-        exit(PeriodEnd + 1);
-    end;
-
-    // Back-posting: a posting date in a closed payment period rolls forward to the next period that is still open
-    procedure FindOpenPaymentPeriod(PostingDate: Date; var PeriodStart: Date; var PeriodEnd: Date): Boolean
-    var
-        PaymentPeriod: Record "AQD CR Payment Period";
-        PeriodDate: Date;
-        IsClosed: Boolean;
-    begin
-        PeriodDate := PostingDate;
-        repeat
-            if not GetFrequencyPeriod(PeriodDate, PeriodStart, PeriodEnd) then
-                exit(false);
-
-            IsClosed := PaymentPeriod.FindClosedPeriod("Payment Frequency", PeriodDate, PeriodEnd + 1);
-            if IsClosed then
-                if PaymentPeriod."Ending Date" > PeriodEnd then
-                    PeriodDate := PaymentPeriod."Ending Date" + 1
-                else
-                    PeriodDate := PeriodEnd + 1;
-        until not IsClosed;
-
-        exit(true);
-    end;
-
-    procedure GetFrequencyPeriod(PostingDate: Date; var PeriodStart: Date; var PeriodEnd: Date): Boolean
-    begin
-        if PostingDate = 0D then
-            exit(false);
-
         case "Payment Frequency" of
             "Payment Frequency"::Bimonthly:
-                if Date2DMY(PostingDate, 1) <= 15 then begin
-                    PeriodStart := CalcDate('<-CM>', PostingDate);
-                    PeriodEnd := DMY2Date(15, Date2DMY(PostingDate, 2), Date2DMY(PostingDate, 3));
-                end else begin
-                    PeriodStart := DMY2Date(16, Date2DMY(PostingDate, 2), Date2DMY(PostingDate, 3));
-                    PeriodEnd := CalcDate('<CM>', PostingDate);
-                end;
+                if Date2DMY(PostingDate, 1) <= 15 then
+                    exit(DMY2Date(16, Date2DMY(PostingDate, 2), Date2DMY(PostingDate, 3)))
+                else
+                    exit(CalcDate('<CM+1D>', PostingDate));
             "Payment Frequency"::Monthly:
-                begin
-                    PeriodStart := CalcDate('<-CM>', PostingDate);
-                    PeriodEnd := CalcDate('<CM>', PostingDate);
-                end;
+                exit(CalcDate('<CM+1D>', PostingDate));
             "Payment Frequency"::Quarterly:
-                begin
-                    PeriodStart := CalcDate('<-CQ>', PostingDate);
-                    PeriodEnd := CalcDate('<CQ>', PostingDate);
-                end;
+                exit(CalcDate('<CQ+1D>', PostingDate));
             "Payment Frequency"::"Half Year":
-                if Date2DMY(PostingDate, 2) <= 6 then begin
-                    PeriodStart := DMY2Date(1, 1, Date2DMY(PostingDate, 3));
-                    PeriodEnd := DMY2Date(30, 6, Date2DMY(PostingDate, 3));
-                end else begin
-                    PeriodStart := DMY2Date(1, 7, Date2DMY(PostingDate, 3));
-                    PeriodEnd := DMY2Date(31, 12, Date2DMY(PostingDate, 3));
-                end;
+                if Date2DMY(PostingDate, 2) <= 6 then
+                    exit(DMY2Date(1, 7, Date2DMY(PostingDate, 3)))
+                else
+                    exit(CalcDate('<CY+1D>', PostingDate));
             "Payment Frequency"::Annual:
-                begin
-                    PeriodStart := CalcDate('<-CY>', PostingDate);
-                    PeriodEnd := CalcDate('<CY>', PostingDate);
-                end;
-            else
-                exit(false);
+                exit(CalcDate('<CY+1D>', PostingDate));
         end;
 
-        exit(true);
-    end;
-
-    // Makes the period behind a payable due date visible as an Open payment period so it can later be closed
-    procedure RegisterPaymentPeriod(PayableDueDate: Date)
-    var
-        PaymentPeriod: Record "AQD CR Payment Period";
-        PeriodStart: Date;
-        PeriodEnd: Date;
-    begin
-        if PayableDueDate = 0D then
-            exit;
-        if PaymentPeriod.Get("Payment Frequency", PayableDueDate) then
-            exit;
-        if not GetFrequencyPeriod(PayableDueDate - 1, PeriodStart, PeriodEnd) then
-            exit;
-        if PeriodEnd + 1 <> PayableDueDate then
-            exit;
-
-        PaymentPeriod.Init();
-        PaymentPeriod."Payment Frequency" := "Payment Frequency";
-        PaymentPeriod."Commission Payable Date" := PayableDueDate;
-        PaymentPeriod."Starting Date" := PeriodStart;
-        PaymentPeriod."Ending Date" := PeriodEnd;
-        PaymentPeriod.Status := PaymentPeriod.Status::Open;
-        PaymentPeriod.Insert(true);
-    end;
-
-    procedure RegisterPaymentPeriodsFromEntries()
-    var
-        CustomerRebateDetails: Record "AQD Customer Rebate Details";
-        PostedCustRebDetails: Record "AQD Posted Cust Reb Details";
-    begin
-        PostedCustRebDetails.SetCurrentKey("Rebate Program Code", "Commission Payable Date");
-        PostedCustRebDetails.SetLoadFields("Rebate Program Code", "Commission Payable Date");
-        PostedCustRebDetails.SetRange("Rebate Program Code", Code);
-        PostedCustRebDetails.SetFilter("Commission Payable Date", '<>%1', 0D);
-        while PostedCustRebDetails.FindFirst() do begin
-            RegisterPaymentPeriod(PostedCustRebDetails."Commission Payable Date");
-            PostedCustRebDetails.SetFilter("Commission Payable Date", '>%1', PostedCustRebDetails."Commission Payable Date");
-        end;
-
-        CustomerRebateDetails.SetCurrentKey("Rebate Program Code", "Commission Payable Date");
-        CustomerRebateDetails.SetLoadFields("Rebate Program Code", "Commission Payable Date");
-        CustomerRebateDetails.SetRange("Rebate Program Code", Code);
-        CustomerRebateDetails.SetRange(Preview, false);
-        CustomerRebateDetails.SetFilter("Commission Payable Date", '<>%1', 0D);
-        while CustomerRebateDetails.FindFirst() do begin
-            RegisterPaymentPeriod(CustomerRebateDetails."Commission Payable Date");
-            CustomerRebateDetails.SetFilter("Commission Payable Date", '>%1', CustomerRebateDetails."Commission Payable Date");
-        end;
+        exit(PostingDate);
     end;
 
     local procedure UpdateOpenRebateDetailsPayableDueDate()
@@ -391,7 +287,6 @@ table 14302516 "AQD Cust Rebate Program Code"
             repeat
                 CustomerRebateDetails."Commission Payable Date" := CalcPayableDueDate(CustomerRebateDetails."Posting Date");
                 CustomerRebateDetails.Modify(false);
-                RegisterPaymentPeriod(CustomerRebateDetails."Commission Payable Date");
             until CustomerRebateDetails.Next() = 0;
     end;
 

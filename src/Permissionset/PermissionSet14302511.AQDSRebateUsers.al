@@ -184,8 +184,5 @@ permissionset 14302511 "AQD SRebate Users"
         page "AQD Rebate Adjustment Journal" = X,
         tabledata "AQD Tiered Rebate Rates" = RIMD,
         table "AQD Tiered Rebate Rates" = X,
-        page "AQD Tiered Rebate Rates" = X,
-        tabledata "AQD CR Payment Period" = RIM,
-        table "AQD CR Payment Period" = X,
-        page "AQD CR Payment Periods" = X;
+        page "AQD Tiered Rebate Rates" = X;
 }

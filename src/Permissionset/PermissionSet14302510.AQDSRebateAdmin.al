@@ -184,8 +184,5 @@ permissionset 14302510 "AQD SRebate Admin"
         codeunit "AQD Rebate Jnl.-Post" = X,
         tabledata "AQD Tiered Rebate Rates" = RIMD,
         table "AQD Tiered Rebate Rates" = X,
-        page "AQD Tiered Rebate Rates" = X,
-        tabledata "AQD CR Payment Period" = RIMD,
-        table "AQD CR Payment Period" = X,
-        page "AQD CR Payment Periods" = X;
+        page "AQD Tiered Rebate Rates" = X;
 }
