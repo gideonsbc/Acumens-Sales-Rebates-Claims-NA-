@@ -358,6 +358,12 @@ table 14302509 "AQD Acumens CustRbtClaim Setup"
             DataClassification = CustomerContent;
             InitValue = true;
         }
+        field(3010; "Default Pay Cycle Code"; Code[20])
+        {
+            Caption = 'Default Pay Cycle Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD CR Pay Cycle"."Cycle Code";
+        }
     }
     keys
     {

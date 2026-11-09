@@ -396,19 +396,18 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             //     RunObject = page "AQD Rebate Journal Batches";
             //     Image = Journals;
             // }
-
-            action("AQD Payment Journal")
-            {
-                ApplicationArea = All;
-                Caption = 'Payment Journal';
-                RunObject = page "Payment Journal";
-                Image = Journals;
-            }
             action("AQD Purchase Journal")
             {
                 ApplicationArea = All;
                 Caption = 'Purchase Journal';
                 RunObject = page "Purchase Journal";
+                Image = Journals;
+            }
+            action("AQD Payment Journal")
+            {
+                ApplicationArea = All;
+                Caption = 'Payment Journal';
+                RunObject = page "Payment Journal";
                 Image = Journals;
             }
             group(CustomerRebateSetup)
@@ -466,6 +465,14 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     Caption = 'Trade Agreements';
                     RunObject = page "AQD CF Trade Agreements";
                     Image = CodesList;
+                }
+                action("AQD CR Pay Cycles")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Pay Cycles';
+                    RunObject = page "AQD CR Pay Cycles";
+                    Image = AccountingPeriods;
+                    ToolTip = 'View and generate the pay cycle periods that determine the Commission Payable Date.';
                 }
                 action("Customer Rebate Program Codes2")
                 {

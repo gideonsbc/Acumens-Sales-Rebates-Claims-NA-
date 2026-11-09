@@ -122,7 +122,25 @@ table 14302516 "AQD Cust Rebate Program Code"
 
             trigger OnValidate()
             begin
+                if Rec."Payment Frequency" <> Rec."Payment Frequency"::"Defined Pay Cycle" then
+                    Rec."Pay Cycle Code" := '';
+
                 if Rec."Payment Frequency" <> xRec."Payment Frequency" then
+                    UpdateOpenRebateDetailsPayableDueDate();
+            end;
+        }
+        field(66; "Pay Cycle Code"; Code[20])
+        {
+            Caption = 'Pay Cycle Code';
+            DataClassification = CustomerContent;
+            TableRelation = "AQD CR Pay Cycle"."Cycle Code";
+
+            trigger OnValidate()
+            begin
+                if Rec."Pay Cycle Code" <> '' then
+                    Rec.TestField("Payment Frequency", Rec."Payment Frequency"::"Defined Pay Cycle");
+
+                if Rec."Pay Cycle Code" <> xRec."Pay Cycle Code" then
                     UpdateOpenRebateDetailsPayableDueDate();
             end;
         }
@@ -235,8 +253,11 @@ table 14302516 "AQD Cust Rebate Program Code"
         end;
     end;
 
-    // Due for Payment = end of the frequency period that contains the posting date + 1D
+    // Due for Payment = end of the frequency period that contains the posting date + 1D,
+    // or the Commission Payable Date of the pay cycle that contains the posting date
     procedure CalcPayableDueDate(PostingDate: Date): Date
+    var
+        PayCycle: Record "AQD CR Pay Cycle";
     begin
         if PostingDate = 0D then
             exit(0D);
@@ -258,9 +279,30 @@ table 14302516 "AQD Cust Rebate Program Code"
                     exit(CalcDate('<CY+1D>', PostingDate));
             "Payment Frequency"::Annual:
                 exit(CalcDate('<CY+1D>', PostingDate));
+            "Payment Frequency"::"Defined Pay Cycle":
+                exit(PayCycle.GetCommissionPayableDate(GetPayCycleCode(), PostingDate));
         end;
 
         exit(PostingDate);
+    end;
+
+    procedure GetPayCycleCode(): Code[20]
+    begin
+        if "Pay Cycle Code" <> '' then
+            exit("Pay Cycle Code");
+        exit(GetDefaultPayCycleCode());
+    end;
+
+    // Setup default, falling back to BIWEEKLY
+    local procedure GetDefaultPayCycleCode(): Code[20]
+    var
+        RebateSetup: Record "AQD Acumens CustRbtClaim Setup";
+        PayCycle: Record "AQD CR Pay Cycle";
+    begin
+        if RebateSetup.Get() then
+            if RebateSetup."Default Pay Cycle Code" <> '' then
+                exit(RebateSetup."Default Pay Cycle Code");
+        exit(PayCycle.GetDefaultCycleCode());
     end;
 
     local procedure UpdateOpenRebateDetailsPayableDueDate()

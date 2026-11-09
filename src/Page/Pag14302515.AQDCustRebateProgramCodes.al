@@ -130,8 +130,14 @@ page 14302515 "AQD Cust Rebate Program Codes"
                 field("Payment Frequency"; Rec."Payment Frequency")
                 {
                     ApplicationArea = All;
-                    ValuesAllowed = "Now", Bimonthly, Monthly, Quarterly, "Half Year", Annual;
-                    ToolTip = 'Specifies how often commissions for this program are made available for payment. The Commission Payable Date is the end of the period containing the invoice/credit memo posting date plus one day.';
+                    ToolTip = 'Specifies how often commissions for this program are made available for payment. The Commission Payable Date is the end of the period containing the invoice/credit memo posting date plus one day. For Defined Pay Cycle, it is the Commission Payable Date of the pay cycle containing the posting date.';
+                }
+                field("Pay Cycle Code"; Rec."Pay Cycle Code")
+                {
+                    ApplicationArea = All;
+                    Editable = Rec."Payment Frequency" = Rec."Payment Frequency"::"Defined Pay Cycle";
+                    Enabled = Rec."Payment Frequency" = Rec."Payment Frequency"::"Defined Pay Cycle";
+                    ToolTip = 'Specifies the pay cycle used to determine the Commission Payable Date when the Payment Frequency is Defined Pay Cycle.';
                 }
                 field("Posting Type"; Rec."Posting Type")
                 {

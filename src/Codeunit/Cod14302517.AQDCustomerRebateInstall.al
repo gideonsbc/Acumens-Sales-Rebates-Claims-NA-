@@ -18,6 +18,7 @@ codeunit 14302517 "AQD Customer Rebate Install"
         PostedCustRebateDetails: Record "AQD Posted Cust Reb Details";
         CustomerRebateJobQueue: Codeunit "AQD Customer Rebate Job Queue";
         RebateJournalBatch: Record "AQD Rebate Journal Batch";
+        PayCycle: Record "AQD CR Pay Cycle";
     begin
         ModifyRecord := false;
         IF NOT SalesSetup.GET THEN BEGIN
@@ -64,6 +65,8 @@ codeunit 14302517 "AQD Customer Rebate Install"
         CustomerRebateJobQueue.EnsureJobQueueRunning();
 
         RebateJournalBatch.CreateDefaultBatch();
+
+        PayCycle.InitDefaultCycleCode();
 
         // IF NavApp.GetCurrentModuleInfo(NewAppVersion) THEN
         //     IF NewAppVersion.AppVersion = Version.Create(25, 1023, 1, 39) then BEGIN

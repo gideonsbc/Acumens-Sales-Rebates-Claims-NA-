@@ -112,6 +112,12 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                         ApplicationArea = All;
                         Caption = 'Rebate Program Code';
                     }
+                    field("Default Pay Cycle Code"; Rec."Default Pay Cycle Code")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Pay Cycle Code';
+                        ToolTip = 'Specifies the pay cycle used by rebate programs with the Defined Pay Cycle payment frequency, unless the program specifies its own pay cycle code.';
+                    }
                     field("Sales Item Charge No."; Rec."Sales Item Charge No.")
                     {
                         ApplicationArea = All;
@@ -463,6 +469,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
 
     trigger OnOpenPage()
     var
+        PayCycle: Record "AQD CR Pay Cycle";
         SourceCodeRec: Record "Source Code";
         GenJournalTemplate: Record "Gen. Journal Template";
         GenJournalBatch: Record "Gen. Journal Batch";
@@ -561,6 +568,10 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             InitializeDefaultSetups();
             AllowToEdit := FALSE;
         end;
+
+        // Sets BIWEEKLY as the default pay cycle code; reload so the page holds the updated setup
+        PayCycle.InitDefaultCycleCode();
+        Rec.Get();
     end;
 
     local procedure InitializeDefaultSetups()

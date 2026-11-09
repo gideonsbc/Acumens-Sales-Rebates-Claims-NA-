@@ -69,6 +69,11 @@ page 14302555 "AQD CustRebate Details Preview"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Rebate Program Code field.', Comment = '%';
                 }
+                field("Commission Payable Date"; Rec."Commission Payable Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the date the commission becomes due for payment, based on the Payment Frequency of the rebate program.';
+                }
                 field("Rebate Type"; Rec."Rebate Type")
                 {
                     ApplicationArea = All;
