@@ -618,6 +618,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
         BrokerVendor, BrokerVendorNew : Record Vendor;
         PaymentTerms: Record "Payment Terms";
         SingleInstance: Codeunit "AQD CustRbtClaim SngleInstance";
+        PayCycle: Record "AQD CR Pay Cycle";
     begin
         if Confirm(LocalUserConfirmMsg) then begin
             ResetNoSeries();
@@ -1135,45 +1136,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 RoyaltyRebateExpenseGLAccount2 := GLAccount."No.";
             END;
 
-            // GLAccount2.RESET;
-            // GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
-            // GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
-            // GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Expense);
-            // GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Expense);
-            // GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Coupon);
-            // IF GLAccount2.FindLast() THEN
-            //     CouponRebateExpenseGLAccount := GLAccount2."No."
-            // ELSE BEGIN
-            //     LastGLAccountNo := '50439';
-
-            //     ExitLoop := FALSE;
-            //     Counter := 1;
-
-            //     GLAccount2.RESET;
-            //     REPEAT
-            //         IF GLAccount2.GET(LastGLAccountNo) THEN
-            //             LastGLAccountNo := IncStr(LastGLAccountNo)
-            //         ELSE
-            //             ExitLoop := TRUE;
-            //         Counter += 1;
-            //     UNTIL (Counter > 100) OR ExitLoop;
-
-            //     GLAccount.INIT;
-            //     GLAccount."No." := LastGLAccountNo;
-            //     GLAccount.Name := 'Coupon Commission Accrual';
-            //     GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Income Statement";
-            //     GLAccount."Account Category" := GLAccount."Account Category"::Expense;
-            //     GLAccount."Direct Posting" := true;
-            //     GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
-            //     GLAccount."Account Type" := GLAccount."Account Type"::Posting;
-            //     IF TaxGroup.GET('NONTAXABLE') THEN
-            //         GLAccount."Tax Group Code" := 'NONTAXABLE';
-            //     GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Expense;
-            //     GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Coupon;
-            //     GLAccount.INSERT;
-            //     CouponRebateExpenseGLAccount := GLAccount."No.";
-            // END;
-
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
             GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Income Statement");
@@ -1533,86 +1495,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 GLAccount.INSERT;
                 RoyaltyRebatePayableGLAccount2 := GLAccount."No.";
             END;
-
-            // GLAccount2.RESET;
-            // GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
-            // GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
-            // GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
-            // GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Payable);
-            // GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::Coupon);
-            // IF GLAccount2.FindLast() THEN
-            //     CouponRebatePayableGLAccount := GLAccount2."No."
-            // ELSE BEGIN
-            //     LastGLAccountNo := '20169';
-
-            //     ExitLoop := FALSE;
-            //     Counter := 1;
-
-            //     GLAccount2.RESET;
-            //     REPEAT
-            //         IF GLAccount2.GET(LastGLAccountNo) THEN
-            //             LastGLAccountNo := IncStr(LastGLAccountNo)
-            //         ELSE
-            //             ExitLoop := TRUE;
-            //         Counter += 1;
-            //     UNTIL (Counter > 100) OR ExitLoop;
-
-            //     GLAccount.INIT;
-            //     GLAccount."No." := LastGLAccountNo;
-            //     GLAccount.Name := 'Coupon Commission Payable';
-            //     GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Balance Sheet";
-            //     GLAccount."Account Category" := GLAccount."Account Category"::Liabilities;
-            //     GLAccount."Direct Posting" := true;
-            //     GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
-            //     GLAccount."Account Type" := GLAccount."Account Type"::Posting;
-            //     GLAccount.Validate("Account Subcategory Entry No.", 11);
-            //     IF TaxGroup.GET('NONTAXABLE') THEN
-            //         GLAccount."Tax Group Code" := 'NONTAXABLE';
-            //     GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
-            //     GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::Coupon;
-            //     GLAccount.INSERT;
-            //     CouponRebatePayableGLAccount := GLAccount."No.";
-            // END;
-
-            // GLAccount2.RESET;
-            // GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
-            // GLAccount2.SETRANGE("Income/Balance", GLAccount2."Income/Balance"::"Balance Sheet");
-            // GLAccount2.SETRANGE("Account Category", GLAccount2."Account Category"::Liabilities);
-            // GLAccount2.SETRANGE("AQD Cust Rebate G/LAcct Type", GLAccount2."AQD Cust Rebate G/LAcct Type"::Payable);
-            // GLAccount2.SETRANGE("AQD Cust Rebate Acct Group", GLAccount2."AQD Cust Rebate Acct Group"::"Coupon 2");
-            // IF GLAccount2.FindLast() THEN
-            //     CouponRebatePayableGLAccount2 := GLAccount2."No."
-            // ELSE BEGIN
-            //     LastGLAccountNo := '20170';
-
-            //     ExitLoop := FALSE;
-            //     Counter := 1;
-
-            //     GLAccount2.RESET;
-            //     REPEAT
-            //         IF GLAccount2.GET(LastGLAccountNo) THEN
-            //             LastGLAccountNo := IncStr(LastGLAccountNo)
-            //         ELSE
-            //             ExitLoop := TRUE;
-            //         Counter += 1;
-            //     UNTIL (Counter > 100) OR ExitLoop;
-
-            //     GLAccount.INIT;
-            //     GLAccount."No." := LastGLAccountNo;
-            //     GLAccount.Name := 'Coupon Accruals';
-            //     GLAccount."Income/Balance" := GLAccount."Income/Balance"::"Balance Sheet";
-            //     GLAccount."Account Category" := GLAccount."Account Category"::Liabilities;
-            //     GLAccount."Direct Posting" := true;
-            //     GLAccount."Debit/Credit" := GLAccount."Debit/Credit"::Both;
-            //     GLAccount."Account Type" := GLAccount."Account Type"::Posting;
-            //     GLAccount.Validate("Account Subcategory Entry No.", 11);
-            //     IF TaxGroup.GET('NONTAXABLE') THEN
-            //         GLAccount."Tax Group Code" := 'NONTAXABLE';
-            //     GLAccount."AQD Cust Rebate G/LAcct Type" := GLAccount."AQD Cust Rebate G/LAcct Type"::Payable;
-            //     GLAccount."AQD Cust Rebate Acct Group" := GLAccount."AQD Cust Rebate Acct Group"::"Coupon 2";
-            //     GLAccount.INSERT;
-            //     CouponRebatePayableGLAccount2 := GLAccount."No.";
-            // END;
 
             GLAccount2.RESET;
             GLAccount2.SETRANGE("Account Type", GLAccount2."Account Type"::Posting);
@@ -1994,7 +1876,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 ResourceRec.Validate("Gen. Prod. Posting Group", 'DAMAGE');
                 ResourceRec.Insert(true);
                 //ResourceRec.Validate("Base Unit of Measure", 'HOUR');
-                ResourceRec.Modify(true);
+                //ResourceRec.Modify(true);
             end;
 
             if not ResourceRec.Get('DISTRIBUTION') then begin
@@ -2005,7 +1887,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 ResourceRec.Validate("Gen. Prod. Posting Group", 'DISTRIBUTION');
                 ResourceRec.Insert(true);
                 //ResourceRec.Validate("Base Unit of Measure", 'HOUR');
-                ResourceRec.Modify(true);
+                //ResourceRec.Modify(true);
             end;
 
             if not ResourceRec.Get('ADVERTISING') then begin
@@ -2016,7 +1898,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 ResourceRec.Validate("Gen. Prod. Posting Group", 'ADVERTISING');
                 ResourceRec.Insert(true);
                 //ResourceRec.Validate("Base Unit of Measure", 'HOUR');
-                ResourceRec.Modify(true);
+                //ResourceRec.Modify(true);
             end;
 
             //Create Vendors
@@ -2116,18 +1998,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 RoyaltyVendor2.Insert(true);
                 RoyaltyVendorCode2 := RoyaltyVendor2."No.";
             end;
-
-            // CouponVendor.Reset();
-            // CouponVendor.SetFilter(Name, '@*Coupon*');
-            // if CouponVendor.FindFirst() then
-            //     CouponVendorCode := CouponVendor."No."
-            // else begin
-            //     CouponVendor2.Init();
-            //     CouponVendor2.Validate("No.", NoSeries.GetNextNo(PurchSetup."Vendor Nos."));
-            //     CouponVendor2.Validate(Name, 'Coupon Commission Accrual');
-            //     CouponVendor2.Insert(true);
-            //     CouponVendorCode := CouponVendor2."No.";
-            // end;
 
             CanadaVendor.Reset();
             CanadaVendor.SetFilter(Name, '@*Canada Cash Discount Accrual*');
@@ -2321,7 +2191,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 VendorRec.Modify(true);
             end;
 
-            //Rebate Program Codes
+            //Program Codes
             IF NOT CustomerRebateProgramCode.GET('ALL-UNIT') THEN BEGIN
                 CustomerRebateProgramCode.INIT;
                 CustomerRebateProgramCode.Code := 'ALL-UNIT';
@@ -2576,6 +2446,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '10000';
                 CustomerRebateProgramCode."Default Setup" := true;
+                CustomerRebateProgramCode."Payment Frequency" := CustomerRebateProgramCode."Payment Frequency"::Monthly;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2593,6 +2464,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '10000';
                 CustomerRebateProgramCode."Default Setup" := true;
+                CustomerRebateProgramCode."Payment Frequency" := CustomerRebateProgramCode."Payment Frequency"::Bimonthly;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2610,6 +2482,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;
+                CustomerRebateProgramCode."Payment Frequency" := CustomerRebateProgramCode."Payment Frequency"::"Half Year";
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2627,6 +2500,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;
+                CustomerRebateProgramCode."Payment Frequency" := CustomerRebateProgramCode."Payment Frequency"::Quarterly;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2644,6 +2518,8 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
+                CustomerRebateProgramCode."Payment Frequency" := CustomerRebateProgramCode."Payment Frequency"::Biweekly;
+                CustomerRebateProgramCode."Pay Cycle Code" := PayCycle.GetDefaultCycleCode();
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
@@ -2661,31 +2537,14 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
                 CustomerRebateProgramCode."AQD Pay-to Vendor No." := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
+                CustomerRebateProgramCode."Payment Frequency" := CustomerRebateProgramCode."Payment Frequency"::Annual;
                 CustomerRebateProgramCode.INSERT(TRUE);
             END;
 
-            // IF NOT CustomerRebateProgramCode.GET('BROKERN') THEN BEGIN
-            //     CustomerRebateProgramCode.INIT;
-            //     CustomerRebateProgramCode.Code := 'BROKERN';
-            //     CustomerRebateProgramCode.Description := 'Full Broker Commisison for New Product';
-            //     CustomerRebateProgramCode."Customer Rebate Posting Type" := CustomerRebateProgramCode."Customer Rebate Posting Type"::Expense;
-            //     CustomerRebateProgramCode."Customer Default Rebate Type" := CustomerRebateProgramCode."Customer Default Rebate Type"::Percentage;
-            //     CustomerRebateProgramCode."Customer Def Rebate Per Unit" := 0;
-            //     CustomerRebateProgramCode."Customer Default Rebate %" := 4;
-            //     CustomerRebateProgramCode."Payee Type" := CustomerRebateProgramCode."Payee Type"::"Vendor Commission";
-            //     CustomerRebateProgramCode."Payee No." := BrokerVendorCodeNew;
-            //     CustomerRebateProgramCode."Rebate Expense Type" := CustomerRebateProgramCode."Rebate Expense Type"::"Rebate Accrual";
-            //     CustomerRebateProgramCode."Rebate Expense AC" := BrokerRebateExpenseGLAccount;
-            //     //CustomerRebateProgramCode."SO Rebate Program Filter" := '';
-            //     //CustomerRebateProgramCode."Specific Sales New" := CustomerRebateProgramCode."Specific Sales New"::"Rebate Program";
-            //     CustomerRebateProgramCode.INSERT(TRUE);
-            // END;
-
-            //Rebate Rates
+            //Rates
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -2722,7 +2581,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -2761,7 +2619,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -2798,7 +2655,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -2835,7 +2691,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -2872,7 +2727,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -2911,7 +2765,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -2950,7 +2803,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Volume Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETRANGE("Customer No. Filter", '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -2989,7 +2841,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -3019,7 +2870,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -3049,7 +2899,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -3079,7 +2928,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -3109,7 +2957,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -3139,7 +2986,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("No. Filter", '');
@@ -3169,7 +3015,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3198,7 +3043,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3227,7 +3071,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Payee Type", CustomerSalesRebateSetup."Payee Type"::"Vendor Commission");
-            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3256,7 +3099,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3285,7 +3127,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            //CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3314,7 +3155,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             CustomerSalesRebateSetup.RESET;
             CustomerSalesRebateSetup.SETRANGE("Rate Type", CustomerSalesRebateSetup."Rate Type"::"Simple Rebate");
             CustomerSalesRebateSetup.SETRANGE("Customer Type", CustomerSalesRebateSetup."Customer Type"::Customer);
-            ////CustomerSalesRebateSetup.SETFILTER("Customer No. Filter", '<>%1', '');
             CustomerSalesRebateSetup.SETRANGE("Territory Code", '');
             CustomerSalesRebateSetup.SETRANGE("Line Type", CustomerSalesRebateSetup."Line Type"::Item);
             CustomerSalesRebateSetup.SETRANGE("Variant Code", '');
@@ -3364,7 +3204,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
                 CustomerSalesRebateSetup."Customer No. Filter" := '10000';
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -3396,7 +3235,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := '10000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
@@ -3426,7 +3264,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
                 CustomerSalesRebateSetup."Customer No. Filter" := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -3458,7 +3295,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := '20000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
@@ -3488,7 +3324,6 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := BrokerVendorCode;
                 CustomerSalesRebateSetup."Customer No. Filter" := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
@@ -3520,16 +3355,35 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 CustomerSalesRebateSetup."Unit of Measure Code" := '';
                 CustomerSalesRebateSetup."Minimum Quantity" := 0;
                 CustomerSalesRebateSetup."Minimum Amount" := 0;
-                //CustomerSalesRebateSetup."Rate Priority" := CustomerSalesRebateSetup."Rate Priority"::"Level 0";
                 CustomerSalesRebateSetup."Customer No. Filter" := '30000';
                 CustomerRebateProgramCode."Default Setup" := true;
                 CustomerSalesRebateSetup.Insert();
             END;
 
+            InitializeDefaultPayCycles();
+
             OnAfterInitializeCustomerRebateDefaultSetups(Rec);
 
         END;
     END;
+
+    // Test data: 10 years of BIWEEKLY cycles from the first Monday of January of the current year, paid End Date + 5D
+    local procedure InitializeDefaultPayCycles()
+    var
+        PayCycle: Record "AQD CR Pay Cycle";
+        CycleCode: Code[20];
+        StartDate: Date;
+        EndDate: Date;
+    begin
+        CycleCode := PayCycle.GetDefaultCycleCode();
+        PayCycle.SetRange("Cycle Code", CycleCode);
+        if not PayCycle.IsEmpty() then
+            exit;
+
+        StartDate := CalcDate('<-1D+WD1>', DMY2Date(1, 1, Date2DMY(Today(), 3)));
+        EndDate := PayCycle.CalcEndDate(StartDate);
+        PayCycle.GenerateCycles(CycleCode, StartDate, PayCycle.SuggestPayDate(CycleCode, EndDate), 260);
+    end;
 
     local procedure ResetNoSeries()
     var

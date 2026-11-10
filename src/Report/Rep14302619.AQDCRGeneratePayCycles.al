@@ -94,10 +94,7 @@ report 14302619 "AQD CR Generate Pay Cycles"
     trigger OnPreReport()
     var
         PayCycle: Record "AQD CR Pay Cycle";
-        PeriodStart: Date;
-        PeriodEnd: Date;
-        PeriodPayDate: Date;
-        i: Integer;
+        LastEndDate: Date;
         PayDateBeforeStartErr: Label '%1 must not be before %2.', Comment = '%1 = Pay Date, %2 = Start Date';
         CreatedMsg: Label '%1 %2 pay cycles were created, from %3 to %4.', Comment = '%1 = No. of Periods, %2 = Cycle Code, %3 = First Start Date, %4 = Last End Date';
     begin
@@ -112,24 +109,10 @@ report 14302619 "AQD CR Generate Pay Cycles"
         if PayDate < StartDate then
             Error(PayDateBeforeStartErr, PayDateLbl, StartDateLbl);
 
-        PeriodStart := StartDate;
-        PeriodPayDate := PayDate;
-        for i := 1 to NoOfPeriods do begin
-            PeriodEnd := PayCycle.CalcEndDate(PeriodStart);
-
-            PayCycle.Init();
-            PayCycle."Cycle Code" := CycleCode;
-            PayCycle."Start Date" := PeriodStart;
-            PayCycle."End Date" := PeriodEnd;
-            PayCycle."Commission Payable Date" := PeriodPayDate;
-            PayCycle.Insert(true);
-
-            PeriodStart := PeriodEnd + 1;
-            PeriodPayDate := CalcDate(PayCycle.GetPeriodLength(), PeriodPayDate);
-        end;
+        LastEndDate := PayCycle.GenerateCycles(CycleCode, StartDate, PayDate, NoOfPeriods);
 
         if GuiAllowed() then
-            Message(CreatedMsg, NoOfPeriods, CycleCode, StartDate, PeriodEnd);
+            Message(CreatedMsg, NoOfPeriods, CycleCode, StartDate, LastEndDate);
     end;
 
     local procedure InitCycleCode()

@@ -127,6 +127,33 @@ table 14302545 "AQD CR Pay Cycle"
         exit(CalcDate(PayDateOffsetTxt, EndDate));
     end;
 
+    // Inserts consecutive cycles from StartDate; each Commission Payable Date is one period after the previous one. Returns the last End Date.
+    procedure GenerateCycles(CycleCode: Code[20]; StartDate: Date; PayDate: Date; NoOfPeriods: Integer): Date
+    var
+        PayCycle: Record "AQD CR Pay Cycle";
+        PeriodStart: Date;
+        PeriodEnd: Date;
+        PeriodPayDate: Date;
+        i: Integer;
+    begin
+        PeriodStart := StartDate;
+        PeriodPayDate := PayDate;
+        for i := 1 to NoOfPeriods do begin
+            PeriodEnd := CalcEndDate(PeriodStart);
+
+            PayCycle.Init();
+            PayCycle."Cycle Code" := CycleCode;
+            PayCycle."Start Date" := PeriodStart;
+            PayCycle."End Date" := PeriodEnd;
+            PayCycle."Commission Payable Date" := PeriodPayDate;
+            PayCycle.Insert(true);
+
+            PeriodStart := PeriodEnd + 1;
+            PeriodPayDate := CalcDate(PeriodLengthTxt, PeriodPayDate);
+        end;
+        exit(PeriodEnd);
+    end;
+
     procedure GetDefaultCycleCode(): Code[20]
     begin
         exit(DefaultCycleCodeTxt);
