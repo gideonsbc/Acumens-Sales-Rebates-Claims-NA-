@@ -122,7 +122,7 @@ table 14302516 "AQD Cust Rebate Program Code"
 
             trigger OnValidate()
             begin
-                if Rec."Payment Frequency" <> Rec."Payment Frequency"::"Defined Pay Cycle" then
+                if Rec."Payment Frequency" <> Rec."Payment Frequency"::Biweekly then
                     Rec."Pay Cycle Code" := '';
 
                 if Rec."Payment Frequency" <> xRec."Payment Frequency" then
@@ -138,7 +138,7 @@ table 14302516 "AQD Cust Rebate Program Code"
             trigger OnValidate()
             begin
                 if Rec."Pay Cycle Code" <> '' then
-                    Rec.TestField("Payment Frequency", Rec."Payment Frequency"::"Defined Pay Cycle");
+                    Rec.TestField("Payment Frequency", Rec."Payment Frequency"::Biweekly);
 
                 if Rec."Pay Cycle Code" <> xRec."Pay Cycle Code" then
                     UpdateOpenRebateDetailsPayableDueDate();
@@ -279,7 +279,7 @@ table 14302516 "AQD Cust Rebate Program Code"
                     exit(CalcDate('<CY+1D>', PostingDate));
             "Payment Frequency"::Annual:
                 exit(CalcDate('<CY+1D>', PostingDate));
-            "Payment Frequency"::"Defined Pay Cycle":
+            "Payment Frequency"::Biweekly:
                 exit(PayCycle.GetCommissionPayableDate(GetPayCycleCode(), PostingDate));
         end;
 

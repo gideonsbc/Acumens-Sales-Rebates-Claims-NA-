@@ -135,8 +135,8 @@ page 14302515 "AQD Cust Rebate Program Codes"
                 field("Pay Cycle Code"; Rec."Pay Cycle Code")
                 {
                     ApplicationArea = All;
-                    Editable = Rec."Payment Frequency" = Rec."Payment Frequency"::"Defined Pay Cycle";
-                    Enabled = Rec."Payment Frequency" = Rec."Payment Frequency"::"Defined Pay Cycle";
+                    Editable = Rec."Payment Frequency" = Rec."Payment Frequency"::Biweekly;
+                    Enabled = Rec."Payment Frequency" = Rec."Payment Frequency"::Biweekly;
                     ToolTip = 'Specifies the pay cycle used to determine the Commission Payable Date when the Payment Frequency is Defined Pay Cycle.';
                 }
                 field("Posting Type"; Rec."Posting Type")

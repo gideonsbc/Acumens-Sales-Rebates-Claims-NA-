@@ -25,8 +25,8 @@ enum 14302542 "AQD CR Payment Frequency"
     {
         Caption = 'Annual';
     }
-    value(6; "Defined Pay Cycle")
+    value(6; Biweekly)
     {
-        Caption = 'Defined Pay Cycle';
+        Caption = 'Biweekly';
     }
 }
