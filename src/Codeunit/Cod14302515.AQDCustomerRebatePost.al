@@ -701,6 +701,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         IF PostedCustomerRebateLine."Customer Rebate Amount" <> 0 THEN Begin
             TmpCrMemoBuffer.RESET;
             TmpCrMemoBuffer.SetRange("G/L Account", TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
+            TmpCrMemoBuffer.SetRange("Gen. Prod. Posting Group", PostedCustomerRebateLine."Currency Code");
             IF NOT TmpCrMemoBuffer.FindFirst() THEN begin
 
                 //Create Sales Credit Memo Header
@@ -715,6 +716,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                 SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
                 SalesCredirMemo."Posting Description" := PostedCustomerRebateHeader."Posting Description";
                 SalesCredirMemo.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
+                if SalesCredirMemo."Currency Code" <> PostedCustomerRebateLine."Currency Code" then
+                    SalesCredirMemo.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                 OnBeforeInitRebatePaymentMethodCodeCustomer(SalesCredirMemo, PostedCustomerRebateLine, TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
                 SalesCredirMemo."External Document No." := PostedCustomerRebateHeader."No.";
                 SalesCredirMemo."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
@@ -728,6 +731,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                 TmpCrMemoBuffer."Group ID" := GlobalGroupID;
                 //BillTo Customer No.
                 TmpCrMemoBuffer."G/L Account" := TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group";
+                //Currency Code
+                TmpCrMemoBuffer."Gen. Prod. Posting Group" := PostedCustomerRebateLine."Currency Code";
                 //Credit Memo No
                 TmpCrMemoBuffer."Job No." := SalesCredirMemo."No.";
                 //Document Type
@@ -1127,6 +1132,7 @@ codeunit 14302515 "AQD Customer Rebate Post"
         IF PostedCustomerRebateLine."Customer Rebate Amount" <> 0 THEN Begin
             TmpInovoiceBuffer.RESET;
             TmpInovoiceBuffer.SetRange("G/L Account", TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
+            TmpInovoiceBuffer.SetRange("Gen. Prod. Posting Group", PostedCustomerRebateLine."Currency Code");
             IF NOT TmpInovoiceBuffer.FindFirst() THEN begin
 
                 //Create Sales Invoice Header
@@ -1142,6 +1148,8 @@ codeunit 14302515 "AQD Customer Rebate Post"
                 SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
                 SalesInvoice."Posting Description" := PostedCustomerRebateHeader."Posting Description";
                 SalesInvoice.Validate("Posting Date", PostedCustomerRebateHeader."Posting Date");
+                if SalesInvoice."Currency Code" <> PostedCustomerRebateLine."Currency Code" then
+                    SalesInvoice.Validate("Currency Code", PostedCustomerRebateLine."Currency Code");
                 OnBeforeInitRebatePaymentMethodCodeCustomer(SalesInvoice, PostedCustomerRebateLine, TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group");
                 SalesInvoice."External Document No." := PostedCustomerRebateHeader."No.";
                 SalesInvoice."AQD Customer Rebate No" := PostedCustomerRebateHeader."No.";
@@ -1155,9 +1163,11 @@ codeunit 14302515 "AQD Customer Rebate Post"
                 //"Dimension Set ID" 	- Sales Document Typ
                 //"Job No."		        - Sales Order No.
                 TmpInovoiceBuffer.INIT;
-                TmpInovoiceBuffer."G/L Account" := GlobalGroupID;
+                TmpInovoiceBuffer."Group ID" := GlobalGroupID;
                 // Bill-To CCustomer No.
                 TmpInovoiceBuffer."G/L Account" := TmpPostCustomerRebateByBillTo."Gen. Bus. Posting Group";
+                // Currency Code
+                TmpInovoiceBuffer."Gen. Prod. Posting Group" := PostedCustomerRebateLine."Currency Code";
                 // Document Type
                 TmpInovoiceBuffer."Dimension Set ID" := SalesInvoice."Document Type".AsInteger();
                 // Document No.

@@ -12,7 +12,7 @@ table 14302511 "AQD Customer Rebate Cues"
         field(20; "Rebate Documents"; Integer)
         {
             Caption = 'Rebate Document';
-            CalcFormula = count("AQD Customer Rebate Header" where("Salesperson Code" = field("Salesperson Code Filter"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), "Territory Code" = field("State Filter")));
+            CalcFormula = count("AQD Customer Rebate Header" where("Salesperson Code" = field("Salesperson Code Filter"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), "Territory Code" = field("State Filter"), Preview = const(false)));
             FieldClass = FlowField;
             Editable = false;
         }

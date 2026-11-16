@@ -2,6 +2,8 @@ table 14302523 "AQD Rebate Journal Line"
 {
     Caption = 'Rebate Journal Line';
     DataClassification = CustomerContent;
+    DrillDownPageId = "AQD Rebate Journal";
+    LookupPageId = "AQD Rebate Journal";
 
     fields
     {

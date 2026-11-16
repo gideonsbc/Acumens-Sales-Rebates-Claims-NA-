@@ -193,6 +193,11 @@ page 14302644 "AQD Rebate Journal"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the quantity the rebate is based on.';
                 }
+                field("Currency Code"; Rec."Currency Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the currency of the rebate.';
+                }
                 field("Unit Price"; Rec."Unit Price")
                 {
                     ApplicationArea = All;
@@ -245,12 +250,6 @@ page 14302644 "AQD Rebate Journal"
                     ApplicationArea = All;
                     Style = Strong;
                     ToolTip = 'Specifies the rebate amount to post. The amount is posted as entered; no rebate calculation is performed.';
-                }
-                field("Currency Code"; Rec."Currency Code")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the currency of the rebate.';
-                    Visible = false;
                 }
                 field("Applies-to Doc. Type"; Rec."Applies-to Doc. Type")
                 {
