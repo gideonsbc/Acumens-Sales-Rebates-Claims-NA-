@@ -57,13 +57,6 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 Image = ItemCosts;
                 RunObject = Page "Item Charges";
             }
-            // action("Fixed Assets")
-            // {
-            //     Caption = 'Fixed Assets';
-            //     ApplicationArea = All;
-            //     Image = FixedAssets;
-            //     RunObject = Page "Fixed Asset List";
-            // }
             action(Customers)
             {
                 Caption = 'Customers';
@@ -85,20 +78,6 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 Image = Employee;
                 RunObject = Page "Employee List";
             }
-            // action(AQDCustRbtIncludeCustomerLocations)
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Include Customer Locations';
-            //     Image = Customer;
-            //     RunObject = Page "AQD Cust Rbt Include Cust Loc";
-            // }
-            // action(AQDCustRbtExcludeCustomerLocations)
-            // {
-            //     Caption = 'Exclude Customer Locations';
-            //     ApplicationArea = All;
-            //     Image = Customer;
-            //     RunObject = Page "AQD Cust Rbt Exclude Cust Loc";
-            // }
             action("Customer Rebate Program Codes")
             {
                 ApplicationArea = All;
@@ -119,13 +98,6 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 Image = CampaignEntries;
                 RunObject = Page "AQD Rebate Customer Categories";
             }
-            // action("AQD Rebate Cust Type Eligib")
-            // {
-            //     Caption = 'Rebate Customer Type Eligibility';
-            //     ApplicationArea = All;
-            //     Image = CampaignEntries;
-            //     RunObject = Page "AQD Rebate Cust Type Eligib";
-            // }
             action(ClaimProgramCodes)
             {
                 Caption = 'Claim Program Codes';
@@ -284,37 +256,6 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 Image = CalculateSalesTax;
                 RunObject = Report "AQD Create CustPriceMatchClaim";
             }
-            group(Journals)
-            {
-                // action("Customer Rebate Journal")
-                // {
-                //     ApplicationArea = All;
-                //     Caption = 'Sales Rebate Journal';
-                //     Image = ConsumptionJournal;
-                //     RunObject = Page "AQD Customer Rebate Journal";
-                // }
-                // action("Rebate Purchase Journal")
-                // {
-                //     ApplicationArea = All;
-                //     Caption = 'Rebate Purchase Journal';
-                //     Image = Purchase;
-                //     RunObject = Page "AQD Rebate Purch. Journal";
-                // }
-                // action("Rebate Payment Journal")
-                // {
-                //     ApplicationArea = All;
-                //     Caption = 'Rebate Payment Journal';
-                //     Image = PaymentJournal;
-                //     RunObject = Page "AQD Rebate Payment Journal";
-                // }
-                // action("Rebate Sales Journal")
-                // {
-                //     ApplicationArea = All;
-                //     Caption = 'Rebate Sales Journal';
-                //     Image = Sales;
-                //     RunObject = Page "AQD Rebate Sales Journal";
-                // }
-            }
             group(Reports)
             {
                 Image = Report;
@@ -389,13 +330,6 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 RunObject = page "AQD Rebate Journal";
                 Image = Journals;
             }
-            // action("AQD Rebate Journal Batches")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Rebate Journal Batches';
-            //     RunObject = page "AQD Rebate Journal Batches";
-            //     Image = Journals;
-            // }
             action("AQD Purchase Journal")
             {
                 ApplicationArea = All;

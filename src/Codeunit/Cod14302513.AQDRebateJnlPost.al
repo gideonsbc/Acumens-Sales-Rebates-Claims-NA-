@@ -53,9 +53,6 @@ codeunit 14302513 "AQD Rebate Jnl.-Post"
         exit(PostedRebateNos);
     end;
 
-    // Posting entry point for calculated Sales Rebate Documents (document page, auto process, batch posting):
-    // the document is sent to the Rebate Journal and its journal lines are posted straight away.
-    // Manual journal lines in the same batch are not touched; they are posted from the Rebate Journal page.
     procedure SendToJournalAndPost(var CustomerRebateHeader: Record "AQD Customer Rebate Header")
     var
         RebateJournalBatch: Record "AQD Rebate Journal Batch";
