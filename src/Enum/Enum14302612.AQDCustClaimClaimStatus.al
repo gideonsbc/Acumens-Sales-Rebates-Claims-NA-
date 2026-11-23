@@ -1,5 +1,8 @@
 enum 14302612 "AQD Cust Claim Claim Status"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     Extensible = true;
     value(0; " ")
     {

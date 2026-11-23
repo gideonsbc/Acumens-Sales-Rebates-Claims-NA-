@@ -1,11 +1,14 @@
 page 14302631 "AQD Claim Service Codes"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     ApplicationArea = All;
     DataCaptionFields = "Service Code", Description;
     Editable = true;
     PageType = List;
     SourceTable = "AQD Claim Service Codes";
-    UsageCategory = Lists;
+    UsageCategory = None;
     Caption = 'Claim Service Codes';
 
     layout

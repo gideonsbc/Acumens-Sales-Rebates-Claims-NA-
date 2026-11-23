@@ -25,6 +25,9 @@ table 14302511 "AQD Customer Rebate Cues"
         }
         field(30; "Full Price Claims - Created"; Integer)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Created';
             CalcFormula = count("AQD Customer Claim Header" Where("Claim Type" = const("Full Price"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Created)));
             FieldClass = FlowField;
@@ -32,6 +35,9 @@ table 14302511 "AQD Customer Rebate Cues"
         }
         field(31; "Full Price Claims - Submitted"; Integer)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Submitted';
             CalcFormula = count("AQD Customer Claim Header" Where("Claim Type" = const("Full Price"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Submitted)));
             FieldClass = FlowField;
@@ -39,6 +45,9 @@ table 14302511 "AQD Customer Rebate Cues"
         }
         field(32; "Full Price Claims - Approved"; Integer)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Approved';
             CalcFormula = count("AQD Customer Claim Header" where("Claim Type" = const("Full Price"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Approved)));
             FieldClass = FlowField;
@@ -46,6 +55,9 @@ table 14302511 "AQD Customer Rebate Cues"
         }
         field(33; "Full Price Claims - Completed"; Integer)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Completed';
             CalcFormula = count("AQD Customer Claim Header" where("Claim Type" = const("Full Price"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const("Credit Posted")));
             FieldClass = FlowField;
@@ -53,6 +65,9 @@ table 14302511 "AQD Customer Rebate Cues"
         }
         field(40; "Price Match Claims - Created"; Integer)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Created';
             CalcFormula = count("AQD Customer Claim Header" Where("Claim Type" = const("Price Match"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Created)));
             FieldClass = FlowField;
@@ -60,6 +75,9 @@ table 14302511 "AQD Customer Rebate Cues"
         }
         field(41; "Price Match Claims - Submitted"; Integer)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Submitted';
             CalcFormula = count("AQD Customer Claim Header" Where("Claim Type" = const("Price Match"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Submitted)));
             FieldClass = FlowField;
@@ -67,6 +85,9 @@ table 14302511 "AQD Customer Rebate Cues"
         }
         field(42; "Price Match Claims - Approved"; Integer)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Approved';
             CalcFormula = count("AQD Customer Claim Header" where("Claim Type" = const("Price Match"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const(Approved)));
             FieldClass = FlowField;
@@ -74,6 +95,9 @@ table 14302511 "AQD Customer Rebate Cues"
         }
         field(43; "Price Match Claims - Completed"; Integer)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Completed';
             CalcFormula = count("AQD Customer Claim Header" where("Claim Type" = const("Price Match"), "Shortcut Dimension 1 Code" = field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = field("Global Dimension 2 Filter"), "Location Code" = field("Location Filter"), Status = const("Credit Posted")));
             FieldClass = FlowField;

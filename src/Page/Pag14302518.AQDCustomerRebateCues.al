@@ -27,6 +27,10 @@ page 14302518 "AQD Customer Rebate Cues"
             }
             cuegroup("Full Price Claims")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 Caption = 'Full Price Claim';
                 field("Full Price Claims - Created"; Rec."Full Price Claims - Created")
                 {
@@ -51,6 +55,10 @@ page 14302518 "AQD Customer Rebate Cues"
             }
             cuegroup("Price Match Claims")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 Caption = 'Price Match Claim';
                 field("Price Match Claims - Created"; Rec."Price Match Claims - Created")
                 {

@@ -13,7 +13,7 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Sales Rebates & Claims';
+                Caption = 'Acumens Sales Rebates';
                 Group(AQDCustomerRebate)
                 {
                     Caption = 'Sales Rebate';
@@ -66,6 +66,10 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
                 }
                 Group(AQDCustomerClaim)
                 {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
                     Caption = 'Sales Rebate';
                     field("AQD CustClaim Sales Order No."; Rec."AQD CustClaim Sales Order No.")
                     {
@@ -122,6 +126,7 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
         SetPriceMatchFieldsvisibilityOnLines();
     end;
 
+    [Obsolete('The Claims functionality has been discontinued and will be removed in a future release.', 'Deprecated in v25.1023.1.45')]
     procedure SetPriceMatchFieldsvisibilityOnLines()
     begin
         CurrPage.SalesLines.Page.SetPriceMatchFieldsvisibility(Rec."AQD CustClaim Claim Type" = Rec."AQD CustClaim Claim Type"::"Price Match");

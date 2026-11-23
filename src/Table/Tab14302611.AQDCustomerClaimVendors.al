@@ -1,5 +1,8 @@
 table 14302611 "AQD Customer Claim Vendors"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     Caption = 'Claim Vendors';
     DataClassification = CustomerContent;
     LookupPageID = "AQD Customer Claim Vendors";

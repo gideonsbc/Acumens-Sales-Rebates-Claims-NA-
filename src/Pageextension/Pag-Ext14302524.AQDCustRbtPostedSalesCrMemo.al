@@ -6,7 +6,7 @@ pageextension 14302524 "AQD CustRbt Posted SalesCrMemo" extends "Posted Sales Cr
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Sales Rebates & Claims';
+                Caption = 'Acumens Sales Rebates';
                 Editable = false;
 
                 field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
@@ -63,7 +63,7 @@ pageextension 14302524 "AQD CustRbt Posted SalesCrMemo" extends "Posted Sales Cr
         {
             group("AQD Acumens Claims & Rebates")
             {
-                Caption = 'Acumens Claims & Rebates';
+                Caption = 'Acumens Sales Rebates';
                 actionref("AQD DoNotPayRebate_AER"; "AQD DoNotPayRebate") { }
                 //actionref("AQD UpdateRebate_AER"; "AQD Update Rebate") { }
             }

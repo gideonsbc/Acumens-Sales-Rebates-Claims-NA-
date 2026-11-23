@@ -22,7 +22,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             EXIT;
 
         Rec."AQD Customer Rebate Enabled" := RebateSetup."G/L Account Rebate Enabled";
-        Rec."AQD Customer Claim Enabled" := RebateSetup."G/L Account Claim Enabled";
+        //Rec."AQD Customer Claim Enabled" := RebateSetup."G/L Account Claim Enabled";
     end;
 
     [EventSubscriber(ObjectType::Table, Database::Item, 'OnBeforeInsertEvent', '', true, false)]
@@ -37,7 +37,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             EXIT;
 
         Rec."AQD Customer Rebate Enabled" := RebateSetup."Item Rebate Enabled";
-        Rec."AQD Customer Claim Enabled" := RebateSetup."Item Claim Enabled";
+        //Rec."AQD Customer Claim Enabled" := RebateSetup."Item Claim Enabled";
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterInitRecord, '', FALSE, FALSE)]
@@ -48,7 +48,17 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, "Bill-to Customer No.", FALSE, FALSE)]
     local procedure Tab36_SalesHeader_BillToCustomerNo_OnAfterValidate(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
+    var
+        BillToCustomer: Record Customer;
     begin
+        // Sales Rebate Category assignment, moved here from the obsolete Claims codeunit
+        // "AQD Cust Claim Event And Func" (Tab36_SalesHeader_BillToCustomerNo_OnAfterValidate).
+        IF NOT Rec.ISTEMPORARY THEN
+            IF RebateSetup.GET() THEN
+                IF Rec."Bill-to Customer No." <> xRec."Bill-to Customer No." THEN
+                    IF BillToCustomer.GET(Rec."Bill-to Customer No.") THEN
+                        Rec."AQD Cust Rebate Category" := BillToCustomer."AQD Cust Rebate Category";
+
         //  IF Customer.GET(Rec."Bill-to Customer No.") THEN BEGIN
         //     CASE Customer."AQD CustRbt Calculation Date" OF
         //         Customer."AQD CustRbt Calculation Date"::"Rebate Order Date":
@@ -127,7 +137,7 @@ codeunit 14302512 "AQD CustRbtMgt EventsFunctions"
             EXIT;
 
         Rec."AQD Customer Rebate Enabled" := RebateSetup."Resource Rebate Enabled";
-        Rec."AQD Customer Claim Enabled" := RebateSetup."Resource Rebate Enabled";
+        //Rec."AQD Customer Claim Enabled" := RebateSetup."Resource Rebate Enabled";
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::GenJnlManagement, 'OnBeforeLookupName', '', true, false)]

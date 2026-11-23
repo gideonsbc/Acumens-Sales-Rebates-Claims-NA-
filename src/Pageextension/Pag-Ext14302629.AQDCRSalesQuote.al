@@ -6,7 +6,7 @@ pageextension 14302629 "AQD CR Sales Quote" extends "Sales Quote"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Sales Rebates & Claims';
+                Caption = 'Acumens Sales Rebates';
 
                 Group("AQD AcumensCustomerRebate")
                 {

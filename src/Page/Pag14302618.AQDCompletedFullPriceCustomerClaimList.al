@@ -1,5 +1,8 @@
 page 14302618 AQDCmpltedFullPriceCustClmList
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     ApplicationArea = All;
     Caption = 'Completed Full Price Customer Claims';
     CardPageId = "AQD CompltdFullPrice CustClaim";
@@ -9,7 +12,7 @@ page 14302618 AQDCmpltedFullPriceCustClmList
     ModifyAllowed = false;
     PageType = List;
     SourceTable = "AQD Customer Claim Header";
-    UsageCategory = Lists;
+    UsageCategory = None;
 
     layout
     {

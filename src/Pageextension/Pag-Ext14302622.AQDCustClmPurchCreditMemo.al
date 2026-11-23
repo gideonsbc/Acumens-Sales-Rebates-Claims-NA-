@@ -7,6 +7,10 @@ pageextension 14302622 "AQD CustClm Purch Credit Memo" extends "Purchase Credit 
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 Caption = 'Acumens Sales Rebates & Claims';
                 Editable = false;
 

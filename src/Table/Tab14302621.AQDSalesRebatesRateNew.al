@@ -107,6 +107,8 @@ table 14302621 "AQD Sales Rebates Rate New"
             else if ("Line Type" = const("G/L Account")) "G/L Account"
             else if ("Line Type" = const(Resource)) Resource;
             ObsoleteState = Pending;
+            ObsoleteReason = 'Replaced by the Line No. Filter field.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             trigger OnValidate()
             begin
                 if Rec."No." <> xRec."No." then begin
@@ -162,6 +164,8 @@ table 14302621 "AQD Sales Rebates Rate New"
             Caption = 'Description';
             Editable = false;
             ObsoleteState = Pending;
+            ObsoleteReason = 'No longer used, because rate lines are now defined by the Line No. Filter field.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
         }
         field(62; "No. Filter"; Text[250])
         {

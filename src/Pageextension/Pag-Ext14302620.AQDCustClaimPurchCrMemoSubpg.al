@@ -6,6 +6,10 @@ pageextension 14302620 "AQD CustClaim PurchCrMemoSubpg" extends "Purch. Cr. Memo
         {
             Field("AQD Customer Claim Code"; Rec."AQD Customer Claim Code")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 ApplicationArea = All;
                 Editable = FALSE;
                 Enabled = FALSE;
@@ -13,6 +17,10 @@ pageextension 14302620 "AQD CustClaim PurchCrMemoSubpg" extends "Purch. Cr. Memo
             }
             Field("AQD Claim Line Type"; Rec."AQD Claim Line Type")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 ApplicationArea = All;
                 Editable = FALSE;
                 Enabled = FALSE;
@@ -23,6 +31,9 @@ pageextension 14302620 "AQD CustClaim PurchCrMemoSubpg" extends "Purch. Cr. Memo
         {
             Field("AQD CustClaim Orig Order No."; Rec."AQD CustClaim Orig Order No.")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
                 ApplicationArea = All;
                 Editable = FALSE;
                 Enabled = FALSE;
@@ -31,6 +42,9 @@ pageextension 14302620 "AQD CustClaim PurchCrMemoSubpg" extends "Purch. Cr. Memo
             }
             Field("AQD CustClaim Orig OdrLine No."; Rec."AQD CustClaim Orig OdrLine No.")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
                 ApplicationArea = All;
                 Editable = FALSE;
                 Enabled = FALSE;

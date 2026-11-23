@@ -1,7 +1,7 @@
 page 14302509 "AQD Acumens CustRbtClaim Setup"
 {
     ApplicationArea = All;
-    Caption = 'Acumens Sales Rebates & Claims Setup';
+    Caption = 'Acumens Sales Rebates Setup';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
@@ -155,7 +155,7 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 }
                 group("AQD Rebate & Claims approvals")
                 {
-                    Caption = 'Rebate & Claims approvals';
+                    Caption = 'Rebate Approvals';
                     Field("Enable Claims Approvals"; Rec."Enable Rebate Approvals")
                     {
                         ToolTip = 'Specifies the value of the Enable Sales Rebate Line Approvals Setup field.';
@@ -165,6 +165,10 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
             }
             group("Customer Claim")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 Caption = 'Customer Claim';
                 Editable = AllowToEdit;
 
@@ -317,6 +321,10 @@ page 14302509 "AQD Acumens CustRbtClaim Setup"
                 }
                 Group("AQD AcumensCustomerClaim")
                 {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
                     Caption = 'Customer Claim';
                     field("Full Price Claim Nos."; Rec."Full Price Claim Nos.")
                     {

@@ -1,5 +1,8 @@
 enum 14302537 "AQD CRC Claims App. Status"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     Extensible = true;
     AssignmentCompatibility = true;
 

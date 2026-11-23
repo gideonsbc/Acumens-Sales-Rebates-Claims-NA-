@@ -185,5 +185,6 @@ permissionset 14302511 "AQD SRebate Users"
         page "AQD Tiered Rebate Rates" = X,
         tabledata "AQD CR Pay Cycle" = R,
         table "AQD CR Pay Cycle" = X,
-        page "AQD CR Pay Cycles" = X;
+        page "AQD CR Pay Cycles" = X,
+        report "AQD CR Generate Pay Cycles" = X;
 }

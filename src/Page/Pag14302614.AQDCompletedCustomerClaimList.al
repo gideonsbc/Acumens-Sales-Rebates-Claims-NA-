@@ -1,5 +1,8 @@
 page 14302614 "AQD Completed Cust Claim List"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     ApplicationArea = All;
     Caption = 'Completed Customer Claims';
     //CardPageId = "AQD Completed Customer Claim";
@@ -9,7 +12,7 @@ page 14302614 "AQD Completed Cust Claim List"
     ModifyAllowed = FALSE;
     PageType = List;
     SourceTable = "AQD Customer Claim Header";
-    UsageCategory = Lists;
+    UsageCategory = None;
 
     layout
     {

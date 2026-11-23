@@ -4,24 +4,36 @@ tableextension 14302624 "AQD CustClaimSalesShptLine Ext" extends "Sales Shipment
     {
         field(14302610; "AQD Customer Claim Line"; Boolean)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Customer Claim Line';
             DataClassification = CustomerContent;
             Editable = false;
         }
         field(14302620; "AQD CustClaim Manual Line"; Boolean)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Customer Claim Manual Line';
             DataClassification = CustomerContent;
             Editable = false;
         }
         field(14302630; "AQD CustClaim Mfg Product Code"; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Mfg. Product Code';
             DataClassification = CustomerContent;
             Editable = false;
         }
         field(14302640; "AQD CustClaim Vendor No."; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Vendor No.';
             DataClassification = CustomerContent;
             //TableRelation = Vendor."No.";
@@ -36,6 +48,9 @@ tableextension 14302624 "AQD CustClaimSalesShptLine Ext" extends "Sales Shipment
         }
         field(14302650; "AQD CustClaim Vendor Name"; text[100])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Vendor Name';
             Editable = false;
             FieldClass = FlowField;
@@ -43,6 +58,9 @@ tableextension 14302624 "AQD CustClaimSalesShptLine Ext" extends "Sales Shipment
         }
         field(14302660; "AQD CustClaim Program Code"; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Program Code';
             DataClassification = CustomerContent;
             FieldClass = Normal;
@@ -59,6 +77,9 @@ tableextension 14302624 "AQD CustClaimSalesShptLine Ext" extends "Sales Shipment
         }
         field(14302670; "AQD CustClaim Service Code"; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Service Code';
             DataClassification = CustomerContent;
             FieldClass = Normal;
@@ -66,6 +87,9 @@ tableextension 14302624 "AQD CustClaimSalesShptLine Ext" extends "Sales Shipment
         }
         field(14302680; "AQD CustClaim Orig Order No."; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Origianl Order No.';
             DataClassification = CustomerContent;
             FieldClass = Normal;
@@ -73,6 +97,9 @@ tableextension 14302624 "AQD CustClaimSalesShptLine Ext" extends "Sales Shipment
         }
         field(14302690; "AQD CustClaim Orig OdrLine No."; Integer)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Origianl Order Line No.';
             DataClassification = CustomerContent;
             FieldClass = Normal;
@@ -80,18 +107,27 @@ tableextension 14302624 "AQD CustClaimSalesShptLine Ext" extends "Sales Shipment
         }
         field(14302700; "AQD Customer Claim Code"; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Customer Claim Code';
             Editable = FALSE;
             DataClassification = CustomerContent;
         }
         FIELD(14302701; "AQD Claim Line Type"; enum "AQD CustClmPrcMthClaimLineType")
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Line Type';
             Editable = FALSE;
             DataClassification = CustomerContent;
         }
         field(14302702; "AQD CustClaim Claim No."; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Origianl Order No.';
             DataClassification = CustomerContent;
             FieldClass = Normal;
@@ -99,6 +135,9 @@ tableextension 14302624 "AQD CustClaimSalesShptLine Ext" extends "Sales Shipment
         }
         field(14302703; "AQD CustClaim Claim Line No."; Integer)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Origianl Order Line No.';
             DataClassification = CustomerContent;
             FieldClass = Normal;

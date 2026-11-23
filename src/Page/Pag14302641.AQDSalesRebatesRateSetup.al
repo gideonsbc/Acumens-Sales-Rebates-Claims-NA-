@@ -36,6 +36,8 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                     ToolTip = 'Specifies a filter for which sales rebate to display.';
                     Visible = false;
                     ObsoleteState = Pending;
+                    ObsoleteReason = 'This filter is no longer used. Use the Customer No. Filter field on the rebate rate lines instead.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -90,6 +92,8 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                     ToolTip = 'Specifies a filter for which sales rebates to display.';
                     Visible = false;
                     ObsoleteState = Pending;
+                    ObsoleteReason = 'This filter is no longer used. Use the Line No. Filter field on the rebate rate lines instead.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -332,12 +336,16 @@ page 14302641 "AQD Sales Rebates Rate Setup"
                     Editable = Rec."Line Type" <> Rec."Line Type"::"Item Attribute";
                     Visible = false;
                     ObsoleteState = Pending;
+                    ObsoleteReason = 'Replaced by the Line No. Filter field.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
                 }
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
                     Visible = false;
                     ObsoleteState = Pending;
+                    ObsoleteReason = 'No longer used, because rate lines are now defined by the Line No. Filter field.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
                 }
                 field("Item Attribute Name"; Rec."Item Attribute Name")
                 {

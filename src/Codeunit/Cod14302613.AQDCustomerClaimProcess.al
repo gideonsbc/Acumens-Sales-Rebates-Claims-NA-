@@ -1,5 +1,8 @@
 codeunit 14302613 "AQD Customer Claim Process"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     trigger OnRun()
     BEGIN
         CASE TRUE OF

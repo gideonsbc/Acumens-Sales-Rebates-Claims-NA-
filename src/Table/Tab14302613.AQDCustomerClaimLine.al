@@ -1,5 +1,8 @@
 table 14302613 "AQD Customer Claim Line"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     Caption = 'Customer Claim Line';
     DataClassification = CustomerContent;
 

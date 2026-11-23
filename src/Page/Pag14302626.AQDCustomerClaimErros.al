@@ -1,5 +1,8 @@
 page 14302626 "AQD Customer Claim Errors"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     ApplicationArea = All;
     Caption = 'Customer Claim Errors';
     DeleteAllowed = false;
@@ -8,7 +11,7 @@ page 14302626 "AQD Customer Claim Errors"
     ModifyAllowed = false;
     PageType = List;
     SourceTable = "AQD Customer Claim Errors";
-    UsageCategory = Lists;
+    UsageCategory = None;
 
     layout
     {

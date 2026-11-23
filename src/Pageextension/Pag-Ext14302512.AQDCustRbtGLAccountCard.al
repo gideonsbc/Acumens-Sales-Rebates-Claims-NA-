@@ -6,7 +6,7 @@ pageextension 14302512 "AQD CustRbt G/L Account Card" extends "G/L Account Card"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Sales Rebates & Claims';
+                Caption = 'Acumens Sales Rebates';
                 group("AQD AcumensCustomerRebate")
                 {
                     Caption = 'Sales Rebate';
@@ -23,6 +23,10 @@ pageextension 14302512 "AQD CustRbt G/L Account Card" extends "G/L Account Card"
                 }
                 Group("AQD AcumensCustomerClaim")
                 {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
                     Caption = 'Customer Claim';
 
                     field("AQD Customer Claim Enabled"; Rec."AQD Customer Claim Enabled")

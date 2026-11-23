@@ -96,36 +96,42 @@ page 14302537 "AQD Posted Customer Rebates"
     {
         area(Processing)
         {
-            // action("Create Sales Document")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Create Sales Document';
-            //     Image = CreateDocument;
+            action("Create Sales Document")
+            {
+                ApplicationArea = All;
+                Caption = 'Create Sales Document';
+                Image = CreateDocument;
+                ObsoleteState = Pending;
+                ObsoleteReason = 'Not in use';
+                Visible = false;
 
-            //     trigger OnAction()
-            //     var
-            //         CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
-            //     begin
-            //         clear(CustomerRebatePost);
-            //         CustomerRebatePost.CreateSalesFromPostedRebateDocument(Rec, TRUE);
-            //         CurrPage.UPDATE(false);
-            //     end;
-            // }
-            // action("Customer Rebate Details")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Sales Rebate Details';
-            //     Image = Report;
-            //     trigger OnAction()
-            //     var
-            //     //VendorRebateDetails: Report "AQD Customer Rebate Details";
-            //     begin
-            //         //Clear(VendorRebateDetails);
-            //         Rec.SetRange("No.", Rec."No.");
-            //         //VendorRebateDetails.SetTableView(Rec);
-            //         //VendorRebateDetails.Run();
-            //     end;
-            // }
+                trigger OnAction()
+                var
+                    CustomerRebatePost: Codeunit "AQD Customer Rebate Post";
+                begin
+                    clear(CustomerRebatePost);
+                    CustomerRebatePost.CreateSalesFromPostedRebateDocument(Rec, TRUE);
+                    CurrPage.UPDATE(false);
+                end;
+            }
+            action("Customer Rebate Details")
+            {
+                ApplicationArea = All;
+                Caption = 'Sales Rebate Details';
+                Image = Report;
+                ObsoleteState = Pending;
+                ObsoleteReason = 'Not in use';
+                Visible = false;
+                trigger OnAction()
+                var
+                //VendorRebateDetails: Report "AQD Customer Rebate Details";
+                begin
+                    //Clear(VendorRebateDetails);
+                    Rec.SetRange("No.", Rec."No.");
+                    //VendorRebateDetails.SetTableView(Rec);
+                    //VendorRebateDetails.Run();
+                end;
+            }
         }
         area(Navigation)
         {

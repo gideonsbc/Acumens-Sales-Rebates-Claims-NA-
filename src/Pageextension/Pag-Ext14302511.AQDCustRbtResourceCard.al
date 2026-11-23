@@ -6,7 +6,7 @@ pageextension 14302511 "AQD CustRbt Resource Card" extends "Resource Card"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Sales Rebates & Claims';
+                Caption = 'Acumens Sales Rebates';
 
                 Group("AQD AcumensCustomerRebate")
                 {
@@ -24,6 +24,10 @@ pageextension 14302511 "AQD CustRbt Resource Card" extends "Resource Card"
                 }
                 Group("AQD AcumensCustomerClaim")
                 {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
                     Caption = 'Customer Claim';
                     field("AQD Vendor Claim Enabled"; Rec."AQD Customer Claim Enabled")
                     {

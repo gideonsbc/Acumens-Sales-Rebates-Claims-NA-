@@ -1,5 +1,8 @@
 page 14302615 "AQD Completed Customer Claim"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     ApplicationArea = All;
     Caption = 'Completed Customer Claim';
     Editable = FALSE;

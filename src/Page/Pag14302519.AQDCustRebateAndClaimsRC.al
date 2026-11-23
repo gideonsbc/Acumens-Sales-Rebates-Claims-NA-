@@ -1,7 +1,7 @@
 page 14302519 "AQD Cust Rebate And Claims RC"
 {
     ApplicationArea = All;
-    Caption = 'Sales Rebates & Claims Role Center', Comment = '';
+    Caption = 'Sales Rebates Role Center', Comment = '';
     UsageCategory = Tasks;
     PageType = RoleCenter;
 
@@ -100,6 +100,10 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             }
             action(ClaimProgramCodes)
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 Caption = 'Claim Program Codes';
                 ApplicationArea = All;
                 Image = Entries;
@@ -107,6 +111,10 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             }
             action(ClaimServiceCodes)
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 Caption = 'Claim Service Codes';
                 ApplicationArea = All;
                 Image = Entries;
@@ -161,12 +169,20 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             }
             action("AQD Full Price Cust Claim List")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 ApplicationArea = All;
                 Caption = 'Full Price Customer Claims';
                 RunObject = page "AQD Full Price Cust Claim List";
             }
             action("AQD PriceMatch Cust Claim List")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 ApplicationArea = All;
                 Caption = 'Price Match Customer Claims';
                 RunObject = page "AQD PriceMatch Cust Claim List";
@@ -244,6 +260,10 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             }
             action("Generate Customer Full Claim Claims")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 ApplicationArea = All;
                 Caption = 'Create Sales Full Price Claims';
                 Image = CalculateSalesTax;
@@ -251,6 +271,10 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             }
             action("Generate Customer Price Match Claims")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 ApplicationArea = All;
                 Caption = 'Create Sales Price Match Claims';
                 Image = CalculateSalesTax;
@@ -307,6 +331,12 @@ page 14302519 "AQD Cust Rebate And Claims RC"
         }
         area(Processing)
         {
+            group(Journals)
+            {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'Not in use';
+                Visible = false;
+            }
             action("AQD Customer Rebate Approvals_Processing")
             {
                 ApplicationArea = All;
@@ -360,7 +390,7 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 }
                 action("Acumens Customer Rebates Claims Setup")
                 {
-                    Caption = 'Acumens Sales Rebates & Claims Setup';
+                    Caption = 'Acumens Sales Rebates Setup';
                     ApplicationArea = All;
                     Image = CostAccountingSetup;
                     RunObject = Page "AQD Acumens CustRbtClaim Setup";
@@ -425,6 +455,10 @@ page 14302519 "AQD Cust Rebate And Claims RC"
             }
             group(CustomerClaimSetup)
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 Caption = 'Claim Setup';
                 Image = Setup;
                 action("Acumens Customer Rebates Claims Setup2")
@@ -530,6 +564,10 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 }
                 action("AQD Completed Full Price Cust Claim List2")
                 {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
                     ApplicationArea = All;
                     Caption = 'Completed Full Price Customer Claims';
                     Image = CreditMemo;
@@ -537,6 +575,10 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 }
                 action("AQD Completed PriceMatch Cust Claim List2")
                 {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
                     ApplicationArea = All;
                     Caption = 'Completed Price Match Customer Claims';
                     Image = CreditMemo;

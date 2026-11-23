@@ -6,7 +6,7 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Sales Rebates & Claims';
+                Caption = 'Acumens Sales Rebates';
                 Editable = false;
 
                 Group("AQD AcumensCustomerClaim")
@@ -48,6 +48,10 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                     Caption = 'Sales Rebate';
                     field("AQD Claim Type"; Rec."AQD CustClaim Claim Type")
                     {
+                        ObsoleteState = Pending;
+                        ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                        ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                        Visible = false;
                         ApplicationArea = All;
                         Editable = FALSE;
                     }
@@ -61,13 +65,20 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                     }
                     field("AQD Claim Errors"; Rec."AQD Claim Errors")
                     {
+                        ObsoleteState = Pending;
+                        ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                        ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                        Visible = false;
                         ApplicationArea = All;
                         Editable = FALSE;
                     }
                     group("AQD Claim Info")
                     {
+                        ObsoleteState = Pending;
+                        ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                        ObsoleteTag = 'Deprecated in v25.1023.1.45';
                         ShowCaption = FALSE;
-                        Visible = FullClaimFieldVisible;
+                        Visible = false;
                         field("AQD Claim Vendor No."; Rec."AQD Claim Vendor No.")
                         {
                             ApplicationArea = All;
@@ -102,6 +113,10 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
                 }
                 group("AQD Claims")
                 {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
                     ShowCaption = FALSE;
                     part("AQD CustomerClaims"; "AQD Customer Claims")
                     {
@@ -134,6 +149,10 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
             // }
             action("AQD Acumens CustClaim UpdateLines")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                Visible = false;
                 ApplicationArea = All;
                 Caption = 'Update Lines';
                 Image = EditLines;
@@ -143,10 +162,13 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
             }
             action("AQD Acumens CustClaim ManualCreate")
             {
+                ObsoleteState = Pending;
+                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                ObsoleteTag = 'Deprecated in v25.1023.1.45';
                 ApplicationArea = All;
                 Caption = 'Create Claim';
                 Image = CreateCreditMemo;
-                Visible = CreateClaimVisible;
+                Visible = false;
 
                 trigger OnAction()
                 var
@@ -179,11 +201,23 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
         {
             group("AQD Acumens Claims Rebates")
             {
-                Caption = 'Acumens Customer Rebates Claims';
+                Caption = 'Acumens Sales Rebates';
                 actionref("AQD DoNotPayRebate_AER"; "AQD DoNotPayRebate") { }
                 //actionref("AQD UpdateRebate_AER"; "AQD Update Rebate") { }
-                actionref("AQD Acumens CustClaim UpdateLinesRef"; "AQD Acumens CustClaim UpdateLines") { }
-                actionref("AQD Acumens CustClaim ManualCreateRef"; "AQD Acumens CustClaim ManualCreate") { }
+                actionref("AQD Acumens CustClaim UpdateLinesRef"; "AQD Acumens CustClaim UpdateLines")
+                {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
+                }
+                actionref("AQD Acumens CustClaim ManualCreateRef"; "AQD Acumens CustClaim ManualCreate")
+                {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
+                }
             }
         }
     }
@@ -200,6 +234,7 @@ pageextension 14302525 "AQDCustRbt Posted SalesInvoice" extends "Posted Sales In
         SetPriceMatchFieldsvisibilityOnLines();
     end;
 
+    [Obsolete('The Claims functionality has been discontinued and will be removed in a future release.', 'Deprecated in v25.1023.1.45')]
     procedure SetPriceMatchFieldsvisibilityOnLines()
     begin
         CurrPage.SalesInvLines.Page.SetPriceMatchFieldsvisibility(Rec."AQD CustClaim Claim Type" = Rec."AQD CustClaim Claim Type"::"Price Match");

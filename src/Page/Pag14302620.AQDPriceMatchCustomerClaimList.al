@@ -1,12 +1,15 @@
 page 14302620 "AQD PriceMatch Cust Claim List"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     ApplicationArea = All;
     Caption = 'Price Match Customer Claims';
     CardPageId = "AQD Price Match Customer Claim";
     Editable = FALSE;
     PageType = List;
     SourceTable = "AQD Customer Claim Header";
-    UsageCategory = Lists;
+    UsageCategory = None;
     layout
     {
         area(Content)

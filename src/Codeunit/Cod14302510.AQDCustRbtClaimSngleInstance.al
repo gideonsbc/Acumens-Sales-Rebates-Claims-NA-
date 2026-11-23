@@ -32,11 +32,13 @@ codeunit 14302510 "AQD CustRbtClaim SngleInstance"
         ResultMessageIn := ResultMessage;
     end;
 
+    [Obsolete('The Claims functionality has been discontinued and will be removed in a future release.', 'Deprecated in v25.1023.1.45')]
     procedure SetCustomerClaimBatchResult(ResultMessageIn: text[250])
     begin
         ResultMessage := ResultMessageIn;
     end;
 
+    [Obsolete('The Claims functionality has been discontinued and will be removed in a future release.', 'Deprecated in v25.1023.1.45')]
     procedure GetCustomerClaimBatchResult(var ResultMessageIn: text[250])
     begin
         ResultMessageIn := ResultMessage;

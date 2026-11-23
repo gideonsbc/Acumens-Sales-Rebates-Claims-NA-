@@ -59,12 +59,18 @@ tableextension 14302514 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
         }
         field(14302610; "AQD CustClaim Claim Type"; Enum "AQD Cust Claim Claim Type")
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Type';
             DataClassification = CustomerContent;
             Editable = FALSE;
         }
         field(14302620; "AQD Claim Vendor No."; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Vendor No.';
             DataClassification = CustomerContent;
             TableRelation = Vendor;
@@ -76,29 +82,44 @@ tableextension 14302514 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
         }
         field(14302630; "AQD Vendor Cr. Memo No."; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Vendor Cr. Memo No.';
             DataClassification = CustomerContent;
         }
         field(14302640; "AQD Claim Approved Amount"; Decimal)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             BlankZero = TRUE;
             Caption = 'Claim Approved Amount';
             DataClassification = CustomerContent;
         }
         field(14302650; "AQD Claim Delivery Commission"; Decimal)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             BlankZero = TRUE;
             Caption = 'Claim Delivery Commission';
             DataClassification = CustomerContent;
         }
         field(14302660; "AQD Claim Purchase Discount"; Decimal)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             BlankZero = TRUE;
             Caption = 'Claim Purchase Discount';
             DataClassification = CustomerContent;
         }
         field(14302680; "AQD Claim Status"; Enum "AQD Cust Claim Claim Status")
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Status';
             Editable = false;
             FieldClass = FlowField;
@@ -106,6 +127,9 @@ tableextension 14302514 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
         }
         field(14302690; "AQD Claim Errors"; Boolean)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Errors';
             Editable = false;
             FieldClass = FlowField;
@@ -113,6 +137,9 @@ tableextension 14302514 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
         }
         field(14302700; "AQD CustClaim Orig Order No."; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Origianl Order No.';
             DataClassification = CustomerContent;
             FieldClass = Normal;
@@ -120,6 +147,9 @@ tableextension 14302514 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
         }
         field(14302701; "AQD CustClaim Purch CrMemo No."; Code[20])
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Purch Cr Memo No.';
             DataClassification = CustomerContent;
             FieldClass = Normal;
@@ -138,6 +168,7 @@ tableextension 14302514 "AQD CustRbt Sales Inv Hdr Ext" extends "Sales Invoice H
             TableRelation = "AQD Cust Rebate Program Code";
         }
     }
+    [Obsolete('The Claims functionality has been discontinued and will be removed in a future release.', 'Deprecated in v25.1023.1.45')]
     LOCAL procedure CheckClaimStatus()
     var
         ClaimHeader: Record "AQD Customer Claim Header";

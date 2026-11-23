@@ -14,7 +14,7 @@ pageextension 14302521 "AQD CustRbt Sales Credit Memo" extends "Sales Credit Mem
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Sales Rebates & Claims';
+                Caption = 'Acumens Sales Rebates';
 
                 field("AQD Do Not Pay Rebate"; Rec."AQD No Customer Rebate")
                 {

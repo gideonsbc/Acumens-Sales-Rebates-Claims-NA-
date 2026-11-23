@@ -1,5 +1,8 @@
 table 14302612 "AQD Customer Claim Header"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
     Caption = 'Customer Claim Header';
     DataClassification = CustomerContent;
     DataCaptionFields = "No.", "Vendor No.", "Vendor Name";

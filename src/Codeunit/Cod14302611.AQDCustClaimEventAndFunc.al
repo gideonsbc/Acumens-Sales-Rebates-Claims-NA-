@@ -1,5 +1,9 @@
 codeunit 14302611 "AQD Cust Claim Event And Func"
 {
+    ObsoleteState = Pending;
+    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+    EventSubscriberInstance = Manual;
     trigger OnRun()
     begin
 

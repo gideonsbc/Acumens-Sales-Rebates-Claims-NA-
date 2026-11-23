@@ -15,6 +15,9 @@ tableextension 14302511 "AQD CustRbt Resource Ext" extends Resource
         }
         field(14302610; "AQD Customer Claim Enabled"; Boolean)
         {
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+            ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Enabled';
             DataClassification = CustomerContent;
         }

@@ -13,7 +13,7 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
         {
             group("AQD Acumens Customer Rebate and Claims")
             {
-                Caption = 'Acumens Sales Rebates & Claims';
+                Caption = 'Acumens Sales Rebates';
 
                 Group("AQD AcumensCustomerRebate")
                 {
@@ -67,6 +67,10 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                 }
                 Group("AQD AcumensCustomerClaim")
                 {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
                     Caption = 'Customer Claim';
                     field("AQD Claim Type"; Rec."AQD CustClaim Claim Type")
                     {
@@ -113,6 +117,10 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                 }
                 group("AQD Claims")
                 {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
                     ShowCaption = FALSE;
                     part("AQD CustomerClaims"; "AQD Customer Claims")
                     {
@@ -151,10 +159,13 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                 }
                 action("AQD Acumens CustClaim ManualCreate")
                 {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
                     ApplicationArea = All;
                     Caption = 'Create Claim';
                     Image = CreateCreditMemo;
-                    Visible = CreateClaimVisible;
+                    Visible = false;
 
                     trigger OnAction()
                     var
@@ -192,7 +203,13 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                 actionref("AQD Customer Rebate Info_Promoted"; "AQD Customer Rebate Info")
                 {
                 }
-                actionref("AQD Acumens CustClaim ManualCreateRef"; "AQD Acumens CustClaim ManualCreate") { }
+                actionref("AQD Acumens CustClaim ManualCreateRef"; "AQD Acumens CustClaim ManualCreate")
+                {
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    Visible = false;
+                }
             }
         }
     }
@@ -219,6 +236,7 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
         SetPriceMatchFieldsvisibilityOnLines();
     end;
 
+    [Obsolete('The Claims functionality has been discontinued and will be removed in a future release.', 'Deprecated in v25.1023.1.45')]
     procedure SetPriceMatchFieldsvisibilityOnLines()
     begin
         CurrPage.SalesLines.Page.SetPriceMatchFieldsvisibility(Rec."AQD CustClaim Claim Type" = Rec."AQD CustClaim Claim Type"::"Price Match");
