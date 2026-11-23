@@ -98,28 +98,28 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 Image = CampaignEntries;
                 RunObject = Page "AQD Rebate Customer Categories";
             }
-            action(ClaimProgramCodes)
-            {
-                ObsoleteState = Pending;
-                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                Visible = false;
-                Caption = 'Claim Program Codes';
-                ApplicationArea = All;
-                Image = Entries;
-                RunObject = Page "AQD Cust Claim Program Code";
-            }
-            action(ClaimServiceCodes)
-            {
-                ObsoleteState = Pending;
-                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                Visible = false;
-                Caption = 'Claim Service Codes';
-                ApplicationArea = All;
-                Image = Entries;
-                RunObject = Page "AQD Claim Service Codes";
-            }
+            // action(ClaimProgramCodes)
+            // {
+                // ObsoleteState = Pending;
+                // ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                // ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                // Visible = false;
+                // Caption = 'Claim Program Codes';
+                // ApplicationArea = All;
+                // Image = Entries;
+                // RunObject = Page "AQD Cust Claim Program Code";
+            // }
+            // action(ClaimServiceCodes)
+            // {
+                // ObsoleteState = Pending;
+                // ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                // ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                // Visible = false;
+                // Caption = 'Claim Service Codes';
+                // ApplicationArea = All;
+                // Image = Entries;
+                // RunObject = Page "AQD Claim Service Codes";
+            // }
             action("Sales Orders")
             {
                 Caption = 'Sales Orders';
@@ -167,26 +167,26 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 Caption = 'Sales Rebates';
                 RunObject = page "AQD Customer Rebates Documents";
             }
-            action("AQD Full Price Cust Claim List")
-            {
-                ObsoleteState = Pending;
-                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                Visible = false;
-                ApplicationArea = All;
-                Caption = 'Full Price Customer Claims';
-                RunObject = page "AQD Full Price Cust Claim List";
-            }
-            action("AQD PriceMatch Cust Claim List")
-            {
-                ObsoleteState = Pending;
-                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                Visible = false;
-                ApplicationArea = All;
-                Caption = 'Price Match Customer Claims';
-                RunObject = page "AQD PriceMatch Cust Claim List";
-            }
+            // action("AQD Full Price Cust Claim List")
+            // {
+                // ObsoleteState = Pending;
+                // ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                // ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                // Visible = false;
+                // ApplicationArea = All;
+                // Caption = 'Full Price Customer Claims';
+                // RunObject = page "AQD Full Price Cust Claim List";
+            // }
+            // action("AQD PriceMatch Cust Claim List")
+            // {
+                // ObsoleteState = Pending;
+                // ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                // ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                // Visible = false;
+                // ApplicationArea = All;
+                // Caption = 'Price Match Customer Claims';
+                // RunObject = page "AQD PriceMatch Cust Claim List";
+            // }
             action("Customer Contract Prices")
             {
                 ApplicationArea = All;
@@ -258,28 +258,28 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                 RunObject = Report "AQD Post Cust Rebate Batches";
                 Visible = false;
             }
-            action("Generate Customer Full Claim Claims")
-            {
-                ObsoleteState = Pending;
-                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                Visible = false;
-                ApplicationArea = All;
-                Caption = 'Create Sales Full Price Claims';
-                Image = CalculateSalesTax;
-                RunObject = Report "AQD Create CustFullPriceClaims";
-            }
-            action("Generate Customer Price Match Claims")
-            {
-                ObsoleteState = Pending;
-                ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                Visible = false;
-                ApplicationArea = All;
-                Caption = 'Create Sales Price Match Claims';
-                Image = CalculateSalesTax;
-                RunObject = Report "AQD Create CustPriceMatchClaim";
-            }
+            // action("Generate Customer Full Claim Claims")
+            // {
+                // ObsoleteState = Pending;
+                // ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                // ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                // Visible = false;
+                // ApplicationArea = All;
+                // Caption = 'Create Sales Full Price Claims';
+                // Image = CalculateSalesTax;
+                // RunObject = Report "AQD Create CustFullPriceClaims";
+            // }
+            // action("Generate Customer Price Match Claims")
+            // {
+                // ObsoleteState = Pending;
+                // ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                // ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                // Visible = false;
+                // ApplicationArea = All;
+                // Caption = 'Create Sales Price Match Claims';
+                // Image = CalculateSalesTax;
+                // RunObject = Report "AQD Create CustPriceMatchClaim";
+            // }
             group(Reports)
             {
                 Image = Report;
@@ -562,28 +562,28 @@ page 14302519 "AQD Cust Rebate And Claims RC"
                     RunObject = page "AQD Sales Rebate Approvals";
                     Image = Approvals;
                 }
-                action("AQD Completed Full Price Cust Claim List2")
-                {
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                    Visible = false;
-                    ApplicationArea = All;
-                    Caption = 'Completed Full Price Customer Claims';
-                    Image = CreditMemo;
-                    RunObject = page AQDCmpltedFullPriceCustClmList;
-                }
-                action("AQD Completed PriceMatch Cust Claim List2")
-                {
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                    Visible = false;
-                    ApplicationArea = All;
-                    Caption = 'Completed Price Match Customer Claims';
-                    Image = CreditMemo;
-                    RunObject = page "AQD CmpltdPriceMthCustClmList";
-                }
+                // action("AQD Completed Full Price Cust Claim List2")
+                // {
+                    // ObsoleteState = Pending;
+                    // ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    // ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    // Visible = false;
+                    // ApplicationArea = All;
+                    // Caption = 'Completed Full Price Customer Claims';
+                    // Image = CreditMemo;
+                    // RunObject = page AQDCmpltedFullPriceCustClmList;
+                // }
+                // action("AQD Completed PriceMatch Cust Claim List2")
+                // {
+                    // ObsoleteState = Pending;
+                    // ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    // ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    // Visible = false;
+                    // ApplicationArea = All;
+                    // Caption = 'Completed Price Match Customer Claims';
+                    // Image = CreditMemo;
+                    // RunObject = page "AQD CmpltdPriceMthCustClmList";
+                // }
             }
         }
     }

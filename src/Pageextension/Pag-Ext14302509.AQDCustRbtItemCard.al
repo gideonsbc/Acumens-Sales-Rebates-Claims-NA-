@@ -25,14 +25,6 @@ pageextension 14302509 "AQD CustRbt Item Card" extends "Item Card"
                 Group("AQD AcumensCustomerClaim")
                 {
                     Caption = 'Customer Claim';
-                    field("AQD Vendor Claim Enabled"; Rec."AQD Customer Claim Enabled")
-                    {
-                        ObsoleteState = Pending;
-                        ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                        ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                        Visible = false;
-                        ApplicationArea = All;
-                    }
                     field("AQD Contract Price"; Rec."AQD Contract Price")
                     {
                         ApplicationArea = All;
@@ -57,19 +49,6 @@ pageextension 14302509 "AQD CustRbt Item Card" extends "Item Card"
                     RunObject = Page "AQD Sales Rebates Rate Setup";
                     RunPageLink = "Line Type" = CONST(Item);
                 }
-                // action("AQD Item attributes Values")
-                // {
-                //     ApplicationArea = All;
-                //     Caption = 'Get Item Attributes Values';
-                //     trigger OnAction()
-                //     var
-                //         SalesRebateRateCalcMgt: Codeunit "AQD Sales Rebate Rate Calc Mgt";
-                //         Result: Dictionary of [Code[20], Text];
-                //     begin
-                //         Result := SalesRebateRateCalcMgt.GetItemAttributeValues(Rec."No.");
-                //         Message(Format(Result));
-                //     end;
-                // }
             }
         }
         addafter(Category_Category6)
@@ -78,7 +57,6 @@ pageextension 14302509 "AQD CustRbt Item Card" extends "Item Card"
             {
                 Caption = 'Acumens Sales Rebate';
                 actionref(AQDCustomerRebateRatesRef; "AQD Customer Rebate Rates") { }
-                //actionref(AQDItemattributesValues; "AQD Item attributes Values") { }
             }
         }
     }

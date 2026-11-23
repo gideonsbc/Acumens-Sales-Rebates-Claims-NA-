@@ -309,7 +309,7 @@ table 14302612 "AQD Customer Claim Header"
             trigger OnValidate()
             var
                 SalesHeader: Record "Sales Header";
-                ClaimFunction: Codeunit "AQD Cust Claim Event And Func";
+                // ClaimFunction: Codeunit "AQD Cust Claim Event And Func";
                 InputLineApprovedAmountError: Label 'Line Approved Amount is not entered. Do you still want to apporve claim?';
                 AbortedMessage: Label 'The process is cancelled to respect user selection';
             BEGIN
@@ -336,24 +336,24 @@ table 14302612 "AQD Customer Claim Header"
                     Rec.Status := Rec.Status::Submitted;
                 END;
 
-                IF SalesHeader.GET(SalesHeader."Document Type"::Order, Rec."Order No.") THEN BEGIN
-                    SalesHeader.SuspendStatusCheck(TRUE);
-                    SalesHeader."AQD Vendor Cr. Memo No." := Rec."Vendor Cr. Memo No.";
-                    SalesHeader."AQD Claim Approved Amount" := Rec."Amount Approved";
-                    SalesHeader."AQD Claim Delivery Commission" := Rec."Delivery Commission";
-                    SalesHeader."AQD Claim Purchase Discount" := Rec."Purchase Discount";
-                    SalesHeader.MODIFY;
-                    SalesHeader.SuspendStatusCheck(FALSE);
-                END;
+                // IF SalesHeader.GET(SalesHeader."Document Type"::Order, Rec."Order No.") THEN BEGIN
+                    // SalesHeader.SuspendStatusCheck(TRUE);
+                    // SalesHeader."AQD Vendor Cr. Memo No." := Rec."Vendor Cr. Memo No.";
+                    // SalesHeader."AQD Claim Approved Amount" := Rec."Amount Approved";
+                    // SalesHeader."AQD Claim Delivery Commission" := Rec."Delivery Commission";
+                    // SalesHeader."AQD Claim Purchase Discount" := Rec."Purchase Discount";
+                    // SalesHeader.MODIFY;
+                    // SalesHeader.SuspendStatusCheck(FALSE);
+                // END;
 
-                IF Rec."Claim Approved" THEN BEGIN
-                    CASE Rec."Claim Type" OF
-                        Rec."Claim Type"::"Full Price":
-                            ClaimFunction.CreatePurchCrMemoForFullPriceClaim(SalesHeader, Rec, TRUE);
-                        Rec."Claim Type"::"Price Match":
-                            ClaimFunction.CreatePurchCrMemoForPriceMatchClaim(Rec, TRUE);
-                    END;
-                END;
+                // IF Rec."Claim Approved" THEN BEGIN
+                    // CASE Rec."Claim Type" OF
+                        // Rec."Claim Type"::"Full Price":
+                            // ClaimFunction.CreatePurchCrMemoForFullPriceClaim(SalesHeader, Rec, TRUE);
+                        // Rec."Claim Type"::"Price Match":
+                            // ClaimFunction.CreatePurchCrMemoForPriceMatchClaim(Rec, TRUE);
+                    // END;
+                // END;
             END;
         }
         field(760; "Claim Approved By"; Code[50])

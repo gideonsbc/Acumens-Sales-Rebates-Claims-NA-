@@ -64,23 +64,6 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
                         ApplicationArea = All;
                     }
                 }
-                Group(AQDCustomerClaim)
-                {
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                    Visible = false;
-                    Caption = 'Sales Rebate';
-                    field("AQD CustClaim Sales Order No."; Rec."AQD CustClaim Sales Order No.")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("AQD CustClaim Purch CrMemo No."; Rec."AQD CustClaim Purch CrMemo No.")
-                    {
-                        ApplicationArea = All;
-                    }
-
-                }
             }
         }
     }
@@ -121,16 +104,6 @@ pageextension 14302520 "AQD CustRbt Sales Invoice" extends "Sales Invoice"
             }
         }
     }
-    trigger OnAfterGetCurrRecord()
-    begin
-        SetPriceMatchFieldsvisibilityOnLines();
-    end;
-
-    [Obsolete('The Claims functionality has been discontinued and will be removed in a future release.', 'Deprecated in v25.1023.1.45')]
-    procedure SetPriceMatchFieldsvisibilityOnLines()
-    begin
-        CurrPage.SalesLines.Page.SetPriceMatchFieldsvisibility(Rec."AQD CustClaim Claim Type" = Rec."AQD CustClaim Claim Type"::"Price Match");
-    end;
 
     [IntegrationEvent(false, false)]
     local procedure OnBeforeRebatePreviewAction(var SalesHeader: Record "Sales Header")

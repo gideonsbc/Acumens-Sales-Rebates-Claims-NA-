@@ -72,12 +72,18 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                     ObsoleteTag = 'Deprecated in v25.1023.1.45';
                     Visible = false;
                     Caption = 'Customer Claim';
-                    field("AQD Claim Type"; Rec."AQD CustClaim Claim Type")
+                    field("AQD Claim Type"; AQDRemovedClaimValue)
                     {
+                        ObsoleteState = Pending;
+                        ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                        ObsoleteTag = 'Deprecated in v25.1023.1.47';
                         ApplicationArea = All;
                     }
-                    field("AQD Claim Errors"; Rec."AQD Claim Errors")
+                    field("AQD Claim Errors"; AQDRemovedClaimValue)
                     {
+                        ObsoleteState = Pending;
+                        ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                        ObsoleteTag = 'Deprecated in v25.1023.1.47';
                         ApplicationArea = All;
                     }
                     group("AQD AQDClaim Info")
@@ -86,33 +92,9 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                         Editable = ClaimEditable;
                         Enabled = ClaimEditable;
                         Visible = FullClaimFieldVisible;
-
-                        field("AQD Claim Vendor No."; Rec."AQD Claim Vendor No.")
-                        {
-                            ApplicationArea = All;
-                            Editable = ClaimEditable;
-                            Enabled = ClaimEditable;
-                        }
-                        FIELD("AQD Claim Status"; Rec."AQD Claim Status")
-                        {
-                            ApplicationArea = All;
-                        }
-                        FIELD("AQD Vendor Cr. Memo No."; Rec."AQD Vendor Cr. Memo No.")
-                        {
-                            ApplicationArea = All;
-                        }
-                        FIELD("AQD Claim Approved Amount"; Rec."AQD Claim Approved Amount")
-                        {
-                            ApplicationArea = All;
-                        }
-                        FIELD("AQD Claim Delivery Commission"; Rec."AQD Claim Delivery Commission")
-                        {
-                            ApplicationArea = All;
-                        }
-                        FIELD("AQD Claim Purchase Discount"; Rec."AQD Claim Purchase Discount")
-                        {
-                            ApplicationArea = All;
-                        }
+                        ObsoleteState = Pending;
+                        ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                        ObsoleteTag = 'Deprecated in v25.1023.1.47';
                     }
                 }
                 group("AQD Claims")
@@ -157,41 +139,6 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                         CurrPage.Update(false);
                     end;
                 }
-                action("AQD Acumens CustClaim ManualCreate")
-                {
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                    ApplicationArea = All;
-                    Caption = 'Create Claim';
-                    Image = CreateCreditMemo;
-                    Visible = false;
-
-                    trigger OnAction()
-                    var
-                        ClaimHeader: Record "AQD Customer Claim Header";
-                        CustClaimFunctions: Codeunit "AQD Cust Claim Event And Func";
-                        RecreateClaim: Boolean;
-                        ClaimAlreadyCreateMessage: Label 'Claim is already created. Do you want to recreate it?';
-                        ProcessAbortedMessage: Label 'Process is aborted to respect user selection';
-                    begin
-                        RecreateClaim := false;
-                        ClaimHeader.RESET;
-                        ClaimHeader.SetRange("Order No.", Rec."No.");
-                        IF ClaimHeader.FindFirst() THEN BEGIN
-                            IF NOT Confirm(ClaimAlreadyCreateMessage) THEN
-                                MESSAGE(ProcessAbortedMessage)
-                            ELSE BEGIN
-                                RecreateClaim := TRUE;
-                                CustClaimFunctions.CreateClaimFromSalesOrder(Rec, TRUE, TRUE, RecreateClaim);
-                                CurrPage.Update(FALSE);
-                            END;
-                        END ELSE BEGIN
-                            CustClaimFunctions.CreateClaimFromSalesOrder(Rec, TRUE, TRUE, RecreateClaim);
-                            CurrPage.Update(FALSE);
-                        END;
-                    end;
-                }
             }
         }
 
@@ -202,13 +149,6 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
                 Caption = 'Acumens Sales Rebate';
                 actionref("AQD Customer Rebate Info_Promoted"; "AQD Customer Rebate Info")
                 {
-                }
-                actionref("AQD Acumens CustClaim ManualCreateRef"; "AQD Acumens CustClaim ManualCreate")
-                {
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                    Visible = false;
                 }
             }
         }
@@ -222,25 +162,6 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
         CreateClaimVisible := ClaimSetup."Create Claim On" = ClaimSetup."Create Claim On"::Manual; // This is for full Price Claim Only
     END;
 
-    trigger OnAfterGetCurrRecord()
-    begin
-        ClaimEditable := Rec."AQD Claim Status".AsInteger() < Rec."AQD Claim Status"::Submitted.AsInteger();
-        FullClaimFieldVisible := Rec."AQD CustClaim Claim Type" = Rec."AQD CustClaim Claim Type"::"Full Price";
-        SetPriceMatchFieldsvisibilityOnLines();
-    end;
-
-    trigger OnAfterGetRecord()
-    begin
-        ClaimEditable := Rec."AQD Claim Status".AsInteger() < Rec."AQD Claim Status"::Submitted.AsInteger();
-        FullClaimFieldVisible := Rec."AQD CustClaim Claim Type" = Rec."AQD CustClaim Claim Type"::"Full Price";
-        SetPriceMatchFieldsvisibilityOnLines();
-    end;
-
-    [Obsolete('The Claims functionality has been discontinued and will be removed in a future release.', 'Deprecated in v25.1023.1.45')]
-    procedure SetPriceMatchFieldsvisibilityOnLines()
-    begin
-        CurrPage.SalesLines.Page.SetPriceMatchFieldsvisibility(Rec."AQD CustClaim Claim Type" = Rec."AQD CustClaim Claim Type"::"Price Match");
-    end;
 
     [IntegrationEvent(false, false)]
     local procedure OnBeforeRebatePreviewAction(var SalesHeader: Record "Sales Header")
@@ -248,6 +169,7 @@ pageextension 14302516 "AQD CustRbt Sales Order" extends "Sales Order"
     end;
 
     var
+        AQDRemovedClaimValue: Text;
         ClaimSetup: Record "AQD Acumens CustRbtClaim Setup";
         ClaimEditable: Boolean;
         FullClaimFieldVisible: Boolean;

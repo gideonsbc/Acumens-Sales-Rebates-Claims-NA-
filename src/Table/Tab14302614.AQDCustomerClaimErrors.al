@@ -5,8 +5,8 @@ table 14302614 "AQD Customer Claim Errors"
     ObsoleteTag = 'Deprecated in v25.1023.1.45';
     Caption = 'Customer Claim Errors';
     DataClassification = CustomerContent;
-    LookupPageId = "AQD Customer Claim Errors";
-    DrillDownPageId = "AQD Customer Claim Errors";
+    // LookupPageId = "AQD Customer Claim Errors";
+    // DrillDownPageId = "AQD Customer Claim Errors";
     fields
     {
         field(1; "Order No."; Code[20])

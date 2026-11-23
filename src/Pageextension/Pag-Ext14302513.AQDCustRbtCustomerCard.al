@@ -49,22 +49,6 @@ pageextension 14302513 "AQD CustRbt Customer Card" extends "Customer Card"
                         ToolTip = 'Specifies the value of the GPO Membership Code field.', Comment = '%';
                     }
                 }
-                Group("AQD AcumensCustomerClaim")
-                {
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                    Visible = false;
-                    Caption = 'Customer Claim';
-                    field("AQD Vendor Claim Customer"; Rec."AQD Customer Claim Customer")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("AQD Default Claim Type"; Rec."AQD Default Claim Type")
-                    {
-                        ApplicationArea = All;
-                    }
-                }
             }
         }
     }

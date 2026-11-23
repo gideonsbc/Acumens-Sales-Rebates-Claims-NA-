@@ -288,30 +288,30 @@ table 14302613 "AQD Customer Claim Line"
     BEGIN
         ClaimHeader.GET(Rec."Claim Type", Rec."Document No.");
 
-        SupplementaryInvoiceLine.RESET;
-        SupplementaryInvoiceLine.SETRANGE("Document Type", SupplementaryInvoiceLine."Document Type"::Invoice);
-        SupplementaryInvoiceLine.SetRange("Document No.", ClaimHeader."Supplementary Invoice No.");
-        SupplementaryInvoiceLine.SetRange("AQD CustClaim Orig Order No.", Rec."Order No.");
-        SupplementaryInvoiceLine.SetRange("AQD CustClaim Orig OdrLine No.", Rec."Order Line No.");
-        IF SupplementaryInvoiceLine.FindFirst() THEN BEGIN
-            REPEAT
-                SupplementaryInvoiceLine.SuspendStatusCheck(TRUE);
-                SupplementaryInvoiceLine.SetHideValidationDialog(TRUE);
-                SupplementaryInvoiceLine.DELETE(TRUE);
-            UNTIL SupplementaryInvoiceLine.Next() = 0;
-        END;
+        // SupplementaryInvoiceLine.RESET;
+        // SupplementaryInvoiceLine.SETRANGE("Document Type", SupplementaryInvoiceLine."Document Type"::Invoice);
+        // SupplementaryInvoiceLine.SetRange("Document No.", ClaimHeader."Supplementary Invoice No.");
+        // SupplementaryInvoiceLine.SetRange("AQD CustClaim Orig Order No.", Rec."Order No.");
+        // SupplementaryInvoiceLine.SetRange("AQD CustClaim Orig OdrLine No.", Rec."Order Line No.");
+        // IF SupplementaryInvoiceLine.FindFirst() THEN BEGIN
+            // REPEAT
+                // SupplementaryInvoiceLine.SuspendStatusCheck(TRUE);
+                // SupplementaryInvoiceLine.SetHideValidationDialog(TRUE);
+                // SupplementaryInvoiceLine.DELETE(TRUE);
+            // UNTIL SupplementaryInvoiceLine.Next() = 0;
+        // END;
 
-        PurchaseCreditMemoLine.RESET;
-        PurchaseCreditMemoLine.SETRANGE("Document Type", PurchaseCreditMemoLine."Document Type"::"Credit Memo");
-        PurchaseCreditMemoLine.SetRange("Document No.", ClaimHeader."Purchase Credit Memo No.");
-        PurchaseCreditMemoLine.SetRange("AQD CustClaim Orig Order No.", Rec."Order No.");
-        PurchaseCreditMemoLine.SetRange("AQD CustClaim Orig OdrLine No.", Rec."Order Line No.");
-        IF PurchaseCreditMemoLine.FindFirst() THEN BEGIN
-            REPEAT
-                PurchaseCreditMemoLine.SuspendStatusCheck(TRUE);
-                PurchaseCreditMemoLine.DELETE(TRUE);
-            UNTIL PurchaseCreditMemoLine.Next() = 0;
-        END;
+        // PurchaseCreditMemoLine.RESET;
+        // PurchaseCreditMemoLine.SETRANGE("Document Type", PurchaseCreditMemoLine."Document Type"::"Credit Memo");
+        // PurchaseCreditMemoLine.SetRange("Document No.", ClaimHeader."Purchase Credit Memo No.");
+        // PurchaseCreditMemoLine.SetRange("AQD CustClaim Orig Order No.", Rec."Order No.");
+        // PurchaseCreditMemoLine.SetRange("AQD CustClaim Orig OdrLine No.", Rec."Order Line No.");
+        // IF PurchaseCreditMemoLine.FindFirst() THEN BEGIN
+            // REPEAT
+                // PurchaseCreditMemoLine.SuspendStatusCheck(TRUE);
+                // PurchaseCreditMemoLine.DELETE(TRUE);
+            // UNTIL PurchaseCreditMemoLine.Next() = 0;
+        // END;
     END;
 
     var

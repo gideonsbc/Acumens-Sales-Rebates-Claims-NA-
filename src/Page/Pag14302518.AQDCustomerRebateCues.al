@@ -35,22 +35,34 @@ page 14302518 "AQD Customer Rebate Cues"
                 field("Full Price Claims - Created"; Rec."Full Price Claims - Created")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = "AQD Full Price Cust Claim List";
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    // DrillDownPageId = "AQD Full Price Cust Claim List";
                 }
                 field("Full Price Claims - Submitted"; Rec."Full Price Claims - Submitted")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = "AQD Full Price Cust Claim List";
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    // DrillDownPageId = "AQD Full Price Cust Claim List";
                 }
                 field("Full Price Claims - Approved"; Rec."Full Price Claims - Approved")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = "AQD Full Price Cust Claim List";
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    // DrillDownPageId = "AQD Full Price Cust Claim List";
                 }
                 field("Full Price Claims - Completed"; Rec."Full Price Claims - Completed")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = AQDCmpltedFullPriceCustClmList;
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    // DrillDownPageId = AQDCmpltedFullPriceCustClmList;
                 }
             }
             cuegroup("Price Match Claims")
@@ -63,22 +75,34 @@ page 14302518 "AQD Customer Rebate Cues"
                 field("Price Match Claims - Created"; Rec."Price Match Claims - Created")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = "AQD PriceMatch Cust Claim List";
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    // DrillDownPageId = "AQD PriceMatch Cust Claim List";
                 }
                 field("Price Match Claims - Submitted"; Rec."Price Match Claims - Submitted")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = "AQD PriceMatch Cust Claim List";
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    // DrillDownPageId = "AQD PriceMatch Cust Claim List";
                 }
                 field("Price Match Claims - Approved"; Rec."Price Match Claims - Approved")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = "AQD PriceMatch Cust Claim List";
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    // DrillDownPageId = "AQD PriceMatch Cust Claim List";
                 }
                 field("Price Match Claims - Completed"; Rec."Price Match Claims - Completed")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = "AQD CmpltdPriceMthCustClmList";
+                    ObsoleteState = Pending;
+                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
+                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
+                    // DrillDownPageId = "AQD CmpltdPriceMthCustClmList";
                 }
             }
         }

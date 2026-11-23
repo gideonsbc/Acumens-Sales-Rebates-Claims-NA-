@@ -57,7 +57,7 @@ tableextension 14302509 "AQD CustRbt Item Ext" extends Item
         }
         field(14302610; "AQD Customer Claim Enabled"; Boolean)
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Enabled';
@@ -65,7 +65,7 @@ tableextension 14302509 "AQD CustRbt Item Ext" extends Item
         }
         field(14302630; "AQD CustClaim Mfg Product Code"; Code[20])
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Mfg. Product Code';

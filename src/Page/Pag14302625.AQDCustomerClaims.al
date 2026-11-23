@@ -22,26 +22,26 @@ page 14302625 "AQD Customer Claims"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
 
-                    trigger OnDrillDown()
-                    begin
-                        CASE Rec."Claim Type" OF
-                            Rec."Claim Type"::"Full Price":
-                                BEGIN
-                                    IF Rec.Status <> Rec.Status::"Credit Posted" THEN
-                                        Page.RunModal(PAGE::"AQD FullPrice Customer Claim", Rec)
-                                    ELSE
-                                        Page.RunModal(PAGE::"AQD CompltdFullPrice CustClaim", Rec);
+                    // trigger OnDrillDown()
+                    // begin
+                        // CASE Rec."Claim Type" OF
+                            // Rec."Claim Type"::"Full Price":
+                                // BEGIN
+                                    // IF Rec.Status <> Rec.Status::"Credit Posted" THEN
+                                        // Page.RunModal(PAGE::"AQD FullPrice Customer Claim", Rec)
+                                    // ELSE
+                                        // Page.RunModal(PAGE::"AQD CompltdFullPrice CustClaim", Rec);
 
-                                END;
-                            Rec."Claim Type"::"Price Match":
-                                BEGIN
-                                    IF Rec.Status <> Rec.Status::"Credit Posted" THEN
-                                        Page.RunModal(PAGE::"AQD Price Match Customer Claim", Rec)
-                                    ELSE
-                                        Page.RunModal(PAGE::"AQD CompltdPriceMatchCustClaim", Rec);
-                                END;
-                        END;
-                    end;
+                                // END;
+                            // Rec."Claim Type"::"Price Match":
+                                // BEGIN
+                                    // IF Rec.Status <> Rec.Status::"Credit Posted" THEN
+                                        // Page.RunModal(PAGE::"AQD Price Match Customer Claim", Rec)
+                                    // ELSE
+                                        // Page.RunModal(PAGE::"AQD CompltdPriceMatchCustClaim", Rec);
+                                // END;
+                        // END;
+                    // end;
                 }
                 field("Claim Type"; Rec."Claim Type")
                 {

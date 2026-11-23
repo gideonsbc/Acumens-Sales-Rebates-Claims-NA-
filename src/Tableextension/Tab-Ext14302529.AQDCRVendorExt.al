@@ -25,7 +25,7 @@ tableextension 14302529 "AQD CR Vendor Ext" extends Vendor
         }
         field(14302610; "AQD Claim Vendor"; Boolean)
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Vendor';
@@ -33,7 +33,7 @@ tableextension 14302529 "AQD CR Vendor Ext" extends Vendor
         }
         field(14302620; "AQD Claim From Customer No."; Code[20])
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim From Customer No.';

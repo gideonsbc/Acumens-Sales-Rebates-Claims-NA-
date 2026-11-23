@@ -4,7 +4,7 @@ tableextension 14302628 "AQD Cust Clm PurCrMemoHdr Ext" extends "Purch. Cr. Memo
     {
         field(14302610; "AQD CustClaim Sales Order No."; Code[20])
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Customer Claim Sales Order No.';
@@ -13,7 +13,7 @@ tableextension 14302628 "AQD Cust Clm PurCrMemoHdr Ext" extends "Purch. Cr. Memo
         }
         field(14302620; "AQD Claim Sell-to Cust No."; Code[20])
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Sell-To Customer No.';
@@ -22,7 +22,7 @@ tableextension 14302628 "AQD Cust Clm PurCrMemoHdr Ext" extends "Purch. Cr. Memo
         }
         field(14302630; "AQD Claim Bill-to Cust No."; Code[20])
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Bill-To Customer No.';
@@ -31,7 +31,7 @@ tableextension 14302628 "AQD Cust Clm PurCrMemoHdr Ext" extends "Purch. Cr. Memo
         }
         field(14302640; "AQD Customer Claim No."; Code[20])
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Customer Claim No.';
@@ -40,7 +40,7 @@ tableextension 14302628 "AQD Cust Clm PurCrMemoHdr Ext" extends "Purch. Cr. Memo
         }
         Field(14302650; "AQD CustRbt LinkToSupplInvoice"; Boolean)
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Link To Supplementary Invoice';
@@ -48,7 +48,7 @@ tableextension 14302628 "AQD Cust Clm PurCrMemoHdr Ext" extends "Purch. Cr. Memo
         }
         FIELD(14302660; "AQD CustClaim Claim Type"; Enum "AQD Cust Claim Claim Type")
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Type';

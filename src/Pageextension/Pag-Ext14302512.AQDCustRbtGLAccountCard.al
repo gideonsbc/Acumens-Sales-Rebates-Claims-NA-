@@ -21,19 +21,6 @@ pageextension 14302512 "AQD CustRbt G/L Account Card" extends "G/L Account Card"
                         Enabled = Rec."AQD Customer Rebate Enabled";
                     }
                 }
-                Group("AQD AcumensCustomerClaim")
-                {
-                    ObsoleteState = Pending;
-                    ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
-                    ObsoleteTag = 'Deprecated in v25.1023.1.45';
-                    Visible = false;
-                    Caption = 'Customer Claim';
-
-                    field("AQD Customer Claim Enabled"; Rec."AQD Customer Claim Enabled")
-                    {
-                        ApplicationArea = All;
-                    }
-                }
             }
         }
     }

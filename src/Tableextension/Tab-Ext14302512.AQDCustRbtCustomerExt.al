@@ -44,7 +44,7 @@ tableextension 14302512 "AQD CustRbt Customer Ext" extends Customer
         }
         field(14302610; "AQD Customer Claim Customer"; Boolean)
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Claim Customer';
@@ -52,7 +52,7 @@ tableextension 14302512 "AQD CustRbt Customer Ext" extends Customer
         }
         field(14302620; "AQD Default Claim Type"; Enum "AQD Cust Claim Claim Type")
         {
-            ObsoleteState = Pending;
+            ObsoleteState = Removed;
             ObsoleteReason = 'The Claims functionality has been discontinued and will be removed in a future release.';
             ObsoleteTag = 'Deprecated in v25.1023.1.45';
             Caption = 'Default Claim Type';

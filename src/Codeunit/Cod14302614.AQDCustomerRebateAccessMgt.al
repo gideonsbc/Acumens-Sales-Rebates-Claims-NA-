@@ -6,7 +6,7 @@ codeunit 14302614 "AQD Customer Rebate Access Mgt"
     VAR
         Text001: Label 'You do not have license to access %1.';
         appid: Label '6fe07eb4-80c8-48b7-8afb-298cc3af0a0c';
-        appname: Label 'Sales Rebates, Agent Commissions, Royalties & Allowances (NW)';
+        appname: Label 'Acumens Sales Rebates, Agent Commissions, Royalties & Allowances (NW)';
 
     [EventSubscriber(ObjectType::Codeunit, 150, OnAfterLogin, '', false, false)]
     local procedure CU150_onafterlogin()

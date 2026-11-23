@@ -1,10 +1,10 @@
 {
   "id": "6fe07eb4-80c8-48b7-8afb-298cc3af0a0c",
-  "name": "Sales Rebates, Agent Commissions, Royalties & Allowances (NW)",
+  "name": "Acumens Sales Rebates, Agent Commissions, Royalties & Allowances (NW)",
   "publisher": "SBC Dynamics ERP",
-  "version": "25.1023.1.46",
-  "brief": "Sales Rebates, Agent Commissions, Royalties & Allowances (NW) is an intuitive application designed to streamline Customer Rebate and Claim Management Process.",
-  "description": "Sales Rebates, Agent Commissions, Royalties & Allowances (NW) is an intuitive Rebate and Claim Management application designed to streamline the Customer Rebate and Claim Process for businesses.",
+  "version": "25.1023.1.49",
+  "brief": "Acumens Sales Rebates, Agent Commissions, Royalties & Allowances (NW) is an intuitive application designed to streamline Customer Rebate and Claim Management Process.",
+  "description": "Acumens Sales Rebates, Agent Commissions, Royalties & Allowances (NW) is an intuitive Rebate and Claim Management application designed to streamline the Customer Rebate and Claim Process for businesses.",
   "privacyStatement": "https://www.sbcdynamicserp.com/privacy-policy/",
   "EULA": "https://www.sbcdynamicserp.com/end-user-license-agreement/",
   "help": "https://www.sbcdynamicserp.com/support/?customerrebatemgntapp=yes",
@@ -24,10 +24,6 @@
   "idRanges": [
     {
       "from": 14302509,
-      "to": 14302658
-    },
-     {
-      "from": 14302701,
       "to": 14302710
     }
   ],
